@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 
 const snakeToCamel = (str: string) =>
-    str
-        .toLowerCase()
-        .replace(/([-_][a-z])/g, (group) =>
-            group.toUpperCase().replace("-", "").replace("_", "")
-        );
+  str
+    .toLowerCase()
+    .replace(/([-_][a-z])/g, (group) =>
+      group.toUpperCase().replace("-", "").replace("_", "")
+    );
 
 function replaceText(text: string) {
   const BOOLEAN = /(?<=\n|^)([\w_]+): (true|false)(,|$)/g;
@@ -15,25 +15,28 @@ function replaceText(text: string) {
   const NULLS = /(?<=\n|^)([\w_]+): (null)(,|$)/g;
 
   text = text.replace(
-      BOOLEAN,
-      ($0, $1) => `@SerializedName("${$1}")\nprivate boolean ${snakeToCamel($1)};\n`
+    BOOLEAN,
+    ($0, $1) =>
+      `@SerializedName("${$1}")\nprivate boolean ${snakeToCamel($1)};\n`
   );
   text = text.replace(
-      NUMBERS,
-      ($0, $1) => `@SerializedName("${$1}")\nprivate int ${snakeToCamel($1)};\n`
+    NUMBERS,
+    ($0, $1) => `@SerializedName("${$1}")\nprivate int ${snakeToCamel($1)};\n`
   );
   text = text.replace(
-      STRINGS,
-      ($0, $1) => `@SerializedName("${$1}")\nprivate String ${snakeToCamel($1)};\n`
+    STRINGS,
+    ($0, $1) =>
+      `@SerializedName("${$1}")\nprivate String ${snakeToCamel($1)};\n`
   );
   text = text.replace(
-      NULLS,
-      ($0, $1) => `@SerializedName("${$1}")\nprivate Object ${snakeToCamel($1)};\n`
+    NULLS,
+    ($0, $1) =>
+      `@SerializedName("${$1}")\nprivate Object ${snakeToCamel($1)};\n`
   );
   return text;
 }
 
-const text = ref("")
+const text = ref("");
 </script>
 <template>
   <div class="flex flex-wrap h-screen">

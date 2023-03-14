@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import {RouterView} from "vue-router";
+import { RouterView } from "vue-router";
 import NavMenu from "@/components/NavMenu.vue";
+import type Link from "@/types/link";
 
-const links = [
+const links: Link[] = [
   {
     name: "Main",
     link: "/",
@@ -18,7 +19,7 @@ const links = [
 
 <template>
   <NavMenu :links="links"></NavMenu>
-  <RouterView/>
+  <RouterView />
 </template>
 
 <style scoped></style>
