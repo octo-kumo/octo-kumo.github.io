@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button.popup, a.popup {
+  @apply px-3 py-1.5 rounded-lg ease-in-out duration-150 transform translate-y--3;
+  font-family: "Gotham", Arial, sans-serif;
+  cursor: pointer;
+  //padding: 0.3em 0.6em;
+  border: none;
+  background: #b2ffff;
+  color: #d470a2;
+  box-shadow: 0 0.5em 0 0 #a2efef;
+
+  &:hover {
+    @apply translate-y--1;
+    background: #c2ffff;
+    box-shadow: 0 0.3em 0 0 #a2efef;
+  }
+
+  &:active {
+    @apply translate-y--2;
+    background: #baf9f9;
+    box-shadow: 0 0.1em 0 0 #a2efef;
+  }
+}
