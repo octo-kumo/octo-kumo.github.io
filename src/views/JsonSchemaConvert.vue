@@ -9,10 +9,10 @@ const snakeToCamel = (str: string) =>
     );
 
 function replaceText(text: string) {
-  const BOOLEAN = /(?<=\n|^)([\w_]+): (true|false)(,|$)/g;
-  const NUMBERS = /(?<=\n|^)([\w_]+): \d+(,|$)/g;
-  const STRINGS = /(?<=\n|^)([\w_]+): ('.*'|".*")(,|$)/g;
-  const NULLS = /(?<=\n|^)([\w_]+): (null)(,|$)/g;
+  const BOOLEAN = /(?<=\n|^)\s*([\w_]+): (true|false)(,|$)/g;
+  const NUMBERS = /(?<=\n|^)\s*([\w_]+): \d+(,|$)/g;
+  const STRINGS = /(?<=\n|^)\s*([\w_]+): ('.*'|".*")(,|$)/g;
+  const NULLS = /(?<=\n|^)\s*([\w_]+): (null)(,|$)/g;
 
   text = text.replace(
     BOOLEAN,
