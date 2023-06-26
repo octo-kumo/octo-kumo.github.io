@@ -9,7 +9,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm ci
-      - run: npm build
-      - run: npm generate
-      - run: npm deploy
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm generate
+      - run: pnpm deploy
