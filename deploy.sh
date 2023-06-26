@@ -4,7 +4,11 @@
 set -e
 
 # build
+npm install
+npm run postinstall
 npm run build
+npm run generate
+
 
 # navigate into the build output directory
 cd dist

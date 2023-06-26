@@ -1,17 +1,22 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "devDependencies": {
-    "@nuxt/devtools": "latest",
-    "@types/node": "^18",
-    "nuxt": "^3.6.0",
-    "typescript": "latest"
-  }
+    "name": "octo-kumo.github.io",
+    "private": false,
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
+        "deploy": "gh-pages -d dist"
+    },
+    "devDependencies": {
+        "@nuxt/devtools": "latest",
+        "@nuxtjs/tailwindcss": "^6.8.0",
+        "@types/node": "^18",
+        "nuxt": "^3.6.0",
+        "typescript": "latest"
+    },
+    "dependencies": {
+        "@nuxtjs/robots": "^3.0.0"
+    }
 }
