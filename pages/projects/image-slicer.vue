@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {ref} from "vue";
 import type {Ref} from "@vue/reactivity";
 
 import {PNG} from "pngjs/browser";
 import JSZip from "jszip";
-import fileSaver from "file-saver-es";
+import {saveAs} from "@/libraries/file-saver";
 
 const files: Ref<File[]> = ref([]);
 const urls: Ref<string[]> = ref([]);
 const cols: Ref<number[]> = ref([]);
 const rows: Ref<number[]> = ref([]);
 const pngs: Ref<PNG[]> = ref([]);
+const minTransparency = ref(0);
 const format = ref("{name}_{x}_{y}");
 
 function gcd(a: number, b: number) {
@@ -53,24 +53,28 @@ async function crop_index(index: number) {
       const startX = col * subImageWidth;
       const startY = row * subImageHeight;
       const subImage = new PNG({filterType: 4, width: subImageWidth, height: subImageHeight});
-      for (let y = 0; y < subImageHeight; y++) {
-        for (let x = 0; x < subImageWidth; x++) {
-          const sourceIndex = ((startY + y) * width + startX + x) * 4;
-          const targetIndex = (y * subImageWidth + x) * 4;
+      let maxTr = 0;
+      for (let y = 0; y < subImageHeight; y++) for (let x = 0; x < subImageWidth; x++) {
+        const sourceIndex = ((startY + y) * width + startX + x) * 4;
+        const targetIndex = (y * subImageWidth + x) * 4;
 
-          subImage.data[targetIndex] = data[sourceIndex];
-          subImage.data[targetIndex + 1] = data[sourceIndex + 1];
-          subImage.data[targetIndex + 2] = data[sourceIndex + 2];
-          subImage.data[targetIndex + 3] = data[sourceIndex + 3];
+        subImage.data[targetIndex] = data[sourceIndex];
+        subImage.data[targetIndex + 1] = data[sourceIndex + 1];
+        subImage.data[targetIndex + 2] = data[sourceIndex + 2];
+        subImage.data[targetIndex + 3] = data[sourceIndex + 3];
+        if (maxTr < data[sourceIndex + 3]) {
+          maxTr = data[sourceIndex + 3]
         }
       }
+
+      if (minTransparency.value > maxTr) continue;
 
       zip.file(format.value.replace("{name}", file.name)
           .replace("{x}", String(col))
           .replace("{y}", String(row)) + ".png", new Blob([PNG.sync.write(subImage)]), {binary: true});
     }
   }
-  zip.generateAsync({type: 'blob'}).then(blob => fileSaver.saveAs(blob, `${file.name}.zip`));
+  zip.generateAsync({type: 'blob'}).then(blob => saveAs(blob, `${file.name}.zip`));
 }
 </script>
 
@@ -92,8 +96,15 @@ async function crop_index(index: number) {
         </v-col>
         <v-col
             cols="12"
-            md="8">
+            md="4">
           <v-text-field v-model="format" label="Format" suffix=".png" variant="underlined"></v-text-field>
+        </v-col>
+        <v-col
+            cols="12"
+            md="4">
+          <v-text-field v-model="minTransparency" label="Minimal Transparency to Keep" type="number"
+                        variant="underlined"
+                        :min="0" :max="255"></v-text-field>
         </v-col>
         <v-col
             cols="12"
