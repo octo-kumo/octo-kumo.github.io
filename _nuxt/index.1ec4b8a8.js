@@ -1,0 +1,1 @@
+import{_ as e,v as t,t as o,x as c}from"./entry.c403b739.js";const n={},s=c("h1",null,"Welcome to the homepage",-1),_=[s];function a(r,l){return o(),t("div",null,_)}const i=e(n,[["render",a]]);export{i as default};

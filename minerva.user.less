@@ -1,0 +1,537 @@
+/* ==UserStyle==
+@name           Minerva Themed
+@version        0.0.9
+@license        unlicense
+@description    Better Minerva
+@author         yun <zy.kumo@gmail.com> (https://github.com/octo-kumo)
+@preprocessor   less
+
+@namespace      https://github.com/octo-kumo
+@homepageURL    https://gist.github.com/octo-kumo/bef6b10f7f12b8bf7c93f17327013a6f
+
+
+@var    color   var-theme-color   "Theme color"   #AE2D29
+@var    checkbox var-texture      "Texture"       0
+@var    checkbox var-use-banner   "Display banner" 1
+@var    checkbox var-use-search-bar   "Display search" 1
+@var    select  var-banner-img    "Banner image" {
+ "Cozy Anime Girl": "url(https://files.catbox.moe/mpx3g6.jpg)",
+ "Cozy Anime Girl (McGill)": "url(https://files.catbox.moe/lwrtle.jpg)",
+ "Nyan": "@{nyan-cat}",
+ "Custom": "@{var-banner-custom}",
+ "None": "none"
+}
+@var    text    var-banner-custom   "Custom banner; include url()" "url()"
+@var    range   var-radius          "Border radius" 5 0 50 1 px
+@var    range   var-spacing         "Horizontal Spacing" 3 0 10 1 em
+@var    range   var-menu-spacing    "Menu Spacing" 0.5 0 1 0.1 em
+==/UserStyle== */
+@nyan-cat: "url(https://files.catbox.moe/4r3qpy.gif), url(https://files.catbox.moe/rorem6.gif)";
+
+@-moz-document domain("horizon.mcgill.ca") {
+  * {
+    font-family: "Roboto", sans-serif !important;
+  }
+
+  html {
+    & when (@var-texture = 1) {
+      background-image: url(https://files.catbox.moe/3e7axg.png);
+      background-attachment: fixed;
+    }
+  }
+
+  body {
+    background: none !important;
+    --radius: unit(@var-radius, px);
+    --theme: @var-theme-color;
+    --spacing: unit(@var-spacing, em);
+    --menu-spacing: unit(@var-menu-spacing, em);
+  }
+
+
+  /**
+  styles the header
+  */
+  div.headerwrapperdiv {
+    background-image: unset !important;
+    margin: 0 var(--spacing) !important;
+    padding: 0 !important;
+
+    & when (@var-use-banner = 1) {
+      margin-top: 70px !important;
+
+      &::before {
+        background-image: @var-banner-img;
+        background-blend-mode: normal;
+
+        & when ("@{var-banner-img}" = @nyan-cat) {
+          animation: panno linear 30s infinite;
+          @keyframes panno {
+            from {
+              background-position: 0 0, 0 0;
+            }
+            to {
+              background-position: 100% 100%, 0 0;
+            }
+          }
+        }
+      }
+    }
+
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: '';
+      z-index: -1;
+      width: 100%;
+      height: 69px;
+    }
+
+    .pageheaderdiv1 h1 {
+      display: none;
+    }
+
+    .headerlinksdiv {
+      /* The header tabs */
+      border-bottom: 0.5em solid var(--theme) !important;
+
+      & table table.plaintable {
+        margin-left: -.5em;
+        margin-top: .5em;
+        border-spacing: .5em 0;
+
+        & td {
+          user-select: none;
+          font-weight: bold;
+          text-transform: uppercase;
+          box-sizing: border-box;
+          border-top-left-radius: var(--radius);
+          border-top-right-radius: var(--radius);
+          height: unset !important;
+          padding: 0.5em 10px !important;
+          transition: all 0.3s;
+          border: 1px solid var(--theme);
+          border-bottom: 0;
+
+          & a {
+            padding: 0.5em 10px;
+            color: var(--theme);
+          }
+
+          &.tabon {
+            background-color: var(--theme);
+
+            & a {
+              color: white;
+              font-weight: bold !important;
+            }
+          }
+
+          &.taboff {
+            background-color: #f8f8f8;
+
+            &:hover {
+              background-color: color-mix(in srgb, var(--theme) 10%, white);
+            }
+          }
+        }
+      }
+    }
+
+
+    & table[summary = "This table displays Menu Items and Banner Search textbox."] {
+      /*display: none;*/
+      border-collapse: collapse;
+      border-bottom: none;
+      user-select: none;
+
+      & td {
+        color: var(--theme);
+        vertical-align: middle;
+        padding: 0;
+
+        .headerlinksdiv2 {
+          color: var(--theme);
+        }
+      }
+
+      & a.submenulinktext2 {
+        color: var(--theme) !important;
+      }
+
+      & input[type=submit] {
+        color: white;
+        background-image: none;
+        background-color: var(--theme);
+        border: 1px solid var(--theme);
+
+        &:hover {
+          color: var(--theme);
+          background-color: white;
+        }
+      }
+
+      & input[type=text] {
+        border: 1px solid var(--theme);
+        outline: none;
+      }
+
+      & when (@var-use-search-bar = 0) {
+        position: absolute;
+        width: calc(100% - var(--spacing) - var(--spacing));
+
+        & td:first-child {
+          display: none;
+        }
+      }
+    }
+  }
+
+  div.pagetitlediv {
+    margin: 0 var(--spacing);
+
+    & h2 {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  }
+
+  div.pagebodydiv {
+    padding: 0 !important;
+    margin: 0 var(--spacing) !important;
+    background-image: unset !important;
+    /**
+    Styles the info prompt on the top, and any info prompts below
+    */
+
+    & div.infotextdiv {
+      margin: 0;
+      width: 100%;
+
+      & > table.infotexttable {
+        width: 100%;
+        border-collapse: collapse;
+
+        & td.indefault:has(>img[title = Information]) {
+          display: none;
+        }
+      }
+    }
+
+    /**
+    ALso styles the login prompt
+     */
+
+    &:has(.login_table) > div > div:nth-child(3) > div,
+    & div.infotextdiv > table.infotexttable span.infotext > div {
+      position: relative;
+      padding: 0.5em 0.8em !important;
+      margin: 0 !important;
+      /*fix the "note" being too wide*/
+      /*also show content on hover*/
+      width: unset !important;
+      transition: all 0.2s;
+      background-color: unset !important;
+      border: 2px solid var(--theme) !important;
+      border-radius: var(--radius);
+      line-height: 150%;
+
+      & * {
+        margin: 0 !important;
+      }
+
+      & font:first-child > b,
+      & p:first-child > span:only-child {
+        padding-left: 20px;
+        //font-size: 1em !important;
+        color: var(--theme);
+
+        /*noinspection CssUnknownTarget*/
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+
+          background-image: url(/wtlgifs/web_info_cascade.png);
+          background-repeat: no-repeat;
+          background-position: 0.5em 0.8em;
+          filter: opacity(0.2) drop-shadow(0px 0px 1px var(--theme)) brightness(150%);
+        }
+      }
+    }
+
+    /**
+    The main navigation table
+    */
+
+    & > table.menuplaintable[summary = "This layout table holds the menu items"] {
+      border-spacing: 0 1em;
+      border-collapse: collapse;
+
+      & tbody {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: stretch;
+        align-content: stretch;
+        justify-content: start;
+        margin-top: calc(0 - var(--menu-spacing));
+        margin-bottom: calc(0 - var(--menu-spacing));
+      }
+
+      & tr {
+        display: flex;
+
+        margin: 0 var(--menu-spacing);
+        flex: 1 1 calc(33.33333% - var(--menu-spacing) - var(--menu-spacing));
+        @media screen and (max-width: 768px) {
+          flex-basis: calc(50% - var(--menu-spacing) - var(--menu-spacing));
+        }
+        @media screen and (max-width: 480px) {
+          flex-basis: 100%;
+        }
+
+        & > td {
+          margin: var(--menu-spacing) 0;
+          height: auto;
+
+          & > a:first-child {
+            text-transform: uppercase;
+            font-size: 1.2em;
+            display: block;
+            color: var(--theme);
+          }
+
+          & span.menulinkdesctext > div {
+            padding: 0.5em !important;
+            width: unset !important;
+            font-size: 0.7em !important;
+            background-color: unset !important;
+
+            & * {
+              font-size: 0.7em !important;
+            }
+          }
+
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+
+
+          @supports (-webkit-line-clamp: 10) {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: initial;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
+            -webkit-box-orient: vertical;
+          }
+
+          &:first-child {
+            display: none;
+            transition: all 0.2s;
+          }
+
+          &:last-child {
+            flex: 1;
+            transition: all 0.2s;
+            border-left: 0.5em solid var(--theme);
+            border-radius: var(--radius);
+            overflow: hidden;
+            padding: 10px;
+            background-color: white;
+            background-clip: border-box;
+            box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+            box-sizing: content-box !important;
+          }
+        }
+
+        &:hover td {
+          &:first-child {
+            /*background-color: var(--theme);*/
+          }
+
+          &:last-child {
+            box-shadow: 0.5em 2px 0.5em 0 rgba(0, 0, 0, 0.3);
+            border-left: 10px solid var(--theme);
+            /*transform: translate(-5px, -0px);*/
+          }
+        }
+
+        & p:first-child {
+          margin-block-start: 0;
+        }
+
+        & p:last-child {
+          margin-block-end: 0;
+        }
+      }
+    }
+
+    & > table.plaintable[summary = "This is table displays line separator at end of the page."] .bgtabon {
+      background-color: var(--theme);
+    }
+
+    /**
+    Styles the displayed tables, the content tables, the ones with inputs and selects
+    */
+
+    & table.datadisplaytable,
+    & table.bordertable,
+    & table.dataentrytable {
+      border-collapse: collapse;
+      border: 1px solid var(--theme);
+      width: unset !important;
+      align-items: stretch;
+      align-content: stretch;
+
+      & td:not(:empty),
+      & th:not(:empty) {
+        border: 1px solid var(--theme);
+        padding: 0.2em 0.5em;
+        /* If only child is a input, or if only 2 child and first child is invisible label*/
+
+        &:has(select:only-child),
+        &:has(input:only-child:not([type=hidden])),
+        &:has(label:first-child:nth-last-child(2) > span.fieldlabeltextinvisible):has(select:last-child:nth-child(2)),
+        &:has(label:first-child:nth-last-child(2) > span.fieldlabeltextinvisible):has(input:last-child:nth-child(2)) {
+          padding: 0;
+
+          & select,
+          & input {
+            box-sizing: border-box;
+            width: 100%;
+            border: none;
+            margin: auto 0;
+
+            &:focus {
+              outline: var(--theme) solid 2px;
+            }
+          }
+
+          border-right: 0.5em solid var(--theme);
+        }
+      }
+
+      & tr:nth-child(even) {
+        background-color: color-mix(in srgb, var(--theme) 7%, white);
+      }
+
+      & tr:hover {
+        background-color: color-mix(in srgb, var(--theme) 15%, white);
+      }
+
+      & th,
+      & td.delabel,
+      & td.detitle,
+      & td.ntheader,
+      & td.dbheader {
+        background-color: var(--theme) !important;
+        color: white;
+
+        & * {
+          color: white;
+        }
+      }
+
+      & td:has(>table) {
+        padding: 0 !important;
+        border: none !important;
+
+        & table {
+          align-items: stretch;
+          align-content: stretch;
+          border-collapse: collapse;
+
+          & * {
+            padding: 0;
+          }
+        }
+      }
+    }
+
+    /**
+    Fix login center separator not long enough
+     */
+
+    &:has(.login_table) td[align=center] > div {
+      height: 210px !important;
+      background-color: var(--theme) !important;
+    }
+  }
+
+  div.pagefooterdiv {
+    margin: 0 !important;
+
+    /*& .releasetext {*/
+    /*    margin: 0 var(--spacing);*/
+    /*}*/
+  }
+  div.banner_copyright {
+    margin: 0 var(--spacing);
+    color: #000a;
+
+    & div {
+      display: none;
+    }
+
+    & h5 {
+      margin: 0;
+    }
+
+    &::after {
+      content: "styled by yun (octo-kumo)";
+      font-size: 0.83em;
+    }
+  }
+
+  /**
+  ** EXTRA
+  **/
+
+  /**
+  Styles the forms
+  */
+  input[type = submit],
+  input[type = button],
+  input[type = reset],
+  button {
+    transition: 0.2s all;
+    background-color: #0000;
+    border: 1px solid var(--theme);
+    color: var(--theme);
+
+    &:hover {
+      background-color: var(--theme);
+      color: white;
+      cursor: pointer;
+    }
+  }
+
+  a {
+    &:link {
+      color: var(--theme);
+    }
+
+    &:visited {
+      color: color-mix(in srgb, var(--theme) 70%, black);
+    }
+
+    &:hover {
+      color: color-mix(in srgb, var(--theme) 70%, white);
+    }
+  }
+
+  strong, b {
+    color: var(--theme);
+  }
+  h1, div.pagetitlediv h2, .logintableheader {
+    color: var(--theme) !important;
+  }
+}
