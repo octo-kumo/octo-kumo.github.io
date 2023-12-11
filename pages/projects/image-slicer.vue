@@ -4,7 +4,7 @@ import type {Ref} from "@vue/reactivity";
 
 import {PNG} from "pngjs/browser";
 import JSZip from "jszip";
-import {saveAs} from "file-saver-es";
+import fileSaver from "file-saver-es";
 
 const files: Ref<File[]> = ref([]);
 const urls: Ref<string[]> = ref([]);
@@ -70,7 +70,7 @@ async function crop_index(index: number) {
           .replace("{y}", String(row)) + ".png", new Blob([PNG.sync.write(subImage)]), {binary: true});
     }
   }
-  zip.generateAsync({type: 'blob'}).then(blob => saveAs(blob, `${file.name}.zip`));
+  zip.generateAsync({type: 'blob'}).then(blob => fileSaver.saveAs(blob, `${file.name}.zip`));
 }
 </script>
 
