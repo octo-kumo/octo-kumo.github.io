@@ -1,25 +1,17 @@
 <script setup lang="ts">
 import {useDrawer} from "@/composables/states";
+import {guessPathName} from "@/mixins/display";
 
 const drawer = useDrawer();
 const router = useRouter();
 
 const nav = router.getRoutes();
-
-function getName(name?: string | symbol) {
-  switch (name) {
-    case "projects-er-editor":
-      return "ER Editor"
-    case "projects-json-schema":
-      return "JSON Editor"
-    case "projects-price-comparator":
-      return "Price Comparator"
-    case "projects-thumbnails":
-      return "Thumbnails"
-    default:
-      return String(name);
-  }
-}
+const NAMES: { [key: string]: string } = {
+  "projects-er-editor": "ER Editor",
+  "projects-json-schema": "JSON Editor",
+  "projects-price-comparator": "Price Comparator",
+  "projects-thumbnails": "Thumbnails",
+};
 </script>
 
 <template>
@@ -33,11 +25,11 @@ function getName(name?: string | symbol) {
           <v-list-item
               v-bind="props"
               prepend-icon="mdi-folder-heart"
-              title="Tools"
+              title="Projects"
           ></v-list-item>
         </template>
-        <v-list-item v-for="n in nav.filter(r=>r.path.startsWith('/projects'))"
-                     :title="getName(n.name)" :key="n.name"
+        <v-list-item v-for="n in nav.filter(r=>r.path.startsWith('/projects/'))"
+                     :title="NAMES[String(n.name)]??guessPathName(n.name!)" :key="n.name"
                      :to="n"></v-list-item>
       </v-list-group>
       <v-list-item title="About" to="/about" prepend-icon="mdi-information"></v-list-item>
