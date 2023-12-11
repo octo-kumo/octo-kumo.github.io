@@ -1,8 +1,55 @@
 import type {Duplex} from "stream";
 import type {createDeflate} from "zlib";
 
-declare module 'pngjs/browser';
 declare module 'pngjs/browser' {
+
+    export interface BaseOptions {
+        fill?: boolean | undefined;
+        height?: number | undefined;
+        width?: number | undefined;
+    }
+
+    export interface ParserOptions {
+        checkCRC?: boolean | undefined;
+        skipRescale?: boolean | undefined;
+    }
+
+    export interface PackerOptions {
+        bgColor?: {
+            red: number;
+            green: number;
+            blue: number;
+        } | undefined;
+        bitDepth?: BitDepth | undefined;
+        colorType?: ColorType | undefined;
+        deflateChunkSize?: number | undefined;
+        deflateFactory?: typeof createDeflate | undefined;
+        deflateLevel?: number | undefined;
+        deflateStrategy?: number | undefined;
+        filterType?: number | number[] | undefined;
+        inputColorType?: ColorType | undefined;
+        inputHasAlpha?: boolean | undefined;
+    }
+
+    export type PNGOptions = BaseOptions & ParserOptions & PackerOptions;
+
+    export type PNGWithMetadata = PNG & Metadata;
+
+    export type ColorType = 0 | 2 | 4 | 6;
+
+    export type BitDepth = 8 | 16;
+
+    export interface Metadata {
+        alpha: boolean;
+        bpp: 1 | 2 | 3 | 4;
+        color: boolean;
+        colorType: ColorType;
+        depth: 1 | 2 | 4 | 8 | 16;
+        height: number;
+        interlace: boolean;
+        palette: boolean;
+        width: number;
+    }
 
     export class PNG extends Duplex {
         static adjustGamma(src: PNG): void;
@@ -51,53 +98,5 @@ declare module 'pngjs/browser' {
         pack(): PNG;
 
         parse(data: string | Buffer, callback?: (error: Error, data: PNG) => void): PNG;
-    }
-
-    export interface BaseOptions {
-        fill?: boolean | undefined;
-        height?: number | undefined;
-        width?: number | undefined;
-    }
-
-    export interface ParserOptions {
-        checkCRC?: boolean | undefined;
-        skipRescale?: boolean | undefined;
-    }
-
-    export interface PackerOptions {
-        bgColor?: {
-            red: number;
-            green: number;
-            blue: number;
-        } | undefined;
-        bitDepth?: BitDepth | undefined;
-        colorType?: ColorType | undefined;
-        deflateChunkSize?: number | undefined;
-        deflateFactory?: typeof createDeflate | undefined;
-        deflateLevel?: number | undefined;
-        deflateStrategy?: number | undefined;
-        filterType?: number | number[] | undefined;
-        inputColorType?: ColorType | undefined;
-        inputHasAlpha?: boolean | undefined;
-    }
-
-    export type PNGOptions = BaseOptions & ParserOptions & PackerOptions;
-
-    export type PNGWithMetadata = PNG & Metadata;
-
-    export type ColorType = 0 | 2 | 4 | 6;
-
-    export type BitDepth = 8 | 16;
-
-    export interface Metadata {
-        alpha: boolean;
-        bpp: 1 | 2 | 3 | 4;
-        color: boolean;
-        colorType: ColorType;
-        depth: 1 | 2 | 4 | 8 | 16;
-        height: number;
-        interlace: boolean;
-        palette: boolean;
-        width: number;
     }
 }

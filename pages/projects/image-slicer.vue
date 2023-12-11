@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import {ref} from "vue";
 import type {Ref} from "@vue/reactivity";
 
 import {PNG} from "pngjs/browser";
 import JSZip from "jszip";
-import {saveAs} from "file-saver";
+import {saveAs} from "file-saver-es";
 
 const files: Ref<File[]> = ref([]);
 const urls: Ref<string[]> = ref([]);

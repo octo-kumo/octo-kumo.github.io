@@ -8,7 +8,7 @@ dependencies:
   '@mdi/font':
     specifier: ^7.3.67
     version: 7.3.67
-  file-saver:
+  file-saver-es:
     specifier: ^2.0.5
     version: 2.0.5
   json-editor-vue:
@@ -31,9 +31,9 @@ devDependencies:
   '@nuxtjs/tailwindcss':
     specifier: ^6.10.1
     version: 6.10.1
-  '@types/file-saver':
-    specifier: ^2.0.7
-    version: 2.0.7
+  '@types/file-saver-es':
+    specifier: ^2.0.3
+    version: 2.0.3
   nuxt:
     specifier: ^3.8.2
     version: 3.8.2(sass@1.69.5)(typescript@5.3.3)(vite@4.5.0)
@@ -2019,8 +2019,8 @@ packages:
   /@types/estree@1.0.1:
     resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
 
-  /@types/file-saver@2.0.7:
-    resolution: {integrity: sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==}
+  /@types/file-saver-es@2.0.3:
+    resolution: {integrity: sha512-1N7YkjKDfSSlBq9TCbNelivW+CkqEGh6HWzOP2w8znKsyASufdp8ymxnmKs67hyO9r175xMUu1e2w50xfBD4Ew==}
     dev: true
 
   /@types/http-proxy@1.17.14:
@@ -3520,8 +3520,8 @@ packages:
       reusify: 1.0.4
     dev: true
 
-  /file-saver@2.0.5:
-    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
+  /file-saver-es@2.0.5:
+    resolution: {integrity: sha512-Kg0lt+is9nOyi/VDms9miScNGot25jVFbjFccXuCL/shd2Q+rt70MALxHVkXllsX83JEBLiHQNjDPGd/6FIOoQ==}
     dev: false
 
   /file-type@16.5.4:
