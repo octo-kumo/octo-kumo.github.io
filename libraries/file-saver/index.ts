@@ -43,10 +43,9 @@ function bom(blob: Blob | string, opts?: FileSaverOptions | boolean) {
 // Detect WebView inside a native macOS app by ruling out all browsers
 // We just need to check for 'Safari' because all other browsers (besides Firefox) include that too
 // https://www.whatismybrowser.com/guides/the-latest-user-agent/macos
-const isMacOSWebView = _global.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent);
+const isMacOSWebView = _global?.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent);
 export const saveAs = 'download' in HTMLAnchorElement.prototype && !isMacOSWebView ?
     function saveAs(blob: Blob | string, name: string, opts?: FileSaverOptions) {
-        const URL = _global.URL || _global.webkitURL;
         // Namespace is used to prevent conflict w/ Chrome Poper Blocker extension (Issue #561)
         const a = document.createElementNS('http://www.w3.org/1999/xhtml', 'a') as HTMLAnchorElement;
         name = name || (typeof blob !== "string" && blob.name) || 'download'
@@ -99,7 +98,7 @@ export const saveAs = 'download' in HTMLAnchorElement.prototype && !isMacOSWebVi
         : function saveAs(blob: Blob | string, name: string, opts?: FileSaverOptions, popup?: Window) {
             // Open a popup immediately do go around popup blocker
             // Mostly only available on user interaction and the fileReader is async so...
-            popup = popup || open('', '_blank')
+            popup = popup || (open('', '_blank') ?? undefined)
             if (popup) {
                 popup.document.title =
                     popup.document.body.innerText = 'downloading...'
@@ -108,7 +107,7 @@ export const saveAs = 'download' in HTMLAnchorElement.prototype && !isMacOSWebVi
             if (typeof blob === 'string') return download(blob, name, opts)
 
             const force = blob.type === 'application/octet-stream';
-            const isSafari = /constructor/i.test(String(_global.HTMLElement)) || _global.safari;
+            const isSafari = /constructor/i.test(String(_global?.HTMLElement)) || _global?.safari;
             const isChromeIOS = /CriOS\/\d+/.test(navigator.userAgent);
 
             if ((isChromeIOS || force && isSafari || isMacOSWebView) && typeof FileReader !== 'undefined') {
@@ -116,26 +115,26 @@ export const saveAs = 'download' in HTMLAnchorElement.prototype && !isMacOSWebVi
                 const reader = new FileReader();
                 reader.onloadend = function () {
                     let url = reader.result;
+                    if (!url) return
                     if (typeof url !== "string") url = new TextDecoder().decode(url);
                     url = isChromeIOS ? url : url.replace(/^data:[^;]*;/, 'data:attachment/file;')
                     if (popup) popup.location.href = url
                     else location.href = url
-                    popup = null // reverse-tabnabbing #460
+                    popup = undefined // reverse-tabnabbing #460
                 }
                 reader.readAsDataURL(blob)
             } else {
-                const URL = _global.URL || _global.webkitURL;
                 const url = URL.createObjectURL(blob);
                 if (popup) popup.location = url
                 else location.href = url
-                popup = null // reverse-tabnabbing #460
+                popup = undefined // reverse-tabnabbing #460
                 setTimeout(function () {
                     URL.revokeObjectURL(url)
                 }, 4E4) // 40s
             }
         };
 
-function download(url: string, name: string, opts: FileSaverOptions) {
+function download(url: string, name: string, opts?: FileSaverOptions) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url)
     xhr.responseType = 'blob'
@@ -148,7 +147,7 @@ function download(url: string, name: string, opts: FileSaverOptions) {
     xhr.send()
 }
 
-function corsEnabled(url) {
+function corsEnabled(url: string) {
     const xhr = new XMLHttpRequest();
     xhr.open('HEAD', url, false)
     try {
