@@ -1,1 +1,0 @@
-import{_ as e,N as t,A as a,a0 as s,t as c,x as n}from"./entry.ad1f8f74.js";const o={},r=n("h1",null,"Projects",-1);function _(l,d){return c(),t(s,null,{default:a(()=>[r]),_:1})}const i=e(o,[["render",_]]);export{i as default};
