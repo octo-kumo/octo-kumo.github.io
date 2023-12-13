@@ -1,0 +1,3 @@
+[submodule "games/air-defence"]
+	path = games/air-defence
+	url = https://github.com/octo-kumo/air-defence.git

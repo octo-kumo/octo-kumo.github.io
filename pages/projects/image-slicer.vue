@@ -19,7 +19,6 @@ const subWidths = computed(() => pngs.value.map(({width}, i) => computed({
   get: () => width / cols.value[i],
   set: newValue => cols.value[i] = width / newValue
 })));
-2
 const subHeights = computed(() => pngs.value.map(({height}, i) => computed({
   get: () => height / rows.value[i],
   set: newValue => rows.value[i] = height / newValue
