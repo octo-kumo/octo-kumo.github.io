@@ -12,6 +12,7 @@
         "@jimp/types": "^0.22.10",
         "@nuxt/devtools": "^1.0.5",
         "@nuxtjs/tailwindcss": "^6.10.1",
+        "@types/three": "^0.159.0",
         "nuxt": "^3.8.2",
         "sass": "^1.69.5",
         "typescript": "^5.3.3",
@@ -22,6 +23,7 @@
         "@mdi/font": "^7.3.67",
         "json-editor-vue": "^0.11.2",
         "jszip": "^3.10.1",
-        "pngjs": "^7.0.0"
+        "pngjs": "^7.0.0",
+        "three": "^0.159.0"
     }
 }
