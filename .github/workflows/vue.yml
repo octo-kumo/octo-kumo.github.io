@@ -1,5 +1,5 @@
 name: Build Vue
-on: [ push ]
+on: [ push, workflow_dispatch ]
 jobs:
   build_vue:
     runs-on: ubuntu-latest
