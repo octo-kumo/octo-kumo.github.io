@@ -12,7 +12,9 @@
         "@jimp/types": "^0.22.10",
         "@nuxt/devtools": "^1.0.5",
         "@nuxtjs/tailwindcss": "^6.10.1",
+        "@types/dat.gui": "^0.7.12",
         "@types/three": "^0.159.0",
+        "@vite-pwa/nuxt": "^0.3.5",
         "nuxt": "^3.8.2",
         "sass": "^1.69.5",
         "typescript": "^5.3.3",
@@ -21,6 +23,7 @@
     },
     "dependencies": {
         "@mdi/font": "^7.3.67",
+        "dat.gui": "^0.7.9",
         "json-editor-vue": "^0.11.2",
         "jszip": "^3.10.1",
         "pngjs": "^7.0.0",

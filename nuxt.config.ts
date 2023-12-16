@@ -16,7 +16,8 @@ export default defineNuxtConfig({
                 config.plugins.push(vuetify({autoImport: true}))
             })
         },
-        '@nuxtjs/tailwindcss'
+        '@nuxtjs/tailwindcss',
+        '@vite-pwa/nuxt',
     ],
     build: {
         transpile: ['vuetify'],
@@ -27,5 +28,5 @@ export default defineNuxtConfig({
                 transformAssetUrls,
             },
         },
-    },
+    }
 })

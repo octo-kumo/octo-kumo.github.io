@@ -16,6 +16,10 @@ onMounted(() => {
   <div id="air-defence-game-parent" ref="game_container"></div>
 </template>
 
-<style scoped lang="css">
-
+<style lang="css">
+#game-dat-gui {
+  position: fixed;
+  right: 0;
+  bottom: 20px;
+}
 </style>
