@@ -18,6 +18,8 @@ export default defineNuxtConfig({
         },
         '@nuxtjs/tailwindcss',
         '@vite-pwa/nuxt',
+        '@pinia/nuxt',
+        '@pinia-plugin-persistedstate/nuxt',
     ],
     build: {
         transpile: ['vuetify'],

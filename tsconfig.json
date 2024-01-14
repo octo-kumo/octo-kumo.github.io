@@ -3,6 +3,7 @@
     "compilerOptions": {
         "typeRoots": [
             "./types",
+            ".nuxt/types",
             "node_modules/@types"
         ]
     },

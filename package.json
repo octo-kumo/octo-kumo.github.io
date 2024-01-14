@@ -12,6 +12,7 @@
         "@jimp/types": "^0.22.10",
         "@nuxt/devtools": "^1.0.5",
         "@nuxtjs/tailwindcss": "^6.10.1",
+        "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
         "@types/dat.gui": "^0.7.12",
         "@types/three": "^0.159.0",
         "@vite-pwa/nuxt": "^0.3.5",
