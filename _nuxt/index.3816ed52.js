@@ -1,0 +1,1 @@
+import{_ as e,L as t,A as s,V as a,t as c,x as n}from"./entry.74ad3343.js";const o={},r=n("h1",null,"Projects",-1);function _(l,d){return c(),t(a,null,{default:s(()=>[r]),_:1})}const i=e(o,[["render",_]]);export{i as default};
