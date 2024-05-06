@@ -10,6 +10,10 @@ const ALL: { [k: string]: any } = {
   "CHS": await fetch('https://raw.githubusercontent.com/octo-kumo/hsr-sim-universe-utils/master/out/handbook_eventsCHS.json').then(r => r.json())
 }
 const handbook_events = ref(ALL[lang.value]);
+
+watch(lang, () => handbook_events.value = ALL[lang.value]);
+store.$subscribe((mutation, state) => lang.value = state.lang)
+
 const prompt_lines = (lines: any[]) => lines.filter(e => Array.isArray(e));
 const prompt_options = (lines: any[]) => lines.find(e => !Array.isArray(e));
 
@@ -73,7 +77,8 @@ const queryStr = ref("");
       <template v-for="(event, event_key) in handbook_events">
         <v-col
             v-if="queryStr.length===0||searchScore(event.title,queryStr)"
-            cols="4"
+            cols="12"
+            lg="4"
         >
           <v-card>
             <v-card-title v-text="event.title"></v-card-title>
@@ -82,13 +87,11 @@ const queryStr = ref("");
             </v-card-text>
             <v-row align="start" class="ma-2">
               <v-col cols="auto" v-for="(choice, key) in prompt_options(event.dialogue.prompt)" class="pa-1">
-                <v-btn :variant="events[event_key+'_'+choice.triggers]?'outlined':'flat'" size="x-small"
+                <v-btn :variant="events[event_key+'_'+choice.triggers]?'outlined':'flat'" size="small"
                        @click="events[event_key+'_'+choice.triggers]=!events[event_key+'_'+choice.triggers]"
                        :triggers="event_key+'_'+choice.triggers">
-                  <ruby>
-                    {{ key }}
-                    <rt v-text="choice.desc"></rt>
-                  </ruby>
+                  {{ key }}<br>
+                  {{ choice.desc }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -100,7 +103,7 @@ const queryStr = ref("");
                 <v-row align="start" class="ma-2">
                   <v-col cols="auto" v-for="(choice, key) in prompt_options(event.dialogue.triggers[tkey].lines)"
                          class="pa-1">
-                    <v-btn :variant="events[event_key+'_'+choice.triggers]?'outlined':'flat'" size="x-small"
+                    <v-btn :variant="events[event_key+'_'+choice.triggers]?'outlined':'flat'" size="small"
                            @click="events[event_key+'_'+choice.triggers]=!events[event_key+'_'+choice.triggers]"
                            :triggers="event_key+'_'+choice.triggers">
                       <ruby>
@@ -123,5 +126,7 @@ const queryStr = ref("");
 </template>
 
 <style scoped lang="css">
-
+.v-btn {
+  height: unset !important;
+}
 </style>

@@ -3,7 +3,10 @@
 import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
-    appConfig: undefined,
+    app: {
+        baseURL: process.env.BASE_URL || '/',
+        buildAssetsDir: 'assets'
+    },
     hooks: undefined,
     devtools: {enabled: true},
     ssr: true,
@@ -22,7 +25,7 @@ export default defineNuxtConfig({
         '@pinia-plugin-persistedstate/nuxt',
     ],
     build: {
-        transpile: ['vuetify'],
+        transpile: ['vuetify']
     },
     vite: {
         vue: {

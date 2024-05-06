@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import AirDefenceGame from "@/components/AirDefenceGame.vue";
 import {WebGL} from "three/examples/jsm/Addons";
+
+definePageMeta({
+  layout: 'clean'
+});
 </script>
 
 <template>

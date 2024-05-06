@@ -6,7 +6,7 @@
     <v-main>
       <slot/>
     </v-main>
-    <NavFab/>
+    <KumoFab/>
   </v-app>
 </template>
 <script setup lang="ts">

@@ -57,7 +57,7 @@ let selected: ERObject | Attribute | Relationship | Specialization | null = null
 onMounted(() => {
   ratio = PIXEL_RATIO()
   paint()
-  fetch("/json/erdiagram.json").then(res => res.json())
+  fetch("json/erdiagram.json").then(res => res.json())
       .then(objs => {
         const PA = (O: ERObject, o: ERObject) => {
           for (let A of O.attributes) {
