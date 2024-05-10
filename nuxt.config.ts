@@ -14,7 +14,7 @@ export default defineNuxtConfig({
         }
     },
     hooks: undefined,
-    devtools: {enabled: true},
+    devtools: {enabled: false},
     ssr: true,
 // @ts-ignore
     title: 'octo-kumo',
@@ -29,6 +29,7 @@ export default defineNuxtConfig({
         '@vite-pwa/nuxt',
         '@pinia/nuxt',
         '@pinia-plugin-persistedstate/nuxt',
+        '@fullpage/nuxt-fullpage'
     ],
     build: {
         transpile: ['vuetify']

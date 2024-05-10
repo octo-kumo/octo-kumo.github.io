@@ -18,6 +18,13 @@ import type {ERObject} from "~/model/er_model/model";
 import {Attribute, Entity, flatten, getObjectType, Relationship, Specialization} from "~/model/er_model/model";
 import type {ObjectType} from "~/model/er_model/data-types";
 
+useHead({
+  title: 'Evil ER',
+  meta: [
+    {name: 'description', content: 'Shadow of its formal glory'},
+    {name: "oldUrl", content: 'https://github.com/octo-kumo/cs6131-project'}
+  ],
+});
 const editor = ref(null as HTMLCanvasElement | null);
 const nodes: ERObject[] = reactive([]);
 

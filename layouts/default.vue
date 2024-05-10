@@ -6,7 +6,6 @@
     <v-main>
       <slot/>
     </v-main>
-    <KumoFab/>
   </v-app>
 </template>
 <script setup lang="ts">

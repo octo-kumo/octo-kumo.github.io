@@ -2,6 +2,13 @@
 import AirDefenceGame from "@/components/AirDefenceGame.vue";
 import {WebGL} from "three/examples/jsm/Addons";
 
+useHead({
+  title: 'Air Defence',
+  meta: [
+    {name: 'description', content: 'Fancy game about fighting planes using an AA gun'}
+  ],
+  script: [{innerHTML: 'console.log(\'Hello world\')'}]
+});
 definePageMeta({
   layout: 'clean'
 });

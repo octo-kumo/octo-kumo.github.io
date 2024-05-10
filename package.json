@@ -25,6 +25,7 @@
         "vuetify": "^3.6.3"
     },
     "dependencies": {
+        "@fullpage/nuxt-fullpage": "^0.2.5",
         "@mdi/font": "^7.4.47",
         "dat.gui": "^0.7.9",
         "firebase": "^10.11.1",

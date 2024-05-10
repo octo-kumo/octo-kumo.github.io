@@ -1,0 +1,29 @@
+blockquote {
+  display: inline;
+  position: relative;
+  overflow: visible;
+}
+
+blockquote:before,
+blockquote:after {
+  display: inline-block;
+  vertical-align: bottom;
+  color: rgba(orange, 50%);
+  font-size: 4em;
+  top: .2em;
+  position: absolute;
+}
+
+blockquote:before {
+  content: '「';
+  left: 0;
+  top: 0;
+  transform: translate(-100%,-25%);
+}
+
+blockquote:after {
+  content: '」';
+  right: 0;
+  bottom: 0;
+  transform: translate(80%,-50%);
+}

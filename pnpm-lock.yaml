@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fullpage/nuxt-fullpage':
+        specifier: ^0.2.5
+        version: 0.2.5(rollup@4.17.2)(vue@3.4.26(typescript@5.4.5))
       '@mdi/font':
         specifier: ^7.4.47
         version: 7.4.47
@@ -1101,6 +1104,9 @@ packages:
   '@fortawesome/free-solid-svg-icons@6.5.2':
     resolution: {integrity: sha512-QWFZYXFE7O1Gr1dTIp+D6UcFUF0qElOnZptpi7PBUMylJh+vFmIedVe1Ir6RM1t2tEQLLSV1k7bR4o92M+uqlw==}
     engines: {node: '>=6'}
+
+  '@fullpage/nuxt-fullpage@0.2.5':
+    resolution: {integrity: sha512-HsYRq8phNUEfdlxfhfokQ+xxe/b/h/diYocp7MP3kOIaZVjBEgr18nJSM58WYezx26cHaQyi74q3dRVrQKgotQ==}
 
   '@google-cloud/firestore@7.7.0':
     resolution: {integrity: sha512-41/vBFXOeSYjFI/2mJuJrDwg2umGk+FDrI/SCGzBRUe+UZWDN4GoahIbGZ19YQsY0ANNl6DRiAy4wD6JezK02g==}
@@ -3159,6 +3165,9 @@ packages:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
+
+  fullpage.js@4.0.22:
+    resolution: {integrity: sha512-8CCRrL8DwoFIDcBifvB0YfZZV63vUjairLsBX/uuOSsFa3gPS1Or4bLm2llFojL091MINMPzwdzTgbIO5iDdKw==}
 
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
@@ -5757,6 +5766,11 @@ packages:
   vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
 
+  vue-fullpage.js@0.2.17:
+    resolution: {integrity: sha512-uuwAyWIMJA3y1IQzIxo3bL6vh0t1/1nRAmiQFf254Xq2DQUlvEpo45rX2jUkCCrIEkGEysHwwAnslHKnpjzMVA==}
+    peerDependencies:
+      vue: ^3.2.26
+
   vue-observe-visibility@2.0.0-alpha.1:
     resolution: {integrity: sha512-flFbp/gs9pZniXR6fans8smv1kDScJ8RS7rEpMjhVabiKeq7Qz3D9+eGsypncjfIyyU84saU88XZ0zjbD6Gq/g==}
     peerDependencies:
@@ -7205,6 +7219,15 @@ snapshots:
   '@fortawesome/free-solid-svg-icons@6.5.2':
     dependencies:
       '@fortawesome/fontawesome-common-types': 6.5.2
+
+  '@fullpage/nuxt-fullpage@0.2.5(rollup@4.17.2)(vue@3.4.26(typescript@5.4.5))':
+    dependencies:
+      '@nuxt/kit': 3.11.2(rollup@4.17.2)
+      vue-fullpage.js: 0.2.17(vue@3.4.26(typescript@5.4.5))
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
+      - vue
 
   '@google-cloud/firestore@7.7.0(encoding@0.1.13)':
     dependencies:
@@ -9933,6 +9956,8 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
+
+  fullpage.js@4.0.22: {}
 
   function-bind@1.1.2: {}
 
@@ -12991,6 +13016,11 @@ snapshots:
       vue: 3.4.26(typescript@5.4.5)
 
   vue-devtools-stub@0.1.0: {}
+
+  vue-fullpage.js@0.2.17(vue@3.4.26(typescript@5.4.5)):
+    dependencies:
+      fullpage.js: 4.0.22
+      vue: 3.4.26(typescript@5.4.5)
 
   vue-observe-visibility@2.0.0-alpha.1(vue@3.4.26(typescript@5.4.5)):
     dependencies:
