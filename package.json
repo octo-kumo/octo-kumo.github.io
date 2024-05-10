@@ -7,7 +7,8 @@
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
-        "update": "pnpm update --latest"
+        "update": "pnpm update --latest",
+        "deploy": "firebase deploy --only functions:server,hosting"
     },
     "devDependencies": {
         "@jimp/types": "^0.22.12",
