@@ -12,8 +12,11 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
       - uses: actions/checkout@v4
-      - run: npm ci && npm run build
+      - run: pnpm ci && pnpm run build -- --preset=firebase
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
