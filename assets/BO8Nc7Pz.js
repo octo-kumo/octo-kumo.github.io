@@ -1,1 +1,0 @@
-import{_ as e,L as t,t as s,A as a,V as c,x as n}from"./C7t6bZ64.js";const o={},r=n("h1",null,"Projects",-1);function _(l,d){return s(),t(c,null,{default:a(()=>[r]),_:1})}const i=e(o,[["render",_]]);export{i as default};
