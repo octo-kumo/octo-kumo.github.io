@@ -14,7 +14,11 @@ jobs:
         with:
           version: latest
       - uses: actions/checkout@v4
-      - run: pnpm ci && pnpm run build -- --preset=firebase
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - run: pnpm install
+      - run: pnpm run build -- --preset=firebase
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
