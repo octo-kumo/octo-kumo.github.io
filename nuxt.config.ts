@@ -8,6 +8,7 @@ export default defineNuxtConfig({
         buildAssetsDir: 'assets'
     },
     nitro: {
+        preset: 'firebase',
         firebase: {
             gen: 2,
             nodeVersion: '20'
@@ -42,6 +43,10 @@ export default defineNuxtConfig({
         },
     },
     pwa: {
-        /* PWA options */
+        registerType: 'autoUpdate',
+        workbox: {
+            clientsClaim: true,
+            skipWaiting: true
+        }
     }
 })

@@ -8,7 +8,7 @@
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
         "update": "pnpm update --latest",
-        "deploy": "pnpm run build -- --preset=firebase && firebase deploy --only functions:server,hosting"
+        "deploy": "pnpm run build && firebase deploy --only functions:server,hosting"
     },
     "devDependencies": {
         "@jimp/types": "^0.22.12",
