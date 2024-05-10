@@ -40,5 +40,8 @@ export default defineNuxtConfig({
                 transformAssetUrls,
             },
         },
+    },
+    pwa: {
+        /* PWA options */
     }
 })
