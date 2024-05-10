@@ -8,7 +8,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div style="height: calc(100vh - 64px);">
+  <div style="height: 100vh;">
     <client-only>
       <AirDefenceGame v-if="WebGL.isWebGLAvailable()" style="height: 100%">
       </AirDefenceGame>

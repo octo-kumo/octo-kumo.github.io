@@ -1,0 +1,22 @@
+{
+    "functions": {
+        "source": ".output/server",
+        "runtime": "nodejs20"
+    },
+    "hosting": {
+        "public": ".output/public",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "site": "octo-kumo",
+        "cleanUrls": true,
+        "rewrites": [
+            {
+                "source": "**",
+                "function": "server"
+            }
+        ]
+    }
+}

@@ -7,6 +7,12 @@ export default defineNuxtConfig({
         baseURL: process.env.BASE_URL || '/',
         buildAssetsDir: 'assets'
     },
+    nitro: {
+        firebase: {
+            gen: 2,
+            nodeVersion: '20'
+        }
+    },
     hooks: undefined,
     devtools: {enabled: true},
     ssr: true,
