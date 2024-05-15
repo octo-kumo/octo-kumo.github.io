@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import AirDefenceGame from "@/components/AirDefenceGame.vue";
-import {WebGL} from "three/examples/jsm/Addons";
-
-useHead({
-  title: 'Air Defence',
-  meta: [
-    {name: 'description', content: 'Fancy game about fighting planes using an AA gun'}
-  ],
-  script: [{innerHTML: 'console.log(\'Hello world\')'}]
-});
-definePageMeta({
-  layout: 'clean'
-});
-</script>
-
 <template>
   <div style="height: 100vh;">
     <client-only>
@@ -26,7 +10,17 @@ definePageMeta({
     </client-only>
   </div>
 </template>
+<script setup lang="ts">
+import AirDefenceGame from "@/components/AirDefenceGame.vue";
+import {WebGL} from "three/examples/jsm/Addons";
 
+definePageMeta({
+  layout: 'clean',
+  title: 'Air Defence',
+  description: 'Fancy game about fighting planes using an AA gun (WIP)',
+  image: '/img/airdef.png'
+});
+</script>
 <style scoped lang="css">
 
 </style>

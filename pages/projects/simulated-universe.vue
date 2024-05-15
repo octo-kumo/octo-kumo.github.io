@@ -3,6 +3,12 @@ import {reactive, ref} from "vue";
 import type {UnwrapNestedRefs} from "@vue/reactivity";
 import {useStore} from "@/composables/states.ts";
 
+definePageMeta({
+  layout: 'default',
+  title: 'Simulated Universe Tools',
+  description: 'A tool to preview all simulated universe encounters.',
+  image: '/img/sim-uni.png'
+});
 const store = useStore();
 const lang = ref(store.lang);
 const ALL: { [k: string]: any } = {

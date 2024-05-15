@@ -26,3 +26,7 @@ export function humanFileSize(bytes: number, si = false, dp = 1) {
     return bytes.toFixed(dp) + ' ' + units[u];
 }
 
+export function getErrorMessage(error: unknown) {
+    if (error instanceof Error) return error.message
+    return String(error)
+}

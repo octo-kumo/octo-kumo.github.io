@@ -5,11 +5,10 @@ import {saveAs} from "~/libraries/file-saver";
 import type {Ref} from "@vue/reactivity";
 import {humanFileSize} from "@/mixins/utils";
 
-useHead({
-  title: 'Slicer',
-  meta: [
-    {name: 'description', content: 'Sprite-sheet Slicing tool'}
-  ],
+definePageMeta({
+  layout: "default",
+  title: "Slicer",
+  description: 'Sprite-sheet Slicing tool'
 });
 const canvas: Ref<HTMLCanvasElement | null> = ref(null);
 const files: Ref<File[]> = ref([]);

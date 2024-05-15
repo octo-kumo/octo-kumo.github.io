@@ -1,21 +1,5 @@
-<script setup lang="ts">
-import {useDrawer} from "@/composables/states";
-import {guessPathName} from "@/mixins/display";
-
-const drawer = useDrawer();
-const router = useRouter();
-
-const nav = router.getRoutes();
-const NAMES: { [key: string]: string } = {
-  "projects-er-editor": "ER Editor",
-  "projects-json-schema": "JSON Editor",
-  "projects-price-comparator": "Price Comparator",
-  "projects-thumbnails": "Thumbnails",
-};
-</script>
-
 <template>
-  <v-navigation-drawer color="grey-darken-2" v-model="drawer">
+  <v-navigation-drawer color="grey-darken-2" v-model="localDrawerIsOpen">
     <v-list>
       <v-list-item title="白云" subtitle="Personal Site"></v-list-item>
       <v-divider></v-divider>
@@ -29,13 +13,33 @@ const NAMES: { [key: string]: string } = {
           ></v-list-item>
         </template>
         <v-list-item v-for="n in nav.filter(r=>r.path.startsWith('/projects/'))"
-                     :title="NAMES[String(n.name)]??guessPathName(n.name!)" :key="n.name"
+                     :title="guessPathName(n.name!)" :key="n.name"
                      :to="n"></v-list-item>
       </v-list-group>
       <v-list-item title="About" to="/about" prepend-icon="mdi-information"></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
+<script setup lang="ts">
+import {guessPathName} from "@/mixins/display";
 
+const router = useRouter();
+const nav = router.getRoutes();
+
+const props = defineProps({
+  drawerIsOpen: Boolean,
+});
+
+const emit = defineEmits(['update:drawerIsOpen']);
+
+const localDrawerIsOpen = computed({
+  get() {
+    return props.drawerIsOpen;
+  },
+  set(value) {
+    emit('update:drawerIsOpen', value);
+  },
+});
+</script>
 <style scoped lang="css">
 </style>
