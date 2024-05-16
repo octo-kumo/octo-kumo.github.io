@@ -16,10 +16,18 @@
 </template>
 <script setup lang="ts">
 import TimeValue from "@/components/finance/time-value.vue";
+import Annuity from "~/components/finance/annuity.vue";
+import Perpetuity from "~/components/finance/perpetuity.vue";
 
+definePageMeta({
+  layout: 'default',
+  title: 'Finance',
+  description: 'Collection of calculators for finance stuff'
+});
 const components = [
   {element: TimeValue, name: 'Time Value'},
-  // {element: ComponentB, name: 'Component B'}
+  {element: Annuity, name: 'Annuity'},
+  {element: Perpetuity, name: 'Perpetuity'},
 ]
 </script>
 <style scoped lang="css">
