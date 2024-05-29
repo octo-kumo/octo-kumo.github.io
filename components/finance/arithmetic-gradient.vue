@@ -6,37 +6,59 @@
 import type {EditorField, FieldCalcMap} from "~/components/finance/Fields.vue";
 
 const fields: EditorField[] = [
-  {key: "A1", label: "Initial Value", prefix: "$", suffix: ""},
-  {key: "G", label: "Increment/Decrement", prefix: "$", suffix: ""},
-  {key: "i", label: "Interest Rate", prefix: "", suffix: "%"},
-  {key: "n", label: "Number of Periods", prefix: "", suffix: ""},
-  {key: "P", label: "Final Value", prefix: "$", suffix: ""}
+  {key: "N", label: "Number of Periods", prefix: "", suffix: " periods"},
+  {key: "I", label: "Interest Rate", prefix: "", suffix: "%"},
+  {key: "G", label: "Gradient Amount", prefix: "$", suffix: ""},
+  {key: "PMT", label: "Initial Payment Amount", prefix: "$", suffix: ""},
+  {key: "PV", label: "Present Value", prefix: "$", suffix: ""}
 ];
 
 const calc: FieldCalcMap = {
-  A1(values) {
-    const {G, i, n, P} = values;
-    return P - (G * n * (n + 1) * i) / 200;
+  N(values) {
+    const {I, PMT, G, PV} = values;
+    const i = I / 100;
+    const A1 = PMT / i;  // PV of initial payment annuity
+    const AG = G / (i * i);  // PV of gradient annuity factor
+    const PV_total = PV + A1 + AG;
+    return Math.log(PV_total / (PMT / i + (G / i) / (1 - Math.exp(-i)))) / Math.log(1 + i);
+  },
+  I(values) {
+    const {N, PMT, G, PV} = values;
+    const guessRate = 0.05;
+    const epsilon = 0.0001;
+    let i = guessRate;
+    let diff = 1;
+
+    while (Math.abs(diff) > epsilon) {
+      const A1 = PMT / i;
+      const AG = G / (i * i);
+      const PV_total = A1 * (1 - Math.pow(1 + i, -N)) + AG * (1 - Math.pow(1 + i, -N) * (1 + i * N));
+      diff = PV_total - PV;
+      i += diff / PV;
+    }
+
+    return i * 100;
+  },
+  PMT(values) {
+    const {N, I, G, PV} = values;
+    const i = I / 100;
+    const A1 = PV * i / (1 - Math.pow(1 + i, -N));
+    const AG = G * (Math.pow(1 + i, -N) - 1) / (i * (Math.pow(1 + i, -N) * (1 + i * N) - 1));
+    return A1 + AG;
   },
   G(values) {
-    const {A1, i, n, P} = values;
-    return (2 * (P - A1) * 100) / (n * (n + 1) * i);
+    const {N, I, PMT, PV} = values;
+    const i = I / 100;
+    const A1 = PV * i / (1 - Math.pow(1 + i, -N));
+    return (PMT - A1) * i * (Math.pow(1 + i, N) - 1) / (Math.pow(1 + i, -N) * (1 + i * N) - 1);
   },
-  i(values) {
-    const {A1, G, n, P} = values;
-    return (2 * (P - A1)) / (n * (n + 1) * G) * 100;
-  },
-  n(values) {
-    const {A1, G, i, P} = values;
-    const discriminant = Math.pow(G, 2) + 4 * i * (P - A1);
-    if (discriminant < 0) return NaN; // imaginary roots, not possible in this context
-    const n1 = (-G + Math.sqrt(discriminant)) / (2 * i);
-    const n2 = (-G - Math.sqrt(discriminant)) / (2 * i);
-    return Math.max(n1, n2);
-  },
-  P(values) {
-    const {A1, G, i, n} = values;
-    return A1 + (n * (n + 1) * i * G) / 200;
+  PV(values) {
+    const {N, I, PMT, G} = values;
+    const i = I / 100;
+    const A1 = PMT / i * (1 - Math.pow(1 + i, -N));
+    const AG = G / (i * i) * (1 - Math.pow(1 + i, -N) * (1 + i * N));
+    return A1 + AG;
   }
 };
+
 </script>

@@ -18,6 +18,7 @@
 import TimeValue from "@/components/finance/time-value.vue";
 import Annuity from "~/components/finance/annuity.vue";
 import Perpetuity from "~/components/finance/perpetuity.vue";
+import ArithmeticGradient from "~/components/finance/arithmetic-gradient.vue";
 
 definePageMeta({
   layout: 'default',
@@ -27,6 +28,7 @@ definePageMeta({
 const components = [
   {element: TimeValue, name: 'Time Value'},
   {element: Annuity, name: 'Annuity'},
+  {element: ArithmeticGradient, name: 'Arithmetic Gradient'},
   {element: Perpetuity, name: 'Perpetuity'},
 ]
 </script>

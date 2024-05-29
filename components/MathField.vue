@@ -4,13 +4,14 @@
       :hint="'='+model"
       :error-messages="error.length>0?[error]:[]"
       @blur="attemptSimplify"
-      persistent-hint
+      :persistent-hint="String(input)!==String(model)"
+      :hide-details="String(input)===String(model)"
       v-bind="$attrs"
   ></v-text-field>
 </template>
 
 <script setup>
-import {evaluate, parse, simplify} from "mathjs";
+import {evaluate} from "mathjs";
 import {getErrorMessage} from "~/mixins/utils";
 
 defineOptions({
@@ -46,10 +47,11 @@ function ev(expr) {
 }
 
 function attemptSimplify() {
-  try {
-    const expr = parse(input.value);
-    input.value = simplify(expr).toString();
-  } catch (e) {
-  }
+  if (input.value === "") input.value = "0";
+  // try {
+  //   const expr = parse(input.value);
+  //   input.value = simplify(expr).toString();
+  // } catch (e) {
+  // }
 }
 </script>

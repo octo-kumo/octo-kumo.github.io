@@ -11,7 +11,7 @@
                           v-model="values[field.key]"
                           :label="field.label"
                           :readonly="selectedRow === field.key"
-                          :prefix="field.prefix"
+                          :prefix="field.key+'='+field.prefix"
                           :suffix="field.suffix"
                           class="w-full"
               />
