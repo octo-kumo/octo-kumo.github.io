@@ -1,0 +1,1 @@
+function t(r){return r.replace(/\w\S*/g,e=>e.charAt(0).toUpperCase()+e.substring(1).toLowerCase())}const o={"projects-er-editor":"ER Editor","projects-json-schema":"JSON Editor","projects-price-comparator":"Price Comparator","projects-thumbnails":"Thumbnails"};function s(r){return o[r]??t(String(r).replace("projects-","").replace("-"," "))}export{s as g};
