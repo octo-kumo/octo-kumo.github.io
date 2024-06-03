@@ -13,20 +13,20 @@ const fields: EditorField[] = [
 ];
 const calc: FieldCalcMap = {
   N(values) {
-    const {I, P, F} = values;
-    return Math.log(F / P) / Math.log(1 + I / 100);
+    const {I, PV, FV} = values;
+    return Math.log(FV / PV) / Math.log(1 + I / 100);
   },
   I(values) {
-    const {N, P, F} = values;
-    return (Math.pow(F / P, 1 / N) - 1) * 100;
+    const {N, PV, FV} = values;
+    return (Math.pow(FV / PV, 1 / N) - 1) * 100;
   },
   PV(values) {
-    const {N, I, F} = values;
-    return F / Math.pow(1 + I / 100, N);
+    const {N, I, FV} = values;
+    return FV / Math.pow(1 + I / 100, N);
   },
   FV(values) {
-    const {N, I, P} = values;
-    return P * Math.pow(1 + I / 100, N);
+    const {N, I, PV} = values;
+    return PV * Math.pow(1 + I / 100, N);
   }
 };
 </script>

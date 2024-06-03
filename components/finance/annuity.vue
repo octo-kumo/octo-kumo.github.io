@@ -10,7 +10,8 @@ const fields: EditorField[] = [
   {key: "I", label: "Interest Rate", prefix: "", suffix: "%"},
   {key: "g", label: "Growth Rate", prefix: "", suffix: "%"},
   {key: "PMT", label: "Payment Amount", prefix: "$", suffix: ""},
-  {key: "PV", label: "Present Value", prefix: "$", suffix: ""}
+  {key: "PV", label: "Present Value", prefix: "$", suffix: ""},
+  {key: "FV", label: "Future Value", prefix: "$", suffix: "", computed: true}
 ];
 
 const calc: FieldCalcMap = {
@@ -44,6 +45,13 @@ const calc: FieldCalcMap = {
     const growth = g / 100;
     if (i === growth) return PMT * N;  // Simplified case when interest rate equals growth rate
     return PMT * (1 - Math.pow((1 + growth) / (1 + i), N)) / (i - growth);
+  },
+  FV(values) {
+    const {N, I, g, PMT} = values;
+    const i = I / 100;
+    const growth = g / 100;
+    if (i === growth) return PMT * N * Math.pow(1 + i, N);  // Simplified case when interest rate equals growth rate
+    return PMT * (Math.pow(1 + i, N) - Math.pow(1 + growth, N)) / (i - growth);
   }
 };
 

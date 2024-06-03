@@ -19,7 +19,7 @@
           </v-col>
         </v-row>
       </v-radio-group>
-      <p v-if="calculationError.length>0" v-text="calculationError"></p>
+      <p v-if="calculationError.length>0" v-text="calculationError.join('\n')"></p>
     </v-card-text>
   </v-card>
 </template>
@@ -32,7 +32,8 @@ export interface EditorField {
   key: string,
   label: string,
   prefix: string,
-  suffix: string
+  suffix: string,
+  computed?: boolean;
 }
 
 export type FieldCalcMap = {
@@ -48,20 +49,29 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   fields: () => [] as EditorField[],
 })
-const calculationError = ref("");
+const calculationError: string[] = reactive([]);
 
 const values = reactive(Object.fromEntries(props.fields.map(field => [field.key, 0])));
 const selectedRow: Ref<typeof props.fields[number]['key']> = ref(props.fields[props.fields.length - 1].key);
 watch(values, function () {
-  calculationError.value = '';
+  calculationError.splice(0);
   console.log("calculating", selectedRow.value);
   try {
     const result = props.calc[selectedRow.value](values);
     if (isNaN(result)) throw new Error("Invalid result");
     else values[selectedRow.value] = result;
   } catch (error) {
-    calculationError.value = getErrorMessage(error) ?? "unknown";
+    calculationError.push(getErrorMessage(error) ?? "unknown error");
   }
+  props.fields.filter(f => f.computed).forEach(f => {
+    try {
+      const result = props.calc[f.key](values);
+      if (isNaN(result)) throw new Error("Failed to calculate field value");
+      else values[f.key] = result;
+    } catch (error) {
+      calculationError.push(getErrorMessage(error) ?? "unknown error");
+    }
+  });
 });
 </script>
 

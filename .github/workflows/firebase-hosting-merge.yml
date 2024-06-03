@@ -19,9 +19,8 @@ jobs:
           version: latest
       - run: pnpm install
       - run: pnpm run build -- --preset=firebase
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
+      - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          args: deploy --only functions:server,hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_OCTO_KUMO }}
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: octo-kumo
+          channelId: live

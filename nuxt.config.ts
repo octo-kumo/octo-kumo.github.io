@@ -8,7 +8,6 @@ export default defineNuxtConfig({
         buildAssetsDir: 'assets'
     },
     nitro: {
-        preset: 'firebase',
         firebase: {
             gen: 2,
             nodeVersion: '20'
