@@ -1,0 +1,1 @@
+import{d as e,t,v as a,F as s,B as o,V as n,y as r}from"./aJEYq7WN.js";const c=r("h1",null,"Projects",-1),u=e({__name:"index",setup(_){return t({title:"Projects"}),(l,d)=>(a(),s(n,null,{default:o(()=>[c]),_:1}))}});export{u as default};
