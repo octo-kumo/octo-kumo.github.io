@@ -1,10 +1,10 @@
 {
     "functions": {
-        "source": ".output/server",
+        "source": "--preset=firebase/.output/server",
         "runtime": "nodejs20"
     },
     "hosting": {
-        "public": ".output/public",
+        "public": "--preset=firebase/.output/public",
         "ignore": [
             "firebase.json",
             "**/.*",
