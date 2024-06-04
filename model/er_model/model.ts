@@ -93,9 +93,9 @@ export class ERObject extends Vector {
             this.drawShape(ctx, this.getShape())
             if (this.weak) this.drawShape(ctx, this.getShape(this._trueWidth - 6, HEIGHT - 6))
         }
-        ctx.fillStyle = "#fff"
+        ctx.fillStyle = ctx.background
         ctx.fill()
-        ctx.fillStyle = "#000"
+        ctx.fillStyle = ctx.foreground
         ctx.stroke()
     }
 
@@ -211,9 +211,9 @@ export class Specialization extends Relationship {
                 // if (ctx.context.exporting()) return;
                 shape.dashed(ctx)
             } else shape.draw(ctx)
-            ctx.fillStyle = "#fff"
+            ctx.fillStyle = ctx.background
             ctx.fill()
-            ctx.fillStyle = "#000"
+            ctx.fillStyle = ctx.foreground
             ctx.stroke()
         } else this.drawShape(ctx, this.getShape())
     }
@@ -275,9 +275,9 @@ export class Attribute extends ERObject {
             if (this.derived) shape.dashed(ctx)
             else shape.draw(ctx)
         } else super.drawShape(ctx)
-        ctx.fillStyle = "#fff"
+        ctx.fillStyle = ctx.background
         ctx.fill()
-        ctx.fillStyle = "#000"
+        ctx.fillStyle = ctx.foreground
         ctx.stroke()
     }
 

@@ -103,10 +103,10 @@ export class RelationLine extends Line {
             ctx.stroke()
 
             ctx.lineWidth = 3
-            ctx.strokeStyle = "#fff"
+            ctx.strokeStyle = ctx.background
             fancyLine(ctx, a, b, 'straight')
             ctx.stroke()
-            ctx.strokeStyle = "#000"
+            ctx.strokeStyle = ctx.foreground
             ctx.lineWidth = 1
         } else {
             fancyLine(ctx, a, b, 'straight')
@@ -126,12 +126,12 @@ export class RelationLine extends Line {
             ctx.save()
             ctx.translate(mid.x, mid.y)
             ctx.rotate(angle)
-            ctx.fillStyle = "#fff"
+            ctx.fillStyle = ctx.background
             const metrics = ctx.measureText(this.r.role)
             const w = metrics.width
             const h = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
             ctx.fillRect(-w / 2, -h / 2, w, h)
-            ctx.fillStyle = "#000"
+            ctx.fillStyle = ctx.foreground
             ctx.fillText(this.r.role, 0, 0)
             ctx.restore()
         }

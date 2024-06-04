@@ -30,6 +30,15 @@ const subHeights = computed(() => pngs.value.map(({height}, i) => computed({
 })));
 const format = ref("{name}_{x}_{y}");
 
+function largestFactorUnder10(n) {
+  for (let i = 9; i > 0; i--) {
+    if (n % i === 0) {
+      return i;
+    }
+  }
+  return null;
+}
+
 function gcd(a: number, b: number) {
   while (b !== 0) {
     const temp = b;
@@ -40,14 +49,15 @@ function gcd(a: number, b: number) {
 }
 
 async function onFilesChange() {
-  urls.value = files.value.map(URL.createObjectURL);
+  console.log(files.value)
+  urls.value = files.value.map(f => URL.createObjectURL(f.raw));
   loadings.value = new Array(files.value.length).fill(false);
   initLoaded.value = false;
   for (let i = 0; i < files.value.length; i++) {
     loadings.value[i] = true;
-    const buf = files.value[i].type === "image/png" ?
-        await files.value[i].arrayBuffer() :
-        await convertFile(files.value[i]);
+    const buf = files.value[i].raw.type === "image/png" ?
+        await files.value[i].raw.arrayBuffer() :
+        await convertFile(files.value[i].raw);
     try {
       await new Promise((resolve, reject) => new PNG({filterType: 4}).parse(buf, async (error: Error, png: PNG) => {
         if (!png) return reject(error);
@@ -55,7 +65,11 @@ async function onFilesChange() {
         const g = gcd(width, height);
         cols.value[i] = Math.floor(width / g);
         rows.value[i] = Math.floor(height / g);
-        if (cols.value[i] * rows.value[i] > 128) cols.value[i] = rows.value[i] = 1;
+        console.log("gcd", width, height, g, cols.value[i], rows.value[i]);
+        if (cols.value[i] * rows.value[i] > 128) {
+          cols.value[i] = largestFactorUnder10(width) ?? 1;
+          rows.value[i] = largestFactorUnder10(height) ?? 1;
+        }
         resolve(0);
       }));
     } catch (e) {
@@ -103,7 +117,7 @@ async function crop_all() {
 }
 
 async function crop_index(index: number) {
-  const file = files.value[index];
+  const file = files.value[index].raw;
   const {width, height, data} = pngs.value[index];
   const subImageWidth = width / cols.value[index];
   const subImageHeight = height / rows.value[index];
@@ -139,109 +153,99 @@ async function crop_index(index: number) {
 </script>
 
 <template>
-  <v-container>
-    <v-card>
-      <v-card-title>Image Slicer</v-card-title>
-
-      <v-card-text>
-        <p>
-          Slice up your images based on grid size, only PNGs are exacto-cropped, other images are auto-converted to PNG
-          via canvas API. Sliced images will be downloaded as a zip file.
-          You can change both grid size and grid item size, they sync automatically.
-          In case of fractional grid, extra parts will be
-          discarded, you can also discard empty grids.
-        </p>
-        <p><b>
-          Everything happens in your browser, nothing is uploaded to anywhere.
-        </b></p>
-        <p><b>
-          You may run out of memory if the images are too large!
-        </b></p>
-      </v-card-text>
-    </v-card>
-    <hr class="my-4">
-    <v-form>
-      <v-row>
-        <v-col
-            cols="12">
-          <v-file-input v-model="files" accept="image/*" density="compact"
-                        label="Images"
-                        chips hide-details multiple
-                        variant="underlined"></v-file-input>
-        </v-col>
-        <v-col
-            cols="12"
-            md="4">
-          <v-text-field hide-details v-model="format" label="Format" suffix=".png" variant="underlined"></v-text-field>
-        </v-col>
-        <v-col
-            cols="12"
-            md="4">
-          <v-text-field hide-details v-model="minTransparency" label="Empty Item Elimination (max alpha)"
-                        type="number" variant="underlined" suffix="≤ keep" prefix="discard <"
-                        :min="0" :max="255"></v-text-field>
-        </v-col>
-        <v-col
-            cols="12"
-            md="4">
-          <v-btn :disabled="!initLoaded" @click="crop_all()" variant="outlined" block size="large" color="green">
+  <div>
+    <el-card>
+      <template #header>Image Slicer</template>
+      <p>
+        Slice up your images based on grid size, only PNGs are exacto-cropped, other images are auto-converted to PNG
+        via canvas API. Sliced images will be downloaded as a zip file.
+        You can change both grid size and grid item size, they sync automatically.
+        In case of fractional grid, extra parts will be
+        discarded, you can also discard empty grids.
+      </p>
+      <p><b>
+        Everything happens in your browser, nothing is uploaded to anywhere.
+      </b></p>
+      <p><b>
+        You may run out of memory if the images are too large!
+      </b></p>
+    </el-card>
+    <el-divider/>
+    <el-card>
+      <el-row :gutter="5" class="space-y-2">
+        <el-col :cols="24">
+          <el-upload v-model:file-list="files" accept="image/*" multiple :auto-upload="false">
+            <el-button>Click to upload</el-button>
+            <template #tip>
+              <div class="el-upload__tip">
+                jpg/png files
+              </div>
+            </template>
+          </el-upload>
+        </el-col>
+        <el-col :cols="24" :md="8">
+          <el-input v-model="format">
+            <template #prefix>format&nbsp;</template>
+            <template #suffix>.png</template>
+          </el-input>
+        </el-col>
+        <el-col :cols="24" :md="8">
+          <el-input v-model="minTransparency" placeholder="Empty Item Elimination (max alpha)"
+                    type="number" :min="0" :max="255">
+            <template #suffix>≤ keep</template>
+            <template #prefix>discard <</template>
+          </el-input>
+        </el-col>
+        <el-col :cols="24" :md="8">
+          <el-button :disabled="!initLoaded" @click="crop_all()">
             Crop All
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-form>
-    <v-row>
-      <v-col cols="12" md="4" v-for="(f,i) in files">
-        <v-card :loading="loadings[i]">
-          <v-img
+          </el-button>
+        </el-col>
+      </el-row>
+    </el-card>
+    <el-divider/>
+    <el-row :gutter="10">
+      <el-col :cols="24" :md="8" class="mb-2" v-for="(f,i) in files">
+        <el-card v-loading="loadings[i]">
+          <el-image
               :src="urls[i]"
-              height="200px"
-              cover
-          ></v-img>
-          <v-btn
-              @click="files.splice(i,1)"
-              class="position-absolute top-2 right-2"
-              icon="mdi-close-thick"
-              color="red"
-              variant="plain"
-              size="x-small"
-              elevation="0"/>
-          <v-card-title>
+              style="height: 200px;width: 100%;"
+              fit="cover"
+          ></el-image>
+          <template #header>
             {{ f.name }}
-          </v-card-title>
+          </template>
 
-          <v-card-subtitle v-if="pngs[i]">
-            <v-chip label variant="flat" density="compact" class="mr-1"
-                    v-text="pngs[i]?.width + '×' + pngs[i]?.height"></v-chip>
-            <v-chip label variant="flat" color="green" density="compact" class="mr-1"
-                    v-text="f.type.replace('image/','')"></v-chip>
-            <v-chip label variant="outlined" color="green" density="compact" class="mr-0"
-                    v-text="humanFileSize(f.size, true)"></v-chip>
-          </v-card-subtitle>
-          <v-card-subtitle v-if="errors[i]">
+          <div v-if="pngs[i]" class="flex gap-2">
+            <el-tag type="primary"
+                    v-text="pngs[i]?.width + '×' + pngs[i]?.height"></el-tag>
+            <el-tag type="primary"
+                    v-text="f.raw.type.replace('image/','')"></el-tag>
+            <el-tag type="info"
+                    v-text="humanFileSize(f.size, true)"></el-tag>
+          </div>
+          <el-text v-if="errors[i]">
             {{ errors[i].message }}
-          </v-card-subtitle>
+          </el-text>
 
-          <v-card-actions v-if="subWidths[i]&&subHeights[i]">
-            <v-text-field hide-details type="number" v-model="subWidths[i].value" density="compact" label="Grid Width"
-                          variant="underlined" suffix="×"></v-text-field>
-            <v-text-field hide-details type="number" v-model="subHeights[i].value" density="compact" label="Grid Height"
-                          variant="underlined"></v-text-field>
-          </v-card-actions>
-          <v-card-actions v-if="!isNaN(cols[i])&&!isNaN(rows[i])">
-            <v-text-field hide-details type="number" v-model="cols[i]" density="compact" label="Columns"
-                          variant="underlined"></v-text-field>
-            <v-text-field hide-details type="number" v-model="rows[i]" density="compact" label="Rows"
-                          variant="underlined"></v-text-field>
-            <v-btn variant="text" @click="crop_index(i)" color="green">
-              Crop
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+          <template #footer v-if="!isNaN(cols[i])&&!isNaN(rows[i])">
+            <div class="flex gap-4 mb-2" v-if="subWidths[i]&&subHeights[i]">
+              <el-input type="number" v-model="subWidths[i].value"></el-input>
+              <el-input type="number" v-model="subHeights[i].value"></el-input>
+            </div>
+            <div class="flex gap-4">
+              <el-input-number type="number" v-model="cols[i]"></el-input-number>
+              <el-input-number type="number" v-model="rows[i]"></el-input-number>
+              <el-button @click="crop_index(i)" type="primary" class="flex-auto">
+                Crop
+              </el-button>
+            </div>
+          </template>
+        </el-card>
+      </el-col>
+    </el-row>
     <canvas ref="canvas" style="display: none"></canvas>
-  </v-container>
+  </div>
 </template>
 
 <style scoped lang="css">

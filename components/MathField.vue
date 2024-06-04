@@ -1,22 +1,26 @@
 <template>
-  <v-text-field
-      v-model="input"
-      :hint="'='+model"
-      :error-messages="error.length>0?[error]:[]"
-      @blur="attemptSimplify"
-      :persistent-hint="String(input)!==String(model)"
-      :hide-details="String(input)===String(model)"
-      v-bind="$attrs"
-  ></v-text-field>
+  <el-tooltip :visible="input!==String(model)" placement="right">
+    <template #content>
+      <span>{{ model.toPrecision(2) }}</span>
+    </template>
+    <el-input
+        v-model="input"
+        :hint="'='+model"
+        :error-messages="error.length>0?[error]:[]"
+        @blur="attemptSimplify"
+        v-bind="$attrs"
+    >
+
+      <template #prefix v-if="$attrs.prefix">{{ $attrs.prefix }}</template>
+      <template #suffix v-if="$attrs.suffix">{{ $attrs.suffix }}</template>
+    </el-input>
+  </el-tooltip>
 </template>
 
 <script setup>
 import {evaluate} from "mathjs";
 import {getErrorMessage} from "~/mixins/utils";
 
-defineOptions({
-  inheritAttrs: false
-})
 const model = defineModel({
   type: Number,
   required: true

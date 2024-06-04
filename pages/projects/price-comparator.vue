@@ -1,7 +1,4 @@
 <script setup lang="ts">
-
-import {VDataTable} from "vuetify/components/VDataTable";
-
 type ReadonlyHeaders = InstanceType<typeof VDataTable>['headers']
 const headers: ReadonlyHeaders = [
   {title: 'Name', sortable: false, key: 'name'},

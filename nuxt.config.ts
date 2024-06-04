@@ -1,51 +1,83 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
+// import {transformAssetUrls} from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
     app: {
         baseURL: process.env.BASE_URL || '/',
-        buildAssetsDir: 'assets'
+        head: {
+            title: 'Element Plus + Nuxt 3',
+            meta: [
+                {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+                {
+                    hid: 'description',
+                    name: 'description',
+                    content: 'ElementPlus + Nuxt3',
+                },
+            ],
+            link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
+        }
     },
+
+    css: ['~/assets/scss/index.scss'],
     nitro: {
         firebase: {
             gen: 2,
             nodeVersion: '20'
         }
     },
-    hooks: undefined,
     devtools: {enabled: false},
     ssr: true,
-// @ts-ignore
-    title: 'octo-kumo',
+    typescript: {
+        strict: true,
+        shim: false,
+    },
     modules: [
-        (_options, nuxt) => {
-            nuxt.hooks.hook('vite:extendConfig', (config) => {
-                // @ts-expect-error
-                config.plugins.push(vuetify({autoImport: true}))
-            })
-        },
-        '@nuxtjs/tailwindcss',
-        '@vite-pwa/nuxt',
+        '@vueuse/nuxt',
+        '@unocss/nuxt',
         '@pinia/nuxt',
         '@pinia-plugin-persistedstate/nuxt',
-        '@fullpage/nuxt-fullpage'
+        '@element-plus/nuxt',
+        '@nuxtjs/color-mode',
+        '@vite-pwa/nuxt'
     ],
-    build: {
-        transpile: ['vuetify']
-    },
-    vite: {
-        vue: {
-            template: {
-                transformAssetUrls,
-            },
-        },
-    },
     pwa: {
         registerType: 'autoUpdate',
         workbox: {
             clientsClaim: true,
             skipWaiting: true
         }
-    }
+    },
+
+    // vueuse
+    vueuse: {
+        ssrHandlers: true,
+    },
+
+    // colorMode
+    colorMode: {
+        classSuffix: '',
+    },
+
+    unocss: {
+        uno: true,
+        attributify: true,
+        icons: {
+            scale: 1.2,
+        },
+    },
+    vite: {
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: `@use "@/assets/scss/element/index.scss" as element;`,
+                },
+            },
+        },
+    },
+    elementPlus: {
+        icon: 'ElIcon',
+        importStyle: 'scss',
+        themes: ['dark'],
+    },
 })

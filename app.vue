@@ -1,6 +1,6 @@
 <template>
+  <NuxtLoadingIndicator/>
   <NuxtLayout>
-    <VitePwaManifest/>
     <NuxtPage/>
   </NuxtLayout>
 </template>
@@ -18,3 +18,6 @@ useSeoMeta({
   ogImage: String(route.meta.image ?? "")
 })
 </script>
+<style lang="scss">
+@import "@/assets/scss/index.scss";
+</style>

@@ -2,30 +2,34 @@
     "name": "octo-kumo.github.io",
     "private": false,
     "scripts": {
-        "build": "nuxt build",
-        "dev": "nuxt dev",
+        "build": "nuxi build",
+        "dev": "nuxi dev",
         "generate": "nuxt generate",
-        "preview": "nuxt preview",
-        "postinstall": "nuxt prepare",
+        "preview": "nuxi preview",
+        "postinstall": "nuxi prepare",
         "update": "pnpm update --latest",
-        "deploy": "pnpm run build && firebase deploy --only functions:server,hosting"
+        "deploy": "pnpm run build && firebase deploy --only functions:server,hosting",
+        "start": "node .output/server/index.mjs"
     },
     "devDependencies": {
-        "@jimp/types": "^0.22.12",
-        "@nuxt/devtools": "^1.2.0",
-        "@nuxtjs/tailwindcss": "^6.12.0",
-        "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
-        "@types/dat.gui": "^0.7.13",
-        "@types/three": "^0.159.0",
-        "@vite-pwa/nuxt": "^0.3.6",
+        "@element-plus/nuxt": "^1.0.9",
+        "@nuxtjs/color-mode": "^3.4.1",
+        "@pinia/nuxt": "^0.5.1",
+        "@unocss/nuxt": "^0.60.4",
+        "@vueuse/nuxt": "^10.10.0",
+        "consola": "^3.2.3",
         "nuxt": "^3.11.2",
         "sass": "^1.76.0",
         "typescript": "^5.4.5",
-        "vite-plugin-vuetify": "^2.0.3",
-        "vuetify": "^3.6.3"
+        "@jimp/types": "^0.22.12",
+        "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
+        "@types/dat.gui": "^0.7.13",
+        "@types/three": "^0.159.0",
+        "@vite-pwa/nuxt": "^0.3.6"
     },
     "dependencies": {
-        "@fullpage/nuxt-fullpage": "^0.2.5",
+        "@element-plus/icons-vue": "^2.3.1",
+        "element-plus": "^2.7.4",
         "@mdi/font": "^7.4.47",
         "dat.gui": "^0.7.9",
         "firebase": "^10.11.1",
@@ -35,5 +39,17 @@
         "mathjs": "^12.4.2",
         "pngjs": "^7.0.0",
         "three": "^0.159.0"
+    },
+    "peerDependencies": {
+        "pinia": "^2.1.7"
+    },
+    "pnpm": {
+        "peerDependencyRules": {
+            "ignoreMissing": [
+                "webpack",
+                "vite",
+                "vue"
+            ]
+        }
     }
 }

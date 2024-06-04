@@ -1,18 +1,16 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col
-          v-for="(item, index) in components"
-          :key="index"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
-      >
-        <component :is="item.element"></component>
-      </v-col>
-    </v-row>
-  </v-container>
+  <el-row :gutter="20">
+    <el-col
+        v-for="(item, index) in components"
+        :key="index"
+        :cols="24"
+        :sm="12"
+        :md="8"
+        :lg="6"
+    >
+      <component :is="item.element"></component>
+    </el-col>
+  </el-row>
 </template>
 <script setup lang="ts">
 import TimeValue from "@/components/finance/time-value.vue";

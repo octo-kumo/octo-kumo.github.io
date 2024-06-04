@@ -1,5 +1,6 @@
 <template>
   <canvas
+      class="mx--3"
       id="editor"
       ref="editor"
       tabindex="1"
@@ -26,6 +27,14 @@ definePageMeta({
 });
 const editor = ref(null as HTMLCanvasElement | null);
 const nodes: ERObject[] = reactive([]);
+const isDark = useDark();
+const colors = {
+  dark: {
+    foreground: ""
+  }, light: {
+    foreground: ""
+  }
+};
 
 function PIXEL_RATIO() {
   const ctx: any = document.createElement("canvas").getContext("2d")
@@ -113,27 +122,31 @@ function paint() {
   if (!editor) return
   const ctx = editor.value?.getContext("2d")
   if (!ctx) return
-  setupCanvas(editor.value!, ctx, window.innerWidth, window.innerHeight)
+  ctx.foreground = getComputedStyle(editor.value).getPropertyValue("--el-text-color-primary");
+  ctx.background = getComputedStyle(editor.value).getPropertyValue("--el-bg-color");
+  setupCanvas(editor.value!, ctx)
   ctx.save()
   nodes.forEach(n => n.predraw(ctx))
   nodes.forEach(n => n.draw(ctx))
 
   if (selected) {
-    ctx.strokeStyle = '#f00'
+    ctx.strokeStyle = getComputedStyle(editor.value).getPropertyValue("--el-color-primary")
     selected.getShapeWorld().draw(ctx)
-    ctx.strokeStyle = '#000'
+    ctx.strokeStyle = ctx.foreground
   }
 
   calculateFPS()
   requestAnimationFrame(() => paint())
 }
 
-function setupCanvas(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, w: number, h: number) {
-  canvas.width = w * ratio
-  canvas.height = h * ratio
-  canvas.style.width = w + "px"
-  canvas.style.height = h + "px"
-  ctx.strokeStyle = "#000"
+function setupCanvas(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+  const main = document.querySelector("main.el-main");
+  canvas.width = main.clientWidth * ratio
+  let clientHeight = main.clientHeight - 4;
+  canvas.height = clientHeight * ratio
+  canvas.style.width = main.clientWidth + "px";
+  canvas.style.height = clientHeight + "px";
+  ctx.fillStyle = ctx.foreground;
   ctx.font = "plain 24px serif"
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
   drawInfo(ctx)
@@ -147,14 +160,15 @@ function setupCanvas(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, w
 }
 
 function drawInfo(ctx: CanvasRenderingContext2D) {
-  ctx.fillText(`fps: ${fps.toFixed(2)}`, 10, 80)
-  ctx.fillText(`scale: ${scale.toFixed(2)}`, 10, 90)
-  ctx.fillText(`origin: ${origin.x.toFixed(2)}, ${origin.y.toFixed(2)}`, 10, 100)
-  ctx.fillText(`screen: (${window.innerWidth}, ${window.innerHeight}) x${ratio}→ (${ctx.canvas.width}, ${ctx.canvas.height})`, 10, 110)
-  ctx.fillText(`entities: ${nodes.length}`, 10, 120)
-  ctx.fillText(`state = ${mouseState}`, 10, 140)
-  ctx.fillText(`er-editor demo, a shadow of its former version (SQL+Sockets+Live+Colab)`, 10, 150)
-  if (selected) ctx.fillText(`selected = ${selected}`, 10, 160)
+  let y = 0;
+  ctx.fillText(`fps: ${fps.toFixed(2)}`, 10, y += 10)
+  ctx.fillText(`scale: ${scale.toFixed(2)}`, 10, y += 10)
+  ctx.fillText(`origin: ${origin.x.toFixed(2)}, ${origin.y.toFixed(2)}`, 10, y += 10)
+  ctx.fillText(`screen: (${window.innerWidth}, ${window.innerHeight}) x${ratio}→ (${ctx.canvas.width}, ${ctx.canvas.height})`, 10, y += 10)
+  ctx.fillText(`entities: ${nodes.length}`, 10, y += 10)
+  ctx.fillText(`state = ${mouseState}`, 10, y += 20)
+  ctx.fillText(`er-editor demo, a shadow of its former version (SQL+Sockets+Live+Colab)`, 10, y += 10)
+  if (selected) ctx.fillText(`selected = ${selected}`, 10, y += 10)
 }
 
 function calculateFPS() {
@@ -167,7 +181,8 @@ function calculateFPS() {
  * Mouse Event Handlers
  */
 function clicked(e: MouseEvent) {
-  mousePos.set(e.x, e.y)
+  const rect = editor.value.getBoundingClientRect();
+  mousePos.set(e.x - rect.left, e.y - rect.top);
   mouseWorld.set(unproject(mousePos))
   if (e.button === LEFT_BUTTON) {
     const element = e.currentTarget as (EventTarget & { clicks?: number, lastClick?: number })
@@ -192,7 +207,8 @@ function clicked(e: MouseEvent) {
 }
 
 function mouseDown(e: MouseEvent) {
-  mousePos.set(e.x, e.y)
+  const rect = editor.value.getBoundingClientRect();
+  mousePos.set(e.x - rect.left, e.y - rect.top);
   mouseWorld.set(unproject(mousePos))
   if (e.button === LEFT_BUTTON) {
     if (selected) {
@@ -219,7 +235,8 @@ function mouseDown(e: MouseEvent) {
 }
 
 function mouseUp(e: MouseEvent) {
-  mousePos.set(e.x, e.y)
+  const rect = editor.value.getBoundingClientRect();
+  mousePos.set(e.x - rect.left, e.y - rect.top);
   mouseWorld.set(unproject(mousePos))
   // if (selected) {
   //   emitUpdateEvent(selected, ['x', 'y'])
@@ -229,7 +246,8 @@ function mouseUp(e: MouseEvent) {
 }
 
 function mouseMove(e: MouseEvent) {
-  mousePos.set(e.x, e.y)
+  const rect = editor.value.getBoundingClientRect();
+  mousePos.set(e.x - rect.left, e.y - rect.top);
   mouseWorld.set(unproject(mousePos))
   if (mouseState === "empty") { // Pan camera
     origin.set(panStart.add(mousePos.minus(mouseStart).div(scale)))
@@ -249,7 +267,8 @@ function keydown(e: KeyboardEvent) {
 }
 
 function scrolled(e: WheelEvent) {
-  const mouse = new Vector({x: e.x, y: e.y})
+  const rect = editor.value.getBoundingClientRect();
+  const mouse = new Vector({x: e.x - rect.left, y: e.y - rect.top})
   const a = mouse.divide(scale)
   scale *= Math.pow(0.9, e.deltaY / 300)
   const b = mouse.divide(scale)
@@ -287,7 +306,8 @@ function deleteNode(node: ERObject) {
 // }
 
 function dropped(e: DragEvent) {
-  const pos = unproject(new Vector({x: e.x, y: e.y}))
+  const rect = editor.value.getBoundingClientRect();
+  const pos = unproject(new Vector({x: e.x - rect.left, y: e.y - rect.top}))
   const Type = getObjectType(e.dataTransfer?.getData('type') as ObjectType)
   if (!Type) return
   const obj = new Type({
@@ -308,10 +328,6 @@ function unproject(vector: Vector) {
 
 <style scoped>
 #editor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  z-index: 0;
 }
 </style>

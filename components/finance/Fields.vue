@@ -1,27 +1,21 @@
 <template>
-  <v-card>
-    <v-card-title v-text="name"></v-card-title>
-    <v-card-text>
-      <v-radio-group v-model="selectedRow" density="compact">
-        <v-row v-for="(field, index) in fields" :key="index" class="flex items-center">
-          <v-col cols="12">
-            <div class="flex items-center">
-              <v-radio v-model="selectedRow" :value="field.key" class="mr-2 flex-shrink-0"></v-radio>
-              <math-field variant='underlined'
-                          v-model="values[field.key]"
-                          :label="field.label"
-                          :readonly="selectedRow === field.key"
-                          :prefix="field.key+'='+field.prefix"
-                          :suffix="field.suffix"
-                          class="w-full"
-              />
-            </div>
-          </v-col>
-        </v-row>
-      </v-radio-group>
-      <p v-if="calculationError.length>0" v-text="calculationError.join('\n')"></p>
-    </v-card-text>
-  </v-card>
+  <el-card>
+    <template #header>{{ name }}</template>
+    <el-radio-group v-model="selectedRow" class="flex flex-col space-y-2 w-full">
+      <el-radio
+          :disabled="field.computed"
+          class="mr-0! w-full"
+          v-for="(field, index) in fields" :key="index" v-model="selectedRow" :value="field.key">
+        <math-field
+            v-model="values[field.key]"
+            :readonly="selectedRow === field.key"
+            :prefix="field.key+'='+field.prefix"
+            :suffix="field.suffix">
+        </math-field>
+      </el-radio>
+    </el-radio-group>
+    <p v-if="calculationError.length>0" v-text="calculationError.join('\n')"></p>
+  </el-card>
 </template>
 <script setup lang="ts">
 import {reactive, ref} from "vue";
@@ -75,6 +69,8 @@ watch(values, function () {
 });
 </script>
 
-<style scoped lang="css">
-
+<style lang="css">
+.el-radio__label {
+  width: 100% !important;
+}
 </style>

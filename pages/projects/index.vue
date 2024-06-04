@@ -5,9 +5,7 @@ useHead({
 </script>
 
 <template>
-  <v-container>
-    <h1>Projects</h1>
-  </v-container>
+  <h1>Projects</h1>
 </template>
 
 <style scoped lang="css">

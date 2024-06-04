@@ -1,27 +1,18 @@
 <template>
-  <v-container>
-    <v-timeline align="center" dense side="end">
-      <v-timeline-item
+  <div>
+    <h4>Change Log</h4>
+    <el-timeline>
+      <el-timeline-item
           v-for="commit in commits"
           :key="commit.sha"
-          :icon="commit.commit.author.name[0].toUpperCase()"
-          :fill-icon="true"
-          :hide-icon="false"
-          icon-size="16"
-      >
-        <template #opposite>
-          <p>{{ new Date(commit.commit.author.date).toLocaleString() }}</p>
-        </template>
-        <p class="font-bold">
-          <a class="text-red-500 font-mono" v-text="commit.sha.slice(0, 7)"></a>
-          {{ commit.commit.message }}
-        </p>
-        <span>
-                      by {{ commit.commit.author.name }}
-                    </span>
-      </v-timeline-item>
-    </v-timeline>
-  </v-container>
+          :timestamp="new Date(commit.commit.author.date).toLocaleString()">
+        <a class="text-red-500 font-mono" v-text="commit.sha.slice(0, 7)"></a>
+        {{ commit.commit.message }}
+        <br>
+        by {{ commit.commit.author.name }}
+      </el-timeline-item>
+    </el-timeline>
+  </div>
 </template>
 <script setup lang="ts">
 import type {Ref} from "@vue/reactivity";
