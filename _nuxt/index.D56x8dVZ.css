@@ -1,1 +1,0 @@
-@charset "UTF-8";blockquote{display:inline;overflow:visible;position:relative}blockquote:after,blockquote:before{color:#ffa50080;display:inline-block;font-size:4em;position:absolute;top:.2em;vertical-align:bottom}blockquote:before{content:"「";left:0;top:0;transform:translate(-100%,-25%)}blockquote:after{bottom:0;content:"」";right:0;transform:translate(80%,-50%)}
