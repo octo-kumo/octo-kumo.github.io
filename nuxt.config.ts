@@ -19,6 +19,11 @@ export default defineNuxtConfig({
             link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
         }
     },
+    vue: {
+        compilerOptions: {
+            isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect"].includes(tag),
+        },
+    },
     routeRules: {
         "/c/**": {prerender: true},
     },
@@ -72,7 +77,7 @@ export default defineNuxtConfig({
         },
         markdown: {
             remarkPlugins: ['remark-math'],
-            rehypePlugins: ['rehype-katex']
+            rehypePlugins: ['rehype-mathjax']
         },
         highlight: {
             langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp'],

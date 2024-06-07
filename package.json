@@ -9,7 +9,8 @@
         "postinstall": "nuxi prepare",
         "update": "pnpm update --latest",
         "deploy": "pnpm run build && firebase deploy --only functions:server,hosting",
-        "start": "node .output/server/index.mjs"
+        "start": "node .output/server/index.mjs",
+        "generate-pwa-assets": "pwa-assets-generator"
     },
     "devDependencies": {
         "@element-plus/nuxt": "^1.0.9",
@@ -24,6 +25,7 @@
         "@types/dat.gui": "^0.7.13",
         "@types/three": "^0.159.0",
         "@unocss/nuxt": "^0.60.4",
+        "@vite-pwa/assets-generator": "^0.2.4",
         "@vite-pwa/nuxt": "^0.3.6",
         "@vueuse/nuxt": "^10.10.0",
         "consola": "^3.2.3",
@@ -48,7 +50,7 @@
         "jszip": "^3.10.1",
         "mathjs": "^12.4.3",
         "pngjs": "^7.0.0",
-        "rehype-katex": "^7.0.0",
+        "rehype-mathjax": "^6.0.0",
         "remark-math": "^6.0.0",
         "three": "^0.159.0",
         "vue-use-active-scroll": "^1.1.1",
