@@ -1,18 +1,22 @@
 <template>
   <el-card>
-    <template #header>{{ name }}</template>
+    <template #header>
+      <el-text>{{ title }}</el-text>
+    </template>
     <el-radio-group v-model="selectedRow" class="flex flex-col space-y-2 w-full">
-      <el-radio
-          :disabled="field.computed"
-          class="mr-0! w-full"
-          v-for="(field, index) in fields" :key="index" v-model="selectedRow" :value="field.key">
+      <div class="flex flex-row w-full" v-for="(field, index) in fields" :key="index">
+        <el-radio
+            :disabled="field.computed"
+            class="mr-0!"
+            v-model="selectedRow" :value="field.key">
+        </el-radio>
         <math-field
             v-model="values[field.key]"
             :readonly="selectedRow === field.key"
             :prefix="field.key+'='+field.prefix"
             :suffix="field.suffix">
         </math-field>
-      </el-radio>
+      </div>
     </el-radio-group>
     <p v-if="calculationError.length>0" v-text="calculationError.join('\n')"></p>
   </el-card>
@@ -35,18 +39,19 @@ export type FieldCalcMap = {
 };
 
 export interface Props {
-  name: string,
+  title: string,
   fields: EditorField[],
   calc: FieldCalcMap
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  title: "Calculator",
   fields: () => [] as EditorField[],
 })
 const calculationError: string[] = reactive([]);
 
 const values = reactive(Object.fromEntries(props.fields.map(field => [field.key, 0])));
-const selectedRow: Ref<typeof props.fields[number]['key']> = ref(props.fields[props.fields.length - 1].key);
+const selectedRow: Ref<typeof props.fields[number]['key']> = ref(props.fields.findLast(e => !e.computed).key);
 watch(values, function () {
   calculationError.splice(0);
   console.log("calculating", selectedRow.value);
@@ -70,7 +75,4 @@ watch(values, function () {
 </script>
 
 <style lang="css">
-.el-radio__label {
-  width: 100% !important;
-}
 </style>

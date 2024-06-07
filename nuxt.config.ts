@@ -19,7 +19,9 @@ export default defineNuxtConfig({
             link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
         }
     },
-
+    routeRules: {
+        "/c/**": {prerender: true},
+    },
     css: ['~/assets/scss/index.scss'],
     nitro: {
         preset: process.env.NITRO_TARGET ?? undefined,
@@ -28,7 +30,7 @@ export default defineNuxtConfig({
             nodeVersion: '20'
         },
         prerender: {
-            routes: ['/sitemap.xml']
+            routes: ['/sitemap.xml', '/manifest.webmanifest']
         }
     },
     devtools: {enabled: false},

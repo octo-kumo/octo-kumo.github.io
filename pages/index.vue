@@ -9,7 +9,7 @@
                shadow="never">
         <template #header v-if="item.meta.image">
           <el-image :src="item.meta.image as string"
-                    class="w-full h-48"
+                    class="w-full h-48" lazy
                     fit="cover"></el-image>
         </template>
         <el-space direction="vertical" alignment="normal">

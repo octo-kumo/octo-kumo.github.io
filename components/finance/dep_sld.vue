@@ -1,5 +1,5 @@
 <template>
-  <FinanceFields :calc="calc" :fields="fields" name="Straight-Line Depreciation (SLD)"/>
+  <FinanceFields :calc="calc" :fields="fields" title="Straight-Line Depreciation (SLD)"/>
 </template>
 
 <script setup lang="ts">

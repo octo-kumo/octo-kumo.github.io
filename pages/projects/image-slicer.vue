@@ -210,7 +210,7 @@ async function crop_index(index: number) {
           <el-image
               :src="urls[i]"
               style="height: 200px;width: 100%;"
-              fit="cover"
+              fit="cover" lazy
           ></el-image>
           <template #header>
             {{ f.name }}

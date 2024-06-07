@@ -1,5 +1,5 @@
 <template>
-  <FinanceFields :calc="calc" :fields="fields" name="Sum-of-the-Years'-Digits Depreciation (SYDD)"/>
+  <FinanceFields :calc="calc" :fields="fields" title="Sum-of-the-Years'-Digits Depreciation (SYDD)"/>
 </template>
 
 <script setup lang="ts">

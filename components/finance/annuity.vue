@@ -1,5 +1,5 @@
 <template>
-  <FinanceFields :calc="calc" :fields="fields" name="Annuity"/>
+  <FinanceFields :calc="calc" :fields="fields" title="Annuity"/>
 </template>
 
 <script setup lang="ts">

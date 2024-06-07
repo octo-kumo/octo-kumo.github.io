@@ -1,5 +1,5 @@
 <template>
-  <FinanceFields :calc="calc" :fields="fields" name="Time Value"/>
+  <FinanceFields :calc="calc" :fields="fields" title="Time Value"/>
 </template>
 
 <script setup lang="ts">

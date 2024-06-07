@@ -1,5 +1,5 @@
 <template>
-  <FinanceFields :calc="calc" :fields="fields" name="Declining-Balance Depreciation (DBD)"/>
+  <FinanceFields :calc="calc" :fields="fields" title="Declining-Balance Depreciation (DBD)"/>
 </template>
 
 <script setup lang="ts">

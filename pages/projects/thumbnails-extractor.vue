@@ -85,7 +85,7 @@ const thumbnails = computedAsync(async (onCancel) => {
   </el-card>
   <el-space wrap>
     <el-card v-for="(url, key) in thumbnails" :key="key">
-      <el-image :src="url"></el-image>
+      <el-image :src="url" lazy></el-image>
     </el-card>
   </el-space>
 </template>

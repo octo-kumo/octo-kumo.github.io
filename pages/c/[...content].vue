@@ -16,7 +16,6 @@ function breadcrumbs(path: string) {
     });
     return fullPath;
   }, '');
-  console.log(breadcrumbs)
   return breadcrumbs;
 }
 
@@ -54,13 +53,21 @@ onMounted(() => {
       </article>
     </template>
     <template #not-found>
-      <ContentList :path="$route.path.substring(2)" v-slot="{ list }">
-        <el-card v-for="article in list" shadow="never" class="mb-2">
-          <h2>{{ article.title }}</h2>
-          <p>{{ article.description }}</p>
-          <nuxt-link :to="'/c'+article._path">{{ article._path }}</nuxt-link>
-        </el-card>
+      <ContentList :path="$route.path.substring(2)">
+        <template v-slot="{ list }">
+          <el-card v-for="article in list" shadow="never" class="mb-2">
+            <h2>{{ article.title }}</h2>
+            <p>{{ article.description }}</p>
+            <nuxt-link :to="'/c'+article._path">{{ article._path }}</nuxt-link>
+          </el-card>
+        </template>
+        <template #not-found>
+          <el-empty description="Not found"/>
+        </template>
       </ContentList>
+    </template>
+    <template #empty>
+      <el-empty description="Empty file"/>
     </template>
   </ContentDoc>
   <el-backtop :right="50" :bottom="50"/>

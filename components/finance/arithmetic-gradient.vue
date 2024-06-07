@@ -1,5 +1,5 @@
 <template>
-  <FinanceFields :calc="calc" :fields="fields" name="Arithmetic Gradient"/>
+  <FinanceFields :calc="calc" :fields="fields" title="Arithmetic Gradient"/>
 </template>
 
 <script setup lang="ts">
