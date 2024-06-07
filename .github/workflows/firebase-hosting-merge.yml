@@ -9,6 +9,9 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    env:
+      NITRO_TARGET: firebase
+      GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
     steps:
       - uses: pnpm/action-setup@v2
         with:
@@ -18,9 +21,9 @@ jobs:
         with:
           version: latest
       - run: pnpm install
-      - run: pnpm run build --preset firebase
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - run: pnpm run build
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
         with:
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
-          projectId: octo-kumo
-          channelId: live
+          args: deploy --only functions:server,hosting

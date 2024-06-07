@@ -22,6 +22,7 @@ export default defineNuxtConfig({
 
     css: ['~/assets/scss/index.scss'],
     nitro: {
+        preset: process.env.NITRO_TARGET ?? undefined,
         firebase: {
             gen: 2,
             nodeVersion: '20'
