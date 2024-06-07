@@ -2,17 +2,18 @@
 
 // import {transformAssetUrls} from "vite-plugin-vuetify";
 
+import {resolve} from "node:url";
+
 export default defineNuxtConfig({
     app: {
         baseURL: process.env.BASE_URL || '/',
         head: {
-            title: 'Element Plus + Nuxt 3',
+            title: '云',
             meta: [
                 {name: 'viewport', content: 'width=device-width, initial-scale=1'},
                 {
-                    hid: 'description',
                     name: 'description',
-                    content: 'ElementPlus + Nuxt3',
+                    content: 'Personal website of a certain cloud',
                 },
             ],
             link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
@@ -24,6 +25,9 @@ export default defineNuxtConfig({
         firebase: {
             gen: 2,
             nodeVersion: '20'
+        },
+        prerender: {
+            routes: ['/sitemap.xml']
         }
     },
     devtools: {enabled: false},
@@ -39,16 +43,45 @@ export default defineNuxtConfig({
         '@pinia-plugin-persistedstate/nuxt',
         '@element-plus/nuxt',
         '@nuxtjs/color-mode',
-        '@vite-pwa/nuxt'
+        '@vite-pwa/nuxt',
+        "@nuxtjs/sitemap",
+        "@nuxt/content",
+        "@nuxtjs/robots",
+        "@nuxt/image"
     ],
-    pwa: {
-        registerType: 'autoUpdate',
-        workbox: {
-            clientsClaim: true,
-            skipWaiting: true
+    pwa: {},
+
+    content: {
+        sources: {
+            content: {
+                driver: 'fs',
+                prefix: '/c',
+                base: resolve(__dirname, 'content')
+            },
+            writeups: {
+                driver: 'github',
+                prefix: '/ctf',
+                repo: 'octo-kumo/ctf-writeups',
+                branch: "master",
+                dir: '/'
+            }
+        },
+        markdown: {
+            remarkPlugins: ['remark-math'],
+            rehypePlugins: ['rehype-katex']
+        },
+        highlight: {
+            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp'],
+            theme: {
+                // Default theme (same as single string)
+                default: 'github-light',
+                // Theme used if `html.dark`
+                dark: 'github-dark',
+                // Theme used if `html.sepia`
+                sepia: 'monokai'
+            }
         }
     },
-
     // vueuse
     vueuse: {
         ssrHandlers: true,
@@ -80,4 +113,9 @@ export default defineNuxtConfig({
         importStyle: 'scss',
         themes: ['dark'],
     },
+    runtimeConfig: {},
+
+    site: {
+        url: 'https://octo-kumo.web.app',
+    }
 })

@@ -16,3 +16,15 @@ a {
   font-weight: 400;
   color: var(--el-color-primary);
 }
+
+html {
+  scroll-behavior: smooth; /* or 'auto' if you prefer instant scrolling */
+}
+
+blockquote {
+  padding: 8px 16px;
+  background-color: rgba(var(--el-color-primary), 0.1);
+  border-radius: 4px;
+  border-left: 5px solid var(--el-color-primary);
+  margin: 20px 0;
+}

@@ -1,18 +1,8 @@
 <template>
-  <el-page-header :icon="null">
-    <!--    <template #breadcrumb>-->
-    <!--      <el-breadcrumb separator="/">-->
-    <!--        <el-breadcrumb-item :to="{ path: './page-header.html' }">-->
-    <!--          homepage-->
-    <!--        </el-breadcrumb-item>-->
-    <!--        <el-breadcrumb-item><a href="./page-header.html">route 1</a></el-breadcrumb-item>-->
-    <!--        <el-breadcrumb-item>route 2</el-breadcrumb-item>-->
-    <!--      </el-breadcrumb>-->
-    <!--    </template>-->
-    <!--    <v-app-bar-nav-icon @click="toggleDrawer"/>-->
+  <el-page-header :icon="''" class="header">
     <template #title>云</template>
-    <template #icon v-if="!hideMenu">
-      <el-icon>
+    <template #icon>
+      <el-icon class="hidden! md:flex!">
         <el-icon-menu></el-icon-menu>
       </el-icon>
     </template>
@@ -32,7 +22,6 @@
 <script setup lang="ts">
 import {guessPathName} from "@/mixins/display";
 
-defineProps({hideMenu: {type: Boolean, required: false, default: false}});
 const route = useRoute();
 const routeName = ref("");
 watch(() => route.name, newId => routeName.value = guessPathName(newId!), {immediate: true});
@@ -42,8 +31,11 @@ const colorMode = computed({
   get: () => color.value === 'dark',
   set: () => (color.preference = (color.value === 'dark' ? 'light' : 'dark')),
 });
-
-function onBack() {
-
-}
 </script>
+<style lang="scss" scoped>
+.header {
+  background-image: radial-gradient(transparent 1px, var(--el-bg-color-overlay) 1px);
+  background-size: 4px 4px;
+  backdrop-filter: saturate(50%) blur(4px);
+}
+</style>

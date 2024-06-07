@@ -19,9 +19,9 @@ import Perpetuity from "~/components/finance/perpetuity.vue";
 import ArithmeticGradient from "~/components/finance/arithmetic-gradient.vue";
 
 definePageMeta({
-  layout: 'default',
   title: 'Finance',
-  description: 'Collection of calculators for finance stuff'
+  description: 'Collection of calculators for finance stuff',
+  image: '/img/finance.png'
 });
 const components = [
   {element: TimeValue, name: 'Time Value'},

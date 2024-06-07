@@ -27,7 +27,6 @@ definePageMeta({
 });
 const editor = ref(null as HTMLCanvasElement | null);
 const nodes: ERObject[] = reactive([]);
-const isDark = useDark();
 const colors = {
   dark: {
     foreground: ""

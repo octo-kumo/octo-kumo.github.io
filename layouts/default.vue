@@ -1,31 +1,38 @@
 <template>
-  <el-container class="h-screen">
-    <el-aside width="200">
-      <el-scrollbar>
-        <kumo-drawer :collapse="!drawerIsOpen" v-if="!smallerThanLg"
-                     :default-openeds="['projects']"/>
-      </el-scrollbar>
-    </el-aside>
-    <el-container>
-      <el-header>
-        <kumo-header @back="drawerIsOpen=!drawerIsOpen" :hide-menu="smallerThanLg">
-          <kumo-drawer v-if="smallerThanLg" mode="horizontal"/>
-        </kumo-header>
-      </el-header>
-      <el-main class="p-0!">
-        <el-scrollbar>
-          <div class="px-3">
-            <slot/>
-          </div>
-        </el-scrollbar>
-      </el-main>
-    </el-container>
-  </el-container>
+  <el-scrollbar class="fixed! top-0 left-0 z-9 h-full drawer">
+    <kumo-drawer :collapse="!drawerIsOpen" class="hidden md:block menu"
+                 :default-openeds="['projects']"/>
+  </el-scrollbar>
+  <kumo-header @back="drawerIsOpen=!drawerIsOpen" class="fixed top-0 left-0 z-9 w-full justify-center flex"
+               style="height:var(--el-menu-horizontal-height)">
+    <kumo-drawer mode="horizontal" class="md:hidden!"/>
+  </kumo-header>
+  <el-main class="p-0! main <md:ml-0!" :class="{'open':drawerIsOpen}">
+    <div class="px-3">
+      <slot/>
+    </div>
+  </el-main>
 </template>
 <script setup lang="ts">
-import {breakpointsTailwind} from "@vueuse/core";
-
-const drawerIsOpen = ref<boolean>(false);
-const breakpoints = useBreakpoints(breakpointsTailwind);
-const smallerThanLg = breakpoints.smaller('lg');
+const drawerIsOpen = ref<boolean>(true);
 </script>
+<style lang="scss" scoped>
+.drawer {
+  margin-top: var(--el-menu-horizontal-height);
+}
+
+.main {
+  transition: var(--el-transition-all);
+  margin-top: var(--el-menu-horizontal-height);
+  min-height: calc(100vh - var(--el-menu-horizontal-height));
+  margin-left: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2);
+
+  &.open {
+    margin-left: 200px;
+  }
+}
+
+.menu:not(.el-menu--collapse) {
+  width: 200px;
+}
+</style>
