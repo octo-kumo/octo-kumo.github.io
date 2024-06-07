@@ -48,7 +48,8 @@ export default defineNuxtConfig({
         "@nuxtjs/sitemap",
         "@nuxt/content",
         "@nuxtjs/robots",
-        "@nuxt/image"
+        "@nuxt/image",
+        "nuxt-security"
     ],
     pwa: {},
 
