@@ -4,6 +4,8 @@ jobs:
   build_vue:
     runs-on: ubuntu-latest
     name: Build Vue
+    env:
+      NITRO_TARGET: static
     steps:
       - uses: actions/checkout@v3
         with:
