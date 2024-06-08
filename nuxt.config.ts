@@ -56,7 +56,7 @@ export default defineNuxtConfig({
         "@nuxt/content",
         "@nuxtjs/robots",
         "@nuxt/image",
-        "nuxt-security"
+        // "nuxt-security"
     ],
     pwa: {},
 
