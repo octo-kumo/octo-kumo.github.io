@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NITRO_TARGET: firebase
-      GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -25,7 +24,7 @@ jobs:
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm run build
 
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
+      - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          args: deploy --only functions:server,hosting
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: octo-kumo

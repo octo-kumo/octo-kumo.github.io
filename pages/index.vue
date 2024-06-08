@@ -1,5 +1,11 @@
 <template>
   <el-row :gutter="20">
+    <el-col :cols="24">
+      <h1>Hi!</h1>
+      <p>Welcome to my person website, it is still in the works, expect perhaps unexpected errors, or the site crashing
+        entirely.</p>
+      <p class="text-right">——云</p>
+    </el-col>
     <el-col v-for="item in nav.filter(r=>r.path.startsWith('/projects/')).sort((a,b)=>!a.meta.image-!b.meta.image)"
             :key="item.name" :cols="24"
             :lg="6"
