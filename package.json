@@ -37,7 +37,6 @@
     "dependencies": {
         "@element-plus/icons-vue": "^2.3.1",
         "@mdi/font": "^7.4.47",
-        "@popperjs/core": "^2.11.8",
         "@tensorflow-models/qna": "^1.0.2",
         "@tensorflow/tfjs-backend-cpu": "^4.20.0",
         "@tensorflow/tfjs-backend-webgl": "^4.20.0",
