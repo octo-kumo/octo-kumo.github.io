@@ -6,7 +6,7 @@
         entirely.</p>
       <p class="text-right">——云</p>
     </el-col>
-    <el-col v-for="item in nav.filter(r=>r.path.startsWith('/projects/')).sort((a,b)=>!a.meta.image-!b.meta.image)"
+    <el-col v-for="item in nav.filter(r=>r.path.startsWith('/projects/')).sort((a,b)=>(!a.meta.image)-(!b.meta.image))"
             :key="item.name" :cols="24"
             :lg="6"
             :md="8"

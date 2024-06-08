@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     },
     css: ['~/assets/scss/index.scss'],
     nitro: {
-        preset: process.env.NITRO_TARGET ?? undefined,
+        preset: process.env.NITRO_TARGET ?? "static",
         firebase: {
             gen: 2,
             nodeVersion: '20'
@@ -58,6 +58,7 @@ export default defineNuxtConfig({
     pwa: {},
 
     content: {
+        documentDriven: true,
         sources: {
             content: {
                 driver: 'fs',
