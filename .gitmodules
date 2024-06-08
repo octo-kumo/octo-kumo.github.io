@@ -1,3 +1,6 @@
 [submodule "games/air-defence"]
 	path = games/air-defence
 	url = https://github.com/octo-kumo/air-defence.git
+[submodule "content/ctf"]
+	path = content/ctf
+	url = https://github.com/octo-kumo/ctf-writeups.git
