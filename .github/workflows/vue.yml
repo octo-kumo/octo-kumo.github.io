@@ -14,7 +14,7 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: latest
-      - run: pnpm install
+      - run: pnpm install --no-frozen-lockfile
       - run: pnpm generate
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
