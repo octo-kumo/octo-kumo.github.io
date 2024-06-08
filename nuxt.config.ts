@@ -24,9 +24,6 @@ export default defineNuxtConfig({
             isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect"].includes(tag),
         },
     },
-    routeRules: {
-        "/c/**": {prerender: true},
-    },
     css: ['~/assets/scss/index.scss'],
     nitro: {
         preset: process.env.NITRO_TARGET ?? undefined,
