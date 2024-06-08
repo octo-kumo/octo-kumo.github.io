@@ -79,6 +79,9 @@ export default defineNuxtConfig({
                 // Theme used if `html.sepia`
                 sepia: 'monokai'
             }
+        },
+        experimental: {
+            clientDB: true
         }
     },
     // vueuse
