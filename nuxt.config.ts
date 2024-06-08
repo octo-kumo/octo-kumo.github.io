@@ -66,13 +66,6 @@ export default defineNuxtConfig({
                 driver: 'fs',
                 prefix: '/c',
                 base: resolve(__dirname, 'content')
-            },
-            writeups: {
-                driver: 'github',
-                prefix: '/ctf',
-                repo: 'octo-kumo/ctf-writeups',
-                branch: "master",
-                dir: '/'
             }
         },
         markdown: {
