@@ -16,20 +16,25 @@
         </el-icon>
         <span>Projects</span>
       </template>
-      <el-menu-item v-for="n in nav.filter(r=>r.path.startsWith('/projects/'))" :route="n"
-                    v-text="guessPathName(n.name!)" :index="n.name"/>
+      <el-menu-item v-for="n in nav.filter(r=>r.path.startsWith('/projects/'))" :route="n" :index="String(n.name)">
+        <NuxtLink :to="n" class="no-underline text-inherit">{{ guessPathName(n.name!) }}</NuxtLink>
+      </el-menu-item>
     </el-sub-menu>
     <el-menu-item index="c" route="/c">
       <el-icon>
         <el-icon-collection/>
       </el-icon>
-      <template #title>Content</template>
+      <template #title>
+        <NuxtLink to="/c" class="no-underline text-inherit">Content</NuxtLink>
+      </template>
     </el-menu-item>
     <el-menu-item index="about" route="/about">
       <el-icon>
         <el-icon-info-filled/>
       </el-icon>
-      <template #title>About</template>
+      <template #title>
+        <NuxtLink to="/about" class="no-underline text-inherit">About</NuxtLink>
+      </template>
     </el-menu-item>
   </el-menu>
 </template>
