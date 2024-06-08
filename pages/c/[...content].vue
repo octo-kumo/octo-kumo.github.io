@@ -39,7 +39,7 @@ onMounted(() => {
   <ContentDoc :path="$route.path.substring(2)">
     <template v-slot="{ doc }">
       <article class="flex flex-row">
-        <ContentRenderer :value="doc" class="content lg:max-w-prose lg:mx-a"/>
+        <ContentRenderer :value="doc" class="content max-w-full lg:max-w-prose lg:mx-a"/>
         <div class="pt-20">
           <el-affix ref="affixRef" :offset="60" v-if="(doc?.body?.toc?.links?.length??0)>0" class="<xl:hidden!">
             <el-anchor :offset="60" style="width: 250px">
@@ -86,6 +86,25 @@ onMounted(() => {
 
   .katex-html {
     display: none;
+  }
+
+
+  blockquote {
+    font-style: italic;
+    padding: 4px 16px;
+    background-color: #aaa2;
+    border-radius: 4px;
+    border-left: 5px solid var(--el-color-primary);
+    margin: 20px 0;
+  }
+
+  pre {
+    scrollbar-width: thin;
+    overflow: auto;
+    padding: 5px;
+    border: 1px solid var(--el-border-color);
+    //box-shadow: var(--el-box-shadow-lighter);
+    border-radius: var(--el-border-radius-base);
   }
 }
 </style>

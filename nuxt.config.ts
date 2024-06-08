@@ -35,7 +35,7 @@ export default defineNuxtConfig({
             nodeVersion: '20'
         },
         prerender: {
-            routes: ['/sitemap.xml', '/manifest.webmanifest']
+            routes: ['/sitemap.xml']
         }
     },
     devtools: {enabled: false},
@@ -122,7 +122,6 @@ export default defineNuxtConfig({
         importStyle: 'scss',
         themes: ['dark'],
     },
-    runtimeConfig: {},
 
     site: {
         url: 'https://octo-kumo.web.app',
