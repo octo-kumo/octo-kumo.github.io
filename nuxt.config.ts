@@ -58,7 +58,6 @@ export default defineNuxtConfig({
     pwa: {},
 
     content: {
-        documentDriven: true,
         sources: {
             content: {
                 driver: 'fs',

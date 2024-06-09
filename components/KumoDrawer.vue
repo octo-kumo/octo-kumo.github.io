@@ -20,12 +20,12 @@
         <NuxtLink :to="n" class="no-underline text-inherit">{{ guessPathName(n.name!) }}</NuxtLink>
       </el-menu-item>
     </el-sub-menu>
-    <el-menu-item index="c" route="/c">
+    <el-menu-item index="c" route="/c/">
       <el-icon>
         <el-icon-collection/>
       </el-icon>
       <template #title>
-        <NuxtLink to="/c" class="no-underline text-inherit">Content</NuxtLink>
+        <NuxtLink to="/c/" class="no-underline text-inherit">Content</NuxtLink>
       </template>
     </el-menu-item>
     <el-menu-item index="about" route="/about">

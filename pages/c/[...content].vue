@@ -4,6 +4,7 @@ import VueUtterances from "vue-utterances";
 import TableOfContents from "~/components/TableOfContents.vue";
 
 const color = useColorMode();
+const path = useRoute().path.substring(2) || "/";
 
 function breadcrumbs(path: string) {
   const segments = path.split('/').filter(segment => segment !== '');
@@ -28,7 +29,6 @@ onActivated(() => {
 //   affixRef.value?.update();
 //   affixRef.value?.updateRoot();
 // });
-const path = useRoute().path.substring(2);
 const {data: doc} = await useAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
 const {data: docs} = await useAsyncData(`c/docs_${path}`, () => queryContent(path)
     .where({

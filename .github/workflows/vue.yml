@@ -5,11 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Vue
     env:
-      NITRO_TARGET: github_pages
+      NITRO_TARGET: static
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: 'true'
+      - name: Git Submodule Update
+        run: |
+          git pull --recurse-submodules
+          git submodule update --remote --recursive
       - uses: actions/setup-node@v3
         with:
           node-version: 20
