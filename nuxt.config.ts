@@ -53,10 +53,24 @@ export default defineNuxtConfig({
         "@nuxt/content",
         "@nuxtjs/robots",
         "@nuxt/image",
-        // "nuxt-security"
+        "nuxt-security",
+        "nuxt-booster"
     ],
     pwa: {},
-
+    security: {
+        nonce: true,
+        ssg: {
+            meta: true,
+            hashScripts: true,
+            hashStyles: false
+        },
+        headers: {
+            contentSecurityPolicy: {
+                'frame-src': false,
+                'frame-ancestors': false
+            }
+        },
+    },
     content: {
         sources: {
             content: {
@@ -70,7 +84,7 @@ export default defineNuxtConfig({
             rehypePlugins: ['rehype-mathjax']
         },
         highlight: {
-            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp'],
+            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh'],
             theme: {
                 // Default theme (same as single string)
                 default: 'github-light',
@@ -118,5 +132,5 @@ export default defineNuxtConfig({
 
     site: {
         url: 'https://octo-kumo.web.app',
-    }
+    },
 })

@@ -2,6 +2,8 @@
 //@ts-ignore
 import VueUtterances from "vue-utterances";
 import TableOfContents from "~/components/TableOfContents.vue";
+import type Node from "element-plus/es/components/tree/src/model/node";
+import type {TreeNodeData} from "element-plus/es/components/tree/src/tree.type";
 
 const color = useColorMode();
 const path = useRoute().path.substring(2) || "/";
@@ -39,8 +41,8 @@ const {data: docs} = await useAsyncData(`c/docs_${path}`, () => queryContent(pat
 const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent(path)))
 const defaultProps = {
   children: 'children',
-  label: 'title',
-}
+  label: (data: TreeNodeData, node: Node) => data.title || data._path,
+};
 </script>
 <template>
   <el-breadcrumb separator="/" class="m-2 text-center" v-if="path&&path!=='/'">
@@ -76,13 +78,15 @@ const defaultProps = {
     >
       <template #default="{ node, data }">
         <span class="flex justify-between flex-1" v-if="!(data.children&&data.children.length>0)">
-          <nuxt-link :to="'/c'+data._path">{{ node.label }}</nuxt-link>
+          <nuxt-link :to="'/c'+data._path">{{ node.label || data._path }}</nuxt-link>
           <span>{{ docs.find(d => d._path === data._path)?.description }}</span>
         </span>
       </template>
     </el-tree>
   </template>
-  <vue-utterances v-if="doc||docs" repo="octo-kumo/octo-kumo.github.io" issue-term="pathname"
+  <vue-utterances v-if="doc||docs"
+                  repo="octo-kumo/octo-kumo.github.io"
+                  issue-term="pathname"
                   label="utteranc"
                   :theme="color.value === 'dark'?'github-dark':'github-light'"/>
   <template v-else>
@@ -98,25 +102,6 @@ const defaultProps = {
 
   .katex-html {
     display: none;
-  }
-
-
-  blockquote {
-    font-style: italic;
-    padding: 4px 16px;
-    background-color: #aaa2;
-    border-radius: 4px;
-    border-left: 5px solid var(--el-color-primary);
-    margin: 20px 0;
-  }
-
-  pre {
-    scrollbar-width: thin;
-    overflow: auto;
-    padding: 5px;
-    border: 1px solid var(--el-border-color);
-    //box-shadow: var(--el-box-shadow-lighter);
-    border-radius: var(--el-border-radius-base);
   }
 }
 </style>

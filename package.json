@@ -29,8 +29,8 @@
         "@vite-pwa/nuxt": "latest",
         "@vueuse/nuxt": "latest",
         "consola": "latest",
-        "glob": "^10.4.1",
         "nuxt": "latest",
+        "nuxt-booster": "^3.0.16",
         "nuxt-security": "latest",
         "sass": "latest",
         "typescript": "latest"
@@ -38,6 +38,7 @@
     "dependencies": {
         "@element-plus/icons-vue": "latest",
         "@mdi/font": "latest",
+        "@popperjs/core": "latest",
         "@tensorflow-models/qna": "latest",
         "@tensorflow/tfjs-backend-cpu": "latest",
         "@tensorflow/tfjs-backend-webgl": "latest",

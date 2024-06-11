@@ -15,6 +15,17 @@
 </template>
 <script setup lang="ts">
 const drawerIsOpen = ref<boolean>(true);
+const {$pwa} = useNuxtApp()
+
+onMounted(() => {
+  if ($pwa?.offlineReady) {
+    ElMessage({
+      showClose: true,
+      message: 'App ready to work offline',
+    });
+    console.log("PWA Offline ready!")
+  }
+})
 </script>
 <style lang="scss" scoped>
 .drawer {
