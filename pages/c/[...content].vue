@@ -32,19 +32,17 @@ onActivated(() => {
 // });
 const {data: doc} = await useAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
 const {data: docs} = await useAsyncData(`c/docs_${path}`, () => queryContent(path)
-    .where({
-      _path: {$ne: path}
-    })
-    .only(['id', '_path', 'title', 'description', '_type', 'layout', '_file'])
+    .where({_path: {$ne: path}})
+    .only(['_path', 'title', 'description'])
     .find());
-const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation().then(r => r.map(removeSame)));
+const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent("/")).then(r => r.map(removeSame)));
 
 function removeSame(parent: NavItem) {
   if (parent.children) (parent.children = parent.children.filter(c => c._path !== parent._path)).forEach(c => removeSame(c));
   return parent;
 }
 
-useContentHead(doc);
+if (doc.value) useContentHead(doc);
 definePageMeta({
   title: 'Content',
   disableSEO: true

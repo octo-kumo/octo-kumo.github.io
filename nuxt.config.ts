@@ -127,6 +127,6 @@ export default defineNuxtConfig({
         themes: ['dark'],
     },
     site: {
-        url: process.env.SITE_URL
+        url: process.env.SITE_URL ?? "http://localhost:3000/"
     }
 })
