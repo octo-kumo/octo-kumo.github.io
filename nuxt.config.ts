@@ -51,26 +51,26 @@ export default defineNuxtConfig({
         '@vite-pwa/nuxt',
         "@nuxtjs/sitemap",
         "@nuxt/content",
-        "@nuxtjs/robots",
+        // "@nuxtjs/robots",
         "@nuxt/image",
         // "nuxt-security",
         "nuxt-booster"
     ],
     pwa: {},
-    security: {
-        nonce: true,
-        ssg: {
-            meta: true,
-            hashScripts: true,
-            hashStyles: false
-        },
-        headers: {
-            contentSecurityPolicy: {
-                'img-src': ['self', 'data:', 'https://*'],
-                'frame-src': ['self', 'https://www.youtube.com', 'https://utteranc.es'],
-            }
-        },
-    },
+    // security: {
+    //     nonce: true,
+    //     ssg: {
+    //         meta: true,
+    //         hashScripts: true,
+    //         hashStyles: false
+    //     },
+    //     headers: {
+    //         contentSecurityPolicy: {
+    //             'img-src': ['self', 'data:', 'https://*'],
+    //             'frame-src': ['self', 'https://www.youtube.com', 'https://utteranc.es'],
+    //         }
+    //     },
+    // },
     content: {
         sources: {
             content: {
