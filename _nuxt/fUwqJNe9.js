@@ -1,1 +1,0 @@
-import{_ as r}from"./BKqk__Nz.js";import{d as i,h as e,a}from"./DMxSX-ZD.js";import"./BC90625k.js";const f=t=>{const n=a(t);return i({inheritAttrs:!1,setup(p,{attrs:o}){return()=>e("div",[e(r,void 0,{default:()=>e(n,o)})])}})};export{f as createClientPage};
