@@ -53,7 +53,7 @@ export default defineNuxtConfig({
         "@nuxt/content",
         "@nuxtjs/robots",
         "@nuxt/image",
-        "nuxt-security",
+        // "nuxt-security",
         "nuxt-booster"
     ],
     pwa: {},
@@ -66,8 +66,8 @@ export default defineNuxtConfig({
         },
         headers: {
             contentSecurityPolicy: {
-                'frame-src': false,
-                'frame-ancestors': false
+                'img-src': ['self', 'data:', 'https://*'],
+                'frame-src': ['self', 'https://www.youtube.com', 'https://utteranc.es'],
             }
         },
     },
@@ -86,11 +86,8 @@ export default defineNuxtConfig({
         highlight: {
             langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh'],
             theme: {
-                // Default theme (same as single string)
                 default: 'github-light',
-                // Theme used if `html.dark`
                 dark: 'github-dark',
-                // Theme used if `html.sepia`
                 sepia: 'monokai'
             }
         },
