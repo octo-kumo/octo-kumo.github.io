@@ -31,7 +31,7 @@ onActivated(() => {
 //   affixRef.value?.updateRoot();
 // });
 const {data: doc} = await useAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
-const {data: docs} = await useAsyncData(`c/docs_${path}`, () => queryContent(path)
+const {data: docs} = await useAsyncData(`c/docs_${path}`, () => queryContent("/")
     .where({_path: {$ne: path}})
     .only(['_path', 'title', 'description'])
     .find());
@@ -42,7 +42,7 @@ function removeSame(parent: NavItem) {
   return parent;
 }
 
-if (doc.value) useContentHead(doc);
+useContentHead(doc!);
 definePageMeta({
   title: 'Content',
   disableSEO: true
