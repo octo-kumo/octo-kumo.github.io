@@ -125,9 +125,5 @@ export default defineNuxtConfig({
         icon: 'ElIcon',
         importStyle: 'scss',
         themes: ['dark'],
-    },
-
-    site: {
-        url: 'https://octo-kumo.web.app',
-    },
+    }
 })
