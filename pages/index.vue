@@ -32,15 +32,13 @@
       </el-card>
     </el-col>
     <el-col :cols="24">
-      <vue-utterances repo="octo-kumo/octo-kumo.github.io" issue-term="pathname"
+      <utterances repo="octo-kumo/octo-kumo.github.io" issue-term="pathname"
                       label="utteranc"
                       :theme="color.value === 'dark'?'github-dark':'github-light'"/>
     </el-col>
   </el-row>
 </template>
 <script setup lang="ts">
-//@ts-ignore
-import VueUtterances from "vue-utterances";
 import {guessPathName} from "~/mixins/display";
 
 const router = useRouter();

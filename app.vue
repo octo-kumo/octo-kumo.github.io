@@ -10,7 +10,7 @@ useHead({
   title: route.meta.title ?? route.name,
   meta: [{name: 'description', content: route.meta.description as string ?? ""}]
 });
-useSeoMeta({
+if (!route.meta.disableSEO) useSeoMeta({
   title: route.meta.title ?? route.name,
   ogTitle: String(route.meta.title ?? route.name ?? ""),
   description: route.meta.description as string ?? "",

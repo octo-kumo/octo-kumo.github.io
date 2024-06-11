@@ -55,7 +55,6 @@
         "remark-math": "latest",
         "three": "latest",
         "vue-use-active-scroll": "latest",
-        "vue-utterances": "latest",
         "vue3-chessboard": "latest"
     },
     "peerDependencies": {

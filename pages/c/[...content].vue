@@ -1,9 +1,8 @@
 <script setup lang="ts">
-//@ts-ignore
-import VueUtterances from "vue-utterances";
 import TableOfContents from "~/components/TableOfContents.vue";
 import type Node from "element-plus/es/components/tree/src/model/node";
 import type {TreeNodeData} from "element-plus/es/components/tree/src/tree.type";
+import type {NavItem} from "@nuxt/content/types";
 
 const color = useColorMode();
 const path = useRoute().path.substring(2) || "/";
@@ -38,7 +37,19 @@ const {data: docs} = await useAsyncData(`c/docs_${path}`, () => queryContent(pat
     })
     .only(['id', '_path', 'title', 'description', '_type', 'layout', '_file'])
     .find());
-const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent(path)))
+const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation().then(r => r.map(removeSame)));
+
+function removeSame(parent: NavItem) {
+  if (parent.children) (parent.children = parent.children.filter(c => c._path !== parent._path)).forEach(c => removeSame(c));
+  return parent;
+}
+
+useContentHead(doc);
+definePageMeta({
+  title: 'Content',
+  disableSEO: true
+});
+
 const defaultProps = {
   children: 'children',
   label: (data: TreeNodeData, node: Node) => data.title || data._path,
@@ -72,23 +83,24 @@ const defaultProps = {
         :current-node-key="path"
         node-key="_path"
         highlight-current
-        default-expand-all
+        auto-expand-parent
+        :default-expanded-keys="[path]"
         :data="navigation!"
         :props="defaultProps"
     >
       <template #default="{ node, data }">
-        <span class="flex justify-between flex-1" v-if="!(data.children&&data.children.length>0)">
+        <span class="flex justify-between flex-1">
           <nuxt-link :to="'/c'+data._path">{{ node.label || data._path }}</nuxt-link>
           <span>{{ docs.find(d => d._path === data._path)?.description }}</span>
         </span>
       </template>
     </el-tree>
   </template>
-  <vue-utterances v-if="doc||docs"
-                  repo="octo-kumo/octo-kumo.github.io"
-                  issue-term="pathname"
-                  label="utteranc"
-                  :theme="color.value === 'dark'?'github-dark':'github-light'"/>
+  <utterances v-if="doc||(docs&&docs.length>0)"
+              repo="octo-kumo/octo-kumo.github.io"
+              issue-term="pathname"
+              label="utteranc"
+              :theme="color.value === 'dark'?'github-dark':'github-light'"/>
   <template v-else>
     <el-empty description="Not found"/>
   </template>
@@ -96,6 +108,17 @@ const defaultProps = {
 </template>
 <style lang="scss">
 .content {
+  a {
+    text-decoration: none;
+  }
+
+  code:not(pre code) {
+    margin: .1em .3em;
+    padding: .2em;
+    border: 1px solid var(--el-border-color);
+    border-radius: var(--el-border-radius-base);
+  }
+
   h1, h2, h3, h4, h5, h6 {
     scroll-margin-top: 60px;
   }

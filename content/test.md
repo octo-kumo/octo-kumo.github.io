@@ -1,9 +1,3 @@
----
-navigation:
-title: 'Home'
-icon: '🏡'
----
-
 # Markdown: Syntax
 
 ----
