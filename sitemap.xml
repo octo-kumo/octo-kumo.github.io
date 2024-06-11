@@ -1,70 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/__sitemap__/style.xsl"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://octo-kumo.web.app/</loc>
+        <loc>https://octo-kumo.github.io/</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/about</loc>
+        <loc>https://octo-kumo.github.io/about</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c</loc>
+        <loc>https://octo-kumo.github.io/c</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/projects</loc>
+        <loc>https://octo-kumo.github.io/projects</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/ctf</loc>
+        <loc>https://octo-kumo.github.io/c/ctf</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/fancy</loc>
+        <loc>https://octo-kumo.github.io/c/test</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/test</loc>
+        <loc>https://octo-kumo.github.io/projects/air-defence</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/projects/air-defence</loc>
+        <loc>https://octo-kumo.github.io/projects/chess-ai</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/projects/chess-ai</loc>
+        <loc>https://octo-kumo.github.io/projects/er-editor</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/projects/er-editor</loc>
+        <loc>https://octo-kumo.github.io/projects/finance</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/projects/finance</loc>
+        <loc>https://octo-kumo.github.io/projects/image-slicer</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/projects/image-slicer</loc>
+        <loc>https://octo-kumo.github.io/projects/passage-reader</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/projects/passage-reader</loc>
+        <loc>https://octo-kumo.github.io/projects/simulated-universe</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/projects/simulated-universe</loc>
+        <loc>https://octo-kumo.github.io/projects/thumbnails-extractor</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/projects/thumbnails-extractor</loc>
+        <loc>https://octo-kumo.github.io/c/ctf/appventure-ctf-2021</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/ctf/appventure-ctf-2021</loc>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/ctf/appventure-ctf-2021/pwn/printwriter-1</loc>
+        <loc>https://octo-kumo.github.io/c/ctf/sql</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/ctf/appventure-ctf-2021/web/appventure-login-part-0</loc>
+        <loc>https://octo-kumo.github.io/c/ctf/appventure-ctf-2021/pwn</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/ctf/appventure-ctf-2021/web/appventure-login-part-1</loc>
+        <loc>https://octo-kumo.github.io/c/ctf/appventure-ctf-2021/web</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/ctf/appventure-ctf-2021/web/appventure-login-part-2</loc>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/ctf/appventure-ctf-2021/web/espace-0</loc>
+        <loc>https://octo-kumo.github.io/c/ctf/appventure-ctf-2021/pwn/printwriter-1</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.web.app/c/ctf/appventure-ctf-2021/web/super-secure-trustable-implementation</loc>
+        <loc>https://octo-kumo.github.io/c/ctf/appventure-ctf-2021/web/appventure-login-part-0</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/appventure-ctf-2021/web/appventure-login-part-1</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/appventure-ctf-2021/web/appventure-login-part-2</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/appventure-ctf-2021/web/espace-0</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/appventure-ctf-2021/web/super-secure-trustable-implementation</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web/cookie-clicker</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web/duck-finder</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web/fogblaze</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web/nosql</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web/phone-number</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web/sea-scavenger</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web/tic-tac-toe</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web/transcriptify</loc>
+    </url>
+    <url>
+        <loc>https://octo-kumo.github.io/c/ctf/bcactf-2024/web/user-1</loc>
     </url>
 </urlset>
-<!-- XML Sitemap generated by @nuxtjs/sitemap v5.2.0 at 2024-06-09T18:50:09.577Z -->
+<!-- XML Sitemap generated by @nuxtjs/sitemap v5.2.0 at 2024-06-11T03:10:07.845Z -->
