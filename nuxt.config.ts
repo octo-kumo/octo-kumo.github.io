@@ -125,5 +125,8 @@ export default defineNuxtConfig({
         icon: 'ElIcon',
         importStyle: 'scss',
         themes: ['dark'],
+    },
+    site: {
+        url: process.env.SITE_URL
     }
 })

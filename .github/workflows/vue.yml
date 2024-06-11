@@ -6,6 +6,7 @@ jobs:
     name: Build Vue
     env:
       NITRO_TARGET: static
+      SITE_URL: https://octo-kumo.github.io
     steps:
       - uses: actions/checkout@v3
         with:
