@@ -31,8 +31,8 @@ defineProps({
 })
 </script>
 
-<style lang="scss" scoped>
-pre {
+<style lang="scss">
+pre.shiki {
   position: relative;
   scrollbar-width: thin;
   overflow: auto;
@@ -40,23 +40,39 @@ pre {
   border: 1px solid var(--el-border-color);
   //box-shadow: var(--el-box-shadow-lighter);
   border-radius: var(--el-border-radius-base);
+
+  & code {
+    counter-reset: step;
+    counter-increment: step 0;
+  }
+
+  & code .line {
+    display: block;
+
+    &::before {
+      content: counter(step);
+      counter-increment: step;
+      width: 1rem;
+      margin-right: 0.8rem;
+      display: inline-block;
+      text-align: right;
+      color: rgba(115, 138, 148, .4)
+    }
+  }
+
+  &[data-lang]::before {
+    font-family: monospace;
+    color: var(--el-text-color-secondary);
+    font-size: var(--el-font-size-small);
+    font-weight: bold;
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+  }
+
+  &[data-lang]::before {
+    content: attr(data-lang);
+  }
 }
 
-pre code .line {
-  display: block;
-}
-
-pre[data-lang]::before {
-  font-family: monospace;
-  color: var(--el-text-color-secondary);
-  font-size: var(--el-font-size-small);
-  font-weight: bold;
-  position: absolute;
-  right: 0.5em;
-  top: 0.5em;
-}
-
-pre[data-lang]::before {
-  content: attr(data-lang);
-}
 </style>
