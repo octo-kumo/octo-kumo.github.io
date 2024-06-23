@@ -1,15 +1,10 @@
 <template>
-  <el-tooltip :visible="input!==String(model)" placement="right">
+  <el-tooltip :visible="input !== String(model)" placement="right">
     <template #content>
-      <span>{{ model.toPrecision(2) }}</span>
+      <span>{{ model?.toPrecision(2) ?? 0 }}</span>
     </template>
-    <el-input
-        v-model="input"
-        :hint="'='+model"
-        :error-messages="error.length>0?[error]:[]"
-        @blur="attemptSimplify"
-        v-bind="$attrs"
-    >
+    <el-input v-model="input" :hint="'=' + model" :error-messages="error.length > 0 ? [error] : []"
+      @blur="attemptSimplify" v-bind="$attrs">
 
       <template #prefix v-if="$attrs.prefix">{{ $attrs.prefix }}</template>
       <template #suffix v-if="$attrs.suffix">{{ $attrs.suffix }}</template>
@@ -18,8 +13,8 @@
 </template>
 
 <script setup>
-import {evaluate} from "mathjs";
-import {getErrorMessage} from "~/mixins/utils";
+import { evaluate } from "mathjs";
+import { getErrorMessage } from "~/mixins/utils";
 
 const model = defineModel({
   type: Number,
@@ -30,8 +25,9 @@ const input = ref('0');
 
 watch(model, (value, oldValue) => {
   const v = ev(input.value);
-  if (v !== value) input.value = String(value);
-});
+  if (!value) input.value = String(model.value = 0);
+  else if (v !== value) input.value = String(value);
+}, { immediate: true });
 
 watch(input, (value) => {
   const v = ev(value);

@@ -35,7 +35,7 @@ const { data: docs } = await useAsyncData(`c/docs_${path}`, () => queryContent("
   .where({ _path: { $ne: path } })
   .only(['_path', 'title', 'description'])
   .find());
-const { data: navigation } = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent("/")).then(r => r.map(removeSame)));
+const { data: navigation } = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent(path)).then(r => r.map(removeSame)));
 
 function removeSame(parent: NavItem) {
   if (parent.children) (parent.children = parent.children.filter(c => c._path !== parent._path)).forEach(c => removeSame(c));
