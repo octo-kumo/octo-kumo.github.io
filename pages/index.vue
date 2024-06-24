@@ -6,11 +6,12 @@
         entirely.</p>
       <p class="text-right">——云</p>
     </el-col>
-    <el-col v-for="item in nav.filter(r=>r.path.startsWith('/projects/')).sort((a,b)=>(!a.meta.image)-(!b.meta.image))"
-            :key="item.name" :cols="24"
-            :lg="6"
-            :md="8"
-            :sm="12">
+    <el-col
+        v-for="item in [...nav.filter(r=>r.path.startsWith('/projects/')).sort((a,b)=>(!a.meta.image)-(!b.meta.image)),contentPage]"
+        :key="item.name" :cols="24"
+        :lg="6"
+        :md="8"
+        :sm="12">
       <el-card class="my-3"
                shadow="never">
         <template #header v-if="item.meta.image">
@@ -33,8 +34,8 @@
     </el-col>
     <el-col :cols="24">
       <utterances repo="octo-kumo/octo-kumo.github.io" issue-term="pathname"
-                      label="utteranc"
-                      :theme="color.value === 'dark'?'github-dark':'github-light'"/>
+                  label="utteranc"
+                  :theme="color.value === 'dark'?'github-dark':'github-light'"/>
     </el-col>
   </el-row>
 </template>
@@ -44,6 +45,13 @@ import {guessPathName} from "~/mixins/display";
 const router = useRouter();
 const color = useColorMode();
 const nav = ref(router.getRoutes());
+const contentPage = {
+  path: "/c",
+  meta: {
+    title: "Content",
+    description: "Markdown Content Archive"
+  }
+}
 // definePageMeta({
 //   layout: 'clean'
 // });

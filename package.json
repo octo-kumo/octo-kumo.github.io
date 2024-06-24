@@ -25,6 +25,7 @@
         "@types/dat.gui": "latest",
         "@types/three": "latest",
         "@unocss/nuxt": "latest",
+        "@unocss/transformer-directives": "^0.61.0",
         "@vite-pwa/assets-generator": "latest",
         "@vite-pwa/nuxt": "latest",
         "@vueuse/nuxt": "latest",

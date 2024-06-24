@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="lg:max-w-prose mx-auto">
+    <el-image src="https://repobeats.axiom.co/api/embed/3b7f179ea07f6a241377dd5de8eb0ce155e3b6d1.svg"/>
     <h4>Change Log</h4>
     <el-timeline>
       <el-timeline-item

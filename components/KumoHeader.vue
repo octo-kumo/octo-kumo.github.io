@@ -24,7 +24,7 @@ import {guessPathName} from "@/mixins/display";
 
 const route = useRoute();
 const routeName = ref("");
-watch(() => route.name, newId => routeName.value = guessPathName(newId!), {immediate: true});
+watch(() => route.meta.title ?? route.name, newId => routeName.value = guessPathName(newId!), {immediate: true});
 
 const color = useColorMode();
 const colorMode = computed({
@@ -34,8 +34,12 @@ const colorMode = computed({
 </script>
 <style lang="scss" scoped>
 .header {
-  background-image: radial-gradient(transparent 1px, var(--el-bg-color-overlay) 1px);
+  background-image: radial-gradient(transparent 1px, #fff 1px);
   background-size: 4px 4px;
   backdrop-filter: saturate(50%) blur(4px);
+}
+
+html.dark .header {
+  background-image: radial-gradient(transparent 1px, #222 1px);
 }
 </style>

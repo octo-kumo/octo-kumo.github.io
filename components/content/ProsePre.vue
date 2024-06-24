@@ -32,7 +32,7 @@ defineProps({
 </script>
 
 <style lang="scss">
-pre.shiki {
+pre {
   position: relative;
   scrollbar-width: thin;
   overflow: auto;
