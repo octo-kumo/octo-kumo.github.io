@@ -55,7 +55,9 @@ definePageMeta({
   title: 'Content',
   // disableSEO: true
 });
-
+useSeoMeta({
+  articleModifiedTime: new Date(doc?.value?.updated ?? 0).toISOString()
+});
 const defaultProps = {
   children: 'children',
   label: (data: TreeNodeData, node: Node) => data.title || data._path.split("/").findLast(Boolean) || "Unknown"

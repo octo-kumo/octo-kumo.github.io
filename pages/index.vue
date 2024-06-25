@@ -8,7 +8,7 @@
           site crashing entirely.
         </el-text>
         <el-text class="text-xl! font-bold mt-2!" tag="h2">
-          <span v-if="isSearching">Searching... {{ docsFiltered.length }}/{{ docs.length}}</span>
+          <span v-if="isSearching">Searching... {{ docsFiltered.length }}/{{ docs.length }}</span>
           <span v-else>Recent Posts / Writeups</span>
         </el-text>
         <el-input v-model="search" placeholder="Fuzzy search!"/>
