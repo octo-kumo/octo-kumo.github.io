@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import {type PieceColor, TheChessboard} from 'vue3-chessboard';
-
-onActivated(() => {
-  import('vue3-chessboard/style.css');
-})
+import 'vue3-chessboard/style.css';
 
 function endGame(color?: PieceColor) {
   alert('Game Ended');

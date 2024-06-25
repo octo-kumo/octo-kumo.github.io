@@ -117,7 +117,7 @@ const defaultProps = {
       <template #default="{ node, data }">
         <span class="flex justify-between flex-1">
           <kumo-link :to="'/c' + data._path" class="mr-2 justify-start!">{{ node.label }}</kumo-link>
-          <el-text class="max-w-60" size="small">{{ docs.find(d => d._path === data._path)?.description }}</el-text>
+          <el-text class="max-w-80" size="small">{{ docs.find(d => d._path === data._path)?.description }}</el-text>
         </span>
       </template>
     </el-tree>

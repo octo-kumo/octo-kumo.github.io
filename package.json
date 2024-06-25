@@ -50,6 +50,7 @@
         "@tensorflow/tfjs-backend-cpu": "latest",
         "@tensorflow/tfjs-backend-webgl": "latest",
         "@tensorflow/tfjs-core": "latest",
+        "apexcharts": "^3.49.2",
         "dat.gui": "latest",
         "element-plus": "latest",
         "firebase": "latest",
@@ -63,6 +64,7 @@
         "remark-math": "latest",
         "three": "latest",
         "vue-use-active-scroll": "latest",
+        "vue3-apexcharts": "^1.5.3",
         "vue3-chessboard": "latest"
     },
     "peerDependencies": {

@@ -1,16 +1,22 @@
 <template>
-  <el-row :gutter="20">
-    <el-col
-        v-for="(item, index) in components"
-        :key="index"
-        :cols="24"
-        :sm="12"
-        :md="8"
-        :lg="6"
-    >
-      <component :is="item.element"></component>
-    </el-col>
-  </el-row>
+  <el-tabs>
+    <el-tab-pane label="Market">
+      <lazy-market-analyze/>
+    </el-tab-pane>
+    <el-tab-pane label="Time Value">
+      <el-row :gutter="20">
+        <el-col
+            v-for="(item, index) in components"
+            :key="index"
+            :cols="24"
+            :sm="12"
+            :md="8"
+            :lg="6">
+          <component :is="item.element"></component>
+        </el-col>
+      </el-row>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 <script setup lang="ts">
 import TimeValue from "@/components/finance/time-value.vue";
