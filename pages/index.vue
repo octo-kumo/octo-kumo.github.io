@@ -1,14 +1,25 @@
 <template>
   <el-row :gutter="20">
+    <el-col :cols="24" class="lg:max-w-prose! mx-auto!">
+      <el-text class="text-4xl! font-bold" tag="h1">Hi!</el-text>
+      <el-text tag="p">Welcome to my person website, it is still in the works, expect perhaps unexpected errors, or the
+        site crashing entirely.
+      </el-text>
+      <el-text class="text-xl! font-bold mt-2!" tag="h2">Recent Posts / Writeups</el-text>
+      <el-timeline class="mt-2!">
+        <el-timeline-item v-for="doc in docs" :timestamp="displayNiceDatetime(doc.created)">
+          <el-text type="primary" class="block">{{ doc.title }}</el-text>
+          <kumo-link class="font-mono text-xs!" :to="'/c'+doc._path">{{ '/c' + doc._path }}</kumo-link>
+          <el-text class="block">{{ doc.description }}</el-text>
+        </el-timeline-item>
+      </el-timeline>
+    </el-col>
     <el-col :cols="24">
-      <h1>Hi!</h1>
-      <p>Welcome to my person website, it is still in the works, expect perhaps unexpected errors, or the site crashing
-        entirely.</p>
-      <p class="text-right">——云</p>
+
     </el-col>
     <el-col
         v-for="item in [...nav.filter(r=>r.path.startsWith('/projects/')).sort((a,b)=>(!a.meta.image)-(!b.meta.image)),contentPage]"
-        :key="item.name" :cols="24"
+        :key="item.path" :cols="24"
         :lg="6"
         :md="8"
         :sm="12">
@@ -21,7 +32,9 @@
         </template>
         <el-space direction="vertical" alignment="normal">
           <h3 class="m-0">
-            <nuxt-link :to="item">{{ item.meta.title ?? guessPathName(item.name!) }}</nuxt-link>
+            <kumo-link :to="item" type="primary">
+              {{ item.meta.title ?? guessPathName(item.name!) }}
+            </kumo-link>
           </h3>
           <el-text v-if="item.meta.description">{{ item.meta.description }}</el-text>
           <div class="flex gap-2">
@@ -51,7 +64,13 @@ const contentPage = {
     title: "Content",
     description: "Markdown Content Archive"
   }
-}
+};
+const {data: docs} = await useAsyncData(`c/docs`, () => queryContent("/")
+    .only(['_path', 'title', 'description', 'created', 'updated'])
+    .where({_extension: {$eq: 'md'}, title: {$ne: ''}})
+    .sort({created: -1})
+    .limit(5)
+    .find());
 // definePageMeta({
 //   layout: 'clean'
 // });

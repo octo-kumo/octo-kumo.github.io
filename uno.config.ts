@@ -1,9 +1,14 @@
-import {defineConfig, presetUno} from 'unocss'
-import transformerDirectives from '@unocss/transformer-directives'
+import {defineConfig, presetUno, presetWebFonts, transformerDirectives} from 'unocss'
 
 export default defineConfig({
     presets: [
         presetUno(),
+        presetWebFonts({
+            provider: 'bunny',
+            fonts: {
+                mono: ['JetBrains Mono'],
+            }
+        }),
     ],
     transformers: [
         transformerDirectives(),

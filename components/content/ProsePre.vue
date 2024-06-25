@@ -1,5 +1,5 @@
 <template>
-  <pre :class="$props.class" :data-lang="language"><slot/></pre>
+  <pre :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta"><slot/></pre>
 </template>
 
 <script setup lang="ts">
@@ -40,8 +40,11 @@ pre {
   border: 1px solid var(--el-border-color);
   //box-shadow: var(--el-box-shadow-lighter);
   border-radius: var(--el-border-radius-base);
+  background-color: var(--el-bg-color-page);
 
   & code {
+    @apply font-mono;
+    font-size: var(--el-font-size-small);
     counter-reset: step;
     counter-increment: step 0;
   }
@@ -61,17 +64,34 @@ pre {
   }
 
   &[data-lang]::before {
-    font-family: monospace;
     color: var(--el-text-color-secondary);
     font-size: var(--el-font-size-small);
     font-weight: bold;
     position: absolute;
     right: 0.5em;
-    top: 0.5em;
+    top: 0.3em;
   }
 
   &[data-lang]::before {
     content: attr(data-lang);
+  }
+
+  &[data-file] {
+    padding-top: 25px;
+  }
+
+  &[data-file]::after {
+    color: var(--el-color-primary);
+    font-size: var(--el-font-size-small);
+    font-weight: bold;
+    position: absolute;
+    left: 1em;
+    top: 0.3em;
+    border-bottom: solid 1px var(--el-border-color);
+  }
+
+  &[data-file]::after {
+    content: attr(data-file);
   }
 }
 

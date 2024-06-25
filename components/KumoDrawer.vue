@@ -17,7 +17,7 @@
         <span>Projects</span>
       </template>
       <el-menu-item v-for="n in nav.filter(r=>r.path.startsWith('/projects/'))" :route="n" :index="String(n.name)">
-        <NuxtLink :to="n" class="no-underline text-inherit">{{ guessPathName(n.name!) }}</NuxtLink>
+        <nuxt-link :to="n" class="no-underline text-inherit">{{ guessPathName(n.name!) }}</nuxt-link>
       </el-menu-item>
     </el-sub-menu>
     <el-menu-item index="c" route="/c/">
@@ -25,7 +25,7 @@
         <el-icon-collection/>
       </el-icon>
       <template #title>
-        <NuxtLink to="/c/" class="no-underline text-inherit">Content</NuxtLink>
+        <nuxt-link to="/c/" class="no-underline text-inherit">Content</nuxt-link>
       </template>
     </el-menu-item>
     <el-menu-item index="about" route="/about">
@@ -33,12 +33,13 @@
         <el-icon-info-filled/>
       </el-icon>
       <template #title>
-        <NuxtLink to="/about" class="no-underline text-inherit">About</NuxtLink>
+        <nuxt-link to="/about" class="no-underline text-inherit">About</nuxt-link>
       </template>
     </el-menu-item>
   </el-menu>
 </template>
 <script setup lang="ts">
+
 import {guessPathName} from "@/mixins/display";
 
 const route = useRoute();
