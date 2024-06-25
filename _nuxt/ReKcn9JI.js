@@ -1,0 +1,1 @@
+import{aj as e,bn as r}from"./Czi5r_1q.js";function s(){if(!arguments.length)return[];var a=arguments[0];return e(a)?a:[a]}const n=(a="")=>a.replace(/[|\\{}()[\]^$+*?.]/g,"\\$&").replace(/-/g,"\\x2d"),c=a=>r(a);export{c as a,s as c,n as e};
