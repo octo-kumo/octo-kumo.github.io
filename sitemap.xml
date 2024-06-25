@@ -1,376 +1,376 @@
 <?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/__sitemap__/style.xsl"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://octo-kumo.github.io/</loc>
+        <loc>https://octo-kumo.me/</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/about</loc>
+        <loc>https://octo-kumo.me/about</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c</loc>
+        <loc>https://octo-kumo.me/c</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects</loc>
+        <loc>https://octo-kumo.me/projects</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf</loc>
+        <loc>https://octo-kumo.me/c/ctf</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/test</loc>
+        <loc>https://octo-kumo.me/c/test</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects/air-defence</loc>
+        <loc>https://octo-kumo.me/projects/air-defence</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects/chess-ai</loc>
+        <loc>https://octo-kumo.me/projects/chess-ai</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects/er-editor</loc>
+        <loc>https://octo-kumo.me/projects/er-editor</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects/finance</loc>
+        <loc>https://octo-kumo.me/projects/finance</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects/image-slicer</loc>
+        <loc>https://octo-kumo.me/projects/image-slicer</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects/passage-reader</loc>
+        <loc>https://octo-kumo.me/projects/passage-reader</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects/price-comparator</loc>
+        <loc>https://octo-kumo.me/projects/price-comparator</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects/simulated-universe</loc>
+        <loc>https://octo-kumo.me/projects/simulated-universe</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/projects/thumbnails-extractor</loc>
+        <loc>https://octo-kumo.me/projects/thumbnails-extractor</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2021-appventure-ctf</loc>
+        <loc>https://octo-kumo.me/c/ctf/2021-appventure-ctf</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cyberthon</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cyberthon</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-hsctf9</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-hsctf9</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/picoctf</loc>
+        <loc>https://octo-kumo.me/c/ctf/picoctf</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/reverse-shell</loc>
+        <loc>https://octo-kumo.me/c/ctf/reverse-shell</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/sql</loc>
+        <loc>https://octo-kumo.me/c/ctf/sql</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2021-appventure-ctf/pwn</loc>
+        <loc>https://octo-kumo.me/c/ctf/2021-appventure-ctf/pwn</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2021-appventure-ctf/web</loc>
+        <loc>https://octo-kumo.me/c/ctf/2021-appventure-ctf/web</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/arm</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/arm</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/babyweb</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/babyweb</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/bypass</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/bypass</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/copynpaste</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/copynpaste</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/darknet</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/darknet</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/go_n_c</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/go_n_c</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/invisiblemorse</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/invisiblemorse</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/jseasy</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/jseasy</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/littlestar</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/littlestar</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/loglog</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/loglog</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/mips</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/mips</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/paddingoracle</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/paddingoracle</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/permutation</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/permutation</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/salad</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/salad</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/somesharks</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/somesharks</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/sqlogin</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/sqlogin</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/unknownfile</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/unknownfile</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/unknownfile2</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/unknownfile2</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cddc/vigenere</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cddc/vigenere</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cyberthon/web</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cyberthon/web</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-hsctf9/directory-egg-hunt</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-hsctf9/directory-egg-hunt</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-hsctf9/guess-the-flag</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-hsctf9/guess-the-flag</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-hsctf9/pass</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-hsctf9/pass</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-hsctf9/travelling-salesman</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-hsctf9/travelling-salesman</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-hsctf9/web-gallery</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-hsctf9/web-gallery</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/algo</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/algo</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/crypto</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/crypto</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/forensics</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/forensics</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/misc</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/misc</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/pwn</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/pwn</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/rev</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/rev</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/web</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/web</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/crypto</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/crypto</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/forensics</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/forensics</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/misc</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/misc</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/rev</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/rev</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/web</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/web</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/picoctf/pwn</loc>
+        <loc>https://octo-kumo.me/c/ctf/picoctf/pwn</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2021-appventure-ctf/pwn/printwriter-1</loc>
+        <loc>https://octo-kumo.me/c/ctf/2021-appventure-ctf/pwn/printwriter-1</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2021-appventure-ctf/web/appventure-login-part-0</loc>
+        <loc>https://octo-kumo.me/c/ctf/2021-appventure-ctf/web/appventure-login-part-0</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2021-appventure-ctf/web/appventure-login-part-1</loc>
+        <loc>https://octo-kumo.me/c/ctf/2021-appventure-ctf/web/appventure-login-part-1</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2021-appventure-ctf/web/appventure-login-part-2</loc>
+        <loc>https://octo-kumo.me/c/ctf/2021-appventure-ctf/web/appventure-login-part-2</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2021-appventure-ctf/web/espace-0</loc>
+        <loc>https://octo-kumo.me/c/ctf/2021-appventure-ctf/web/espace-0</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2021-appventure-ctf/web/super-secure-trustable-implementation</loc>
+        <loc>https://octo-kumo.me/c/ctf/2021-appventure-ctf/web/super-secure-trustable-implementation</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cyberthon/web/low-ceiling</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cyberthon/web/low-ceiling</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cyberthon/web/not-so-secure</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cyberthon/web/not-so-secure</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cyberthon/web/nothandsanitizer</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cyberthon/web/nothandsanitizer</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cyberthon/web/only-cats</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cyberthon/web/only-cats</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2022-cyberthon/web/what-does-the-cow-say</loc>
+        <loc>https://octo-kumo.me/c/ctf/2022-cyberthon/web/what-does-the-cow-say</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/cookie-clicker</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/cookie-clicker</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/duck-finder</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/duck-finder</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/fogblaze</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/fogblaze</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/jslearning</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/jslearning</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/nosql</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/nosql</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/phone-number</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/phone-number</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/sea-scavenger</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/sea-scavenger</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/tic-tac-toe</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/tic-tac-toe</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/transcriptify</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/transcriptify</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-bcactf/web/user-1</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-bcactf/web/user-1</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/algo/baby-game</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/algo/baby-game</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/algo/baby-game-revisited</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/algo/baby-game-revisited</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/algo/quickmaffs-permutation-puzzle</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/algo/quickmaffs-permutation-puzzle</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/crypto/aes-but-twice</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/crypto/aes-but-twice</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/crypto/not-quite-caesar</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/crypto/not-quite-caesar</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/forensics/roultimatum-1</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/forensics/roultimatum-1</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/misc/llama-jail</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/misc/llama-jail</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/pwn/shell-service</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/pwn/shell-service</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/pwn/vs-gateway</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/pwn/vs-gateway</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/rev/awa-jelly</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/rev/awa-jelly</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/rev/intro-reversing</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/rev/intro-reversing</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/rev/unfinished-homework</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/rev/unfinished-homework</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/web/flarenotes</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/web/flarenotes</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/web/spinner</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/web/spinner</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/crypto/beginners_aes</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/crypto/beginners_aes</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/crypto/beginners_rsa</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/crypto/beginners_rsa</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/crypto/dance</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/crypto/dance</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/crypto/easy-calc</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/crypto/easy-calc</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/crypto/replacement</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/crypto/replacement</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/forensics/codebreaker</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/forensics/codebreaker</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/forensics/i_wanna_be_a_streamer</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/forensics/i_wanna_be_a_streamer</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/forensics/mem_search</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/forensics/mem_search</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/forensics/surveillance_of_sus</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/forensics/surveillance_of_sus</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/forensics/tiny_10px</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/forensics/tiny_10px</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/misc/cheat-code</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/misc/cheat-code</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/misc/jq</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/misc/jq</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/rev/lambda</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/rev/lambda</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/rev/promises</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/rev/promises</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/web/bad_worker</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/web/bad_worker</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/web/elec</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/web/elec</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/web/noscript</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/web/noscript</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/web/one-day-one-letter</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/web/one-day-one-letter</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-wanictf/web/pow</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-wanictf/web/pow</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/picoctf/pwn/cache-me-outside</loc>
+        <loc>https://octo-kumo.me/c/ctf/picoctf/pwn/cache-me-outside</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/picoctf/pwn/format-string-0</loc>
+        <loc>https://octo-kumo.me/c/ctf/picoctf/pwn/format-string-0</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/picoctf/pwn/heap-0</loc>
+        <loc>https://octo-kumo.me/c/ctf/picoctf/pwn/heap-0</loc>
     </url>
     <url>
-        <loc>https://octo-kumo.github.io/c/ctf/2024-vsctf/forensics/roultimatum-1/output</loc>
+        <loc>https://octo-kumo.me/c/ctf/2024-vsctf/forensics/roultimatum-1/output</loc>
     </url>
 </urlset>
-<!-- XML Sitemap generated by @nuxtjs/sitemap v5.2.0 at 2024-06-25T08:46:08.166Z -->
+<!-- XML Sitemap generated by @nuxtjs/sitemap v5.2.1 at 2024-06-25T11:43:59.353Z -->
