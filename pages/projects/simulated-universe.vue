@@ -7,7 +7,7 @@ definePageMeta({
   layout: 'default',
   title: 'Simulated Universe Tools',
   description: 'A tool to preview all simulated universe encounters.',
-  image: '/img/sim-uni.png'
+  image: '/img/sim-uni.webp'
 });
 const store = useStore();
 const lang = ref(store.lang);

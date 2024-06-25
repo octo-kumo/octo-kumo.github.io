@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://octo-kumo.github.io/sitemap.xml

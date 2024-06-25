@@ -13,9 +13,10 @@
       </el-space>
     </template>
     <template #extra>
-      <ClientOnly>
-        <el-switch v-model="colorMode" inline-prompt active-text="dark" inactive-text="light" size="large"></el-switch>
-      </ClientOnly>
+      <client-only>
+        <el-switch ref="switc" v-model="colorMode" inline-prompt active-text="dark" inactive-text="light"
+                   size="large"></el-switch>
+      </client-only>
     </template>
   </el-page-header>
 </template>

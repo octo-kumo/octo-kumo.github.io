@@ -1,41 +1,46 @@
 <template>
   <el-row :gutter="20">
-    <el-col :cols="24" class="lg:max-w-prose! mx-auto!">
-      <el-text class="text-4xl! font-bold" tag="h1">Hi!</el-text>
-      <el-text tag="p">Welcome to my person website, it is still in the works, expect perhaps unexpected errors, or the
-        site crashing entirely.
-      </el-text>
-      <el-text class="text-xl! font-bold mt-2!" tag="h2">
-        <span v-if="search.length>1">Searching...</span>
-        <span v-else>Recent Posts / Writeups</span>
-      </el-text>
-      <el-input v-model="search" placeholder="Fuzzy search!"/>
-      <el-timeline class="mt-2!">
-        <el-timeline-item v-for="{item:doc,matches,score} in docsFiltered"
-                          :timestamp="displayDocDates(doc)">
-          <kumo-link type="primary" :to="'/c'+doc._path">
-            <span v-html="highlight( doc.title , matches?.find(m=>m.key==='title')?.indices)"></span>
-          </kumo-link>
-          <el-tag v-if="score" :type="score<0.1?'success':score<0.5?'warning':'danger'" size="small" class="ml-1">
-            {{ (1 - score).toPrecision(2) }}
-          </el-tag>
-          <br/>
-          <kumo-link class="font-mono! text-xs!" :to="'/c'+doc._path">
-            <span v-html="'/c' + highlight( doc._path , matches?.find(m=>m.key==='_path')?.indices)"></span>
-          </kumo-link>
-          <el-text class="block mt-1!">
-            <span v-html="highlight(doc.description, matches?.find(m=>m.key==='description')?.indices)"></span>
-          </el-text>
-          <el-space class="mt-2!" wrap v-if="doc.tags&&Array.isArray(doc.tags)&&doc.tags.length>0">
-            <el-tag size="small" v-for="tag in doc.tags">{{ tag }}</el-tag>
-          </el-space>
-        </el-timeline-item>
-        <el-empty v-if="docsFiltered.length === 0">
-        </el-empty>
-      </el-timeline>
-    </el-col>
     <el-col :cols="24">
-
+      <div class="lg:max-w-prose! mx-auto!">
+        <el-text class="text-4xl! font-bold" tag="h1">Hi!</el-text>
+        <el-text tag="p">Welcome to my person website, it is still in the works, expect perhaps unexpected errors, or
+          the
+          site crashing entirely.
+        </el-text>
+        <el-text class="text-xl! font-bold mt-2!" tag="h2">
+          <span v-if="isSearching">Searching... {{ docsFiltered.length }}/{{ docs.length}}</span>
+          <span v-else>Recent Posts / Writeups</span>
+        </el-text>
+        <el-input v-model="search" placeholder="Fuzzy search!"/>
+        <el-pagination v-model:current-page="currPage" class="justify-center" layout="prev, pager, next"
+                       :total="docsFiltered.length" :page-size="5"
+                       hide-on-single-page/>
+        <el-timeline class="mt-2!" v-auto-animate>
+          <el-timeline-item v-for="{item:doc,matches,score} in docsFiltered.slice(currPage*5-5,currPage*5)"
+                            :key="doc._path" :timestamp="displayDocDates(doc)">
+            <kumo-link type="primary" :to="'/c'+doc._path">
+              <span v-html="highlight( doc.title , matches?.find(m=>m.key==='title')?.indices)"></span>
+            </kumo-link>
+            <el-tag v-if="score" :type="score<0.1?'success':score<0.5?'warning':'danger'" size="small" class="ml-1">
+              {{ (1 - score).toPrecision(2) }}
+            </el-tag>
+            <br/>
+            <kumo-link class="font-mono! text-xs!" :to="'/c'+doc._path">
+              <span v-html="'/c' + highlight( doc._path , matches?.find(m=>m.key==='_path')?.indices)"></span>
+            </kumo-link>
+            <el-text class="block mt-1!">
+              <span v-html="highlight(doc.description, matches?.find(m=>m.key==='description')?.indices)"></span>
+            </el-text>
+            <el-space class="mt-2!" wrap v-if="doc.tags&&Array.isArray(doc.tags)&&doc.tags.length>0">
+              <el-tag size="small" v-for="(tag, i) in doc.tags">
+                <span v-html="highlight(tag, matches?.find(m=>m.key==='tags'&&m.refIndex===i)?.indices)"></span>
+              </el-tag>
+            </el-space>
+          </el-timeline-item>
+          <el-empty v-if="docsFiltered.length === 0">
+          </el-empty>
+        </el-timeline>
+      </div>
     </el-col>
     <el-col
         v-for="item in [...nav.filter(r=>r.path.startsWith('/projects/')).sort((a,b)=>(!a.meta.image)-(!b.meta.image)),contentPage]"
@@ -58,7 +63,7 @@
           </h3>
           <el-text v-if="item.meta.description">{{ item.meta.description }}</el-text>
           <div class="flex gap-2">
-            <el-tag type="danger" v-if="item.meta.layout==='clean'">
+            <el-tag type="danger" v-if="(item.meta.layout!) ==='clean'">
               full page
             </el-tag>
           </div>
@@ -76,6 +81,7 @@
 import {guessPathName} from "~/mixins/display";
 import Fuse from 'fuse.js';
 
+const currPage = ref(1);
 const router = useRouter();
 const color = useColorMode();
 const nav = ref(router.getRoutes());
@@ -93,9 +99,10 @@ const {data: docs} = await useAsyncData(`c/docs_i`, () => queryContent("/")
     .sort({created: -1})
     .find());
 
-const fuse = new Fuse(docs.value, {
+const fuse = new Fuse(docs.value ?? [], {
   threshold: 0.6,
   distance: 100,
+  useExtendedSearch: true,
   isCaseSensitive: false,
   shouldSort: true,
   includeScore: true,
@@ -106,7 +113,8 @@ const fuse = new Fuse(docs.value, {
     weight: 1
   }]
 });
-const docsFiltered = computed(() => (search.value && search.value.length > 1 ? fuse.search(search.value).filter(e => e.score < 0.9) : docs.value.map(w => ({item: w}))).slice(0, 5))
+const isSearching = computed(() => search.value.length > 1)
+const docsFiltered = computed(() => isSearching.value ? fuse.search(search.value).filter(e => (e?.score ?? 1) < 0.9) : (docs.value ?? []).map(w => ({item: w})))
 // definePageMeta({
 //   layout: 'clean'
 // });
@@ -119,7 +127,7 @@ function highlight(text: string, indices: number[][]) {
   }, text.split("")).join("");
 }
 
-function displayDocDates(doc) {
+function displayDocDates(doc: { created: string, updated: string }) {
   const a = displayNiceDatetime(doc.created);
   const b = displayNiceDatetime(doc.updated);
   return a === b ? a : `${a} · edited ${b}`

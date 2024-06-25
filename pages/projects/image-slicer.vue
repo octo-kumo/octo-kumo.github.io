@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {PNG} from "pngjs/browser";
-import JSZip from "jszip";
 import {saveAs} from "~/libraries/file-saver";
 import type {Ref} from "@vue/reactivity";
 import {humanFileSize} from "@/mixins/utils";
+import type {PNG as IPNG} from "pngjs/browser";
+import type IJSZIP from "jszip";
 
 definePageMeta({
   layout: "default",
@@ -15,7 +15,7 @@ const files: Ref<File[]> = ref([]);
 const urls: Ref<string[]> = ref([]);
 const cols: Ref<number[]> = ref([]);
 const rows: Ref<number[]> = ref([]);
-const pngs: Ref<PNG[]> = ref([]);
+const pngs: Ref<IPNG[]> = ref([]);
 const errors: Ref<Error[]> = ref([]);
 const loadings: Ref<boolean[]> = ref([]);
 const initLoaded: Ref<boolean> = ref(true);
@@ -29,13 +29,11 @@ const subHeights = computed(() => pngs.value.map(({height}, i) => computed({
   set: newValue => rows.value[i] = height / newValue
 })));
 const format = ref("{name}_{x}_{y}");
+let PNG: IPNG | undefined;
+let JSZip: IJSZIP | undefined;
 
-function largestFactorUnder10(n) {
-  for (let i = 9; i > 0; i--) {
-    if (n % i === 0) {
-      return i;
-    }
-  }
+function largestFactorUnder10(n: number) {
+  for (let i = 9; i > 0; i--) if (n % i === 0) return i;
   return null;
 }
 
@@ -48,7 +46,14 @@ function gcd(a: number, b: number) {
   return a;
 }
 
+async function loadLibraries() {
+  if (PNG) return;
+  PNG = (await import("pngjs/browser")).PNG;
+  JSZip = (await import("jszip"));
+}
+
 async function onFilesChange() {
+  await loadLibraries();
   console.log(files.value)
   urls.value = files.value.map(f => URL.createObjectURL(f.raw));
   loadings.value = new Array(files.value.length).fill(false);
@@ -59,7 +64,7 @@ async function onFilesChange() {
         await files.value[i].raw.arrayBuffer() :
         await convertFile(files.value[i].raw);
     try {
-      await new Promise((resolve, reject) => new PNG({filterType: 4}).parse(buf, async (error: Error, png: PNG) => {
+      await new Promise((resolve, reject) => new PNG({filterType: 4}).parse(buf, async (error: Error, png: IPNG) => {
         if (!png) return reject(error);
         const {width, height} = pngs.value[i] = png;
         const g = gcd(width, height);
@@ -117,6 +122,7 @@ async function crop_all() {
 }
 
 async function crop_index(index: number) {
+  await loadLibraries();
   const file = files.value[index].raw;
   const {width, height, data} = pngs.value[index];
   const subImageWidth = width / cols.value[index];

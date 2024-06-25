@@ -23,7 +23,7 @@ definePageMeta({
   layout: 'default',
   title: 'Evil ER',
   description: 'Shadow of its formal glory\nhttps://github.com/octo-kumo/cs6131-project',
-  image: '/img/ereditor.png'
+  image: '/img/ereditor.webp'
 });
 const editor = ref(null as HTMLCanvasElement | null);
 const nodes: ERObject[] = reactive([]);

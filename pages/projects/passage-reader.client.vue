@@ -11,9 +11,9 @@ let model: QuestionAndAnswer | null = null;
 
 async function load() {
   loading.value = true;
-  import('@tensorflow/tfjs-core');
-  import('@tensorflow/tfjs-backend-cpu');
-  import('@tensorflow/tfjs-backend-webgl');
+  await import('@tensorflow/tfjs-core');
+  await import('@tensorflow/tfjs-backend-cpu');
+  await import('@tensorflow/tfjs-backend-webgl');
   const qna = await import('@tensorflow-models/qna')
   console.log("loading model...");
   model = await qna.load();

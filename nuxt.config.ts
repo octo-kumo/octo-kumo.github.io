@@ -4,6 +4,7 @@
 
 import {resolve} from "node:url";
 
+const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
 export default defineNuxtConfig({
     app: {
         baseURL: process.env.BASE_URL || '/',
@@ -32,7 +33,7 @@ export default defineNuxtConfig({
             nodeVersion: '20'
         },
         prerender: {
-            routes: ['/sitemap.xml']
+            routes: ['/sitemap.xml', '/robots.txt']
         }
     },
     devtools: {enabled: false},
@@ -54,8 +55,22 @@ export default defineNuxtConfig({
         // "@nuxtjs/robots",
         "@nuxt/image",
         // "nuxt-security",
-        "nuxt-booster"
+        "nuxt-booster",
+        '@formkit/auto-animate/nuxt',
+        '@nuxtjs/robots',
+        "nuxt-gtag"
     ],
+    robots: {
+        rules: {
+            UserAgent: '*',
+            Disallow: '',
+            Sitemap: `${SITE_URL}/sitemap.xml`,
+            Comment: 'kumo{h3ll0_b075!}'
+        }
+    },
+    gtag: {
+        id: 'G-FDD5V3L07K'
+    },
     pwa: {},
     // security: {
     //     nonce: true,
@@ -127,6 +142,6 @@ export default defineNuxtConfig({
         themes: ['dark'],
     },
     site: {
-        url: process.env.SITE_URL ?? "http://localhost:3000/"
+        url: SITE_URL
     }
 })
