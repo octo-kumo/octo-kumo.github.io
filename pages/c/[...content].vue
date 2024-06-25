@@ -41,9 +41,18 @@ const {data: docs} = await useAsyncData(`c/docs`, () => queryContent("/")
     .only(['_path', 'title', 'description', 'created', 'updated'])
     .find());
 const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent(one_lvl_up(path))).then(r => r.map(removeSame)));
-const {data: surround} = await useAsyncData(`c/doc_${path}_pn`, () => queryContent()
-    .only(['_path', 'title'])
-    .findSurround(path));
+
+const peers = docs.value?.filter(d => d._path === path || (
+    !d._path.startsWith(path) && // must not be child
+    d._path.startsWith(one_lvl_up(path)) && // must be of same parent
+    d._path !== one_lvl_up(path))); // must not be parent
+const meIndex = peers.findIndex(d => d._path === path);
+const [prev, next] = [
+  peers[(meIndex - 1 + peers.length) % peers.length],
+  peers[(meIndex + 1) % peers.length],
+];
+
+// console.log([prev, next])
 
 function removeSame(parent: NavItem) {
   if (parent.children) (parent.children = parent.children.filter(c => c._path !== parent._path)).forEach(c => removeSame(c));
@@ -92,14 +101,14 @@ const defaultProps = {
         </el-space>
       </div>
       <div class="flex justify-between mt-3">
-        <kumo-link :to="'/c'+surround[0]?._path" type="primary">
+        <kumo-link :to="'/c'+prev?._path" type="primary" :disabled="!prev">
           <el-icon>
             <el-icon-arrow-left/>
           </el-icon>
-          {{ surround[0]?.title }}
+          {{ prev?.title }}
         </kumo-link>
-        <kumo-link :to="'/c'+surround[1]?._path" type="primary">
-          {{ surround[1]?.title }}
+        <kumo-link :to="'/c'+next?._path" type="primary" :disabled="!next">
+          {{ next?.title }}
           <el-icon>
             <el-icon-arrow-right/>
           </el-icon>
