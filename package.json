@@ -4,6 +4,7 @@
     "scripts": {
         "build": "nuxi build",
         "dev": "nuxi dev",
+        "analyze": "nuxi analyze",
         "generate": "nuxt generate",
         "preview": "nuxi preview",
         "postinstall": "nuxi prepare",
@@ -48,6 +49,7 @@
         "element-plus": "latest",
         "firebase": "latest",
         "firebase-functions": "latest",
+        "fuse.js": "^7.0.0",
         "json-editor-vue": "latest",
         "jszip": "latest",
         "mathjs": "latest",

@@ -5,14 +5,33 @@
       <el-text tag="p">Welcome to my person website, it is still in the works, expect perhaps unexpected errors, or the
         site crashing entirely.
       </el-text>
-      <el-text class="text-xl! font-bold mt-2!" tag="h2">Recent Posts / Writeups</el-text>
+      <el-text class="text-xl! font-bold mt-2!" tag="h2">
+        <span v-if="search.length>1">Searching...</span>
+        <span v-else>Recent Posts / Writeups</span>
+      </el-text>
+      <el-input v-model="search" placeholder="Fuzzy search!"/>
       <el-timeline class="mt-2!">
-        <el-timeline-item v-for="doc in docs" :timestamp="displayNiceDatetime(doc.created)">
-          <kumo-link type="primary" :to="'/c'+doc._path">{{ doc.title }}</kumo-link>
+        <el-timeline-item v-for="{item:doc,matches,score} in docsFiltered"
+                          :timestamp="displayDocDates(doc)">
+          <kumo-link type="primary" :to="'/c'+doc._path">
+            <span v-html="highlight( doc.title , matches?.find(m=>m.key==='title')?.indices)"></span>
+          </kumo-link>
+          <el-tag v-if="score" :type="score<0.1?'success':score<0.5?'warning':'danger'" size="small" class="ml-1">
+            {{ (1 - score).toPrecision(2) }}
+          </el-tag>
           <br/>
-          <kumo-link class="font-mono text-xs!" :to="'/c'+doc._path">{{ '/c' + doc._path }}</kumo-link>
-          <el-text class="block mt-1">{{ doc.description }}</el-text>
+          <kumo-link class="font-mono! text-xs!" :to="'/c'+doc._path">
+            <span v-html="'/c' + highlight( doc._path , matches?.find(m=>m.key==='_path')?.indices)"></span>
+          </kumo-link>
+          <el-text class="block mt-1!">
+            <span v-html="highlight(doc.description, matches?.find(m=>m.key==='description')?.indices)"></span>
+          </el-text>
+          <el-space class="mt-2!" wrap v-if="doc.tags&&Array.isArray(doc.tags)&&doc.tags.length>0">
+            <el-tag size="small" v-for="tag in doc.tags">{{ tag }}</el-tag>
+          </el-space>
         </el-timeline-item>
+        <el-empty v-if="docsFiltered.length === 0">
+        </el-empty>
       </el-timeline>
     </el-col>
     <el-col :cols="24">
@@ -55,10 +74,12 @@
 </template>
 <script setup lang="ts">
 import {guessPathName} from "~/mixins/display";
+import Fuse from 'fuse.js';
 
 const router = useRouter();
 const color = useColorMode();
 const nav = ref(router.getRoutes());
+const search = ref("");
 const contentPage = {
   path: "/c",
   meta: {
@@ -66,15 +87,44 @@ const contentPage = {
     description: "Markdown Content Archive"
   }
 };
-const {data: docs} = await useAsyncData(`c/docs`, () => queryContent("/")
-    .only(['_path', 'title', 'description', 'created', 'updated'])
+const {data: docs} = await useAsyncData(`c/docs_i`, () => queryContent("/")
+    .only(['_path', 'title', 'description', 'created', 'updated', 'tags'])
     .where({_extension: {$eq: 'md'}, title: {$ne: ''}})
     .sort({created: -1})
-    .limit(5)
     .find());
+
+const fuse = new Fuse(docs.value, {
+  threshold: 0.6,
+  distance: 100,
+  isCaseSensitive: false,
+  shouldSort: true,
+  includeScore: true,
+  includeMatches: true,
+  minMatchCharLength: 2,
+  keys: [{name: "title", weight: 1}, {name: "_path", weight: 1}, {name: "description", weight: 0.8}, {
+    name: "tags",
+    weight: 1
+  }]
+});
+const docsFiltered = computed(() => (search.value && search.value.length > 1 ? fuse.search(search.value).filter(e => e.score < 0.9) : docs.value.map(w => ({item: w}))).slice(0, 5))
 // definePageMeta({
 //   layout: 'clean'
 // });
+function highlight(text: string, indices: number[][]) {
+  if (!indices) return text;
+  return indices.reduce((str, [start, end]) => {
+    str[start] = `<span class="highlighted">${str[start]}`;
+    str[end] = `${str[end]}</span>`;
+    return str;
+  }, text.split("")).join("");
+}
+
+function displayDocDates(doc) {
+  const a = displayNiceDatetime(doc.created);
+  const b = displayNiceDatetime(doc.updated);
+  return a === b ? a : `${a} · edited ${b}`
+}
+
 useHead({
   title: '云',
   meta: [
@@ -88,5 +138,10 @@ useHead({
 .el-card__header:has(> .el-image) {
   padding: 0 !important;
   border: none !important;
+}
+
+span.highlighted {
+  @apply font-bold;
+  background-color: #ff04;
 }
 </style>
