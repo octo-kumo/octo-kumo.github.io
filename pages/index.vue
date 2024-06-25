@@ -8,9 +8,10 @@
       <el-text class="text-xl! font-bold mt-2!" tag="h2">Recent Posts / Writeups</el-text>
       <el-timeline class="mt-2!">
         <el-timeline-item v-for="doc in docs" :timestamp="displayNiceDatetime(doc.created)">
-          <el-text type="primary" class="block">{{ doc.title }}</el-text>
+          <kumo-link type="primary" :to="'/c'+doc._path">{{ doc.title }}</kumo-link>
+          <br/>
           <kumo-link class="font-mono text-xs!" :to="'/c'+doc._path">{{ '/c' + doc._path }}</kumo-link>
-          <el-text class="block">{{ doc.description }}</el-text>
+          <el-text class="block mt-1">{{ doc.description }}</el-text>
         </el-timeline-item>
       </el-timeline>
     </el-col>
