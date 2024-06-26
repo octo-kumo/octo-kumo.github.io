@@ -18,14 +18,14 @@
         <el-timeline class="mt-2!" v-auto-animate>
           <el-timeline-item v-for="{item:doc,matches,score} in docsFiltered.slice(currPage*5-5,currPage*5)"
                             :key="doc._path" :timestamp="displayDocDates(doc)">
-            <kumo-link type="primary" :to="'/c'+doc._path">
+            <kumo-link no-prefetch type="primary" :to="'/c'+doc._path">
               <span v-html="highlight( doc.title , matches?.find(m=>m.key==='title')?.indices)"></span>
             </kumo-link>
             <el-tag v-if="score" :type="score<0.1?'success':score<0.5?'warning':'danger'" size="small" class="ml-1">
               {{ (1 - score).toPrecision(2) }}
             </el-tag>
             <br/>
-            <kumo-link class="font-mono! text-xs!" :to="'/c'+doc._path">
+            <kumo-link no-prefetch class="font-mono! text-xs!" :to="'/c'+doc._path">
               <span v-html="'/c' + highlight( doc._path , matches?.find(m=>m.key==='_path')?.indices)"></span>
             </kumo-link>
             <el-text class="block mt-1!">
