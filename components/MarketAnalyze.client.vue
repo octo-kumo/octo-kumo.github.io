@@ -63,6 +63,21 @@ function newtonsMethod(f: (x: number) => number, fPrime: (x: number) => number, 
   throw new Error('Maximum iterations reached without finding root');
 }
 
+function calculateArea(data: {
+  x: number;
+  y: [number, number];
+}[]): number {
+  let area = 0;
+
+  for (let i = 0; i < data.length - 1; i++) {
+    const deltaX = data[i + 1].x - data[i].x;
+    const avgHeight = ((data[i].y[1] - data[i].y[0]) + (data[i + 1].y[1] - data[i + 1].y[0])) / 2;
+    area += deltaX * avgHeight;
+  }
+
+  return area;
+}
+
 function generateApexChartData(demandRelation: string, supplyRelation: string) {
   const scope = yVar.value === 'Q' ? {P: 0} : {Q: 0};
   const demandExpr = math.compile(demandRelation);
@@ -80,7 +95,7 @@ function generateApexChartData(demandRelation: string, supplyRelation: string) {
 
   const diff = math.simplify(`(${demandRelation})-(${supplyRelation})`);
   const diffP = math.derivative(diff, xVar.value);
-  const gen = (x) => xVar.value === "P" ? {P: x} : {Q: x};
+  const gen = (x: number) => xVar.value === "P" ? {P: x} : {Q: x};
   const eqX = newtonsMethod(x => diff.evaluate(gen(x)), x => diffP.evaluate(gen(x)));
   const [eqP, eqQ] = xVar.value === "P" ? [eqX, demandExpr.evaluate({P: eqX})] : [demandExpr.evaluate({Q: eqX}), eqX];
   console.log([eqP, eqQ])
