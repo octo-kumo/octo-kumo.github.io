@@ -12,12 +12,15 @@ export default defineNuxtConfig({
             title: '云',
             meta: [
                 {name: 'viewport', content: 'width=device-width, initial-scale=1'},
-                {
-                    name: 'description',
-                    content: 'Personal website of a certain cloud',
-                },
             ],
             link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
+            script: [
+                {
+                    src: 'https://analytics.octo-kumo.me/script.js',
+                    defer: true,
+                    'data-website-id': 'fd089b30-9952-41b0-a817-fce38fefae17'
+                }
+            ],
         }
     },
     vue: {
@@ -59,7 +62,6 @@ export default defineNuxtConfig({
         '@formkit/auto-animate/nuxt',
         '@nuxtjs/robots',
     ],
-    extends: ['github:ijkml/nuxt-umami'],
     robots: {
         rules: {
             UserAgent: '*',

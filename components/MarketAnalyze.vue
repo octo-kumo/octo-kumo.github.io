@@ -5,10 +5,8 @@ import type {ApexOptions} from "apexcharts";
 import type {Ref} from "@vue/reactivity";
 
 const chart: VueApexCharts = ref();
-const colorMode = useColorMode({
-  attribute: 'theme'
-})
-const chartOptions: Ref<ApexOptions> = ref({
+const colorMode = useColorMode();
+const chartOptions: Ref<ApexOptions> = ref(<ApexOptions>{
   chart: {
     id: 'vuechart-example',
     background: 'rgba(0, 0, 0, 0)',
@@ -60,10 +58,10 @@ function generateApexChartData(demandRelation: string, supplyRelation: string) {
 
   return [{
     name: 'Demand Quantity',
-    data: dataPoints.map(point => ({x: point.Pd, y: point.Qd}))
+    data: dataPoints.map(point => ({x: point.Qd, y: point.Pd}))
   }, {
     name: 'Supply Quantity',
-    data: dataPoints.map(point => ({x: point.Ps, y: point.Qs}))
+    data: dataPoints.map(point => ({x: point.Qs, y: point.Ps}))
   }];
 }
 
@@ -100,7 +98,7 @@ updateData();
           <el-radio value="P">Price</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-alert title="" type="error" />
+      <el-alert title="" type="error"/>
       <el-form-item>
         <el-button type="primary" @click="updateData">Update</el-button>
       </el-form-item>
