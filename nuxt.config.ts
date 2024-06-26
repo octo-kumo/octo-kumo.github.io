@@ -13,16 +13,10 @@ export default defineNuxtConfig({
             meta: [
                 {name: 'viewport', content: 'width=device-width, initial-scale=1'},
             ],
-            link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
-            script: [
-                {
-                    src: 'https://analytics.octo-kumo.me/script.js',
-                    defer: true,
-                    'data-website-id': 'fd089b30-9952-41b0-a817-fce38fefae17'
-                }
-            ],
+            link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}]
         }
     },
+    extends: ['nuxt-umami'],
     vue: {
         compilerOptions: {
             isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect"].includes(tag),

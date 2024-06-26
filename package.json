@@ -59,6 +59,7 @@
         "json-editor-vue": "latest",
         "jszip": "latest",
         "mathjs": "latest",
+        "nuxt-umami": "^2.6.2",
         "pngjs": "latest",
         "rehype-mathjax": "latest",
         "remark-math": "latest",

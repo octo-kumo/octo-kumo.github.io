@@ -56,6 +56,9 @@ importers:
       mathjs:
         specifier: latest
         version: 13.0.0
+      nuxt-umami:
+        specifier: ^2.6.2
+        version: 2.6.2
       pinia:
         specifier: latest
         version: 2.1.7(typescript@5.5.2)(vue@3.4.30(typescript@5.5.2))
@@ -5601,6 +5604,9 @@ packages:
 
   nuxt-site-config@2.2.12:
     resolution: {integrity: sha512-a2pmr4NEa1ZgZoD0guKrX+gpVpntOpqBTRBJ6zv+PqAwvltdeau2zRZBGZ2N7kFnGaGolonb2fBN+YzQh3dSDQ==}
+
+  nuxt-umami@2.6.2:
+    resolution: {integrity: sha512-2EtGdp04jml4967Qgo1lv2jrMPnojuDnJD5aMaNAxbwG4EGTkpRjymNDokLEzDiJEEovkhxrY3pJAX/TO8f4/A==}
 
   nuxt@3.12.2:
     resolution: {integrity: sha512-DkQvGbILEUwvXJ9TG2iTMvyO6D9ABLyA5bJ+ns8ZgWatfSXC7hXnL//PTYF7neYUzyYn0e5fLHcXgRLa/9YoLA==}
@@ -15116,6 +15122,8 @@ snapshots:
       - vite
       - vue
       - webpack
+
+  nuxt-umami@2.6.2: {}
 
   nuxt@3.12.2(@opentelemetry/api@1.9.0)(@parcel/watcher@2.4.1)(@types/node@20.14.8)(encoding@0.1.13)(ioredis@5.4.1)(magicast@0.3.4)(rollup@4.18.0)(sass@1.77.6)(terser@5.31.1)(typescript@5.5.2)(vite@5.3.1(@types/node@20.14.8)(sass@1.77.6)(terser@5.31.1))(vue-tsc@2.0.19(typescript@5.5.2)):
     dependencies:
