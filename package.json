@@ -37,9 +37,9 @@
         "imagemin-webp": "^8.0.0",
         "nuxt": "latest",
         "nuxt-booster": "^3.0.16",
-        "nuxt-gtag": "^2.0.6",
         "nuxt-security": "latest",
         "sass": "latest",
+        "simple-analytics-vue": "^3.0.2",
         "typescript": "latest"
     },
     "dependencies": {

@@ -58,8 +58,8 @@ export default defineNuxtConfig({
         "nuxt-booster",
         '@formkit/auto-animate/nuxt',
         '@nuxtjs/robots',
-        "nuxt-gtag"
     ],
+    extends: ['github:ijkml/nuxt-umami'],
     robots: {
         rules: {
             UserAgent: '*',
@@ -67,9 +67,6 @@ export default defineNuxtConfig({
             Sitemap: `${SITE_URL}/sitemap.xml`,
             Comment: 'kumo{h3ll0_b075!}'
         }
-    },
-    gtag: {
-        id: 'G-FDD5V3L07K'
     },
     pwa: {},
     // security: {
