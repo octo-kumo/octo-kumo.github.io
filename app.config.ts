@@ -3,6 +3,7 @@ export default defineAppConfig({
         host: "https://analytics.octo-kumo.me",
         id: 'fd089b30-9952-41b0-a817-fce38fefae17',
         version: 2,
-        debug: true
+        debug: true,
+        customEndpoint: "/api/send"
     },
 });
