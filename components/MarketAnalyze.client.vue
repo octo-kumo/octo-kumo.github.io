@@ -93,20 +93,29 @@ function generateApexChartData(demandRelation: string, supplyRelation: string) {
     return {Pd: demandExpr.evaluate(scope), Ps: supplyExpr.evaluate(scope), Qd: quantity, Qs: quantity};
   }
 
+  const dataPoints: any[] = [];
+  const nonNegative = ({x, y}: { x: number, y: number }) => x >= 0 && y >= 0;
+  for (let i = min.value; i <= max.value; i += step.value) {
+    if (yVar.value === 'Q') dataPoints.push(calculateQuantities(i));
+    else dataPoints.push(calculatePrices(i));
+  }
+  const demand = dataPoints.map(point => ({x: point.Qd, y: point.Pd})).filter(nonNegative);
+  const supply = dataPoints.map(point => ({x: point.Qs, y: point.Ps})).filter(nonNegative);
+
+
   const diff = math.simplify(`(${demandRelation})-(${supplyRelation})`);
   const diffP = math.derivative(diff, xVar.value);
   const gen = (x: number) => xVar.value === "P" ? {P: x} : {Q: x};
   const eqX = newtonsMethod(x => diff.evaluate(gen(x)), x => diffP.evaluate(gen(x)));
   const [eqP, eqQ] = xVar.value === "P" ? [eqX, demandExpr.evaluate({P: eqX})] : [demandExpr.evaluate({Q: eqX}), eqX];
-  console.log([eqP, eqQ])
-  const dataPoints: any[] = [];
-  for (let i = min.value; i <= max.value; i += step.value) {
-    if (yVar.value === 'Q') dataPoints.push(calculateQuantities(i));
-    else dataPoints.push(calculatePrices(i));
-  }
-  const nonNegative = ({x, y}: { x: number, y: number }) => x >= 0 && y >= 0;
-  const demand = dataPoints.map(point => ({x: point.Qd, y: point.Pd})).filter(nonNegative);
-  const supply = dataPoints.map(point => ({x: point.Qs, y: point.Ps})).filter(nonNegative);
+  const CS = [...demand.filter(d => d.y > eqP).map(point => ({x: point.x, y: [eqP, point.y]})), {
+    x: eqQ,
+    y: [eqP, eqP]
+  }];
+  const SS = [...supply.filter(d => d.y < eqP).map(point => ({x: point.x, y: [point.y, eqP]})), {
+    x: eqQ,
+    y: [eqP, eqP]
+  }];
 
   return [
     {
@@ -118,12 +127,12 @@ function generateApexChartData(demandRelation: string, supplyRelation: string) {
     },
     {
       name: "CS",
-      data: [...demand.filter(d => d.y > eqP).map(point => ({x: point.x, y: [eqP, point.y]})), {x: eqQ, y: [eqP, eqP]}],
+      data: CS,
       type: 'rangeArea'
     },
     {
       name: "SS",
-      data: [...supply.filter(d => d.y < eqP).map(point => ({x: point.x, y: [point.y, eqP]})), {x: eqQ, y: [eqP, eqP]}],
+      data: SS,
       type: 'rangeArea'
     }
   ];
@@ -144,6 +153,7 @@ updateData();
 <template>
   <div>
     <el-form
+        :inline="true"
         label-width="auto"
     >
       <el-form-item label="Demand Relation" show-message>
@@ -162,7 +172,7 @@ updateData();
           <el-radio value="P">Price</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="Range">
+      <el-form-item label="Graph Range">
         <el-col :span="8">
           <el-input-number
               v-model="min"

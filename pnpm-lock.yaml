@@ -29,9 +29,6 @@ importers:
       '@tensorflow/tfjs-core':
         specifier: latest
         version: 4.20.0(encoding@0.1.13)
-      algebrite:
-        specifier: ^1.4.0
-        version: 1.4.0
       apexcharts:
         specifier: ^3.49.2
         version: 3.49.2
@@ -41,6 +38,9 @@ importers:
       element-plus:
         specifier: latest
         version: 2.7.6(vue@3.4.30(typescript@5.5.2))
+      fetch-event-stream:
+        specifier: ^0.1.5
+        version: 0.1.5
       firebase:
         specifier: latest
         version: 10.12.2
@@ -2752,9 +2752,6 @@ packages:
   ajv@8.16.0:
     resolution: {integrity: sha512-F0twR8U1ZU67JIEtekUcLkXkoO5mMMmgGD8sK/xUFzJ805jxHQl92hImFAqqXMyMYjSPOyUPAwHYhB72g5sTXw==}
 
-  algebrite@1.4.0:
-    resolution: {integrity: sha512-YPqD1baZOjuRnvR6xwyGYDJ9OvcqkPLLuxFAxnTGYVnKadzA5PyoMXm8mA1pYCE2xloMSgcZkTL1cXkK5C87cg==}
-
   ansi-colors@4.1.3:
     resolution: {integrity: sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==}
     engines: {node: '>=6'}
@@ -2934,10 +2931,6 @@ packages:
 
   bidi-js@1.0.3:
     resolution: {integrity: sha512-RKshQI1R3YQ+n9YJz2QQ147P66ELpa1FQEg20Dk8oW9t2KgLbpDLLp9aGZ7y8WHSshDknG0bknqGw5/tyCs5tw==}
-
-  big-integer@1.6.52:
-    resolution: {integrity: sha512-QxD8cf2eVqJOOz63z6JIN9BzvVs/dlySa5HGSBH5xtR8dPteIRQnBxxKqkNTiT6jbDTF6jAfrd4oMcND9RGbQg==}
-    engines: {node: '>=0.6'}
 
   bignumber.js@9.1.2:
     resolution: {integrity: sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==}
@@ -3951,6 +3944,9 @@ packages:
 
   fd-slicer@1.1.0:
     resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
+
+  fetch-event-stream@0.1.5:
+    resolution: {integrity: sha512-V1PWovkspxQfssq/NnxoEyQo1DV+MRK/laPuPblIZmSjMN8P5u46OhlFQznSr9p/t0Sp8Uc6SbM3yCMfr0KU8g==}
 
   fflate@0.8.2:
     resolution: {integrity: sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==}
@@ -11420,10 +11416,6 @@ snapshots:
       require-from-string: 2.0.2
       uri-js: 4.4.1
 
-  algebrite@1.4.0:
-    dependencies:
-      big-integer: 1.6.52
-
   ansi-colors@4.1.3: {}
 
   ansi-escapes@4.3.2:
@@ -11638,8 +11630,6 @@ snapshots:
   bidi-js@1.0.3:
     dependencies:
       require-from-string: 2.0.2
-
-  big-integer@1.6.52: {}
 
   bignumber.js@9.1.2:
     optional: true
@@ -12871,6 +12861,8 @@ snapshots:
   fd-slicer@1.1.0:
     dependencies:
       pend: 1.2.0
+
+  fetch-event-stream@0.1.5: {}
 
   fflate@0.8.2: {}
 

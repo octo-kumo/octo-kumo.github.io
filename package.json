@@ -53,6 +53,7 @@
         "apexcharts": "^3.49.2",
         "dat.gui": "latest",
         "element-plus": "latest",
+        "fetch-event-stream": "^0.1.5",
         "firebase": "latest",
         "firebase-functions": "latest",
         "fuse.js": "^7.0.0",

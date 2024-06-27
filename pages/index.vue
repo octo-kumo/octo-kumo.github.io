@@ -8,10 +8,10 @@
           site crashing entirely.
         </el-text>
         <el-text class="text-xl! font-bold mt-2!" tag="h2">
-          <span v-if="isSearching">Searching... {{ docsFiltered.length }}/{{ docs.length }}</span>
+          <span v-if="isSearching">Searching... {{ docsFiltered.length }}/{{ docs?.length }}</span>
           <span v-else>Recent Posts / Writeups</span>
         </el-text>
-        <el-input v-model="search" placeholder="Fuzzy search!"/>
+        <el-input v-model="search" placeholder="Fuzzy search!" :prefix-icon="ElIconSearch"/>
         <el-pagination v-model:current-page="currPage" class="justify-center" layout="prev, pager, next"
                        :total="docsFiltered.length" :page-size="5"
                        hide-on-single-page/>
@@ -50,8 +50,8 @@
         :sm="12">
       <el-card class="my-3"
                shadow="never">
-        <template #header v-if="item.meta.image">
-          <el-image :src="item.meta.image as string"
+        <template #header v-if="item.meta?.image">
+          <el-image :src="item.meta?.image as string"
                     class="w-full h-48" lazy
                     fit="cover"></el-image>
         </template>
@@ -79,7 +79,7 @@
 </template>
 <script setup lang="ts">
 import {guessPathName} from "~/mixins/display";
-import Fuse from 'fuse.js';
+import Fuse, {type RangeTuple} from 'fuse.js';
 
 const currPage = ref(1);
 const router = useRouter();
@@ -114,12 +114,16 @@ const fuse = new Fuse(docs.value ?? [], {
   }]
 });
 const isSearching = computed(() => search.value.length > 1)
-const docsFiltered = computed(() => isSearching.value ? fuse.search(search.value).filter(e => (e?.score ?? 1) < 0.9) : (docs.value ?? []).map(w => ({item: w})))
+const docsFiltered = computed(() => isSearching.value ? fuse.search(search.value).filter(e => (e?.score ?? 1) < 0.9) : (docs.value ?? []).map(w => ({
+  item: w,
+  matches: null,
+  score: null
+})))
 // definePageMeta({
 //   layout: 'clean'
 // });
-function highlight(text: string, indices: number[][]) {
-  if (!indices) return text;
+function highlight(text?: string, indices?: readonly RangeTuple[]) {
+  if (!indices || !text) return text;
   return indices.reduce((str, [start, end]) => {
     str[start] = `<span class="highlighted">${str[start]}`;
     str[end] = `${str[end]}</span>`;

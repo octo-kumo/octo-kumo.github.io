@@ -36,8 +36,6 @@ onMounted(() => {
 });
 
 watch(() => props.theme, (newTheme, oldTheme) => {
-  console.log(newTheme);
-  console.log(oldTheme);
   vueUtterances.value.querySelector("iframe").contentWindow.postMessage(
       {
         type: "set-theme",
@@ -46,7 +44,6 @@ watch(() => props.theme, (newTheme, oldTheme) => {
       "https://utteranc.es"
   );
 });
-
 </script>
 
 <template>

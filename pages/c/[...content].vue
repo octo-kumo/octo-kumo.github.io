@@ -33,15 +33,12 @@ const {data: docs} = await useAsyncData(`c/docs`, () => queryContent("/")
     .find());
 const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent(one_lvl_up(path))).then(r => r.map(removeSame)));
 
-const peers = docs.value!.filter(d => d._path === path || (path === '/' ? path === one_lvl_up(d._path!) : (
-    !d._path?.startsWith(path) && // must not be child
-    d._path?.startsWith(one_lvl_up(path)) && // must be of same parent
-    (d._path !== one_lvl_up(path) || d._path === '/')))); // must not be parent
+const peers = docs.value!.filter(d => one_lvl_up(d._path!) === one_lvl_up(path)); // must not be parent
 const meIndex = peers.findIndex(d => d._path === path);
-const [prev, next] = [
+const [prev, next] = peers.length > 1 ? [
   peers[(meIndex - 1 + peers.length) % peers.length],
   peers[(meIndex + 1) % peers.length],
-];
+] : [];
 
 // console.log([prev, next])
 
@@ -64,12 +61,12 @@ const defaultProps = {
 };
 </script>
 <template>
-  <el-breadcrumb separator="/" class="m-2 text-center" v-if="path && path !== '/'">
-    <el-breadcrumb-item v-for="b in breadcrumbs($route.path)" :to="{ path: b.path }">{{ b.name }}
-    </el-breadcrumb-item>
-  </el-breadcrumb>
   <template v-if="doc">
     <article class="content-page-sections">
+      <el-breadcrumb separator="/" v-if="path && path !== '/'">
+        <el-breadcrumb-item v-for="b in breadcrumbs($route.path)" :to="{ path: b.path }">{{ b.name }}
+        </el-breadcrumb-item>
+      </el-breadcrumb>
       <el-anchor :offset="60" class="w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg">
         <el-text>{{ doc.title || "Nothing to see" }}</el-text>
         <table-of-contents v-for="child in (doc?.body?.toc?.links ?? [])" :link="child">
@@ -81,7 +78,7 @@ const defaultProps = {
           <el-tag size="small" v-for="tag in doc.tags">{{ tag }}</el-tag>
         </el-space>
       </el-anchor>
-      <ContentRenderer :value="doc" class="content">
+      <ContentRenderer :value="doc" class="content mt-10">
         <template #empty>
           <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80"/>
         </template>
@@ -98,10 +95,10 @@ const defaultProps = {
           <el-icon>
             <el-icon-arrow-left/>
           </el-icon>
-          {{ prev?.title }}
+          {{ prev?.title || prev?._path }}
         </kumo-link>
         <kumo-link :to="'/c'+(next?._path??'')" type="primary">
-          {{ next?.title }}
+          {{ next?.title || next?._path }}
           <el-icon>
             <el-icon-arrow-right/>
           </el-icon>
@@ -126,7 +123,21 @@ const defaultProps = {
               class="content-page-sections"
               label="utteranc" :theme="color.value === 'dark' ? 'github-dark' : 'github-light'"/>
   <template v-else>
-    <el-empty description="Not found"/>
+    <el-empty description="404 not found" class="h-48 flex-auto content-page-sections" :image-size="80">
+      <kumo-link :to="'/c'+one_lvl_up(path)">
+        <el-icon>
+          <el-icon-arrow-up/>
+        </el-icon>
+        Back one level up
+      </kumo-link>
+      <br/>
+      <kumo-link to="/c">
+        <el-icon>
+          <el-icon-home-filled/>
+        </el-icon>
+        Back Home
+      </kumo-link>
+    </el-empty>
   </template>
   <el-backtop :right="50" :bottom="50"/>
 </template>
