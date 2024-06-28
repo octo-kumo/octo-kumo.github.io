@@ -6,6 +6,10 @@
         v-bind="$attrs"
         @click="routerProps.navigate">
       <slot/>
+
+      <el-icon v-if="$attrs.showIcon">
+        <el-icon-link/>
+      </el-icon>
     </el-link>
   </nuxt-link>
 </template>

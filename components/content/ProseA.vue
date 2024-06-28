@@ -2,9 +2,9 @@
   <el-link
       type="primary"
       :href="href"
-      :target="target!">
+      :target="href.startsWith('#')?'_self':target!">
     <slot/>
-    <template #icon>
+    <template #icon v-if="!href.startsWith('#')">
       <el-icon>
         <el-icon-link/>
       </el-icon>
@@ -27,3 +27,8 @@ defineProps({
   }
 })
 </script>
+<style lang="scss" scoped>
+a[data-footnote-ref], a[data-footnote-backref] {
+  scroll-margin-top: var(--el-menu-horizontal-height) !important;
+}
+</style>

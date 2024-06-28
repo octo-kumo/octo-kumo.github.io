@@ -29,7 +29,7 @@ function one_lvl_up(path: string) {
 
 const {data: doc} = await useAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
 const {data: docs} = await useAsyncData(`c/docs`, () => queryContent("/")
-    .only(['_path', 'title', 'description', 'created', 'updated'])
+    .only(['_path', 'title', 'description', 'created', 'updated', 'tags'])
     .find());
 const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent(one_lvl_up(path))).then(r => r.map(removeSame)));
 
@@ -59,6 +59,21 @@ const defaultProps = {
   children: 'children',
   label: (data: TreeNodeData, node: Node) => data.title || data._path.split("/").findLast(Boolean) || "Unknown"
 };
+
+function navToToc(nav: any, depth = 2) {
+  if (depth <= 0) return;
+  return nav?.map((a: any) => ({
+    id: 'content_' + hashCode(a._path).toString(16).padStart(8, '0'),
+    text: a.title || a._path,
+    children: navToToc(a.children, depth - 1)
+  }));
+}
+
+const TOC = computed(() => {
+  let toc = doc.value?.body?.toc?.links ?? [];
+  if (path === '/') toc = [...toc, ...navToToc(navigation.value)];
+  return toc;
+})
 </script>
 <template>
   <template v-if="doc">
@@ -69,7 +84,7 @@ const defaultProps = {
       </el-breadcrumb>
       <el-anchor :offset="60" class="w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg">
         <el-text>{{ doc.title || "Nothing to see" }}</el-text>
-        <table-of-contents v-for="child in (doc?.body?.toc?.links ?? [])" :link="child">
+        <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
         <el-divider></el-divider>
         <el-text class="block" size="small" v-if="doc.created">Created {{ displayNiceDatetime(doc.created) }}</el-text>
@@ -109,12 +124,20 @@ const defaultProps = {
   </template>
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections" :current-node-key="path" node-key="_path"
+             :default-expand-all="path==='/'"
              highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation!"
              :props="defaultProps">
       <template #default="{ node, data }">
         <span class="flex justify-between flex-1">
-          <kumo-link :to="'/c' + data._path" class="mr-2 justify-start!">{{ node.label }}</kumo-link>
-          <el-text class="max-w-80" size="small">{{ docs.find(d => d._path === data._path)?.description }}</el-text>
+          <kumo-link :id="'content_'+hashCode(data._path).toString(16).padStart(8,'0')" :to="'/c' + data._path"
+                     class="mr-2 justify-start!">{{
+              node.label
+            }}<el-tag class="mx-1" size="small" v-for="tag in (docs.find(d => d._path === data._path)?.tags??[])">{{
+                tag
+              }}</el-tag></kumo-link>
+          <el-text class="max-w-80 flex-1" size="small">{{
+              docs.find(d => d._path === data._path)?.description
+            }}</el-text>
         </span>
       </template>
     </el-tree>
@@ -166,6 +189,12 @@ const defaultProps = {
 
   .katex-html {
     display: none;
+  }
+
+  section.footnotes {
+    ol li {
+      font-size: var(--el-font-size-extra-small);
+    }
   }
 }
 </style>
