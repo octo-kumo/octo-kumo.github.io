@@ -91,7 +91,10 @@ function resetChat() {
   p {
     margin-block-start: 0;
     margin-block-end: 0;
-    line-height: 1.5rem !important;
+  }
+
+  pre {
+    line-height: 1.5;
   }
 }
 </style>
