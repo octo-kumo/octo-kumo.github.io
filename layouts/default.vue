@@ -1,5 +1,5 @@
 <template>
-  <el-scrollbar class="fixed! top-0 left-0 z-9 h-full drawer">
+  <el-scrollbar class="fixed! top-0 left-0 z-9 drawer">
     <kumo-drawer :collapse="!drawerIsOpen" class="hidden md:block menu"
                  :default-openeds="['projects']"/>
   </el-scrollbar>
@@ -30,6 +30,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .drawer {
   margin-top: var(--el-menu-horizontal-height);
+  height: calc(100vh - var(--el-menu-horizontal-height));
 }
 
 .main {

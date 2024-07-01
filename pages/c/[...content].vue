@@ -32,7 +32,7 @@ const {data: docs} = await useAsyncData(`c/docs`, () => queryContent("/")
     .only(['_path', 'title', 'description', 'created', 'updated', 'tags'])
     .find());
 const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent(one_lvl_up(path))).then(r => r.map(removeSame)));
-
+const getDoc = (_path: string) => docs.value?.find(d => d._path === _path)
 const peers = docs.value!.filter(d => one_lvl_up(d._path!) === one_lvl_up(path)); // must not be parent
 const meIndex = peers.findIndex(d => d._path === path);
 const [prev, next] = peers.length > 1 ? [
@@ -60,8 +60,8 @@ const defaultProps = {
   label: (data: TreeNodeData, node: Node) => data.title || data._path.split("/").findLast(Boolean) || "Unknown"
 };
 
-function navToToc(nav: any, depth = 2) {
-  if (depth <= 0) return;
+function navToToc(nav: NavItem[], depth = 2) {
+  if (depth <= 0) return [];
   return nav?.map((a: any) => ({
     id: 'content_' + hashCode(a._path).toString(16).padStart(8, '0'),
     text: a.title || a._path,
@@ -69,9 +69,16 @@ function navToToc(nav: any, depth = 2) {
   }));
 }
 
+function recursiveSort(nav: NavItem[]) {
+  if (!(nav && Array.isArray(nav) && nav.length > 0)) return
+  nav.sort((a, b) => String(getDoc(b._path)?.created).localeCompare(getDoc(a._path)?.created))
+  nav.forEach(c => recursiveSort(c.children));
+  return nav
+}
+
 const TOC = computed(() => {
   let toc = doc.value?.body?.toc?.links ?? [];
-  if (path === '/') toc = [...toc, ...navToToc(navigation.value)];
+  if (path === '/') toc = [...toc, ...navToToc(recursiveSort(navigation.value))];
   return toc;
 })
 </script>
@@ -125,20 +132,24 @@ const TOC = computed(() => {
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections" :current-node-key="path" node-key="_path"
              :default-expand-all="path==='/'"
-             highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation!"
+             highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="recursiveSort(navigation!)"
              :props="defaultProps">
       <template #default="{ node, data }">
+        <el-tooltip
+            :show-after="500"
+            effect="light"
+            :content="`Created ${displayNiceDatetime(getDoc(data._path)?.created)} · Edited ${displayNiceDatetime(getDoc(data._path)?.updated)}`"
+            placement="left">
         <span class="flex justify-between flex-1">
           <kumo-link :id="'content_'+hashCode(data._path).toString(16).padStart(8,'0')" :to="'/c' + data._path"
                      class="mr-2 justify-start!">{{
               node.label
-            }}<el-tag class="mx-1" size="small" v-for="tag in (docs.find(d => d._path === data._path)?.tags??[])">{{
+            }}<el-tag class="mx-1" size="small" v-for="tag in (getDoc(data._path)?.tags??[])">{{
                 tag
               }}</el-tag></kumo-link>
-          <el-text class="max-w-80 flex-1" size="small">{{
-              docs.find(d => d._path === data._path)?.description
-            }}</el-text>
+          <el-text class="max-w-80 flex-1" size="small">{{ getDoc(data._path)?.description }}</el-text>
         </span>
+        </el-tooltip>
       </template>
     </el-tree>
   </template>
