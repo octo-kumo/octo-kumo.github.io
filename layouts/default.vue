@@ -38,6 +38,7 @@ onMounted(() => {
   margin-top: var(--el-menu-horizontal-height);
   min-height: calc(100vh - var(--el-menu-horizontal-height));
   margin-left: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2);
+  overflow-y: visible;
 
   &.open {
     margin-left: 200px;
