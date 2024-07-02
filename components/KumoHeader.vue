@@ -22,11 +22,9 @@
 </template>
 <script setup lang="ts">
 import {guessPathName} from "@/mixins/display";
-import {useTitle} from '@vueuse/core';
 
-const title = useTitle();
 const route = useRoute();
-const routeName = computed(() => title.value ?? route.meta.title ?? guessPathName(route.name as string));
+const routeName = computed(() => route.meta.title ?? guessPathName(route.name as string));
 
 const color = useColorMode();
 const colorMode = computed({
