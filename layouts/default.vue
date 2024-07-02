@@ -14,10 +14,13 @@
   </el-main>
 </template>
 <script setup lang="ts">
-const drawerIsOpen = ref<boolean>(true);
+import {useStorage} from '@vueuse/core'
+
+const drawerIsOpen = useStorage("drawer-open", false);
 const {$pwa} = useNuxtApp()
 
 onMounted(() => {
+  console.log($pwa)
   if ($pwa?.offlineReady) {
     ElMessage({
       showClose: true,
@@ -38,11 +41,15 @@ onMounted(() => {
   margin-top: var(--el-menu-horizontal-height);
   min-height: calc(100vh - var(--el-menu-horizontal-height));
   margin-left: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2);
-  overflow-y: visible;
+  background-image: url("/bg/bg_texture.png");
 
   &.open {
     margin-left: 200px;
   }
+}
+
+html.dark .main {
+  background-image: url("/bg/bg_texture.dark.png");
 }
 
 .menu:not(.el-menu--collapse) {

@@ -5,7 +5,7 @@
     await imagemin(['public/img/*.{jpg,png}'], {
         destination: 'public/img/',
         plugins: [
-            imageminWebp({quality: 50})
+            imageminWebp({quality: 25, method: 6, size: 16 * 1024})
         ]
     });
     console.log('Images optimized');

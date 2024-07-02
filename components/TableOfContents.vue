@@ -17,3 +17,9 @@ defineProps<{
     </template>
   </el-anchor-link>
 </template>
+<style lang="scss">
+.toc[data-path='/'] .el-anchor__link {
+  @apply py-0.1;
+  // only apply to main page
+}
+</style>

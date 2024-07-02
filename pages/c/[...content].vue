@@ -40,11 +40,18 @@ const [prev, next] = peers.length > 1 ? [
   peers[(meIndex + 1) % peers.length],
 ] : [];
 
-// console.log([prev, next])
+recursiveSort(navigation.value);
 
 function removeSame(parent: NavItem) {
   if (parent.children) (parent.children = parent.children.filter(c => c._path !== parent._path)).forEach(c => removeSame(c));
   return parent;
+}
+
+function recursiveSort(nav?: NavItem[] | null) {
+  if (!(nav && Array.isArray(nav) && nav.length > 0)) return
+  nav.sort((a, b) => String(getDoc(b._path)?.created).localeCompare(getDoc(a._path)?.created))
+  nav.forEach(c => recursiveSort(c.children));
+  return nav
 }
 
 useContentHead(doc as Ref<ParsedContent>);
@@ -69,16 +76,9 @@ function navToToc(nav: NavItem[], depth = 2) {
   }));
 }
 
-function recursiveSort(nav: NavItem[]) {
-  if (!(nav && Array.isArray(nav) && nav.length > 0)) return
-  nav.sort((a, b) => String(getDoc(b._path)?.created).localeCompare(getDoc(a._path)?.created))
-  nav.forEach(c => recursiveSort(c.children));
-  return nav
-}
-
 const TOC = computed(() => {
   let toc = doc.value?.body?.toc?.links ?? [];
-  if (path === '/') toc = [...toc, ...navToToc(recursiveSort(navigation.value))];
+  if (path === '/') toc = [...toc, ...navToToc(navigation.value)];
   return toc;
 })
 </script>
@@ -89,7 +89,9 @@ const TOC = computed(() => {
         <el-breadcrumb-item v-for="b in breadcrumbs($route.path)" :to="{ path: b.path }">{{ b.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
-      <el-anchor :offset="60" class="w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg">
+      <el-anchor :offset="60"
+                 class="toc w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg"
+                 :data-path="path">
         <el-text>{{ doc.title || "Nothing to see" }}</el-text>
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
@@ -132,7 +134,7 @@ const TOC = computed(() => {
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections" :current-node-key="path" node-key="_path"
              :default-expand-all="path==='/'"
-             highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="recursiveSort(navigation!)"
+             highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation!"
              :props="defaultProps">
       <template #default="{ node, data }">
         <el-tooltip

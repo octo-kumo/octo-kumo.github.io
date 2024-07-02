@@ -1,7 +1,7 @@
 <template>
   <el-tabs>
     <el-tab-pane label="Market">
-      <lazy-market-analyze/>
+      <lazy-finance-market-analyze/>
     </el-tab-pane>
     <el-tab-pane label="Time Value">
       <el-row :gutter="20">
