@@ -40,7 +40,7 @@ pre {
   border: 1px solid var(--el-border-color);
   //box-shadow: var(--el-box-shadow-lighter);
   border-radius: var(--el-border-radius-base);
-  background-color: var(--el-bg-color-page);
+  background-color: var(--el-bg-color);
 
   & code {
     @apply font-mono;

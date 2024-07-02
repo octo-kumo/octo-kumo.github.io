@@ -22,10 +22,11 @@
 </template>
 <script setup lang="ts">
 import {guessPathName} from "@/mixins/display";
+import {useTitle} from '@vueuse/core';
 
+const title = useTitle();
 const route = useRoute();
-const routeName = ref("");
-watch(() => route.meta.title ?? route.name, newId => routeName.value = guessPathName(newId!), {immediate: true});
+const routeName = computed(() => title.value ?? route.meta.title ?? guessPathName(route.name as string));
 
 const color = useColorMode();
 const colorMode = computed({
@@ -41,6 +42,6 @@ const colorMode = computed({
 }
 
 html.dark .header {
-  background-image: radial-gradient(transparent 1px, #222 1px);
+  background-image: radial-gradient(transparent 1px, var(--bg-color) 1px);
 }
 </style>

@@ -20,7 +20,6 @@ const drawerIsOpen = useStorage("drawer-open", false);
 const {$pwa} = useNuxtApp()
 
 onMounted(() => {
-  console.log($pwa)
   if ($pwa?.offlineReady) {
     ElMessage({
       showClose: true,

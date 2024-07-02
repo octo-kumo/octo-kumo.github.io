@@ -7,8 +7,13 @@ body,
   'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
 
+html{
+  --bg-color: #fff;
+  background: var(--bg-color);
+}
+
 html.dark {
-  background: #222;
+  --bg-color: #181818;
   color: white;
 }
 

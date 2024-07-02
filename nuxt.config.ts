@@ -43,6 +43,7 @@ export default defineNuxtConfig({
         '@vueuse/nuxt',
         '@unocss/nuxt',
         '@pinia/nuxt',
+        // 'v-shared-element/nuxt',
         '@pinia-plugin-persistedstate/nuxt',
         '@element-plus/nuxt',
         '@nuxtjs/color-mode',
@@ -88,6 +89,7 @@ export default defineNuxtConfig({
             }
         },
         markdown: {
+            anchorLinks: false,
             remarkPlugins: ['remark-math'],
             rehypePlugins: ['rehype-mathjax']
         },
@@ -112,7 +114,6 @@ export default defineNuxtConfig({
     colorMode: {
         classSuffix: '',
     },
-
     unocss: {
         uno: true,
         attributify: true,
