@@ -10,6 +10,6 @@ code {
   padding: .1em .4em;
   border: 1px solid var(--el-border-color);
   border-radius: var(--el-border-radius-base);
-  font-size: var(--el-font-size-extra-small);
+  font-size: 12px;
 }
 </style>

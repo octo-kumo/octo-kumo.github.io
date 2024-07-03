@@ -80,7 +80,7 @@ pre {
 
   & code {
     @apply font-mono;
-    font-size: var(--el-font-size-small);
+    font-size: 12px;
     counter-reset: step;
     counter-increment: step 0;
   }
@@ -101,7 +101,7 @@ pre {
 
   &[data-lang]::before {
     color: var(--el-text-color-secondary);
-    font-size: var(--el-font-size-small);
+    font-size: 12px;
     font-weight: bold;
     position: absolute;
     right: 0.5em;
@@ -118,7 +118,7 @@ pre {
 
   &[data-file]::after {
     color: var(--el-color-primary);
-    font-size: var(--el-font-size-small);
+    font-size: 12px;
     font-weight: bold;
     position: absolute;
     left: 1em;
@@ -137,13 +137,9 @@ div.mermaid {
   overflow: auto;
   padding: 5px;
 
-  &[data-file] {
-    padding-top: var(--el-font-size-small);
-  }
-
   &[data-file]::before {
     color: var(--el-text-color-secondary);
-    font-size: var(--el-font-size-small);
+    font-size: 12px;
     font-weight: bold;
     content: attr(data-file);
     position: absolute;
