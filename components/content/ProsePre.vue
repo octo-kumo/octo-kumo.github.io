@@ -1,9 +1,10 @@
 <template>
-  <pre :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta" v-if="language!=='mermaid'"><slot/></pre>
-  <client-only v-else>
-    <div v-html="render(code)" ref="mermaid" class="mermaid" :data-file="filename">
-    </div>
-  </client-only>
+  <pre v-if="language!=='mermaid'" :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta"><slot/></pre>
+  <!--  <client-only v-else>-->
+  <div v-else ref="mermaid" class="mermaid" :data-file="filename">
+    <el-skeleton :rows="2"/>
+  </div>
+  <!--  </client-only>-->
 </template>
 
 <script setup lang="ts">
@@ -47,6 +48,7 @@ function getMermaid() {
 
 function render(code: string) {
   getMermaid().then((d) => {
+    console.log("mermaid render!")
     d.initialize({
       fontFamily: 'var(--font)',
       startOnLoad: false,
@@ -58,12 +60,11 @@ function render(code: string) {
     mermaid.value.innerHTML = res.svg;
     res.bindFunctions?.(mermaid.value);
   });
-  return 'Loading...'
 }
 
 watch(color, (nc) => {
-  if (import.meta.client && (window as any).mermaid) render(props.code);
-});
+  if (import.meta.client && props.language === 'mermaid') render(props.code);
+}, {immediate: true});
 </script>
 
 <style lang="scss">

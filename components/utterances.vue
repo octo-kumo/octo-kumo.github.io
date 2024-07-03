@@ -51,4 +51,8 @@ watch(() => props.theme, (newTheme, oldTheme) => {
   </div>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.vue-utterances {
+  padding-bottom: 2em;
+}
+</style>
