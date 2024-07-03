@@ -1,5 +1,5 @@
 export default function (str: string): number {
-    if (!str) return str;
+    if (!str) return 0;
     let hash = 0,
         i, chr;
     if (str.length === 0) return hash;
@@ -8,5 +8,5 @@ export default function (str: string): number {
         hash = ((hash << 5) - hash) + chr;
         hash |= 0;
     }
-    return hash;
+    return hash >>> 0;
 }

@@ -60,6 +60,7 @@
         "json-editor-vue": "latest",
         "jszip": "latest",
         "mathjs": "latest",
+        "mermaid": "^10.9.1",
         "nuxt-umami": "^2.6.2",
         "pngjs": "latest",
         "rehype-mathjax": "latest",

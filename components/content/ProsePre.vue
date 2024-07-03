@@ -1,9 +1,16 @@
 <template>
-  <pre :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta"><slot/></pre>
+  <pre :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta" v-if="language!=='mermaid'"><slot/></pre>
+  <client-only v-else>
+    <div v-html="render(code)" ref="mermaid" class="mermaid" :data-file="filename">
+    </div>
+  </client-only>
 </template>
 
 <script setup lang="ts">
-defineProps({
+import type {Mermaid} from "mermaid";
+
+const mermaid = ref();
+const props = defineProps({
   code: {
     type: String,
     default: ''
@@ -28,7 +35,35 @@ defineProps({
     type: String,
     default: null
   }
-})
+});
+const color = useColorMode();
+
+function getMermaid() {
+  if (import.meta.client) return ((window as any) as {
+    mermaid: Promise<Mermaid>
+  }).mermaid ??= import("mermaid").then(d => d.default);
+  return import("mermaid").then(d => d.default);
+}
+
+function render(code: string) {
+  getMermaid().then((d) => {
+    d.initialize({
+      fontFamily: 'var(--font)',
+      startOnLoad: false,
+      securityLevel: 'loose',
+      theme: color.value === 'dark' ? 'dark' : 'neutral',
+    });
+    return d.render("mermaid-" + String(hashCode(new Date().toISOString()).toString(36)), code);
+  }).then(res => {
+    mermaid.value.innerHTML = res.svg;
+    res.bindFunctions?.(mermaid.value);
+  });
+  return 'Loading...'
+}
+
+watch(color, (nc) => {
+  if (import.meta.client && (window as any).mermaid) render(props.code);
+});
 </script>
 
 <style lang="scss">
@@ -95,4 +130,24 @@ pre {
   }
 }
 
+div.mermaid {
+  position: relative;
+  scrollbar-width: thin;
+  overflow: auto;
+  padding: 5px;
+
+  &[data-file] {
+    padding-top: var(--el-font-size-small);
+  }
+
+  &[data-file]::before {
+    color: var(--el-text-color-secondary);
+    font-size: var(--el-font-size-small);
+    font-weight: bold;
+    content: attr(data-file);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
 </style>

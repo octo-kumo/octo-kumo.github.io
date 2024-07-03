@@ -34,7 +34,6 @@ const chartOptions: Ref<ApexOptions> = ref(<ApexOptions>{
   },
 });
 watch(colorMode, (value) => {
-  console.log(chartOptions.value.theme?.mode, value.value)
   if (chartOptions.value.theme?.mode !== value.value) chartOptions.value = {
     ...chartOptions.value,
     theme: {mode: value.value}

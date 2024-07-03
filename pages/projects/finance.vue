@@ -3,6 +3,9 @@
     <el-tab-pane label="Market">
       <lazy-finance-market-analyze/>
     </el-tab-pane>
+    <el-tab-pane label="Opportunity">
+      <lazy-finance-opportunity/>
+    </el-tab-pane>
     <el-tab-pane label="Time Value">
       <el-row :gutter="20">
         <el-col
