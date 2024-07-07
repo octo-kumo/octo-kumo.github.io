@@ -52,6 +52,7 @@ function render(code: string) {
     d.initialize({
       fontFamily: 'var(--font)',
       startOnLoad: false,
+      themeVariables: {},
       securityLevel: 'loose',
       theme: color.value === 'dark' ? 'dark' : 'neutral',
     });
