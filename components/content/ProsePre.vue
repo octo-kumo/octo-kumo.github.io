@@ -1,7 +1,8 @@
 <template>
-  <pre v-if="language!=='mermaid'" :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta"><slot/></pre>
+  <pre v-show="language!=='mermaid'" :class="$props.class" :data-lang="language" :data-file="filename"
+       :data-meta="meta"><slot/></pre>
   <!--  <client-only v-else>-->
-  <div v-else ref="mermaid" class="mermaid" :data-file="filename">
+  <div v-if="language==='mermaid'" ref="mermaid" class="mermaid" :data-file="filename">
     <el-skeleton :rows="2"/>
   </div>
   <!--  </client-only>-->
@@ -60,11 +61,13 @@ function render(code: string) {
   }).then(res => {
     mermaid.value.innerHTML = res.svg;
     res.bindFunctions?.(mermaid.value);
-  });
+  }).catch(e => console.error(e));
 }
 
 watch(color, (nc) => {
+  if (mermaid.value.getAttribute("theme") === color.value) return;
   if (import.meta.client && props.language === 'mermaid') render(props.code);
+  mermaid.value.setAttribute("theme", color.value);
 }, {immediate: true});
 </script>
 
