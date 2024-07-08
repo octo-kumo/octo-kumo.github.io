@@ -18,24 +18,22 @@
         <el-timeline class="mt-2!" v-auto-animate>
           <el-timeline-item v-for="{item:doc,matches,score} in docsFiltered.slice(currPage*5-5,currPage*5)"
                             :key="doc._path" :timestamp="displayDocDates(doc)">
-            <kumo-link no-prefetch type="primary" :to="'/c'+doc._path">
+            <kumo-link no-prefetch type="primary" :to="'/c'+doc._path"
+                       :style="{viewTransitionName:getTransitionName(doc,'title')}">
               <span v-html="highlight( doc.title , matches?.find(m=>m.key==='title')?.indices)"></span>
             </kumo-link>
             <el-tag v-if="score" :type="score<0.1?'success':score<0.5?'warning':'danger'" size="small" class="ml-1">
               {{ (1 - score).toPrecision(2) }}
             </el-tag>
             <br/>
-            <kumo-link no-prefetch class="font-mono! text-xs!" :to="'/c'+doc._path">
+            <el-text class="font-mono!" size="small">
               <span v-html="'/c' + highlight( doc._path , matches?.find(m=>m.key==='_path')?.indices)"></span>
-            </kumo-link>
+            </el-text>
             <el-text class="block mt-1!">
               <span v-html="highlight(doc.description, matches?.find(m=>m.key==='description')?.indices)"></span>
             </el-text>
-            <el-space class="mt-2!" wrap v-if="doc.tags&&Array.isArray(doc.tags)&&doc.tags.length>0">
-              <el-tag size="small" v-for="(tag, i) in doc.tags">
-                <span v-html="highlight(tag, matches?.find(m=>m.key==='tags'&&m.refIndex===i)?.indices)"></span>
-              </el-tag>
-            </el-space>
+            <article-tags :article="doc"
+                          :custom-tag-html="(tag,i)=>highlight(tag, matches?.find(m=>m.key==='tags'&&m.refIndex===i)?.indices)??''"/>
           </el-timeline-item>
           <el-empty v-if="docsFiltered.length === 0">
           </el-empty>
@@ -50,8 +48,8 @@
         :sm="12">
       <el-card class="my-3"
                shadow="never">
-        <template #header v-if="item.meta?.image">
-          <el-image :src="item.meta?.image as string"
+        <template #header v-if="item.meta?.image!">
+          <el-image :src="item.meta?.image! as string"
                     class="w-full h-48" lazy
                     fit="cover"></el-image>
         </template>
@@ -80,6 +78,7 @@
 <script setup lang="ts">
 import {guessPathName} from "~/mixins/display";
 import Fuse, {type RangeTuple} from 'fuse.js';
+import getTransitionName from "~/utils/get-transition-name";
 
 const currPage = ref(1);
 const router = useRouter();
@@ -93,16 +92,9 @@ const contentPage = {
     description: "Markdown Content Archive"
   }
 };
-const {data: docs} = await useAsyncData(`c/docs_i`, () => queryContent("/")
-    .only(['_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points'])
-    .where({_extension: {$eq: 'md'}, created: {$exists: true}})
-    .sort({created: -1})
-    .find().then(res => {
-      res.forEach(p => p.title = guessArticleTitle(p));
-      return res;
-    }));
+const {data: docs} = await useLazyAsyncData(`c/docs_i`, () => queryAllDocs(true));
 
-const fuse = new Fuse(docs.value ?? [], {
+const fuse = new Fuse([], {
   threshold: 0.6,
   distance: 100,
   useExtendedSearch: true,
@@ -116,6 +108,8 @@ const fuse = new Fuse(docs.value ?? [], {
     weight: 1
   }]
 });
+watch(docs, (val) => fuse.setCollection(val));
+
 const isSearching = computed(() => search.value.length > 1)
 const docsFiltered = computed(() => isSearching.value ? fuse.search(search.value).filter(e => (e?.score ?? 1) < 0.9) : (docs.value ?? []).map(w => ({
   item: w,
@@ -132,12 +126,6 @@ function highlight(text?: string, indices?: readonly RangeTuple[]) {
     str[end] = `${str[end]}</span>`;
     return str;
   }, text.split("")).join("");
-}
-
-function displayDocDates(doc: { created: string, updated: string }) {
-  const a = displayNiceDatetime(doc.created);
-  const b = displayNiceDatetime(doc.updated);
-  return a === b ? a : `${a} · edited ${b}`
 }
 
 useHead({

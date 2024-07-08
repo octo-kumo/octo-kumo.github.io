@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import type {ParsedContent} from "@nuxt/content";
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   article?: ParsedContent | Partial<ParsedContent>,
   idPrefix?: string,
   hideCat?: boolean,
-}>();
+  customTagHtml?: (tag: string, index: number) => string
+}>(), {
+  customTagHtml: (tag) => tag
+})
 
 const categories = [
   "web", "crypto", "forensic", "forensics", "algo", "pwn", "rev", "misc", "osint", "box", "hardware"
 ];
 const category = computed(() => props.article?._path?.split("/").at(-2) ?? 'unknown');
-const transitionId = computed(() => 'tags_' + (props.idPrefix ?? '') + (props.article?._path ?? 'default'));
+const transitionId = computed(() => getTransitionName(props.article, 'tags-' + (props.idPrefix ?? '')));
 </script>
 
 <template>
@@ -21,7 +24,9 @@ const transitionId = computed(() => 'tags_' + (props.idPrefix ?? '') + (props.ar
       {{ article.solves }} solves
     </el-tag>
     <el-tag size="small" v-if="categories.includes(category)&&!hideCat">{{ category }}</el-tag>
-    <el-tag size="small" v-for="tag in (article.tags??[])">{{ tag }}</el-tag>
+    <el-tag size="small" v-for="(tag,i) in (article.tags??[])">
+      <span v-html="customTagHtml(tag,i)"></span>
+    </el-tag>
   </div>
 </template>
 

@@ -5,7 +5,7 @@ const path = (useRoute().path.substring(2) || "/").replace(/(?!^)\/$/, '');
 const query: QueryBuilderParams = {
   path,
   sort: [{solves: 1}],
-  only: ['_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'excerpt']
+  only: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'excerpt']
 }
 </script>
 

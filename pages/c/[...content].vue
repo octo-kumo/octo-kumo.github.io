@@ -4,6 +4,7 @@ import type Node from "element-plus/es/components/tree/src/model/node";
 import type {TreeNodeData, TreeOptionProps} from "element-plus/es/components/tree/src/tree.type";
 import type {NavItem, ParsedContent, TocLink} from "@nuxt/content";
 import type {Ref} from "@vue/reactivity";
+import type {ComputedRef} from "vue";
 
 const color = useColorMode();
 const path = (useRoute().path.substring(2) || "/")
@@ -23,28 +24,28 @@ function breadcrumbs(path: string) {
   return breadcrumbs;
 }
 
-const {data: doc} = await useAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
-const {data: docs} = await useAsyncData(`c/docs`, () => queryContent("/")
-    .only(['_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points'])
-    .find());
-const {data: navigation} = await useAsyncData(`c/nav_${path}`, () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
+// function recursiveSort(nav?: NavItem[] | null) {
+//   if (!(nav && Array.isArray(nav) && nav.length > 0)) return
+//   nav.sort((a, b) => String(getDoc(b._path)?.created).localeCompare(getDoc(a._path)?.created))
+//   nav.forEach(c => recursiveSort(c.children));
+//   return nav
+// }
+
+const {data: doc} = await useLazyAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
+const {data: docs} = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
+const {data: navigation} = await useLazyAsyncData(`c/nav_${path}`, async () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
 const getDoc = (_path: string) => docs.value?.find(d => d._path === _path)
-const peers = docs.value!.filter(d => oneLvlUp(d._path!) === oneLvlUp(path)); // must not be parent
-const meIndex = peers.findIndex(d => d._path === path);
-const [prev, next] = peers.length > 1 ? [
-  peers[(meIndex - 1 + peers.length) % peers.length],
-  peers[(meIndex + 1) % peers.length],
-] : [];
+const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedContent> }> = computed(() => {
+  if (!docs.value) return {};
+  const peers = docs.value.filter(d => oneLvlUp(d._path!) === oneLvlUp(path)); // must not be parent
+  const meIndex = peers.findIndex(d => d._path === path);
+  const [prev, next] = peers.length > 1 ? [
+    peers[(meIndex - 1 + peers.length) % peers.length],
+    peers[(meIndex + 1) % peers.length],
+  ] : [];
+  return {prev, next};
+})
 
-recursiveSort(navigation.value);
-
-
-function recursiveSort(nav?: NavItem[] | null) {
-  if (!(nav && Array.isArray(nav) && nav.length > 0)) return
-  nav.sort((a, b) => String(getDoc(b._path)?.created).localeCompare(getDoc(a._path)?.created))
-  nav.forEach(c => recursiveSort(c.children));
-  return nav
-}
 
 useContentHead(doc as Ref<ParsedContent>);
 definePageMeta({
@@ -52,7 +53,7 @@ definePageMeta({
   // disableSEO: true
 });
 useSeoMeta({
-  articleModifiedTime: new Date(doc?.value?.updated ?? 0).toISOString()
+  articleModifiedTime: () => new Date(doc?.value?.updated ?? 0).toISOString()
 });
 const defaultProps: TreeOptionProps = {
   children: 'children',
@@ -76,7 +77,7 @@ const TOC = computed(() => {
 });
 
 const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0');
-const titleTransitionId = computed(() => `content_title_${path}`);
+const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
 </script>
 <template>
   <template v-if="doc">
@@ -91,26 +92,24 @@ const titleTransitionId = computed(() => `content_title_${path}`);
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
       </el-anchor>
-      <h1 id="content-title">{{ guessArticleTitle(doc) }}</h1>
-      <div style="view-transition-name: 'content-page-info'">
-        <el-text class="block" size="small" v-if="doc.created">Created {{ displayNiceDatetime(doc.created) }}</el-text>
-        <el-text class="block" size="small" v-if="doc.updated">Updated {{ displayNiceDatetime(doc.updated) }}</el-text>
-      </div>
+      <h1 id="content-title" class="mb-2">{{ guessArticleTitle(doc) }}</h1>
       <article-tags :article="doc"/>
+      <el-text size="small">{{ displayDocDates(doc) }}</el-text>
       <ContentRenderer :value="doc" class="content mt-10">
         <template #empty>
           <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80"/>
         </template>
       </ContentRenderer>
-      <div class="flex justify-between mt-3" style="view-transition-name: 'content-page-peer-nav'" v-if="prev&&next">
-        <kumo-link :to="'/c'+(prev?._path??'')" type="primary">
+      <div class="flex justify-between mt-3" style="view-transition-name: 'content-page-peer-nav'"
+           v-if="nav.prev&&nav.next">
+        <kumo-link :to="'/c'+(nav.prev?._path??'')" type="primary">
           <el-icon>
             <el-icon-arrow-left/>
           </el-icon>
-          {{ guessArticleTitle(prev) }}
+          {{ guessArticleTitle(nav.prev) }}
         </kumo-link>
-        <kumo-link :to="'/c'+(next?._path??'')" type="primary">
-          {{ guessArticleTitle(next) }}
+        <kumo-link :to="'/c'+(nav.next?._path??'')" type="primary">
+          {{ guessArticleTitle(nav.next) }}
           <el-icon>
             <el-icon-arrow-right/>
           </el-icon>
