@@ -14,6 +14,9 @@ importers:
       '@formkit/auto-animate':
         specifier: latest
         version: 0.8.2
+      '@giscus/vue':
+        specifier: ^3.0.0
+        version: 3.0.0(vue@3.4.31(typescript@5.5.3))
       '@mdi/font':
         specifier: latest
         version: 7.4.47
@@ -50,9 +53,6 @@ importers:
       fuse.js:
         specifier: latest
         version: 7.0.0
-      giscus:
-        specifier: ^1.5.0
-        version: 1.5.0
       json-editor-vue:
         specifier: latest
         version: 0.15.1(@lezer/common@1.2.1)(vue@3.4.31(typescript@5.5.3))
@@ -1519,6 +1519,11 @@ packages:
   '@fortawesome/free-solid-svg-icons@6.5.2':
     resolution: {integrity: sha512-QWFZYXFE7O1Gr1dTIp+D6UcFUF0qElOnZptpi7PBUMylJh+vFmIedVe1Ir6RM1t2tEQLLSV1k7bR4o92M+uqlw==}
     engines: {node: '>=6'}
+
+  '@giscus/vue@3.0.0':
+    resolution: {integrity: sha512-ZoSUmlc3ee2a+kdumCaXFDZaB4h9b1BYWzsmmRP7zoGEQKYopdAnzGvJK7RdvrYGAzNqZtGUxI0NnBl8/UA6bQ==}
+    peerDependencies:
+      vue: '>=3.2.0'
 
   '@google-cloud/firestore@7.9.0':
     resolution: {integrity: sha512-c4ALHT3G08rV7Zwv8Z2KG63gZh66iKdhCBeDfCpIkLrjX6EAjTD/szMdj14M+FnQuClZLFfW5bAgoOjfNmLtJg==}
@@ -9354,6 +9359,11 @@ snapshots:
   '@fortawesome/free-solid-svg-icons@6.5.2':
     dependencies:
       '@fortawesome/fontawesome-common-types': 6.5.2
+
+  '@giscus/vue@3.0.0(vue@3.4.31(typescript@5.5.3))':
+    dependencies:
+      giscus: 1.5.0
+      vue: 3.4.31(typescript@5.5.3)
 
   '@google-cloud/firestore@7.9.0(encoding@0.1.13)':
     dependencies:

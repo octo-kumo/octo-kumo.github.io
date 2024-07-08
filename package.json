@@ -45,6 +45,7 @@
     "dependencies": {
         "@element-plus/icons-vue": "latest",
         "@formkit/auto-animate": "latest",
+        "@giscus/vue": "^3.0.0",
         "@mdi/font": "latest",
         "@tensorflow-models/qna": "latest",
         "@tensorflow/tfjs-backend-cpu": "latest",
@@ -57,7 +58,6 @@
         "firebase": "latest",
         "firebase-functions": "latest",
         "fuse.js": "latest",
-        "giscus": "^1.5.0",
         "json-editor-vue": "latest",
         "jszip": "latest",
         "mathjs": "latest",

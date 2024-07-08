@@ -69,9 +69,15 @@
       </el-card>
     </el-col>
     <el-col :cols="24">
-      <utterances repo="octo-kumo/octo-kumo.github.io" issue-term="pathname"
-                  label="utteranc"
-                  :theme="color.value === 'dark'?'github-dark':'github-light'"/>
+      <Giscus repo="octo-kumo/octo-kumo.github.io"
+              repoId="590442270"
+              category="General"
+              reactionsenabled="1"
+              mapping="specific"
+              class="content-page-sections"
+              style="view-transition-name: 'comment-sec'"
+              :theme="color.value"
+              loading="lazy"/>
     </el-col>
   </el-row>
 </template>
@@ -79,6 +85,7 @@
 import {guessPathName} from "~/mixins/display";
 import Fuse, {type RangeTuple} from 'fuse.js';
 import getTransitionName from "~/utils/get-transition-name";
+import Giscus from "@giscus/vue";
 
 const currPage = ref(1);
 const router = useRouter();

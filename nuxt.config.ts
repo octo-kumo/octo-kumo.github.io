@@ -30,7 +30,7 @@ export default defineNuxtConfig({
             nodeVersion: '20'
         },
         prerender: {
-            routes: ['/sitemap.xml', '/robots.txt']
+            routes: ['/', '/sitemap.xml', '/robots.txt']
         }
     },
     devtools: {enabled: false},

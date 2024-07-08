@@ -5,6 +5,7 @@ import type {TreeNodeData, TreeOptionProps} from "element-plus/es/components/tre
 import type {NavItem, ParsedContent, TocLink} from "@nuxt/content";
 import type {Ref} from "@vue/reactivity";
 import type {ComputedRef} from "vue";
+import Giscus from '@giscus/vue';
 
 const color = useColorMode();
 const path = (useRoute().path.substring(2) || "/")
@@ -141,9 +142,17 @@ const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
       </template>
     </el-tree>
   </template>
-  <utterances v-if="doc || (docs && docs.length > 0)" repo="octo-kumo/octo-kumo.github.io" issue-term="pathname"
-              class="content-page-sections" style="view-transition-name: 'content-comment-sec'"
-              label="utteranc" :theme="color.value === 'dark' ? 'github-dark' : 'github-light'"/>
+  <Giscus v-if="doc || (docs && docs.length > 0)"
+          repo="octo-kumo/octo-kumo.github.io"
+          repoId="590442270"
+          category="General"
+          reactionsenabled="1"
+          mapping="specific"
+          class="content-page-sections"
+          style="view-transition-name: 'comment-sec'"
+          :theme="color.value"
+          loading="lazy"
+  />
   <!--  <el-skeleton v-else-if="status==='pending'"/>-->
   <template v-else>
     <el-empty description="404 not found" class="h-48 flex-auto content-page-sections" :image-size="80">
