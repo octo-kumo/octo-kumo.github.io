@@ -4,7 +4,6 @@ import type {Ref} from "@vue/reactivity";
 
 const game_container: Ref<HTMLElement | undefined> = ref(undefined);
 watch(game_container, value => {
-  console.log("watch", value)
   const game = new AirDefence();
   game.attach(value);
 });
@@ -17,6 +16,10 @@ onMounted(() => {
 </template>
 
 <style lang="css">
+#air-defence-game-parent {
+  height: 100vh;
+}
+
 #game-dat-gui {
   position: fixed;
   right: 0;

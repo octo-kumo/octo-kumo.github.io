@@ -1,5 +1,5 @@
 <template>
-  <el-page-header :icon="''" class="header">
+  <el-page-header :icon="''" class="header select-none">
     <template #title>云</template>
     <template #icon>
       <el-icon class="hidden! md:flex!">
@@ -38,6 +38,7 @@ const colorMode = computed({
   background-image: radial-gradient(transparent 1px, #fff 1px);
   background-size: 4px 4px;
   backdrop-filter: saturate(50%) blur(4px);
+  height: var(--el-menu-horizontal-height);
 }
 
 html.dark .header {

@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <lazy-air-defence-game v-if="supported" style="height: 100vh">
+    <lazy-air-defence-game v-if="supported">
     </lazy-air-defence-game>
     <el-card v-else>
       <template #header>

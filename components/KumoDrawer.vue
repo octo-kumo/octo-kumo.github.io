@@ -1,7 +1,7 @@
 <template>
   <el-menu router
            :default-active="route.path.startsWith('/c/')?'c':String(route.name)"
-           class="el-menu-vertical-demo"
+           class="el-menu-vertical-demo select-none"
   >
     <el-menu-item index="index" route="/">
       <el-icon>

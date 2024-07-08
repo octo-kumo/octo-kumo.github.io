@@ -10,11 +10,11 @@ const props = withDefaults(defineProps<{
   customTagHtml: (tag: string) => tag
 })
 
-const transitionId = computed(() => getTransitionName(props.article, 'tags-' + (props.idPrefix ?? '')));
 </script>
 
 <template>
-  <div class="flex gap-1 my-1 article-tags" v-if="article">
+  <div class="flex gap-1 my-1 article-tags" v-if="article"
+       :data-transition-name="getTransitionName(article, 'tags-' + (idPrefix ?? ''))">
     <el-tag v-if="article.points" size="small" type="info">{{ article.points }} points</el-tag>
     <el-tag v-if="article.solves" size="small" :type=" article.solves>50?'info':'success'">
       {{ article.solves }} solves
@@ -27,7 +27,4 @@ const transitionId = computed(() => getTransitionName(props.article, 'tags-' + (
 </template>
 
 <style scoped lang="scss">
-.article-tags {
-  view-transition-name: v-bind('transitionId');
-}
 </style>

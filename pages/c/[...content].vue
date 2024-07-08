@@ -80,22 +80,21 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
 <template>
   <template v-if="doc">
     <article class="content-page-sections">
-      <el-breadcrumb separator="/" v-if="path && path !== '/'" style="view-transition-name: 'content-bc'">
+      <el-breadcrumb separator="/" v-if="path && path !== '/'" data-transition-name="content-bc">
         <el-breadcrumb-item v-for="b in breadcrumbs($route.path)" :to="{ path: b.path }">{{ b.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
       <el-anchor :offset="60" v-if="TOC.length>0"
-                 class="toc w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg"
+                 class="toc w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg select-none"
                  :data-path="path">
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
       </el-anchor>
-      <h1 id="content-title" class="mb-2 text-4xl"
-          :style="{viewTransitionName:getTransitionName(doc, 'title')}">
+      <h1 id="content-title" class="mb-2 text-4xl" :data-transition-name="getTransitionName(doc, 'title')">
         {{ guessArticleTitle(doc) }}
       </h1>
       <article-tags :article="doc"/>
-      <el-text size="small" class="ml-1" :style="{viewTransitionName:getTransitionName(doc, 'dates')}">
+      <el-text size="small" class="ml-1" :data-transition-name="getTransitionName(doc, 'dates')">
         {{ displayDocDates(doc) }}
       </el-text>
       <ContentRenderer :value="doc" class="content mt-10">
@@ -103,7 +102,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
           <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80"/>
         </template>
       </ContentRenderer>
-      <div class="flex justify-between mt-3" style="view-transition-name: 'content-page-peer-nav'"
+      <div class="flex justify-between mt-3" data-transition-name="content-page-peer-nav"
            v-if="nav.prev&&nav.next">
         <kumo-link :to="'/c'+(nav.prev?._path??'')" type="primary">
           <el-icon>
@@ -124,7 +123,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
   </template>
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path"
-             :default-expand-all="path==='/'" style="view-transition-name: 'content-tree-nav'"
+             :default-expand-all="path==='/'" data-transition-name="content-tree-nav"
              highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation as any"
              :props="defaultProps">
       <template #default="{ node, data }">
@@ -166,10 +165,6 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
   <el-backtop :right="50" :bottom="50"/>
 </template>
 <style lang="scss">
-#content-title {
-  view-transition-name: v-bind('titleTransitionId');
-}
-
 .content-page-sections {
   @apply max-w-prose mx-a lg:min-w-prose;
 

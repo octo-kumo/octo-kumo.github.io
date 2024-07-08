@@ -3,8 +3,7 @@
     <kumo-drawer :collapse="!drawerIsOpen" class="hidden md:block menu"
                  :default-openeds="['projects']"/>
   </el-scrollbar>
-  <kumo-header @back="drawerIsOpen=!drawerIsOpen" class="fixed top-0 left-0 z-9 w-full justify-center flex"
-               style="height:var(--el-menu-horizontal-height)">
+  <kumo-header @back="drawerIsOpen=!drawerIsOpen" class="fixed top-0 left-0 z-9 w-full justify-center flex">
     <kumo-drawer mode="horizontal" class="md:hidden!"/>
   </kumo-header>
   <el-main class="p-0! main <md:ml-0!" :class="{'open':drawerIsOpen}">

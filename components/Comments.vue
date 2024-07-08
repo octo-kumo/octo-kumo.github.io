@@ -1,5 +1,5 @@
 <template>
-  <div style="view-transition-name: 'comment-sec'">
+  <div data-transition-name="comment-sec">
     <Giscus
         repo="octo-kumo/octo-kumo.github.io"
         repo-id="R_kgDOIzFvHg"

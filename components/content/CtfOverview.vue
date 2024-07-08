@@ -17,7 +17,7 @@ const bindingFilter = computed(() => Object.keys(filter).filter(k => filter[k]))
 
 function tagFilter(article: ParsedContent) {
   if (bindingFilter.value.length === 0) return true;
-  return article.tags?.some(tag => bindingFilter.value.includes(tag)) || bindingFilter.value.includes(getCtfCategory(article))
+  return article.tags?.some((tag: string) => bindingFilter.value.includes(tag)) || bindingFilter.value.includes(getCtfCategory(article) ?? '')
 }
 </script>
 
@@ -30,17 +30,18 @@ function tagFilter(article: ParsedContent) {
           {{ tag }}
         </el-check-tag>
       </el-space>
+      <br/>
       <el-space wrap fill :fill-ratio="30">
         <el-card
             v-for="article in list.filter(i=>oneLvlUp(i._path)!==path&&i._path!==path).filter(tagFilter)"
             :key="article._path" shadow="hover">
           <template #header>
             <kumo-link :to="`/c${article._path}`" type="primary"
-                       :style="{viewTransitionName: getTransitionName(article, 'title')}">
+                       :data-transition-name="getTransitionName(article, 'title')">
               {{ guessArticleTitle(article) }}
             </kumo-link>
             <article-tags :article="article"/>
-            <el-text size="small" :style="{viewTransitionName:getTransitionName(article, 'dates')}">
+            <el-text size="small" :data-transition-name="getTransitionName(article, 'dates')">
               {{ displayDocDates(article) }}
             </el-text>
           </template>

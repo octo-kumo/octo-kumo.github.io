@@ -19,7 +19,7 @@
           <el-timeline-item v-for="{item:doc,matches,score} in docsFiltered.slice(currPage*5-5,currPage*5)"
                             :key="doc._path" :timestamp="displayDocDates(doc)">
             <kumo-link no-prefetch type="primary" :to="'/c'+doc._path"
-                       :style="{viewTransitionName:getTransitionName(doc,'title')}">
+                       :data-transition-name="getTransitionName(doc,'title')">
               <span v-html="highlight( doc.title , matches?.find(m=>m.key==='title')?.indices)"></span>
             </kumo-link>
             <el-tag v-if="score" :type="score<0.1?'success':score<0.5?'warning':'danger'" size="small" class="ml-1">
@@ -78,7 +78,6 @@
 <script setup lang="ts">
 import {guessPathName} from "~/mixins/display";
 import Fuse, {type RangeTuple} from 'fuse.js';
-import getTransitionName from "~/utils/get-transition-name";
 
 const currPage = ref(1);
 const router = useRouter();
@@ -107,7 +106,7 @@ const fuse = new Fuse([], {
     weight: 1
   }]
 });
-watch(status, () => fuse.setCollection(docs.value));
+watch(status, () => fuse.setCollection(docs.value ?? []));
 
 const isSearching = computed(() => search.value.length > 1)
 const docsFiltered = computed(() => isSearching.value ? fuse.search(search.value).filter(e => (e?.score ?? 1) < 0.9) : (docs.value ?? []).map(w => ({
