@@ -1,9 +1,8 @@
 <template>
-  <template v-if="language!=='mermaid'">
+  <template v-show="language!=='mermaid'">
     <pre :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta"><slot/></pre>
   </template>
-  <div v-else ref="mermaid" class="mermaid" :data-file="filename">
-    <el-skeleton :rows="2"/>
+  <div v-show="language==='mermaid'" ref="mermaid" class="mermaid" :data-file="filename">
   </div>
 </template>
 
