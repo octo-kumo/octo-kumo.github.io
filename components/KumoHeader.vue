@@ -13,24 +13,18 @@
       </el-space>
     </template>
     <template #extra>
-      <client-only>
-        <el-switch ref="switc" v-model="colorMode" inline-prompt active-text="dark" inactive-text="light"
-                   size="large"></el-switch>
-      </client-only>
+      <el-button :icon="icon" @click="color.preference=(color.value==='dark'?'light':'dark')" circle/>
     </template>
   </el-page-header>
 </template>
 <script setup lang="ts">
 import {guessPathName} from "@/mixins/display";
+import {Moon, Sunny} from "@element-plus/icons-vue";
 
 const route = useRoute();
-const routeName = computed(() => route.meta.title ?? guessPathName(route.name as string));
-
 const color = useColorMode();
-const colorMode = computed({
-  get: () => color.value === 'dark',
-  set: () => (color.preference = (color.value === 'dark' ? 'light' : 'dark')),
-});
+const routeName = computed(() => route.meta.title ?? guessPathName(route.name as string));
+const icon = computed(() => color.value === 'dark' ? Moon : Sunny);
 </script>
 <style lang="scss" scoped>
 .header {

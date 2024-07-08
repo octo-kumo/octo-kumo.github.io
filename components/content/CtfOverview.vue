@@ -36,13 +36,12 @@ function tagFilter(article: ParsedContent) {
             v-for="article in list.filter(i=>oneLvlUp(i._path)!==path&&i._path!==path).filter(tagFilter)"
             :key="article._path" shadow="hover">
           <template #header>
-            <kumo-link :to="`/c${article._path}`" type="primary"
-                       :data-transition-name="getTransitionName(article, 'title')">
-              {{ guessArticleTitle(article) }}
+            <kumo-link :to="`/c${article._path}`" type="primary">
+              <span v-shared="getTransitionName(article, 'title')" v-text="guessArticleTitle(article)"></span>
             </kumo-link>
             <article-tags :article="article"/>
-            <el-text size="small" :data-transition-name="getTransitionName(article, 'dates')">
-              {{ displayDocDates(article) }}
+            <el-text size="small">
+              <span v-shared="getTransitionName(article, 'dates')" v-text="displayDocDates(article)"/>
             </el-text>
           </template>
           <el-text>

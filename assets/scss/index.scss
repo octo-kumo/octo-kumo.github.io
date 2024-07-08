@@ -31,7 +31,3 @@ html {
   margin-top: 0;
   margin-bottom: 0;
 }
-
-*[data-transition-name] {
-  view-transition-name: attr(data-transition-name);
-}

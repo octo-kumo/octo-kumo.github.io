@@ -80,7 +80,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
 <template>
   <template v-if="doc">
     <article class="content-page-sections">
-      <el-breadcrumb separator="/" v-if="path && path !== '/'" data-transition-name="content-bc">
+      <el-breadcrumb separator="/" v-if="path && path !== '/'" v-shared="'content-bc'">
         <el-breadcrumb-item v-for="b in breadcrumbs($route.path)" :to="{ path: b.path }">{{ b.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
@@ -90,19 +90,19 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
       </el-anchor>
-      <h1 id="content-title" class="mb-2 text-4xl" :data-transition-name="getTransitionName(doc, 'title')">
+      <h1 id="content-title" class="mb-2 text-4xl" v-shared="getTransitionName(doc, 'title')">
         {{ guessArticleTitle(doc) }}
       </h1>
       <article-tags :article="doc"/>
-      <el-text size="small" class="ml-1" :data-transition-name="getTransitionName(doc, 'dates')">
-        {{ displayDocDates(doc) }}
+      <el-text size="small">
+        <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)"/>
       </el-text>
       <ContentRenderer :value="doc" class="content mt-10">
         <template #empty>
           <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80"/>
         </template>
       </ContentRenderer>
-      <div class="flex justify-between mt-3" data-transition-name="content-page-peer-nav"
+      <div class="flex justify-between mt-3" v-shared="'content-page-peer-nav'"
            v-if="nav.prev&&nav.next">
         <kumo-link :to="'/c'+(nav.prev?._path??'')" type="primary">
           <el-icon>
@@ -123,7 +123,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
   </template>
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path"
-             :default-expand-all="path==='/'" data-transition-name="content-tree-nav"
+             :default-expand-all="path==='/'" v-shared="'content-tree-nav'"
              highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation as any"
              :props="defaultProps">
       <template #default="{ node, data }">
