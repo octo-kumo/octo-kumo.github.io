@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./Bqgad-wD.js","./CZaA9KMf.js","./B8zNPolB.js","./entry.Dqa2vHz6.css","./Chessboard.DdKXjCy3.css"])))=>i.map(i=>d[i]);
+import{_ as t}from"./B8zNPolB.js";import{_}from"./DlAUqK2U.js";import{i as n,b as r,a as c}from"./CZaA9KMf.js";const s=c(()=>t(()=>import("./Bqgad-wD.js"),__vite__mapDeps([0,1,2,3,4]),import.meta.url).then(o=>o.default||o)),a={};function m(o,i){const e=s;return r(),n(e)}const l=_(a,[["render",m]]);export{l as default};
