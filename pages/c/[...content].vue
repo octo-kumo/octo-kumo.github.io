@@ -5,9 +5,7 @@ import type {TreeNodeData, TreeOptionProps} from "element-plus/es/components/tre
 import type {NavItem, ParsedContent, TocLink} from "@nuxt/content";
 import type {Ref} from "@vue/reactivity";
 import type {ComputedRef} from "vue";
-import Giscus from '@giscus/vue';
 
-const color = useColorMode();
 const path = (useRoute().path.substring(2) || "/")
     .replace(/(?!^)\/$/, ''); // strip trailing slash
 
@@ -32,9 +30,9 @@ function breadcrumbs(path: string) {
 //   return nav
 // }
 
-const {data: doc} = await useAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
-const {data: docs} = await useAsyncData(`c/docs`, () => queryAllDocs());
-const {data: navigation} = await useAsyncData(`c/nav_${path}`, async () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
+const {data: doc, status} = await useLazyAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
+const {data: docs} = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
+const {data: navigation} = await useLazyAsyncData(`c/nav_${path}`, async () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
 const getDoc = (_path: string) => docs.value?.find(d => d._path === _path)
 const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedContent> }> = computed(() => {
   if (!docs.value) return {};
@@ -142,18 +140,8 @@ const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
       </template>
     </el-tree>
   </template>
-  <Giscus v-if="doc || (docs && docs.length > 0)"
-          repo="octo-kumo/octo-kumo.github.io"
-          repoId="590442270"
-          category="General"
-          reactionsenabled="1"
-          mapping="specific"
-          class="content-page-sections"
-          style="view-transition-name: 'comment-sec'"
-          :theme="color.value"
-          loading="lazy"
-  />
-  <!--  <el-skeleton v-else-if="status==='pending'"/>-->
+  <comments class="content-page-sections" v-if="doc || (docs && docs.length > 0)"/>
+  <el-skeleton v-else-if="status==='pending'"/>
   <template v-else>
     <el-empty description="404 not found" class="h-48 flex-auto content-page-sections" :image-size="80">
       <kumo-link :to="'/c'+oneLvlUp(path)">

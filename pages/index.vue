@@ -69,15 +69,7 @@
       </el-card>
     </el-col>
     <el-col :cols="24">
-      <Giscus repo="octo-kumo/octo-kumo.github.io"
-              repoId="590442270"
-              category="General"
-              reactionsenabled="1"
-              mapping="specific"
-              class="content-page-sections"
-              style="view-transition-name: 'comment-sec'"
-              :theme="color.value"
-              loading="lazy"/>
+      <comments/>
     </el-col>
   </el-row>
 </template>
@@ -85,11 +77,9 @@
 import {guessPathName} from "~/mixins/display";
 import Fuse, {type RangeTuple} from 'fuse.js';
 import getTransitionName from "~/utils/get-transition-name";
-import Giscus from "@giscus/vue";
 
 const currPage = ref(1);
 const router = useRouter();
-const color = useColorMode();
 const nav = ref(router.getRoutes());
 const search = ref("");
 const contentPage = {
@@ -99,7 +89,7 @@ const contentPage = {
     description: "Markdown Content Archive"
   }
 };
-const {data: docs} = await useAsyncData(`c/docs_i`, () => queryAllDocs(true));
+const {data: docs} = await useLazyAsyncData(`c/docs_i`, () => queryAllDocs(true));
 
 const fuse = new Fuse([], {
   threshold: 0.6,
