@@ -1,1 +1,0 @@
-import{d as e,ar as t,b as o,c as r}from"./BW8pWPQi.js";import"./DfwgkF-H.js";const _=e({__name:"index",setup(a){return t({title:"Projects"}),(n,s)=>(o(),r("h1",null,"Projects"))}});export{_ as default};
