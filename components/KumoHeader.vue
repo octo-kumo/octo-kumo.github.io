@@ -34,6 +34,7 @@ const colorMode = computed({
 </script>
 <style lang="scss" scoped>
 .header {
+  view-transition-name: "app-header";
   background-image: radial-gradient(transparent 1px, #fff 1px);
   background-size: 4px 4px;
   backdrop-filter: saturate(50%) blur(4px);

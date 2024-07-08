@@ -95,7 +95,7 @@ const contentPage = {
 };
 const {data: docs} = await useAsyncData(`c/docs_i`, () => queryContent("/")
     .only(['_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points'])
-    .where({_extension: {$eq: 'md'}})
+    .where({_extension: {$eq: 'md'}, created: {$exists: true}})
     .sort({created: -1})
     .find().then(res => {
       res.forEach(p => p.title = guessArticleTitle(p));

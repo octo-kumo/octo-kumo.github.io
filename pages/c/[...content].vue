@@ -76,11 +76,12 @@ const TOC = computed(() => {
 });
 
 const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0');
+const titleTransitionId = computed(() => `content_title_${path}`);
 </script>
 <template>
   <template v-if="doc">
     <article class="content-page-sections">
-      <el-breadcrumb separator="/" v-if="path && path !== '/'">
+      <el-breadcrumb separator="/" v-if="path && path !== '/'" style="view-transition-name: 'content-bc'">
         <el-breadcrumb-item v-for="b in breadcrumbs($route.path)" :to="{ path: b.path }">{{ b.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
@@ -91,15 +92,17 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
         </table-of-contents>
       </el-anchor>
       <h1 id="content-title">{{ guessArticleTitle(doc) }}</h1>
-      <el-text class="block" size="small" v-if="doc.created">Created {{ displayNiceDatetime(doc.created) }}</el-text>
-      <el-text class="block" size="small" v-if="doc.updated">Updated {{ displayNiceDatetime(doc.updated) }}</el-text>
+      <div style="view-transition-name: 'content-page-info'">
+        <el-text class="block" size="small" v-if="doc.created">Created {{ displayNiceDatetime(doc.created) }}</el-text>
+        <el-text class="block" size="small" v-if="doc.updated">Updated {{ displayNiceDatetime(doc.updated) }}</el-text>
+      </div>
       <article-tags :article="doc"/>
       <ContentRenderer :value="doc" class="content mt-10">
         <template #empty>
           <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80"/>
         </template>
       </ContentRenderer>
-      <div class="flex justify-between mt-3" v-if="prev&&next">
+      <div class="flex justify-between mt-3" style="view-transition-name: 'content-page-peer-nav'" v-if="prev&&next">
         <kumo-link :to="'/c'+(prev?._path??'')" type="primary">
           <el-icon>
             <el-icon-arrow-left/>
@@ -118,8 +121,8 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
   </template>
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections" :current-node-key="path" node-key="_path"
-             :default-expand-all="path==='/'"
-             highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation"
+             :default-expand-all="path==='/'" style="view-transition-name: 'content-tree-nav'"
+             highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation as any"
              :props="defaultProps">
       <template #default="{ node, data }">
         <el-tooltip
@@ -140,7 +143,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
     </el-tree>
   </template>
   <utterances v-if="doc || (docs && docs.length > 0)" repo="octo-kumo/octo-kumo.github.io" issue-term="pathname"
-              class="content-page-sections"
+              class="content-page-sections" style="view-transition-name: 'content-comment-sec'"
               label="utteranc" :theme="color.value === 'dark' ? 'github-dark' : 'github-light'"/>
   <template v-else>
     <el-empty description="404 not found" class="h-48 flex-auto content-page-sections" :image-size="80">
@@ -163,7 +166,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
 </template>
 <style lang="scss">
 #content-title {
-  view-transition-name: "content-title";
+  view-transition-name: v-bind('titleTransitionId');
 }
 
 .content-page-sections {

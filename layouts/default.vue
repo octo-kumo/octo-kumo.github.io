@@ -33,6 +33,7 @@ onMounted(() => {
 .drawer {
   margin-top: var(--el-menu-horizontal-height);
   height: calc(100vh - var(--el-menu-horizontal-height));
+  view-transition-name: "app-drawer";
 }
 
 .main {
@@ -41,6 +42,7 @@ onMounted(() => {
   min-height: calc(100vh - var(--el-menu-horizontal-height));
   margin-left: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2);
   background-image: url("/bg/bg_texture.png");
+  view-transition-name: "app-main";
 
   &.open {
     margin-left: 200px;
