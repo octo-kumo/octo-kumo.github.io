@@ -45,7 +45,7 @@
     "dependencies": {
         "@element-plus/icons-vue": "latest",
         "@formkit/auto-animate": "latest",
-        "@giscus/vue": "^3.0.0",
+        "@giscus/vue": "latest",
         "@mdi/font": "latest",
         "@tensorflow-models/qna": "latest",
         "@tensorflow/tfjs-backend-cpu": "latest",

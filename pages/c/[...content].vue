@@ -119,7 +119,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
         </kumo-link>
       </div>
     </article>
-    <comments class="content-page-sections py-1"/>
+    <comments class="content-page-sections py-1" v-if="!(docs&&docs.length>0)"/>
     <el-divider class="mx--3!" style="width: calc(100% + 1.5rem)"/>
   </template>
   <template v-if="docs && docs.length > 0">
