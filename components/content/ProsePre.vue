@@ -1,9 +1,6 @@
 <template>
-  <template v-show="language!=='mermaid'">
-    <pre :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta"><slot/></pre>
-  </template>
-  <div v-show="language==='mermaid'" ref="mermaid" class="mermaid" :data-file="filename">
-  </div>
+  <pre v-if="language!=='mermaid'" :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta"><slot/></pre>
+  <div v-else ref="mermaid" class="mermaid" :data-file="filename"></div>
 </template>
 
 <script setup lang="ts">
@@ -64,9 +61,12 @@ function render(code: string) {
   }).catch(e => console.error(e));
 }
 
-watch(color, (nc) => {
-  if (import.meta.client && props.language === 'mermaid') render(props.code);
-}, {immediate: true});
+function maybeRender() {
+  if (import.meta.client && props.language === 'mermaid' && mermaid.value) render(props.code);
+}
+
+onMounted(maybeRender)
+watch(color, maybeRender, {immediate: true});
 </script>
 
 <style lang="scss">
