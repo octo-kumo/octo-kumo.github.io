@@ -1,24 +1,48 @@
 <script setup lang="ts">
-import type {QueryBuilderParams} from '@nuxt/content';
+import type {ParsedContent, QueryBuilderParams} from '@nuxt/content';
 
 const path = (useRoute().path.substring(2) || "/").replace(/(?!^)\/$/, '');
 const query: QueryBuilderParams = {
   path,
   sort: [{solves: 1}],
   only: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'excerpt']
+};
+
+function getTags(items: ParsedContent[]) {
+  return Array.from(new Set(items.flatMap(i => [...(i.tags ?? []), getCtfCategory(i)]))).filter(Boolean)
+}
+
+const filter = reactive({} as any);
+const bindingFilter = computed(() => Object.keys(filter).filter(k => filter[k]));
+
+function tagFilter(article: ParsedContent) {
+  if (bindingFilter.value.length === 0) return true;
+  return article.tags?.some(tag => bindingFilter.value.includes(tag)) || bindingFilter.value.includes(getCtfCategory(article))
 }
 </script>
 
 <template>
   <ContentList :query="query">
     <template v-slot="{ list }">
+      <el-space wrap class="mb-1">
+        <el-check-tag :checked="filter[tag]" @change="filter[tag]=!filter[tag]"
+                      type="primary" v-for="tag in getTags(list)">
+          {{ tag }}
+        </el-check-tag>
+      </el-space>
       <el-space wrap fill :fill-ratio="30">
         <el-card
-            v-for="article in list.filter(i=>oneLvlUp(i._path)!==path&&i._path!==path)"
+            v-for="article in list.filter(i=>oneLvlUp(i._path)!==path&&i._path!==path).filter(tagFilter)"
             :key="article._path" shadow="hover">
           <template #header>
-            <kumo-link :to="`/c${article._path}`" type="primary">{{ guessArticleTitle(article) }}</kumo-link>
+            <kumo-link :to="`/c${article._path}`" type="primary"
+                       :style="{viewTransitionName: getTransitionName(article, 'title')}">
+              {{ guessArticleTitle(article) }}
+            </kumo-link>
             <article-tags :article="article"/>
+            <el-text size="small" :style="{viewTransitionName:getTransitionName(article, 'dates')}">
+              {{ displayDocDates(article) }}
+            </el-text>
           </template>
           <el-text>
             <ContentRenderer class="max-w-full" v-if="article.excerpt" :value="article" excerpt/>

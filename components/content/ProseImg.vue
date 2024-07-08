@@ -5,6 +5,7 @@
       :alt="alt"
       :width="width"
       :height="height"
+      lazy
   />
 </template>
 

@@ -1,5 +1,6 @@
-import type { ComputedRef, MaybeRef } from "vue";
-import type { LayoutKey } from "#build/types/layouts";
+import type {ComputedRef, MaybeRef} from "vue";
+import type {LayoutKey} from "#build/types/layouts";
+import type {NavItem, ParsedContent} from "@nuxt/content";
 
 export type Page = {
     title: string;
@@ -14,4 +15,6 @@ export interface IPurchasableItem {
     price: number;
     weight: number;
     amount: number;
-};
+}
+
+export type ContentDocLike = ParsedContent | NavItem | Partial<ParsedContent> | null;

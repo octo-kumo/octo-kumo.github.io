@@ -7,13 +7,9 @@ const props = withDefaults(defineProps<{
   hideCat?: boolean,
   customTagHtml?: (tag: string, index: number) => string
 }>(), {
-  customTagHtml: (tag) => tag
+  customTagHtml: (tag: string) => tag
 })
 
-const categories = [
-  "web", "crypto", "forensic", "forensics", "algo", "pwn", "rev", "misc", "osint", "box", "hardware"
-];
-const category = computed(() => props.article?._path?.split("/").at(-2) ?? 'unknown');
 const transitionId = computed(() => getTransitionName(props.article, 'tags-' + (props.idPrefix ?? '')));
 </script>
 
@@ -23,7 +19,7 @@ const transitionId = computed(() => getTransitionName(props.article, 'tags-' + (
     <el-tag v-if="article.solves" size="small" :type=" article.solves>50?'info':'success'">
       {{ article.solves }} solves
     </el-tag>
-    <el-tag size="small" v-if="categories.includes(category)&&!hideCat">{{ category }}</el-tag>
+    <el-tag size="small" v-if="getCtfCategory(article)&&!hideCat">{{ getCtfCategory(article) }}</el-tag>
     <el-tag size="small" v-for="(tag,i) in (article.tags??[])">
       <span v-html="customTagHtml(tag,i)"></span>
     </el-tag>

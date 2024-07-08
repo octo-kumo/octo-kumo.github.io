@@ -35,10 +35,15 @@
             <article-tags :article="doc"
                           :custom-tag-html="(tag,i)=>highlight(tag, matches?.find(m=>m.key==='tags'&&m.refIndex===i)?.indices)??''"/>
           </el-timeline-item>
-          <el-empty v-if="docsFiltered.length === 0">
-          </el-empty>
+          <template v-if="docsFiltered.length === 0">
+            <el-skeleton v-if="status==='pending'"/>
+            <el-empty v-else/>
+          </template>
         </el-timeline>
       </div>
+    </el-col>
+    <el-col :cols="24">
+      <comments class="lg:max-w-prose! mx-auto!"/>
     </el-col>
     <el-col
         v-for="item in [...nav.filter(r=>r.path.startsWith('/projects/')).sort((a,b)=>(!a.meta.image)-(!b.meta.image)),contentPage]"
@@ -68,9 +73,6 @@
         </el-space>
       </el-card>
     </el-col>
-    <el-col :cols="24">
-      <comments/>
-    </el-col>
   </el-row>
 </template>
 <script setup lang="ts">
@@ -89,7 +91,7 @@ const contentPage = {
     description: "Markdown Content Archive"
   }
 };
-const {data: docs} = await useLazyAsyncData(`c/docs_i`, () => queryAllDocs(true));
+const {data: docs, status} = await useLazyAsyncData(`c/docs_i`, () => queryAllDocs(true));
 
 const fuse = new Fuse([], {
   threshold: 0.6,
@@ -105,7 +107,7 @@ const fuse = new Fuse([], {
     weight: 1
   }]
 });
-watch(docs, (val) => fuse.setCollection(val));
+watch(status, () => fuse.setCollection(docs.value));
 
 const isSearching = computed(() => search.value.length > 1)
 const docsFiltered = computed(() => isSearching.value ? fuse.search(search.value).filter(e => (e?.score ?? 1) < 0.9) : (docs.value ?? []).map(w => ({

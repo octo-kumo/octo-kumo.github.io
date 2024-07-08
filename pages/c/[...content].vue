@@ -76,7 +76,6 @@ const TOC = computed(() => {
 });
 
 const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0');
-const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
 </script>
 <template>
   <template v-if="doc">
@@ -91,9 +90,14 @@ const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
       </el-anchor>
-      <h1 id="content-title" class="mb-2">{{ guessArticleTitle(doc) }}</h1>
+      <h1 id="content-title" class="mb-2 text-4xl"
+          :style="{viewTransitionName:getTransitionName(doc, 'title')}">
+        {{ guessArticleTitle(doc) }}
+      </h1>
       <article-tags :article="doc"/>
-      <el-text size="small">{{ displayDocDates(doc) }}</el-text>
+      <el-text size="small" class="ml-1" :style="{viewTransitionName:getTransitionName(doc, 'dates')}">
+        {{ displayDocDates(doc) }}
+      </el-text>
       <ContentRenderer :value="doc" class="content mt-10">
         <template #empty>
           <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80"/>
@@ -115,10 +119,11 @@ const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
         </kumo-link>
       </div>
     </article>
+    <comments class="content-page-sections py-1"/>
     <el-divider class="mx--3!" style="width: calc(100% + 1.5rem)"/>
   </template>
   <template v-if="docs && docs.length > 0">
-    <el-tree class="text-base! content-page-sections" :current-node-key="path" node-key="_path"
+    <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path"
              :default-expand-all="path==='/'" style="view-transition-name: 'content-tree-nav'"
              highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation as any"
              :props="defaultProps">
@@ -140,9 +145,8 @@ const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
       </template>
     </el-tree>
   </template>
-  <comments class="content-page-sections" v-if="doc || (docs && docs.length > 0)"/>
-  <el-skeleton v-else-if="status==='pending'"/>
-  <template v-else>
+  <el-skeleton v-if="status==='pending'"/>
+  <template v-else-if="!(doc||(docs&&docs.length>0))">
     <el-empty description="404 not found" class="h-48 flex-auto content-page-sections" :image-size="80">
       <kumo-link :to="'/c'+oneLvlUp(path)">
         <el-icon>
@@ -159,7 +163,6 @@ const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
       </kumo-link>
     </el-empty>
   </template>
-
   <el-backtop :right="50" :bottom="50"/>
 </template>
 <style lang="scss">
