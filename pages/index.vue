@@ -92,7 +92,7 @@ const contentPage = {
     description: "Markdown Content Archive"
   }
 };
-const {data: docs} = await useLazyAsyncData(`c/docs_i`, () => queryAllDocs(true));
+const {data: docs} = await useAsyncData(`c/docs_i`, () => queryAllDocs(true));
 
 const fuse = new Fuse([], {
   threshold: 0.6,

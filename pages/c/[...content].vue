@@ -31,9 +31,9 @@ function breadcrumbs(path: string) {
 //   return nav
 // }
 
-const {data: doc} = await useLazyAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
-const {data: docs} = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
-const {data: navigation} = await useLazyAsyncData(`c/nav_${path}`, async () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
+const {data: doc} = await useAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
+const {data: docs} = await useAsyncData(`c/docs`, () => queryAllDocs());
+const {data: navigation} = await useAsyncData(`c/nav_${path}`, async () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
 const getDoc = (_path: string) => docs.value?.find(d => d._path === _path)
 const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedContent> }> = computed(() => {
   if (!docs.value) return {};
@@ -144,6 +144,7 @@ const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
   <utterances v-if="doc || (docs && docs.length > 0)" repo="octo-kumo/octo-kumo.github.io" issue-term="pathname"
               class="content-page-sections" style="view-transition-name: 'content-comment-sec'"
               label="utteranc" :theme="color.value === 'dark' ? 'github-dark' : 'github-light'"/>
+  <!--  <el-skeleton v-else-if="status==='pending'"/>-->
   <template v-else>
     <el-empty description="404 not found" class="h-48 flex-auto content-page-sections" :image-size="80">
       <kumo-link :to="'/c'+oneLvlUp(path)">
@@ -161,6 +162,7 @@ const titleTransitionId = computed(() => getTransitionName(doc.value, 'title'));
       </kumo-link>
     </el-empty>
   </template>
+
   <el-backtop :right="50" :bottom="50"/>
 </template>
 <style lang="scss">
