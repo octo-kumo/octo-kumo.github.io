@@ -106,7 +106,7 @@ const fuse = new Fuse([], {
     weight: 1
   }]
 });
-watch(status, () => fuse.setCollection(docs.value ?? []));
+watch(docs, () => fuse.setCollection((docs.value ?? []) as never[]), {immediate: true});
 
 const isSearching = computed(() => search.value.length > 1)
 const docsFiltered = computed(() => isSearching.value ? fuse.search(search.value).filter(e => (e?.score ?? 1) < 0.9) : (docs.value ?? []).map(w => ({
