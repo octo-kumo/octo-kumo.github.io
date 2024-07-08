@@ -1,9 +1,8 @@
 ---
 created: 2024-06-08T18:38
-updated: 2024-06-27T21:41
+updated: 2024-07-07T22:04
+title: Content Page
 ---
-
-# Content
 
 Hello!
 

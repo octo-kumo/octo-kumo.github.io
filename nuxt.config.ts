@@ -137,5 +137,8 @@ export default defineNuxtConfig({
     },
     site: {
         url: SITE_URL
+    },
+    experimental: {
+        viewTransition: true
     }
 })

@@ -26,3 +26,8 @@ a {
 html {
   //scroll-behavior: smooth; /* or 'auto' if you prefer instant scrolling */
 }
+
+.el-text p {
+  margin-top: 0;
+  margin-bottom: 0;
+}

@@ -1,14 +1,12 @@
 ---
 created: 2024-06-06T21:14
-updated: 2024-06-25T08:04
+updated: 2024-07-07T22:04
+title: Markdown Test
 ---
 
-## Markdown: Syntax
-----
+## Overview
 
-### Overview
-
-#### Philosophy
+### Philosophy
 
 Markdown is intended to be as easy-to-read and easy-to-write as is feasible.
 Readability, however, is emphasized above all else. A Markdown-formatted
@@ -21,9 +19,9 @@ including [Setext](http://docutils.sourceforge.net/mirror/setext.html), [atx](ht
 biggest source of
 inspiration for Markdown's syntax is the format of plain text email.
 
-### Block Elements
+## Block Elements
 
-#### Paragraphs and Line Breaks
+### Paragraphs and Line Breaks
 
 A paragraph is simply one or more consecutive lines of text, separated
 by one or more blank lines. (A blank line is any line that looks like a
@@ -37,7 +35,7 @@ character in a paragraph into a `<br />` tag.
 When you *do* want to insert a `<br />` break tag using Markdown, you
 end a line with two or more spaces, then type return.
 
-#### Headers
+### Headers
 
 Markdown supports two styles of headers, [Setext] [1] and [atx] [2].
 Optionally, you may "close" atx-style headers. This is purely
@@ -46,7 +44,7 @@ closing hashes don't even need to match the number of hashes
 used to open the header. (The number of opening hashes
 determines the header level.)
 
-#### Blockquotes
+### Blockquotes
 
 Markdown uses email-style `>` characters for blockquoting. If you're
 familiar with quoting passages of text in an email message, then you
@@ -94,7 +92,7 @@ Any decent text editor should make email-style quoting easy. For
 example, with BBEdit, you can make a selection and choose Increase
 Quote Level from the Text menu.
 
-#### Lists
+### Lists
 
 Markdown supports ordered (numbered) and unordered (bulleted) lists.
 Unordered lists use asterisks, pluses, and hyphens -- interchangably
@@ -175,7 +173,7 @@ Unordered lists use asterisks, pluses, and hyphens -- interchangably
   To put a code block within a list item, the code block needs
   to be indented *twice* -- 8 spaces or two tabs:
 
-#### Code Blocks
+### Code Blocks
 
 Pre-formatted code blocks are used for writing about programming or
 markup source code. Rather than forming normal paragraphs, the lines
@@ -209,9 +207,9 @@ tell application "Foo"
 end tell
 ```
 
-### Span Elements
+## Span Elements
 
-#### Links
+### Links
 
 Markdown supports two style of links: *inline* and *reference*.
 In both styles, the link text is delimited by [square brackets].
@@ -222,7 +220,7 @@ title for the link, surrounded in quotes. For example:
 This is [an example](http://example.com/) inline link.
 [This link](http://example.net/) has no title attribute.
 
-#### Emphasis
+### Emphasis
 
 Markdown treats asterisks (`*`) and underscores (`_`) as indicators of
 emphasis. Text wrapped with one `*` or `_` will be wrapped with an
@@ -233,14 +231,14 @@ _single underscores_
 **double asterisks**
 __double underscores__
 
-#### Code
+### Code
 
 To indicate a span of code, wrap it with backtick quotes (`` ` ``).
 Unlike a pre-formatted code block, a code span indicates code within a
 normal paragraph. For example:
 Use the `printf()` function.
 
-#### Math
+### Math
 
 $$
 \begin{align}

@@ -94,10 +94,13 @@ const contentPage = {
   }
 };
 const {data: docs} = await useAsyncData(`c/docs_i`, () => queryContent("/")
-    .only(['_path', 'title', 'description', 'created', 'updated', 'tags'])
-    .where({_extension: {$eq: 'md'}, title: {$ne: ''}})
+    .only(['_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points'])
+    .where({_extension: {$eq: 'md'}})
     .sort({created: -1})
-    .find());
+    .find().then(res => {
+      res.forEach(p => p.title = guessArticleTitle(p));
+      return res;
+    }));
 
 const fuse = new Fuse(docs.value ?? [], {
   threshold: 0.6,

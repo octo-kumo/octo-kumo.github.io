@@ -2,11 +2,9 @@
   <template v-if="language!=='mermaid'">
     <pre :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta"><slot/></pre>
   </template>
-  <!--  <client-only v-else>-->
   <div v-else ref="mermaid" class="mermaid" :data-file="filename">
     <el-skeleton :rows="2"/>
   </div>
-  <!--  </client-only>-->
 </template>
 
 <script setup lang="ts">
