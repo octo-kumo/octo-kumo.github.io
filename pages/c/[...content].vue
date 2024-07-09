@@ -85,6 +85,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
         </el-breadcrumb-item>
       </el-breadcrumb>
       <el-anchor :offset="60" v-if="TOC.length>0"
+                 v-shared="'content-anchor'"
                  class="toc w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg select-none"
                  :data-path="path">
         <table-of-contents v-for="child in TOC" :link="child">
@@ -119,7 +120,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
       </div>
     </article>
     <comments class="content-page-sections py-1" v-if="isLeaf"/>
-    <el-divider class="mx--3!" style="width: calc(100% + 1.5rem)"/>
+    <el-divider v-shared="'content-tree-sep'" class="mx--3!" style="width: calc(100% + 1.5rem)"/>
   </template>
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path"
@@ -132,7 +133,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
             effect="light"
             :content="`Created ${displayNiceDatetime(getDoc(data._path)?.created)} · Edited ${displayNiceDatetime(getDoc(data._path)?.updated)}`"
             placement="left">
-        <span class="flex justify-between flex-1">
+        <span class="flex justify-between flex-1" v-shared="getTransitionName(data, 'tree-node')">
           <kumo-link :id="'content_'+hashCode(data._path).toString(16).padStart(8,'0')" :to="'/c' + data._path"
                      class="mr-2 justify-start!">
             {{ node.label }}
@@ -144,9 +145,10 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
       </template>
     </el-tree>
   </template>
-  <el-skeleton v-if="status==='pending'"/>
+  <el-skeleton v-if="status==='pending'" v-shared="'content-loading-skeleton'"/>
   <template v-else-if="!(doc||(docs&&docs.length>0))">
-    <el-empty description="404 not found" class="h-48 flex-auto content-page-sections" :image-size="80">
+    <el-empty description="404 not found" class="h-48 flex-auto content-page-sections" :image-size="80"
+              v-shared="'content-not-found'">
       <kumo-link :to="'/c'+oneLvlUp(path)">
         <el-icon>
           <el-icon-arrow-up/>
@@ -162,7 +164,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
       </kumo-link>
     </el-empty>
   </template>
-  <el-backtop :right="50" :bottom="50"/>
+  <el-backtop :right="50" :bottom="50" v-shared="'content-back-up'"/>
 </template>
 <style lang="scss">
 .content-page-sections {

@@ -39,7 +39,6 @@
         "nuxt-booster": "latest",
         "nuxt-security": "latest",
         "sass": "latest",
-        "simple-analytics-vue": "latest",
         "typescript": "latest"
     },
     "dependencies": {

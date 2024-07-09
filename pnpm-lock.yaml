@@ -15,7 +15,7 @@ importers:
         specifier: latest
         version: 0.8.2
       '@giscus/vue':
-        specifier: ^3.0.0
+        specifier: latest
         version: 3.0.0(vue@3.4.31(typescript@5.5.3))
       '@mdi/font':
         specifier: latest
@@ -168,9 +168,6 @@ importers:
       sass:
         specifier: latest
         version: 1.77.6
-      simple-analytics-vue:
-        specifier: latest
-        version: 3.0.2(vue@3.4.31(typescript@5.5.3))
       typescript:
         specifier: latest
         version: 5.5.3
@@ -6621,11 +6618,6 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
-
-  simple-analytics-vue@3.0.2:
-    resolution: {integrity: sha512-YEKTvd8IlAxJcywFkdGyO8S+ZO5iL8GaX/RsPoRlQtWOV9F64HW+gYI6NL7T2/Bf3as0ucyBmXGou1q4Eq6F9A==}
-    peerDependencies:
-      vue: ^3.0.0
 
   simple-concat@1.0.1:
     resolution: {integrity: sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==}
@@ -16353,10 +16345,6 @@ snapshots:
   signal-exit@3.0.7: {}
 
   signal-exit@4.1.0: {}
-
-  simple-analytics-vue@3.0.2(vue@3.4.31(typescript@5.5.3)):
-    dependencies:
-      vue: 3.4.31(typescript@5.5.3)
 
   simple-concat@1.0.1: {}
 
