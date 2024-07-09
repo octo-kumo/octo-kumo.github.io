@@ -1,5 +1,5 @@
 import type {ContentDocLike} from "~/types/custom-types";
 
 export default function getTransitionName(article?: ContentDocLike, tag?: string) {
-    return ("content-" + (tag ?? '') + "-" + (article?._id ?? 'null')).replace(/[^a-zA-Z0-9\-_]/g, "-");
+    return ("content-" + (tag ?? '') + "-" + ((article?._id ?? article?._path) ?? 'null')).replace(/[^a-zA-Z0-9\-_]/g, "-");
 }
