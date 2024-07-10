@@ -1,0 +1,1 @@
+import{p as e,bo as l,L as u}from"./CFm2T52I.js";const i=["class","style"],E=/^on[A-Z]/,f=(c={})=>{const{excludeListeners:o=!1,excludeKeys:t}=c,a=e(()=>((t==null?void 0:t.value)||[]).concat(i)),s=u();return s?e(()=>{var n;return l(Object.entries((n=s.proxy)==null?void 0:n.$attrs).filter(([r])=>!a.value.includes(r)&&!(o&&E.test(r))))}):e(()=>({}))};export{f as u};
