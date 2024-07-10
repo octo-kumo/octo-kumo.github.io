@@ -34,8 +34,8 @@
             </el-text>
             <article-tags :article="doc"
                           :custom-tag-html="(tag,i)=>highlight(tag, matches?.find(m=>m.key==='tags'&&m.refIndex===i)?.indices)??''"/>
-            <div class="el-timeline-item__timestamp is-bottom" v-shared="getTransitionName(doc, 'dates')"
-                 v-text="displayDocDates(doc)"/>
+            <span class="el-timeline-item__timestamp is-bottom" v-shared="getTransitionName(doc, 'dates')"
+                  v-text="displayDocDates(doc)"/>
           </el-timeline-item>
           <template v-if="docsFiltered.length === 0">
             <el-skeleton v-if="status==='pending'"/>

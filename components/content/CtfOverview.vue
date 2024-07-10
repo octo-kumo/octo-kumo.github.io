@@ -5,7 +5,7 @@ const path = (useRoute().path.substring(2) || "/").replace(/(?!^)\/$/, '');
 const query: QueryBuilderParams = {
   path,
   sort: [{solves: 1}],
-  only: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'excerpt']
+  only: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'excerpt'],
 };
 
 function getTags(items: ParsedContent[]) {
@@ -19,6 +19,10 @@ function tagFilter(article: ParsedContent) {
   if (bindingFilter.value.length === 0) return true;
   return article.tags?.some((tag: string) => bindingFilter.value.includes(tag)) || bindingFilter.value.includes(getCtfCategory(article) ?? '')
 }
+
+function stats(items: ParsedContent[]) {
+  return items.map(w => w.points ?? 0).reduce((acc: number, v: number) => acc + v, 0);
+}
 </script>
 
 <template>
@@ -29,6 +33,12 @@ function tagFilter(article: ParsedContent) {
                       type="primary" v-for="tag in getTags(list)">
           {{ tag }}
         </el-check-tag>
+        <el-tag>
+          {{ stats(list.filter(i => oneLvlUp(i._path) !== path && i._path !== path).filter(tagFilter)) }} points
+        </el-tag>
+        <el-tag>
+          {{ list.filter(i => oneLvlUp(i._path) !== path && i._path !== path).filter(tagFilter).length }} writeups
+        </el-tag>
       </el-space>
       <br/>
       <el-space wrap fill :fill-ratio="30">
