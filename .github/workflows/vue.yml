@@ -1,5 +1,9 @@
 name: Build Vue
-on: [ push, workflow_dispatch ]
+on:
+  push:
+  repository_dispatch:
+    types: [ submodule-updated ]
+
 jobs:
   build_vue:
     runs-on: ubuntu-latest

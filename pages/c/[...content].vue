@@ -143,7 +143,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
           <kumo-link :id="'content_'+hashCode(data._path).toString(16).padStart(8,'0')" :to="'/c' + data._path"
                      class="mr-2 justify-start!">
             {{ node.label }}
-            <article-tags class="ml-2" :article="getDoc(data._path)" id-prefix="tree" hide-cat/>
+            <article-tags class="ml-2" :article="getDoc(data._path)" id-prefix="tree" hide-cat short/>
           </kumo-link>
           <el-text class="max-w-80 flex-1" size="small">{{ getDoc(data._path)?.description }}</el-text>
         </span>
