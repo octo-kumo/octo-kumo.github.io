@@ -18,7 +18,6 @@
   </el-page-header>
 </template>
 <script setup lang="ts">
-import {guessPathName} from "@/mixins/display";
 import {Moon, Sunny} from "@element-plus/icons-vue";
 
 const route = useRoute();

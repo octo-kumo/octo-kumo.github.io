@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
 import type {UnwrapNestedRefs} from "@vue/reactivity";
-import {useStore} from "@/composables/states.ts";
+import {useStorage} from '@vueuse/core'
 
 definePageMeta({
   layout: 'default',
@@ -9,17 +9,19 @@ definePageMeta({
   description: 'A tool to preview all simulated universe encounters.',
   image: '/img/sim-uni.webp'
 });
-const store = useStore();
-const lang = ref(store.lang);
-const ALL: { [k: string]: any } = {
-  "EN": await fetch('https://raw.githubusercontent.com/octo-kumo/hsr-sim-universe-utils/master/out/handbook_eventsEN.json').then(r => r.json()),
-  "CHS": await fetch('https://raw.githubusercontent.com/octo-kumo/hsr-sim-universe-utils/master/out/handbook_eventsCHS.json').then(r => r.json())
-}
-const handbook_events = ref(ALL[lang.value]);
 const showAll = ref(false);
-watch(lang, () => handbook_events.value = ALL[lang.value]);
-store.$subscribe((mutation, state) => lang.value = state.lang)
+const lang = useStorage('sim-u-lang', 'CHS');
 
+const {
+  data: data_en,
+  status: status_en
+} = useLazyAsyncData('simu-en', () => fetch('https://raw.githubusercontent.com/octo-kumo/hsr-sim-universe-utils/master/out/handbook_eventsEN.json').then(r => r.json()));
+const {
+  data: data_cn,
+  status: status_cn
+} = useLazyAsyncData('simu-cn', () => fetch('https://raw.githubusercontent.com/octo-kumo/hsr-sim-universe-utils/master/out/handbook_eventsCHS.json').then(r => r.json()));
+const loaded = computed(() => (lang.value === 'EN' ? status_en.value : status_cn.value) !== 'pending');
+const handbook_events = computed(() => lang.value === 'EN' ? data_en.value : data_cn.value);
 const prompt_lines = (lines: any[]) => lines.filter(e => Array.isArray(e));
 const prompt_options = (lines: any[]) => lines.find(e => !Array.isArray(e));
 
@@ -46,22 +48,18 @@ const locale: { [k: string]: any } = ref({
     desc: "每次三选一都要去网上找太麻烦？在这里就可以搜！",
     label: "事件名字",
     showAll: "全部显示",
+    end: "结束"
   },
   "EN": {
     title: "HSR Simulated Universe Events",
     desc: "Too lazy to search for events every time you get a 3-choose-1? Worry not, just search here!",
     label: "Event name",
     showAll: "Show all",
+    end: "End"
   }
 });
 
-function setLang(l: string) {
-  lang.value = l;
-  store.lang = l;
-  location.reload()
-}
-
-function toggle(key, choice, choices, val = undefined) {
+function toggle(key: number, choice: any, choices: any[], val: any = undefined) {
   let c = val === undefined ? !events[key + '_' + choice.triggers[0]] : val;
   Object.values(choices).map(e => e.triggers).flat().filter(c => !choice.triggers.includes(c)).forEach(e => {
     toggle(key, {triggers: [e]}, [], false);
@@ -84,7 +82,7 @@ const queryStr = ref("");
   <el-card v-if="lang" shadow="never">
     <template #header>
       {{ locale[lang].title }}
-      <el-badge v-text="lang" @click="setLang(lang==='CHS'?'EN':'CHS')"></el-badge>
+      <el-check-tag checked @click="lang=(lang==='CHS'?'EN':'CHS')">{{ lang }}</el-check-tag>
     </template>
     <el-text v-text="locale[lang].desc"></el-text>
     <el-input
@@ -95,7 +93,7 @@ const queryStr = ref("");
     <el-checkbox v-model="showAll">{{ locale[lang].showAll }}</el-checkbox>
   </el-card>
   <el-divider/>
-  <el-row v-if="handbook_events" :gutter="5">
+  <el-row v-if="loaded&&handbook_events" :gutter="5" v-auto-animate>
     <template v-for="(event, event_key) in handbook_events">
       <el-col
           v-if="queryStr.length===0||searchScore(event.title,queryStr)"
@@ -113,7 +111,7 @@ const queryStr = ref("");
           <el-button-group class="mt-2">
             <el-button
                 v-for="(choice, key) in prompt_options(event.dialogue.prompt)"
-                :type="events[event_key+'_'+choice.triggers[0]]?'primary':'default'" size="small"
+                :type="events[event_key+'_'+choice.triggers?.[0]]?'primary':'default'" size="small"
                 @click="toggle(event_key,choice,prompt_options(event.dialogue.prompt))">
               {{ key }}<br>
               {{ choice.desc }}
@@ -141,12 +139,13 @@ const queryStr = ref("");
             </div>
           </template>
           <el-text tag="p" v-if="events[event_key+'_ALL_TALK_END']">
-            结束
+            {{ locale[lang].end }}
           </el-text>
         </el-card>
       </el-col>
     </template>
   </el-row>
+  <el-skeleton v-else/>
 </template>
 
 <style scoped lang="css">

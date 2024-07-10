@@ -39,9 +39,6 @@
   </el-menu>
 </template>
 <script setup lang="ts">
-
-import {guessPathName} from "@/mixins/display";
-
 const route = useRoute();
 const router = useRouter();
 const nav = router.getRoutes();

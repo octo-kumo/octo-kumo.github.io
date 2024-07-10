@@ -24,7 +24,6 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
 import type {Ref} from "@vue/reactivity";
-import {getErrorMessage} from "~/mixins/utils";
 
 export interface EditorField {
   key: string,

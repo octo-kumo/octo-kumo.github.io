@@ -48,7 +48,7 @@ const isMacOSWebView = _global?.navigator && /Macintosh/.test(navigator.userAgen
 export function saveAs(blob: Blob | string, name: string, opts?: FileSaverOptions) {
     // Namespace is used to prevent conflict w/ Chrome Poper Blocker extension (Issue #561)
     const a = document.createElementNS('http://www.w3.org/1999/xhtml', 'a') as HTMLAnchorElement;
-    name = name || (typeof blob !== "string" && blob.name) || 'download'
+    name = name || /*(typeof blob !== "string" && blob.name) ||*/ 'download'
 
     a.download = name
     a.rel = 'noopener' // tabnabbing

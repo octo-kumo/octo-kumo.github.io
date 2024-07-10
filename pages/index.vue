@@ -76,7 +76,6 @@
   </el-row>
 </template>
 <script setup lang="ts">
-import {guessPathName} from "~/mixins/display";
 import Fuse, {type RangeTuple} from 'fuse.js';
 
 const currPage = ref(1);

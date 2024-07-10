@@ -8,7 +8,7 @@
  *
  * @return Formatted string.
  */
-export function humanFileSize(bytes: number, si = false, dp = 1) {
+export default function displayFilesize(bytes: number, si = false, dp = 1) {
     const thresh = si ? 1000 : 1024;
     if (Math.abs(bytes) < thresh) return bytes + ' B';
     const units = si
@@ -24,9 +24,4 @@ export function humanFileSize(bytes: number, si = false, dp = 1) {
 
 
     return bytes.toFixed(dp) + ' ' + units[u];
-}
-
-export function getErrorMessage(error: unknown) {
-    if (error instanceof Error) return error.message
-    return String(error)
 }

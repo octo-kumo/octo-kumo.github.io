@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {saveAs} from "~/libraries/file-saver";
 import type {Ref} from "@vue/reactivity";
-import {humanFileSize} from "@/mixins/utils";
 import type {PNG as IPNG} from "pngjs/browser";
 import type IJSZIP from "jszip";
 
@@ -228,7 +227,7 @@ async function crop_index(index: number) {
             <el-tag type="primary"
                     v-text="f.raw.type.replace('image/','')"></el-tag>
             <el-tag type="info"
-                    v-text="humanFileSize(f.size, true)"></el-tag>
+                    v-text="displayFilesize(f.size, true)"></el-tag>
           </div>
           <el-text v-if="errors[i]">
             {{ errors[i].message }}

@@ -30,7 +30,10 @@ function breadcrumbs(path: string) {
 //   return nav
 // }
 
-const {data: doc, status} = await useLazyAsyncData(`c/doc_${path}`, () => queryContent(path).findOne());
+const {data: doc, status} = await useLazyAsyncData(`c/doc_${path}`, () => queryContent(path).findOne().then(r => {
+  r.title = guessArticleTitle(r);
+  return r;
+}));
 const {data: docs} = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
 const {data: navigation} = await useLazyAsyncData(`c/nav_${path}`, async () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
 const getDoc = (_path: string) => docs.value?.find(d => d._path === _path)
@@ -47,12 +50,15 @@ const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedCon
 const isLeaf = computed(() => !docs.value?.some(d => d._path !== path && d._path?.startsWith(path)));
 
 useContentHead(doc as Ref<ParsedContent>);
-definePageMeta({
-  title: 'Content',
-  // disableSEO: true
-});
 useSeoMeta({
   articleModifiedTime: () => new Date(doc?.value?.updated ?? 0).toISOString()
+});
+definePageMeta({
+  title: "Content",
+  customHead: true,
+  disableSEO: true
+  // title: () => guessArticleTitle(doc?.value) ?? "Content",
+  // description: () => doc?.value?.description
 });
 const defaultProps: TreeOptionProps = {
   children: 'children',
@@ -131,7 +137,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
         <el-tooltip
             :show-after="500"
             effect="light"
-            :content="`Created ${displayNiceDatetime(getDoc(data._path)?.created)} · Edited ${displayNiceDatetime(getDoc(data._path)?.updated)}`"
+            :content="`Created ${displayDatetime(getDoc(data._path)?.created)} · Edited ${displayDatetime(getDoc(data._path)?.updated)}`"
             placement="left">
         <span class="flex justify-between flex-1" v-shared="getTransitionName(data, 'tree-node')">
           <kumo-link :id="'content_'+hashCode(data._path).toString(16).padStart(8,'0')" :to="'/c' + data._path"

@@ -1,5 +1,5 @@
 export default function (inputDate?: string) {
-    if (!inputDate) return "unknown";
+    if (!inputDate) return "";
     let date = new Date(inputDate);
     let now = new Date();
     let timeFormatter = new Intl.DateTimeFormat('en-US', {hour: 'numeric', minute: 'numeric'});

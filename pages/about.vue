@@ -6,7 +6,7 @@
       <el-timeline-item
           v-for="commit in commits"
           :key="commit.sha"
-          :timestamp="displayNiceDatetime(commit.commit.author.date)+' by '+commit.commit.author.name">
+          :timestamp="displayDatetime(commit.commit.author.date)+' by '+commit.commit.author.name">
         <a class="text-red-500 font-mono" v-text="commit.sha.slice(0, 7)"></a>
         {{ commit.commit.message }}
       </el-timeline-item>

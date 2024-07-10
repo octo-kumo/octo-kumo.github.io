@@ -14,7 +14,6 @@
 
 <script setup>
 import {evaluate} from "mathjs/number";
-import {getErrorMessage} from "~/mixins/utils";
 
 const model = defineModel({
   type: Number,
