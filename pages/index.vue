@@ -17,7 +17,7 @@
                        hide-on-single-page/>
         <el-timeline class="mt-2!" v-auto-animate>
           <el-timeline-item v-for="{item:doc,matches,score} in docsFiltered.slice(currPage*5-5,currPage*5)"
-                            :key="doc._path" :timestamp="displayDocDates(doc)">
+                            :key="doc._path" hide-timestamp>
             <kumo-link no-prefetch type="primary" :to="'/c'+doc._path">
               <span v-shared="getTransitionName(doc, 'title')"
                     v-html="highlight( doc.title , matches?.find(m=>m.key==='title')?.indices)"></span>
@@ -26,7 +26,7 @@
               {{ (1 - score).toPrecision(2) }}
             </el-tag>
             <br/>
-            <el-text class="font-mono!" size="small">
+            <el-text class="font-mono!" size="small" v-if="isSearching">
               <span v-html="'/c' + highlight( doc._path , matches?.find(m=>m.key==='_path')?.indices)"></span>
             </el-text>
             <el-text class="block mt-1!">
@@ -34,6 +34,8 @@
             </el-text>
             <article-tags :article="doc"
                           :custom-tag-html="(tag,i)=>highlight(tag, matches?.find(m=>m.key==='tags'&&m.refIndex===i)?.indices)??''"/>
+            <div class="el-timeline-item__timestamp is-bottom" v-shared="getTransitionName(doc, 'dates')"
+                 v-text="displayDocDates(doc)"/>
           </el-timeline-item>
           <template v-if="docsFiltered.length === 0">
             <el-skeleton v-if="status==='pending'"/>
@@ -52,7 +54,7 @@
         :md="8"
         :sm="12">
       <el-card class="my-3"
-               shadow="never">
+               shadow="hover">
         <template #header v-if="item.meta?.image!">
           <el-image :src="item.meta?.image! as string"
                     class="w-full h-48" lazy

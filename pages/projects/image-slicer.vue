@@ -211,7 +211,7 @@ async function crop_index(index: number) {
     <el-divider/>
     <el-row :gutter="10">
       <el-col :cols="24" :md="8" class="mb-2" v-for="(f,i) in files">
-        <el-card v-loading="loadings[i]">
+        <el-card v-loading="loadings[i]" shadow="hover">
           <el-image
               :src="urls[i]"
               style="height: 200px;width: 100%;"

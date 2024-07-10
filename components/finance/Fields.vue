@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card shadow="hover">
     <template #header>
       <el-text>{{ title }}</el-text>
     </template>

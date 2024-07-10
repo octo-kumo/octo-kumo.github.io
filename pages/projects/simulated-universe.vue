@@ -100,7 +100,7 @@ const queryStr = ref("");
           class="my-2"
           :cols="24"
           :lg="8">
-        <el-card shadow="never">
+        <el-card shadow="hover">
           <template #header>{{ event.title }}</template>
           <el-space direction="vertical" alignment="flex-start">
             <template v-for="(lines,i) in prompt_lines(event.dialogue.prompt)">
