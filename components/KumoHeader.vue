@@ -1,6 +1,6 @@
 <template>
   <el-page-header :icon="''" class="header select-none">
-    <template #title>云</template>
+    <template #title><span v-shared="'header-title-text'">云</span></template>
     <template #icon>
       <el-icon class="hidden! md:flex!">
         <el-icon-menu></el-icon-menu>
@@ -8,12 +8,13 @@
     </template>
     <template #content>
       <el-space style="height: var(--el-header-height);">
-        <span class="text-large font-600 mr-3"> {{ routeName }} </span>
+        <span class="text-large font-600 mr-3" v-shared="'header-page-name'"> {{ routeName }} </span>
         <slot></slot>
       </el-space>
     </template>
     <template #extra>
-      <el-button :icon="icon" @click="color.preference=(color.value==='dark'?'light':'dark')" circle/>
+      <el-button :icon="icon" @click="color.preference=(color.value==='dark'?'light':'dark')" circle
+                 v-shared="'header-theme-toggle'"/>
     </template>
   </el-page-header>
 </template>

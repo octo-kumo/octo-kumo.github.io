@@ -1,7 +1,7 @@
 <template>
   <client-only>
-    <lazy-air-defence-game v-if="supported">
-    </lazy-air-defence-game>
+    <lazy-civilisation-game v-if="supported">
+    </lazy-civilisation-game>
     <el-card v-else>
       <template #header>
         <p>WebGL not supported!</p>
@@ -23,9 +23,9 @@ const supported = ref(true);
 
 definePageMeta({
   layout: 'clean',
-  title: 'Air Defence',
-  description: 'Fancy game about fighting planes using an AA gun (WIP)',
-  image: '/img/airdef.webp'
+  title: 'Civilisation 0',
+  description: 'Civilisation at Home (WIP)',
+  // image: '/img/airdef.webp'
 });
 onActivated(() => {
   import("three/examples/jsm/capabilities/WebGL").then(WEBGL => {

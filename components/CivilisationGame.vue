@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {AirDefence} from "@/games/air-defence";
+import {CivilisationZero} from "@/games/civilisation-0";
 import type {Ref} from "@vue/reactivity";
 
+let game: CivilisationZero | undefined = undefined;
 const game_container: Ref<HTMLElement | undefined> = ref(undefined);
 watch(game_container, value => {
-  const game = new AirDefence();
+  game ??= new CivilisationZero();
   game.attach(value);
 });
 onMounted(() => {
@@ -12,11 +13,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="air-defence-game-parent" ref="game_container"></div>
+  <div id="civilisation-game-parent" ref="game_container"></div>
 </template>
 
-<style scoped lang="css">
-#air-defence-game-parent {
+<style lang="css" scoped>
+#civilisation-game-parent {
   height: 100vh;
 }
 

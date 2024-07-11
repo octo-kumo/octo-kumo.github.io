@@ -97,9 +97,9 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
       </el-anchor>
-      <h1 id="content-title" class="mb-2 text-4xl" v-shared="getTransitionName(doc, 'title')">
+      <span class="mb-2 text-4xl mt-4 block font-bold" v-shared="getTransitionName(doc, 'title')">
         {{ guessArticleTitle(doc) }}
-      </h1>
+      </span>
       <article-tags :article="doc"/>
       <el-text size="small">
         <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)"/>
