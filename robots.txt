@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
-Sitemap: https://octo-kumo.me/sitemap.xml
+Sitemap: https://yun.ng/sitemap.xml
 # kumo{h3ll0_b075!}
