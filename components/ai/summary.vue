@@ -9,7 +9,7 @@ const form = reactive({
 });
 const onSubmit = () => {
   loading.value = true;
-  serverResponseCheck(fetch("https://ai.octo-kumo.me/summary", {
+  serverResponseCheck(fetch("https://ai.yun.ng/summary", {
     method: "POST",
     body: JSON.stringify(form)
   })).then(data => summary.value = data.summary)

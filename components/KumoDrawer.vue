@@ -28,6 +28,14 @@
         <nuxt-link to="/c/" class="no-underline text-inherit">Content</nuxt-link>
       </template>
     </el-menu-item>
+    <el-menu-item index="ctf" route="/ctf">
+      <el-icon>
+        <el-icon-flag/>
+      </el-icon>
+      <template #title>
+        <nuxt-link to="/ctf" class="no-underline text-inherit">My Challenges</nuxt-link>
+      </template>
+    </el-menu-item>
     <el-menu-item index="about" route="/about">
       <el-icon>
         <el-icon-info-filled/>

@@ -50,7 +50,7 @@ const onSubmit = async () => {
   form.mask = inputImage.value.length > 0 ? [...new Uint8Array(await getMask())] : undefined;
   form.guidance = parseFloat(form.guidance);
   form.strength = parseFloat(form.strength);
-  serverResponseCheck(fetch("https://ai.octo-kumo.me/image", {
+  serverResponseCheck(fetch("https://ai.yun.ng/image", {
     method: "POST",
     body: JSON.stringify(form)
   }))

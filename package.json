@@ -38,7 +38,7 @@
         "nuxt": "latest",
         "nuxt-booster": "latest",
         "nuxt-security": "latest",
-        "sass": "latest",
+        "sass": "1.76.0",
         "typescript": "latest"
     },
     "dependencies": {
@@ -62,10 +62,13 @@
         "mathjs": "latest",
         "mermaid": "latest",
         "nuxt-umami": "latest",
+        "p-queue": "^8.0.1",
         "pngjs": "latest",
         "rehype-mathjax": "latest",
         "remark-math": "latest",
         "three": "latest",
+        "three-bvh-csg": "^0.0.16",
+        "three-csm": "^4.2.1",
         "vue-use-active-scroll": "latest",
         "vue3-apexcharts": "latest",
         "vue3-chessboard": "latest"

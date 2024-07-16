@@ -1,11 +1,24 @@
 import {type GLTF, GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import type {AssetName} from "~/games/civilisation-0/types";
-import {InstancedMesh, Matrix4, type MeshStandardMaterial, Vector3} from "three";
+import {
+    DoubleSide,
+    InstancedMesh,
+    Material,
+    Matrix4,
+    MeshBasicMaterial,
+    type MeshStandardMaterial,
+    ShapeGeometry,
+    type Texture,
+    TextureLoader,
+    Vector3
+} from "three";
 import {Mesh} from "three/src/objects/Mesh";
 import type {Scene} from "three/src/scenes/Scene";
+import {FontLoader} from "three/examples/jsm/loaders/FontLoader";
+import type CSM from "three-csm";
 
 const purgatory = new Matrix4();
-purgatory.setPosition(9999, 9999, 9999); // send them to hell
+purgatory.setPosition(99999, 99999, 99999); // send them to hell
 type IObject = {
     count: number,
     capacity: number,
@@ -15,6 +28,9 @@ type IObject = {
 const assets: {
     [key in AssetName]?: Promise<GLTF>
 } = {};
+const texture: {
+    [key in AssetName]?: Promise<Texture>
+} = {};
 const expandingObjectPool: {
     [key in AssetName]?: { [key: number]: Promise<IObject> }
 } = {};
@@ -22,8 +38,28 @@ const objects: {
     [key in AssetName]?: IObject
 } = {};
 let scene: Scene | undefined;
+let csm: CSM | undefined;
 const loader = new GLTFLoader();
+const texture_loader = new TextureLoader();
 const URL_PREFIX = "/projects/assets/c0/"
+
+export function getTexture(name: AssetName) {
+    return texture[name] ??= texture_loader.loadAsync(URL_PREFIX + name);
+}
+
+export function setCSM(_csm: CSM) {
+    csm = _csm;
+}
+
+export function csmSetupMaterial(material: Material | Material[]) {
+    if (material instanceof Material) {
+        (material as MeshStandardMaterial).metalness = 0;
+        csm?.setupMaterial(material);
+    } else if (Array.isArray(material)) material.forEach(m => {
+        (m as MeshStandardMaterial).metalness = 0;
+        csm?.setupMaterial(m);
+    });
+}
 
 export function setScene(_scene: Scene) {
     scene = _scene;
@@ -32,14 +68,22 @@ export function setScene(_scene: Scene) {
 }
 
 export function loadAsset(name: AssetName) {
-    return assets[name] ??= loader.loadAsync(URL_PREFIX + name);
+    return assets[name] ??= loader.loadAsync(URL_PREFIX + name).then(r => {
+        r.scene.traverse(child => {
+            if (child.type === 'Mesh') {
+                const _mesh = child as Mesh;
+                csmSetupMaterial(_mesh.material);
+            }
+        });
+        return r;
+    });
 }
 
-async function expand(name: AssetName) {
+async function expandObject(name: AssetName) {
     const oldObject = objects[name];
-    const newCap = (oldObject?.capacity ?? 8) * 2;
+    const newCap = oldObject?.capacity ? oldObject?.capacity * 2 : 1;
     return (expandingObjectPool[name] ??= {})[newCap] ??= (async function () {
-        console.log("expanding instanced-mesh", name, "to", newCap);
+        // console.log("expanding instanced-mesh", name, "to", newCap);
         const asset = await loadAsset(name);
 
         const newObject: IObject = {
@@ -51,13 +95,12 @@ async function expand(name: AssetName) {
         asset.scene.traverse(child => {
             if (child.type === 'Mesh') {
                 const _mesh = child as Mesh;
-                (_mesh.material as MeshStandardMaterial).metalness = 0;
+                csmSetupMaterial(_mesh.material);
                 const mesh = new InstancedMesh(_mesh.geometry, _mesh.material, newCap);
                 const offset = new Vector3();
                 child.getWorldPosition(offset);
                 newObject.offsets.push(offset);
                 newObject.meshes.push(mesh);
-
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
                 scene?.add(mesh);
@@ -85,15 +128,15 @@ async function expand(name: AssetName) {
     })();
 }
 
-async function getSpot(name: AssetName) {
-    if (!objects[name]) objects[name] = await expand(name);
+async function getInstanceIndex(name: AssetName) {
+    if (!objects[name]) objects[name] = await expandObject(name);
     const index = objects[name].count++;
-    while (index >= objects[name].capacity) await expand(name);
+    while (index >= objects[name].capacity) await expandObject(name);
     return index;
 }
 
 export async function loadInstance(name: AssetName) {
-    const index = await getSpot(name);
+    const index = await getInstanceIndex(name);
     return (matrix: Matrix4) => {
         objects[name]?.meshes.forEach(m => {
             m.setMatrixAt(index, matrix);
@@ -101,3 +144,27 @@ export async function loadInstance(name: AssetName) {
     }
 }
 
+const font = await new FontLoader().loadAsync("https://raw.githubusercontent.com/mrdoob/three.js/e7fd8b9d7d941c4670521f7d843a7fa12435410a/examples/fonts/helvetiker_regular.typeface.json");
+
+export function textToShape(text: string, size: number, justify: 'left' | 'right' | 'center' = 'left', align: 'top' | 'bottom' | 'center' = 'bottom') {
+    const color = 0x006699;
+
+    const mat = new MeshBasicMaterial({
+        color: color,
+        side: DoubleSide
+    });
+    csm?.setupMaterial(mat);
+
+    const shapes = font.generateShapes(text, size);
+    const geometry = new ShapeGeometry(shapes);
+    geometry.computeBoundingBox();
+    const width = ((geometry.boundingBox?.max?.x ?? 0) - (geometry.boundingBox?.min?.x ?? 0));
+    const height = ((geometry.boundingBox?.max?.y ?? 0) - (geometry.boundingBox?.min?.y ?? 0));
+    if (justify == 'center') geometry.translate(-0.5 * width, 0, 0);
+    else if (justify === 'right') geometry.translate(-width, 0, 0);
+    if (align == 'center') geometry.translate(0, -0.5 * height, 0);
+    else if (align === 'top') geometry.translate(0, -height, 0);
+    let mesh = new Mesh(geometry, mat);
+    mesh.castShadow = true;
+    return mesh;
+}

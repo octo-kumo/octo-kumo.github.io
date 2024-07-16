@@ -19,7 +19,7 @@ const onSubmit = () => {
   editing.splice(0, editing.length);
   loading.value = true;
   const abort = new AbortController();
-  serverResponseCheck(fetch("https://ai.octo-kumo.me/chat", {
+  serverResponseCheck(fetch("https://ai.yun.ng/chat", {
     method: "POST",
     signal: abort.signal,
     body: JSON.stringify(form)

@@ -1,18 +1,23 @@
-import {type Matrix4, Object3D, Vector3} from "three";
+import {type Matrix4, Object3D, type Vector3} from "three";
 import {loadInstance} from "~/games/civilisation-0/assets";
+import type {AssetName} from "~/games/civilisation-0/types";
+
 
 export class Tile extends Object3D {
     private _update?: (matrix: Matrix4) => void | undefined;
+    height = 0;
+    tname: AssetName;
 
-    constructor(position = new Vector3(), rotation = 0) {
+    constructor(position: Vector3, name: AssetName = "ground_grass.glb", rotation = 0) {
         super();
+        this.tname = name;
         this.position.copy(position);
         this.rotateY(rotation);
         this.load();
     }
 
     async load() {
-        this._update = await loadInstance("ground_grass.glb");
+        this._update = await loadInstance(this.tname);
         this.update();
     }
 
