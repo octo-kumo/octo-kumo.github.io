@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import challenges from "@/assets/ctfs";
+
+definePageMeta({
+  title: 'CTF',
+  description: 'My own CTF challenges'
+});
 </script>
 
 <template>

@@ -1,5 +1,17 @@
 <template>
   <div class="lg:max-w-prose mx-auto">
+    <el-descriptions>
+      <el-descriptions-item label="Name">
+        云 (yun)
+      </el-descriptions-item>
+      <el-descriptions-item label="Email">yun@yun.ng</el-descriptions-item>
+      <el-descriptions-item label="Team">World Wide Flags</el-descriptions-item>
+      <el-descriptions-item label="Occupation">Student</el-descriptions-item>
+      <el-descriptions-item label="Location">Canada</el-descriptions-item>
+      <el-descriptions-item label="Main Category">
+        <el-tag size="small">web</el-tag>
+      </el-descriptions-item>
+    </el-descriptions>
     <el-image src="https://repobeats.axiom.co/api/embed/3b7f179ea07f6a241377dd5de8eb0ce155e3b6d1.svg"/>
     <h4>Change Log</h4>
     <el-timeline>
