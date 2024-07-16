@@ -14,7 +14,7 @@ import {
 } from "three";
 import {Mesh} from "three/src/objects/Mesh";
 import type {Scene} from "three/src/scenes/Scene";
-import {FontLoader} from "three/examples/jsm/loaders/FontLoader";
+import {Font, FontLoader} from "three/examples/jsm/loaders/FontLoader";
 import type CSM from "three-csm";
 
 const purgatory = new Matrix4();
@@ -144,9 +144,10 @@ export async function loadInstance(name: AssetName) {
     }
 }
 
-const font = await new FontLoader().loadAsync("https://raw.githubusercontent.com/mrdoob/three.js/e7fd8b9d7d941c4670521f7d843a7fa12435410a/examples/fonts/helvetiker_regular.typeface.json");
+let font: Font | undefined = undefined;
 
-export function textToShape(text: string, size: number, justify: 'left' | 'right' | 'center' = 'left', align: 'top' | 'bottom' | 'center' = 'bottom') {
+export async function textToShape(text: string, size: number, justify: 'left' | 'right' | 'center' = 'left', align: 'top' | 'bottom' | 'center' = 'bottom') {
+    if (!font) font = await new FontLoader().loadAsync("https://raw.githubusercontent.com/mrdoob/three.js/e7fd8b9d7d941c4670521f7d843a7fa12435410a/examples/fonts/helvetiker_regular.typeface.json");
     const color = 0x006699;
 
     const mat = new MeshBasicMaterial({
