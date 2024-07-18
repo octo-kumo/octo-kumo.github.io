@@ -1,7 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const url = require("url");
-const files = fs.readdirSync(path.join(__dirname, "../..", "public", "projects", "assets", "c0"));
+const files = fs.readdirSync(path.join(__dirname, "../..", "public", "projects", "assets", "c0"))
+    .filter(f => fs.statSync(path.join(__dirname, "../..", "public", "projects", "assets", "c0", f)).isFile());
 const categories = {};
 files.forEach(f => {
     let cat = f.split('.')[0].split('_')[0];

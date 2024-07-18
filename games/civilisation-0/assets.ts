@@ -6,7 +6,6 @@ import {
     Material,
     Matrix4,
     MeshBasicMaterial,
-    type MeshStandardMaterial,
     ShapeGeometry,
     type Texture,
     TextureLoader,
@@ -52,11 +51,12 @@ export function setCSM(_csm: CSM) {
 }
 
 export function csmSetupMaterial(material: Material | Material[]) {
+    // console.log(material)
     if (material instanceof Material) {
-        (material as MeshStandardMaterial).metalness = 0;
+        // (material as MeshStandardMaterial).metalness = 0;
         csm?.setupMaterial(material);
     } else if (Array.isArray(material)) material.forEach(m => {
-        (m as MeshStandardMaterial).metalness = 0;
+        // (m as MeshStandardMaterial).metalness = 0;
         csm?.setupMaterial(m);
     });
 }
@@ -67,11 +67,13 @@ export function setScene(_scene: Scene) {
     if (_meshes.length > 0) scene.add(..._meshes);
 }
 
-export function loadAsset(name: AssetName) {
+export function loadAsset(name: AssetName, rs = false, cs = false) {
     return assets[name] ??= loader.loadAsync(URL_PREFIX + name).then(r => {
         r.scene.traverse(child => {
             if (child.type === 'Mesh') {
                 const _mesh = child as Mesh;
+                _mesh.receiveShadow = rs;
+                _mesh.castShadow = cs;
                 csmSetupMaterial(_mesh.material);
             }
         });

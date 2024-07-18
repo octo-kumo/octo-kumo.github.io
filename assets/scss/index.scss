@@ -35,3 +35,12 @@ html {
 :root {
   --el-transition-color: none !important;
 }
+
+blockquote {
+  font-style: italic;
+  padding: .1em .5em;
+  background-color: #aaa2;
+  border-radius: .2em;
+  border-left: .2em solid var(--el-color-primary);
+  margin: .5em 0;
+}

@@ -1,11 +1,11 @@
 import type {ContentDocLike} from "~/types/custom-types";
 
-const categories = [
+export const chal_categories = [
     "web", "crypto", "forensic", "forensics", "algo", "pwn", "rev", "misc", "osint", "box", "hardware"
 ];
 
 export default function getCtfCategory(doc?: ContentDocLike) {
     const cat = doc?._path?.split("/").at(-2) ?? 'unknown'
-    if (categories.includes(cat)) return cat;
+    if (chal_categories.includes(cat)) return cat;
     return undefined;
 }

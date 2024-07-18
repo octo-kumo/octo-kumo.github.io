@@ -1,11 +1,15 @@
 import {TileWorld} from "~/games/civilisation-0/terrain/tileworld";
 import {AllAssets} from "~/games/civilisation-0/types";
-import {Vector3} from "three";
-import {GroundObject} from "~/games/civilisation-0/ground_object";
-import {textToShape} from "~/games/civilisation-0/assets";
+import {loadAsset, textToShape} from "~/games/civilisation-0/assets";
+import {AxesHelper, MeshStandardMaterial, SphereGeometry} from "three";
+import {Mesh} from "three/src/objects/Mesh";
+
+const wideObjs = ['wall', 'siege']
 
 export class DebugWorld extends TileWorld {
     override async generate() {
+        this.parent.add(new AxesHelper(10));
+        this.genBalls();
         let types = Object.keys(AllAssets) as Array<keyof typeof AllAssets>;
         let maxy = 0;
         for (let x = 0; x < types.length; x++) {
@@ -13,7 +17,13 @@ export class DebugWorld extends TileWorld {
             maxy = Math.max(maxy, a.length);
             for (let y = 0; y < a.length; y++) {
                 // for (let z = -50; z < 60; z += 2) {
-                this.objects.push(new GroundObject(a[y], new Vector3(x, 0, y), 0));
+                loadAsset(a[y], true, true).then(obj => {
+                    obj.scene.position.set(x, 0, y * (wideObjs.includes(types[x]) ? 2 : 1));
+                    this.parent.add(obj.scene);
+
+                }).catch(console.error);
+                // console.log(a[y], obj);
+                // this.objects.push(new GroundObject(a[y], new Vector3(x, 0, y), 0));
                 // }
             }
             const m = await textToShape(types[x], 0.7, 'right');
@@ -21,6 +31,20 @@ export class DebugWorld extends TileWorld {
             m.rotateY(-Math.PI / 2);
             m.rotateX(-Math.PI / 2);
             this.parent.add(m)
+        }
+    }
+
+    genBalls() {
+
+        for (let m = 0; m < 1; m += 0.1) {
+            for (let r = 0; r < 1; r += 0.1) {
+                let mat = new MeshStandardMaterial({metalness: m, roughness: r, color: 0xffffff});
+                let geo = new SphereGeometry(0.2, 32, 32);
+                geo.computeVertexNormals();
+                let mesh = new Mesh(geo, mat);
+                mesh.position.set(-1 - m * 5, 0, r * 5);
+                this.parent.add(mesh);
+            }
         }
     }
 }

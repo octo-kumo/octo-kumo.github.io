@@ -6,7 +6,7 @@ import type {TileWorld} from "~/games/civilisation-0/terrain/tileworld";
 import {Water} from "three/examples/jsm/objects/Water2";
 import {csmSetupMaterial, getTexture, loadAsset} from "~/games/civilisation-0/assets";
 import type {Mesh} from "three/src/objects/Mesh";
-import {PerlinWorld} from "~/games/civilisation-0/terrain/perlin_world";
+import {DebugWorld} from "~/games/civilisation-0/terrain/debug_world";
 
 export default class Ground extends Object3D {
     private readonly r: () => number;
@@ -24,12 +24,12 @@ export default class Ground extends Object3D {
         const r = this.r = getRandomMix32(273);
         this.tiles = [];
         this.objects = [];
-        (this.world = new PerlinWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
-        // (this.world = new DebugWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
+        // (this.world = new PerlinWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
+        (this.world = new DebugWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
         // (this.world = new RandomWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
 
         this.makeWater();
-        loadAsset('ground_riverOpen.glb').then(a => {
+        loadAsset('ground_riverOpen.glb', true).then(a => {
             this.water2 = a.scene.children[0].clone();
             this.water2.scale.set(1000, 1, 1000);
             this.water2.position.y = -0.05;

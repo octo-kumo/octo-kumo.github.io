@@ -46,6 +46,7 @@
         "@formkit/auto-animate": "latest",
         "@giscus/vue": "latest",
         "@mdi/font": "latest",
+        "@nuxtjs/mdc": "^0.8.3",
         "@tensorflow-models/qna": "latest",
         "@tensorflow/tfjs-backend-cpu": "latest",
         "@tensorflow/tfjs-backend-webgl": "latest",

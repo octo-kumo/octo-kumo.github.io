@@ -12,5 +12,6 @@ export type Challenge = {
     sha256: string,
     desc: string,
     diff: 'simple' | 'medium' | 'hard',
-    tags: string[]
+    tags: string[],
+    files: { name: string, url: string, type?: 'web' | 'file' }[]
 }
