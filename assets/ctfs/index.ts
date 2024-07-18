@@ -1,9 +1,11 @@
 import azurlane from "assets/ctfs/azurlane";
 import simplesteg from "assets/ctfs/simplesteg";
+import xor from "assets/ctfs/xor";
 
 const challeneges: Challenge[] = [
     azurlane,
-    simplesteg
+    simplesteg,
+    xor
 ];
 export default challeneges;
 
