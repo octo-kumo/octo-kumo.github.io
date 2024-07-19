@@ -3,12 +3,14 @@
            :default-active="route.path.startsWith('/c/')?'c':String(route.name)"
            class="el-menu-vertical-demo select-none"
   >
-    <el-menu-item index="index" route="/">
-      <el-icon>
-        <el-icon-cloudy/>
-      </el-icon>
-      <template #title>云</template>
-    </el-menu-item>
+    <nuxt-link to="/" class="no-underline text-inherit">
+      <el-menu-item index="index" route="/">
+        <el-icon>
+          <el-icon-cloudy/>
+        </el-icon>
+        <template #title>云</template>
+      </el-menu-item>
+    </nuxt-link>
     <el-sub-menu index="projects">
       <template #title>
         <el-icon>
@@ -16,34 +18,40 @@
         </el-icon>
         <span>Projects</span>
       </template>
-      <el-menu-item v-for="n in nav.filter(r=>r.path.startsWith('/projects/'))" :route="n" :index="String(n.name)">
-        <nuxt-link :to="n" class="no-underline text-inherit">{{ guessPathName(n.name!) }}</nuxt-link>
-      </el-menu-item>
+      <nuxt-link :to="n" class="no-underline text-inherit" v-for="n in nav.filter(r=>r.path.startsWith('/projects/'))">
+        <el-menu-item :route="n" :index="String(n.name)">
+          {{ guessPathName(n.name!) }}
+        </el-menu-item>
+      </nuxt-link>
     </el-sub-menu>
-    <el-menu-item index="c" route="/c/">
-      <el-icon>
-        <el-icon-collection/>
-      </el-icon>
-      <template #title>
-        <nuxt-link to="/c/" class="no-underline text-inherit">Content</nuxt-link>
-      </template>
-    </el-menu-item>
-    <el-menu-item index="ctf" route="/ctf">
-      <el-icon>
-        <el-icon-flag/>
-      </el-icon>
-      <template #title>
-        <nuxt-link to="/ctf" class="no-underline text-inherit">My Challenges</nuxt-link>
-      </template>
-    </el-menu-item>
-    <el-menu-item index="about" route="/about">
-      <el-icon>
-        <el-icon-info-filled/>
-      </el-icon>
-      <template #title>
-        <nuxt-link to="/about" class="no-underline text-inherit">About</nuxt-link>
-      </template>
-    </el-menu-item>
+    <nuxt-link to="/c/" class="no-underline text-inherit">
+      <el-menu-item index="c" route="/c/">
+        <el-icon>
+          <el-icon-collection/>
+        </el-icon>
+        <template #title>
+          Content
+        </template>
+      </el-menu-item>
+    </nuxt-link>
+    <nuxt-link to="/ctf" class="no-underline text-inherit">
+      <el-menu-item index="ctf" route="/ctf">
+        <el-icon>
+          <el-icon-flag/>
+        </el-icon>
+        <template #title>My Challenges
+        </template>
+      </el-menu-item>
+    </nuxt-link>
+    <nuxt-link to="/about" class="no-underline text-inherit">
+      <el-menu-item index="about" route="/about">
+        <el-icon>
+          <el-icon-info-filled/>
+        </el-icon>
+        <template #title>About
+        </template>
+      </el-menu-item>
+    </nuxt-link>
   </el-menu>
 </template>
 <script setup lang="ts">
