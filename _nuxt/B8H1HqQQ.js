@@ -1,0 +1,1 @@
+import{_ as r}from"./CW4G9t4b.js";import{d as a,h as e,a as i}from"./B7T_nz2D.js";const d=t=>{const n=i(t);return a({inheritAttrs:!1,setup(s,{attrs:o}){return()=>e("div",[e(r,void 0,{default:()=>e(n,o)})])}})};export{d as createClientPage};
