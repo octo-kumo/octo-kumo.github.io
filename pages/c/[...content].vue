@@ -62,7 +62,7 @@ definePageMeta({
 });
 const treeProps: TreeOptionProps = {
   children: 'children',
-  label: (data: TreeNodeData, node: Node) => guessArticleTitle(data)
+  label: (data: TreeNodeData, node: Node) => guessArticleTitle(getDoc(data._path))
 };
 
 function navToToc(nav?: NavItem[] | null, depth = 0): TocLink[] {
@@ -141,7 +141,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
             placement="left">
         <span class="flex justify-between flex-1" v-shared="getTransitionName(data, 'tree-node')">
           <kumo-link :id="'content_'+hashCode(data._path).toString(16).padStart(8,'0')" :to="'/c' + data._path"
-                     class="mr-2 justify-start!">
+                     class="mr-2 justify-start!" no-prefetch>
             {{ node.label }}
             <article-tags class="ml-2" :article="getDoc(data._path)" id-prefix="tree" hide-cat short/>
           </kumo-link>
