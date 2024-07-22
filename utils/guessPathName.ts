@@ -9,6 +9,6 @@ const NAMES: { [key: string]: string } = {
     "projects-thumbnails": "Thumbnails",
 };
 
-export default function guessPathName(name: string | symbol) {
+export default function guessPathName(name: string | symbol | undefined) {
     return NAMES[<string>name] ?? toTitleCase(String(name).replace("projects-", "").replace("-", " "))
 }

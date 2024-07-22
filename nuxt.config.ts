@@ -49,20 +49,20 @@ export default defineNuxtConfig({
     modules: [
         '@vueuse/nuxt',
         '@unocss/nuxt',
-        '@pinia/nuxt',
+        // '@pinia/nuxt',
         // 'v-shared-element/nuxt',
-        '@pinia-plugin-persistedstate/nuxt',
+        // '@pinia-plugin-persistedstate/nuxt',
         '@element-plus/nuxt',
         '@nuxtjs/color-mode',
         '@vite-pwa/nuxt',
         "@nuxtjs/sitemap",
         "@nuxt/content",
         // "@nuxtjs/robots",
-        "@nuxt/image",
+        // "@nuxt/image",
         // "nuxt-security",
-        "nuxt-booster",
         '@formkit/auto-animate/nuxt',
         '@nuxtjs/robots',
+        // "nuxt-booster",
     ],
 
     robots: {
@@ -157,6 +157,8 @@ export default defineNuxtConfig({
     experimental: {
         viewTransition: true
     },
-
+    // future: {
+    //     compatibilityVersion: 4,
+    // },
     compatibilityDate: '2024-07-08'
 });

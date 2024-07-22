@@ -21,8 +21,6 @@
         "@nuxtjs/color-mode": "latest",
         "@nuxtjs/robots": "latest",
         "@nuxtjs/sitemap": "latest",
-        "@pinia-plugin-persistedstate/nuxt": "latest",
-        "@pinia/nuxt": "latest",
         "@types/dat.gui": "latest",
         "@types/pngjs": "latest",
         "@types/three": "latest",
@@ -73,9 +71,6 @@
         "vue-use-active-scroll": "latest",
         "vue3-apexcharts": "latest",
         "vue3-chessboard": "latest"
-    },
-    "peerDependencies": {
-        "pinia": "latest"
     },
     "pnpm": {
         "peerDependencyRules": {

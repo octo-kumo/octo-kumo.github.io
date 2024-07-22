@@ -23,7 +23,8 @@ definePageMeta({
   layout: 'default',
   title: 'Evil ER Web',
   description: 'Colab version of evil er, but without the actual server.',
-  image: '/img/ereditor.webp'
+  image: '/img/ereditor.webp',
+  lightThemeImage: true
 });
 const editor = ref(null as HTMLCanvasElement | null);
 const nodes: ERObject[] = reactive([]);

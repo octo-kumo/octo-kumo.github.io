@@ -55,20 +55,20 @@
         :sm="12">
       <el-card class="my-3"
                shadow="hover">
-        <template #header v-if="item.meta?.image!">
-          <el-image :src="item.meta?.image! as string"
-                    class="w-full h-48" lazy
+        <template #header v-if="item.meta.image!">
+          <el-image :src="item.meta.image! as string"
+                    class="w-full h-48" :class="{'light-theme-image':item.meta.lightThemeImage}"
                     fit="cover"></el-image>
         </template>
         <el-space direction="vertical" alignment="normal">
           <h3 class="m-0">
             <kumo-link :to="item" type="primary">
-              {{ item.meta.title ?? guessPathName(item.name!) }}
+              {{ item.meta.title ?? guessPathName(item.name) }}
             </kumo-link>
           </h3>
           <el-text v-if="item.meta.description">{{ item.meta.description }}</el-text>
           <div class="flex gap-2">
-            <el-tag type="danger" v-if="(item.meta.layout!) ==='clean'">
+            <el-tag type="danger" v-if="item.meta.layout ==='clean'">
               full page
             </el-tag>
           </div>
@@ -79,17 +79,18 @@
 </template>
 <script setup lang="ts">
 import Fuse, {type RangeTuple} from 'fuse.js';
+import type {RouteRecord} from "vue-router";
 
 const currPage = ref(1);
 const router = useRouter();
 const nav = ref(router.getRoutes());
 const search = ref("");
-const contentPage = {
+const contentPage!: RouteRecord = {
   path: "/c",
   meta: {
     title: "Content",
     description: "Markdown Content Archive"
-  }
+  } as any
 };
 const {data: docs, status} = await useLazyAsyncData(`c/docs_i`, () => queryAllDocs(true));
 
@@ -136,7 +137,6 @@ useHead({
 </script>
 <style lang="scss">
 //@use "@/assets/scss/quotes.scss";
-
 .el-card__header:has(> .el-image) {
   padding: 0 !important;
   border: none !important;
@@ -145,5 +145,9 @@ useHead({
 span.highlighted {
   @apply font-bold;
   background-color: #ff04;
+}
+
+html.dark .light-theme-image {
+  filter: invert(1) hue-rotate(180deg);
 }
 </style>

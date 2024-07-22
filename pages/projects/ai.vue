@@ -2,7 +2,8 @@
 definePageMeta({
   title: 'Free AI',
   description: 'Why is my bill so high?',
-  // image: '/img/airdef.webp'
+  image: '/img/ai.svg',
+  lightThemeImage: true
 });
 </script>
 
