@@ -62,7 +62,7 @@ export default defineNuxtConfig({
         // "nuxt-security",
         '@formkit/auto-animate/nuxt',
         '@nuxtjs/robots',
-        // "nuxt-booster",
+        "nuxt-booster",
     ],
 
     robots: {
@@ -104,16 +104,16 @@ export default defineNuxtConfig({
             rehypePlugins: ['rehype-mathjax']
         },
         highlight: {
-            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh'],
+            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php'],
             theme: {
-                default: 'github-light',
-                dark: 'github-dark',
+                default: 'one-light',
+                dark: 'one-dark-pro',
                 sepia: 'monokai'
             }
         },
-        experimental: {
-            clientDB: true
-        }
+        // experimental: {
+        //     clientDB: true
+        // }
     },
 
     // vueuse
