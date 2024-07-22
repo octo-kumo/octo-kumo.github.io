@@ -33,7 +33,7 @@
         "consola": "latest",
         "imagemin": "latest",
         "imagemin-webp": "latest",
-        "nuxt": "latest",
+        "nuxt": "3.12.3",
         "nuxt-booster": "latest",
         "nuxt-security": "latest",
         "sass": "1.76.0",
