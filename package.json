@@ -30,7 +30,6 @@
         "@vite-pwa/assets-generator": "latest",
         "@vite-pwa/nuxt": "latest",
         "@vueuse/nuxt": "latest",
-        "consola": "latest",
         "imagemin": "latest",
         "imagemin-webp": "latest",
         "nuxt": "3.12.3",

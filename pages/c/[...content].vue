@@ -62,7 +62,7 @@ definePageMeta({
 });
 const treeProps: TreeOptionProps = {
   children: 'children',
-  label: (data: TreeNodeData, node: Node) => guessArticleTitle(getDoc(data._path))
+  label: (data: TreeNodeData, node: Node) => guessArticleTitle(data)
 };
 
 function navToToc(nav?: NavItem[] | null, depth = 0): TocLink[] {
