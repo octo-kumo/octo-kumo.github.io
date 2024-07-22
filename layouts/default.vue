@@ -1,7 +1,6 @@
 <template>
   <el-scrollbar class="fixed! top-0 left-0 z-9 drawer">
-    <kumo-drawer :collapse="!drawerIsOpen" class="hidden md:block menu"
-                 :default-openeds="['projects']"/>
+    <kumo-drawer :collapse="!drawerIsOpen" class="hidden md:block menu"/>
   </el-scrollbar>
   <kumo-header @back="drawerIsOpen=!drawerIsOpen" class="fixed top-0 left-0 z-9 w-full justify-center flex">
     <kumo-drawer mode="horizontal" class="md:hidden!"/>

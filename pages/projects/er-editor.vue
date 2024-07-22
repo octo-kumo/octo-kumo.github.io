@@ -21,19 +21,12 @@ import type {ObjectType} from "~/model/er_model/data-types";
 
 definePageMeta({
   layout: 'default',
-  title: 'Evil ER',
-  description: 'Shadow of its formal glory\nhttps://github.com/octo-kumo/cs6131-project',
+  title: 'Evil ER Web',
+  description: 'Colab version of evil er, but without the actual server.',
   image: '/img/ereditor.webp'
 });
 const editor = ref(null as HTMLCanvasElement | null);
 const nodes: ERObject[] = reactive([]);
-const colors = {
-  dark: {
-    foreground: ""
-  }, light: {
-    foreground: ""
-  }
-};
 
 function PIXEL_RATIO() {
   const ctx: any = document.createElement("canvas").getContext("2d")
