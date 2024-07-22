@@ -5,8 +5,6 @@ export default async function queryAllDocs(indexPage?: boolean) {
     if (indexPage) query = query.sort({created: -1});
 
     const res = await query.find();
-    res.forEach(p => {
-        p.title = guessArticleTitle(p)
-    });
+    res.forEach(p => p.title = guessArticleTitle(p));
     return res;
 }

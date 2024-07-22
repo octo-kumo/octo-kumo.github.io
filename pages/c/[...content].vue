@@ -60,9 +60,9 @@ definePageMeta({
   // title: () => guessArticleTitle(doc?.value) ?? "Content",
   // description: () => doc?.value?.description
 });
-const defaultProps: TreeOptionProps = {
+const treeProps: TreeOptionProps = {
   children: 'children',
-  label: (data: TreeNodeData, node: Node) => guessArticleTitle(data)
+  label: (data: TreeNodeData, node: Node) => guessArticleTitle(getDoc(data._path))
 };
 
 function navToToc(nav?: NavItem[] | null, depth = 0): TocLink[] {
@@ -132,7 +132,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
     <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path"
              :default-expand-all="path==='/'" v-shared="'content-tree-nav'"
              highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation as any"
-             :props="defaultProps">
+             :props="treeProps">
       <template #default="{ node, data }">
         <el-tooltip
             :show-after="500"
