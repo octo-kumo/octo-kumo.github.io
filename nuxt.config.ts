@@ -62,7 +62,7 @@ export default defineNuxtConfig({
         // "nuxt-security",
         '@formkit/auto-animate/nuxt',
         '@nuxtjs/robots',
-        "nuxt-booster",
+        // "nuxt-booster",
     ],
 
     robots: {
