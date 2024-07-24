@@ -1,1 +1,0 @@
-import{q as o}from"./C0I2pk-K.js";import{_ as i}from"./SIFn5-Ai.js";async function c(e){let t=o("/").only(["_id","_path","title","description","created","updated","tags","solves","points"]).where({_extension:{$eq:"md"},...e?{created:{$exists:!0}}:{}});e&&(t=t.sort({created:-1}));const r=await t.find();return r.forEach(s=>s.title=i(s)),r}export{c as q};
