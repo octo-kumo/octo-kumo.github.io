@@ -14,13 +14,16 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-const { $pwa } = useNuxtApp()
+const { $pwa } = useNuxtApp();
+const route = useRoute();
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const drawerIsOpen = useStorage("drawer-open", false);
 const phone = breakpoints.smaller('lg');
 const collapsed = computed(() => !phone.value && !drawerIsOpen.value);
 const overlay = computed(() => phone.value && drawerIsOpen.value);
-
+watch(() => route.path, () => {
+  if (phone.value) drawerIsOpen.value = false;
+});
 onMounted(() => {
   if ($pwa?.offlineReady) {
     ElMessage({

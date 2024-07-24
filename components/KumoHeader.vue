@@ -30,9 +30,7 @@ const route = useRoute();
 const color = useColorMode();
 const routeName = computed(() => route.meta.title ?? guessPathName(route.name as string));
 const icon = computed(() => color.value === 'dark' ? Moon : Sunny);
-watch(() => route.path, () => {
-  searchVisible.value = false;
-});
+watch(() => route.path, () => searchVisible.value = false);
 </script>
 <style lang="scss" scoped>
 .header {
