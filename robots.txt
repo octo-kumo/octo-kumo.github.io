@@ -1,5 +1,3 @@
-# START nuxt-robots (indexable)
 User-agent: *
-
 Sitemap: https://yun.ng/sitemap.xml
-# END nuxt-robots
+# kumo{hello_robots!}
