@@ -1,10 +1,11 @@
 <template>
-  <pre v-if="language!=='mermaid'" :class="$props.class" :data-lang="language" :data-file="filename" :data-meta="meta"><slot/></pre>
+  <pre v-if="language !== 'mermaid'" :class="$props.class" :data-lang="language" :data-file="filename"
+    :data-meta="meta"><slot/></pre>
   <div v-else ref="mermaid" class="mermaid" :data-file="filename"></div>
 </template>
 
 <script setup lang="ts">
-import type {Mermaid} from "mermaid";
+import type { Mermaid } from "mermaid";
 
 const mermaid = ref();
 const props = defineProps({
@@ -66,7 +67,7 @@ function maybeRender() {
 }
 
 onMounted(maybeRender)
-watch(color, maybeRender, {immediate: true});
+watch(color, maybeRender, { immediate: true });
 </script>
 
 <style lang="scss">
@@ -87,7 +88,7 @@ pre {
     counter-increment: step 0;
   }
 
-  & code .line {
+  code .line {
     display: block;
 
     &::before {
@@ -112,6 +113,10 @@ pre {
 
   &[data-lang]::before {
     content: attr(data-lang);
+  }
+
+  &[data-lang=flag]::before {
+    content: '⚑ ' attr(data-lang);
   }
 
   &[data-file] {

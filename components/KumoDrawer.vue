@@ -1,33 +1,31 @@
 <template>
-  <el-menu router
-           :default-active="route.path.startsWith('/c/')?'c':String(route.name)"
-           class="el-menu-vertical-demo select-none"
-  >
+  <el-menu router :default-active="route.path.replace(/(?!^)\/$/, '')" class="el-menu-vertical-demo select-none">
     <nuxt-link to="/" class="no-underline text-inherit">
-      <el-menu-item index="index" route="/">
+      <el-menu-item index="/" route="/">
         <el-icon>
-          <el-icon-cloudy/>
+          <el-icon-cloudy />
         </el-icon>
         <template #title>云</template>
       </el-menu-item>
     </nuxt-link>
-    <el-sub-menu index="projects">
+    <el-sub-menu index="/projects">
       <template #title>
         <el-icon>
-          <el-icon-menu/>
+          <el-icon-menu />
         </el-icon>
         <span>Projects</span>
       </template>
-      <nuxt-link :to="n" class="no-underline text-inherit" v-for="n in nav.filter(r=>r.path.startsWith('/projects/'))">
-        <el-menu-item :route="n" :index="String(n.name)">
-          {{ guessPathName(n.name!) }}
+      <nuxt-link :to="n" class="no-underline text-inherit"
+        v-for="n in nav.filter(r => r.path.startsWith('/projects/'))">
+        <el-menu-item :route="n" :index="n.path">
+          {{ n.meta.title ?? guessPathName(n.name!) }}
         </el-menu-item>
       </nuxt-link>
     </el-sub-menu>
     <nuxt-link to="/c/" class="no-underline text-inherit">
-      <el-menu-item index="c" route="/c/">
+      <el-menu-item index="/c" route="/c/">
         <el-icon>
-          <el-icon-collection/>
+          <el-icon-collection />
         </el-icon>
         <template #title>
           Content
@@ -35,18 +33,18 @@
       </el-menu-item>
     </nuxt-link>
     <nuxt-link to="/ctf" class="no-underline text-inherit">
-      <el-menu-item index="ctf" route="/ctf">
+      <el-menu-item index="/ctf" route="/ctf">
         <el-icon>
-          <el-icon-flag/>
+          <el-icon-flag />
         </el-icon>
         <template #title>My Challenges
         </template>
       </el-menu-item>
     </nuxt-link>
     <nuxt-link to="/about" class="no-underline text-inherit">
-      <el-menu-item index="about" route="/about">
+      <el-menu-item index="/about" route="/about">
         <el-icon>
-          <el-icon-info-filled/>
+          <el-icon-info-filled />
         </el-icon>
         <template #title>About
         </template>
@@ -59,5 +57,4 @@ const route = useRoute();
 const router = useRouter();
 const nav = router.getRoutes();
 </script>
-<style scoped lang="css">
-</style>
+<style scoped lang="css"></style>

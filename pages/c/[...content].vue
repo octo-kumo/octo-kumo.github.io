@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import TableOfContents from "~/components/TableOfContents.vue";
 import type Node from "element-plus/es/components/tree/src/model/node";
-import type {TreeNodeData, TreeOptionProps} from "element-plus/es/components/tree/src/tree.type";
-import type {NavItem, ParsedContent, TocLink} from "@nuxt/content";
-import type {Ref} from "@vue/reactivity";
-import type {ComputedRef} from "vue";
+import type { TreeNodeData, TreeOptionProps } from "element-plus/es/components/tree/src/tree.type";
+import type { NavItem, ParsedContent, TocLink } from "@nuxt/content";
+import type { Ref } from "@vue/reactivity";
+import type { ComputedRef } from "vue";
 
 const path = (useRoute().path.substring(2) || "/")
-    .replace(/(?!^)\/$/, ''); // strip trailing slash
+  .replace(/(?!^)\/$/, ''); // strip trailing slash
 
 function breadcrumbs(path: string) {
   const segments = path.split('/').filter(segment => segment !== '');
@@ -30,12 +30,12 @@ function breadcrumbs(path: string) {
 //   return nav
 // }
 
-const {data: doc, status} = await useLazyAsyncData(`c/doc_${path}`, () => queryContent(path).findOne().then(r => {
+const { data: doc, status } = await useLazyAsyncData(`c/doc_${path}`, () => queryContent(path).findOne().then(r => {
   r.title = guessArticleTitle(r);
   return r;
 }));
-const {data: docs} = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
-const {data: navigation} = await useLazyAsyncData(`c/nav_${path}`, async () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
+const { data: docs } = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
+const { data: navigation } = await useLazyAsyncData(`c/nav_${path}`, async () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
 const getDoc = (_path: string) => docs.value?.find(d => d._path === _path)
 const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedContent> }> = computed(() => {
   if (!docs.value) return {};
@@ -45,7 +45,7 @@ const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedCon
     peers[(meIndex - 1 + peers.length) % peers.length],
     peers[(meIndex + 1) % peers.length],
   ] : [];
-  return {prev, next};
+  return { prev, next };
 })
 const isLeaf = computed(() => !docs.value?.some(d => d._path !== path && d._path?.startsWith(path)));
 
@@ -85,92 +85,87 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
 </script>
 <template>
   <template v-if="doc">
-    <article class="content-page-sections">
+    <article class="content-page-sections mt-1">
       <el-breadcrumb separator="/" v-if="path && path !== '/'" v-shared="'content-bc'">
         <el-breadcrumb-item v-for="b in breadcrumbs($route.path)" :to="{ path: b.path }">{{ b.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
-      <el-anchor :offset="60" v-if="TOC.length>0"
-                 v-shared="'content-anchor'"
-                 class="toc w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg select-none"
-                 :data-path="path">
+      <el-anchor :offset="60" v-if="TOC.length > 0" v-shared="'content-anchor'"
+        class="toc w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg select-none"
+        :data-path="path">
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
       </el-anchor>
       <span class="mb-2 text-4xl mt-4 block font-bold" v-shared="getTransitionName(doc, 'title')">
         {{ guessArticleTitle(doc) }}
       </span>
-      <article-tags :article="doc"/>
+      <article-tags :article="doc" />
       <el-text size="small">
-        <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)"/>
+        <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)" />
       </el-text>
       <ContentRenderer :value="doc" class="content mt-10">
         <template #empty>
-          <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80"/>
+          <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80" />
         </template>
       </ContentRenderer>
-      <div class="flex justify-between mt-3" v-shared="'content-page-peer-nav'"
-           v-if="nav.prev&&nav.next">
-        <kumo-link :to="'/c'+(nav.prev?._path??'')" type="primary">
+      <div class="flex justify-between mt-3" v-shared="'content-page-peer-nav'" v-if="nav.prev && nav.next">
+        <kumo-link :to="'/c' + (nav.prev?._path ?? '')" type="primary">
           <el-icon>
-            <el-icon-arrow-left/>
+            <el-icon-arrow-left />
           </el-icon>
           {{ guessArticleTitle(nav.prev) }}
         </kumo-link>
-        <kumo-link :to="'/c'+(nav.next?._path??'')" type="primary">
+        <kumo-link :to="'/c' + (nav.next?._path ?? '')" type="primary">
           {{ guessArticleTitle(nav.next) }}
           <el-icon>
-            <el-icon-arrow-right/>
+            <el-icon-arrow-right />
           </el-icon>
         </kumo-link>
       </div>
     </article>
-    <comments class="content-page-sections py-1" v-if="isLeaf"/>
-    <el-divider v-shared="'content-tree-sep'" class="mx--3!" style="width: calc(100% + 1.5rem)"/>
+    <comments class="content-page-sections py-1" v-if="isLeaf" />
+    <el-divider v-shared="'content-tree-sep'" class="mx--3!" style="width: calc(100% + 1.5rem)" />
   </template>
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path"
-             :default-expand-all="path==='/'" v-shared="'content-tree-nav'"
-             highlight-current auto-expand-parent :default-expanded-keys="[path]" :data="navigation as any"
-             :props="treeProps">
+      :default-expand-all="path === '/'" v-shared="'content-tree-nav'" highlight-current auto-expand-parent
+      :default-expanded-keys="[path]" :data="navigation as any" :props="treeProps">
       <template #default="{ node, data }">
-        <el-tooltip
-            :show-after="500"
-            effect="light"
-            :content="`Created ${displayDatetime(getDoc(data._path)?.created)} · Edited ${displayDatetime(getDoc(data._path)?.updated)}`"
-            placement="left">
-        <span class="flex justify-between flex-1" v-shared="getTransitionName(data, 'tree-node')">
-          <kumo-link :id="'content_'+hashCode(data._path).toString(16).padStart(8,'0')" :to="'/c' + data._path"
-                     class="mr-2 justify-start!" no-prefetch>
-            {{ node.label }}
-            <article-tags class="ml-2" :article="getDoc(data._path)" id-prefix="tree" hide-cat short/>
-          </kumo-link>
-          <el-text class="max-w-80 flex-1" size="small">{{ getDoc(data._path)?.description }}</el-text>
-        </span>
+        <el-tooltip :show-after="500" effect="light"
+          :content="`Created ${displayDatetime(getDoc(data._path)?.created)} · Edited ${displayDatetime(getDoc(data._path)?.updated)}`"
+          placement="left">
+          <span class="flex justify-between flex-1" v-shared="getTransitionName(data, 'tree-node')">
+            <kumo-link :id="'content_' + hashCode(data._path).toString(16).padStart(8, '0')" :to="'/c' + data._path"
+              class="mr-2 justify-start!" no-prefetch>
+              {{ node.label }}
+              <article-tags class="ml-2" :article="getDoc(data._path)" id-prefix="tree" hide-cat short />
+            </kumo-link>
+            <el-text class="max-w-80 flex-1" size="small">{{ getDoc(data._path)?.description }}</el-text>
+          </span>
         </el-tooltip>
       </template>
     </el-tree>
   </template>
-  <el-skeleton v-if="status==='pending'" v-shared="'content-loading-skeleton'"/>
-  <template v-else-if="!(doc||(docs&&docs.length>0))">
+  <el-skeleton v-if="status === 'pending'" v-shared="'content-loading-skeleton'" />
+  <template v-else-if="!(doc || (docs && docs.length > 0))">
     <el-empty description="404 not found" class="h-48 flex-auto content-page-sections" :image-size="80"
-              v-shared="'content-not-found'">
-      <kumo-link :to="'/c'+oneLvlUp(path)">
+      v-shared="'content-not-found'">
+      <kumo-link :to="'/c' + oneLvlUp(path)">
         <el-icon>
-          <el-icon-arrow-up/>
+          <el-icon-arrow-up />
         </el-icon>
         Back one level up
       </kumo-link>
-      <br/>
+      <br />
       <kumo-link to="/c">
         <el-icon>
-          <el-icon-home-filled/>
+          <el-icon-home-filled />
         </el-icon>
         Back Home
       </kumo-link>
     </el-empty>
   </template>
-  <el-backtop :right="50" :bottom="50" v-shared="'content-back-up'"/>
+  <el-backtop :right="50" :bottom="50" v-shared="'content-back-up'" />
 </template>
 <style lang="scss">
 .content-page-sections {
@@ -181,7 +176,7 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
   }
 }
 
-.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
   border-radius: .35rem;
 }
 

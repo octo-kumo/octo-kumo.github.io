@@ -1,21 +1,25 @@
 <template>
-  <el-scrollbar class="fixed! top-0 left-0 z-9 drawer">
-    <kumo-drawer :collapse="!drawerIsOpen" class="hidden md:block menu"/>
+  <el-scrollbar class="drawer" :class="{ open: drawerIsOpen, 'drawer-collapsed': collapsed }">
+    <kumo-drawer :collapse="collapsed" class="menu" />
   </el-scrollbar>
-  <kumo-header @back="drawerIsOpen=!drawerIsOpen" class="fixed top-0 left-0 z-9 w-full justify-center flex">
-    <kumo-drawer mode="horizontal" class="md:hidden!"/>
+  <kumo-header @back="drawerIsOpen = !drawerIsOpen" class="w-full justify-center flex">
   </kumo-header>
-  <el-main class="p-0! main <md:ml-0!" :class="{'open':drawerIsOpen}">
+  <div class="overlay" v-show="overlay" @click="drawerIsOpen = false" />
+  <el-main class="p-0! main <md:ml-0!" :class="{ open: drawerIsOpen, 'drawer-collapsed': collapsed }">
     <div class="px-3">
-      <slot/>
+      <slot />
     </div>
   </el-main>
 </template>
 <script setup lang="ts">
-import {useStorage} from '@vueuse/core'
-
+import { useStorage } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+const { $pwa } = useNuxtApp()
+const breakpoints = useBreakpoints(breakpointsTailwind);
 const drawerIsOpen = useStorage("drawer-open", false);
-const {$pwa} = useNuxtApp()
+const phone = breakpoints.smaller('lg');
+const collapsed = computed(() => !phone.value && !drawerIsOpen.value);
+const overlay = computed(() => phone.value && drawerIsOpen.value);
 
 onMounted(() => {
   if ($pwa?.offlineReady) {
@@ -29,21 +33,60 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .drawer {
-  margin-top: var(--el-menu-horizontal-height);
-  height: calc(100vh - var(--el-menu-horizontal-height));
+  @apply fixed top-0 bottom-0 left-0 w-80 overflow-y-auto;
+  background-color: var(--bg-color);
+  transform: translate(-100%);
+  transition: background-color var(--el-transition-duration-fast), opacity .25s, transform .5s cubic-bezier(.19, 1, .22, 1), width .5s cubic-bezier(.19, 1, .22, 1);
   view-transition-name: "app-drawer";
+  height: 100dvh;
+
+  &.open {
+    transform: translate(0);
+  }
+
+  @screen lg {
+    z-index: 11;
+    transform: translate(0);
+    top: var(--el-menu-horizontal-height);
+    height: calc(100dvh - var(--el-menu-horizontal-height));
+  }
+
+  @screen md {
+    width: 16em;
+    z-index: 31;
+
+    &.drawer-collapsed {
+      width: 64px;
+    }
+  }
+
+  @screen lt-md {
+    width: calc(320px - 14px);
+    z-index: 31;
+  }
+}
+
+.menu {
+  transition: width .5s cubic-bezier(.19, 1, .22, 1);
+  min-height: 100dvh;
+
+  @screen lg {
+    min-height: calc(100dvh - var(--el-menu-horizontal-height));
+  }
 }
 
 .main {
   transition: var(--el-transition-all);
-  margin-top: var(--el-menu-horizontal-height);
   min-height: calc(100vh - var(--el-menu-horizontal-height));
-  margin-left: calc(var(--el-menu-icon-width) + var(--el-menu-base-level-padding) * 2);
   background-image: url("/bg/bg_texture.png");
   view-transition-name: "app-main";
 
-  &.open {
-    margin-left: 200px;
+  @screen lg {
+    margin-left: 16em;
+
+    &.drawer-collapsed {
+      margin-left: 64px;
+    }
   }
 }
 
@@ -51,7 +94,14 @@ html.dark .main {
   background-image: url("/bg/bg_texture.dark.png");
 }
 
-.menu:not(.el-menu--collapse) {
-  width: 200px;
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, .6);
+  transition: opacity .5s;
+  z-index: 30;
 }
 </style>

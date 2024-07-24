@@ -2,7 +2,8 @@
 
 // import {transformAssetUrls} from "vite-plugin-vuetify";
 
-import {resolve} from "node:url";
+import { resolve } from "node:url";
+import { readFileSync } from 'node:fs';
 
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
 export default defineNuxtConfig({
@@ -11,9 +12,9 @@ export default defineNuxtConfig({
         head: {
             title: '云',
             meta: [
-                {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+                { name: 'viewport', content: 'width=device-width, initial-scale=1' },
             ],
-            link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}]
+            link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
         }
     },
 
@@ -38,7 +39,7 @@ export default defineNuxtConfig({
         }
     },
 
-    devtools: {enabled: false},
+    devtools: { enabled: false },
     ssr: true,
 
     typescript: {
@@ -61,18 +62,9 @@ export default defineNuxtConfig({
         // "@nuxt/image",
         // "nuxt-security",
         '@formkit/auto-animate/nuxt',
-        '@nuxtjs/robots',
+        // '@nuxtjs/robots',
         // "nuxt-booster",
     ],
-
-    robots: {
-        rules: {
-            UserAgent: '*',
-            Disallow: '',
-            Sitemap: `${SITE_URL}/sitemap.xml`,
-            Comment: 'kumo{h3ll0_b075!}'
-        }
-    },
 
     pwa: {},
 
@@ -104,7 +96,9 @@ export default defineNuxtConfig({
             rehypePlugins: ['rehype-mathjax']
         },
         highlight: {
-            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php'],
+            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php',
+                JSON.parse(readFileSync('./assets/shiki/flag.tmLanguage.json', 'utf-8')),
+            ],
             theme: {
                 default: 'one-light',
                 dark: 'one-dark-pro',

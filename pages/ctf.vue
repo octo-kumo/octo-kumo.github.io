@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import challenges, {type Challenge} from "@/assets/ctfs";
+import challenges, { type Challenge } from "@/assets/ctfs";
 import ChallengeTitle from "~/components/ChallengeTitle.vue";
-import {sha256} from "ohash";
-import {useStorage} from '@vueuse/core'
-import type {MDCElement, MDCNode} from "@nuxtjs/mdc";
-import type {Ref} from "@vue/reactivity";
-import {ChallengeDetails} from "#components";
+import { sha256 } from "ohash";
+import { useStorage } from '@vueuse/core'
+import type { MDCElement, MDCNode } from "@nuxtjs/mdc";
+import type { Ref } from "@vue/reactivity";
+import { ChallengeDetails } from "#components";
 
 definePageMeta({
   title: 'CTF',
@@ -29,7 +29,7 @@ function makeLinksOpenNewTab(children: MDCNode[]) {
 }
 
 async function openChallenge(chal: Challenge) {
-  const {data: ast} = await useAsyncData(chal.desc, () => parseMarkdown(chal.desc));
+  const { data: ast } = await useAsyncData(chal.desc, () => parseMarkdown(chal.desc));
   makeLinksOpenNewTab(ast.value?.body?.children ?? []);
   ElMessageBox.prompt(() => h(ChallengeDetails, {
     chal,
@@ -41,7 +41,7 @@ async function openChallenge(chal: Challenge) {
     inputValidator: (str) => sha256(str) === chal.sha256,
     inputErrorMessage: 'Flag is not correct >_<',
     inputType: flags.value[chal.name] === chal.sha256 ? 'success' : ''
-  }).then(({value}) => {
+  }).then(({ value }) => {
     flags.value[chal.name] = sha256(value);
     ElMessage({
       type: 'success',
@@ -62,20 +62,20 @@ async function openChallenge(chal: Challenge) {
       Collection of my own challenges, I am completely new to this!
     </el-text>
     <div class="flex gap-1 flex-wrap mt-1">
-      <el-check-tag v-for="cat in allTags"
-                    class="select-none" :checked="filters[cat]" type="primary" @change="filters[cat]=!filters[cat]">
+      <el-check-tag v-for="cat in allTags" class="select-none" :checked="filters[cat]" type="primary"
+        @change="filters[cat] = !filters[cat]">
         {{ cat }}
       </el-check-tag>
     </div>
   </el-card>
-  <el-divider/>
-  <el-space wrap :fill-ratio="30" fill alignment="flex-start">
+  <el-divider />
+  <el-space wrap :size="30" alignment="flex-start" class="w-100%">
     <el-card shadow="hover" v-for="chal in challenges.filter(tagFilter)" @click="openChallenge(chal)"
-             class="cursor-pointer">
+      class="cursor-pointer">
       <template #header>
-        <challenge-title :chal="chal" :solved="flags[chal.name]===chal.sha256"/>
+        <challenge-title :chal="chal" :solved="flags[chal.name] === chal.sha256" />
       </template>
-      <challenge-details :chal="chal"/>
+      <challenge-details :chal="chal" />
     </el-card>
   </el-space>
 </template>
