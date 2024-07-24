@@ -5,6 +5,8 @@
       the
       site crashing entirely.
     </el-text>
+    <el-divider />
+    <note-search />
   </div>
   <el-row :gutter="20">
     <el-col
