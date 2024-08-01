@@ -120,6 +120,9 @@ importers:
       '@nuxtjs/sitemap':
         specifier: latest
         version: 6.0.0-beta.1(h3@1.12.0)(magicast@0.3.4)(rollup@4.19.2)(vite@5.3.5(@types/node@22.0.2)(sass@1.76.0)(terser@5.31.3))(vue@3.4.35(typescript@5.5.4))
+      '@octokit/types':
+        specifier: ^13.5.0
+        version: 13.5.0
       '@types/dat.gui':
         specifier: latest
         version: 0.7.13
@@ -1731,6 +1734,12 @@ packages:
   '@nuxtjs/sitemap@6.0.0-beta.1':
     resolution: {integrity: sha512-qLpMWAGr4vyTt2F1WYiA4Cv5ubxvjvd7LNW8Zt917O50Jcs3qSNiGPjFuDYDf9mTNGbkxtDyRti0/uESa5WP2A==}
     engines: {node: '>=18.0.0'}
+
+  '@octokit/openapi-types@22.2.0':
+    resolution: {integrity: sha512-QBhVjcUa9W7Wwhm6DBFu6ZZ+1/t/oYxqc2tp81Pi41YNuJinbFRx8B133qVOrAaBbF7D/m0Et6f9/pZt9Rc+tg==}
+
+  '@octokit/types@13.5.0':
+    resolution: {integrity: sha512-HdqWTf5Z3qwDVlzCrP8UJquMwunpDiMPt5er+QjGzL4hqr/vBVY/MauQgS1xWxCDT1oMx1EULyqxncdCY/NVSQ==}
 
   '@parcel/watcher-android-arm64@2.4.1':
     resolution: {integrity: sha512-LOi/WTbbh3aTn2RYddrO8pnapixAziFl6SMxHM69r3tvdSm94JtCenaKgk1GRg5FJ5wpMCpHeW+7yqPlvZv7kg==}
@@ -9940,6 +9949,12 @@ snapshots:
       - vite
       - vue
 
+  '@octokit/openapi-types@22.2.0': {}
+
+  '@octokit/types@13.5.0':
+    dependencies:
+      '@octokit/openapi-types': 22.2.0
+
   '@parcel/watcher-android-arm64@2.4.1':
     optional: true
 
@@ -10389,7 +10404,7 @@ snapshots:
 
   '@types/jsonwebtoken@9.0.6':
     dependencies:
-      '@types/node': 20.14.13
+      '@types/node': 22.0.2
 
   '@types/katex@0.16.7': {}
 
@@ -10444,7 +10459,7 @@ snapshots:
   '@types/request@2.48.12':
     dependencies:
       '@types/caseless': 0.12.5
-      '@types/node': 20.14.13
+      '@types/node': 22.0.2
       '@types/tough-cookie': 4.0.5
       form-data: 2.5.1
     optional: true

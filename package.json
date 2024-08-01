@@ -20,6 +20,7 @@
         "@nuxt/image": "latest",
         "@nuxtjs/color-mode": "latest",
         "@nuxtjs/sitemap": "latest",
+        "@octokit/types": "^13.5.0",
         "@types/dat.gui": "latest",
         "@types/pngjs": "latest",
         "@types/three": "latest",
