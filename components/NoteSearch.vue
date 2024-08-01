@@ -30,13 +30,12 @@
     </el-timeline>
 </template>
 <script lang="ts" setup>
-import { useStorage } from "@vueuse/core";
 import Fuse, { type RangeTuple } from 'fuse.js';
 
-const currPage = useStorage('index-pager-curr', 1);
+const currPage = ref(1);
 const search = ref("");
-const { data: docs, status } = await useLazyAsyncData(`c/docs_i`, () => queryAllDocs(true));
-
+const { data: alldocs, status } = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
+const docs = computed(() => alldocs.value?.flat?.filter(a => a.created)?.sort((a, b) => -a.created.localeCompare(b.created)));
 const fuse = new Fuse([], {
     threshold: 0.6,
     distance: 100,

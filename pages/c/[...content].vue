@@ -34,9 +34,10 @@ const { data: doc, status } = await useLazyAsyncData(`c/doc_${path}`, () => quer
   r.title = guessArticleTitle(r);
   return r;
 }));
-const { data: docs } = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
-const { data: navigation } = await useLazyAsyncData(`c/nav_${path}`, async () => fetchContentNavigation(queryContent(oneLvlUp(path))).then(r => r.map(removeNavChildSelf)));
-const getDoc = (_path: string) => docs.value?.find(d => d._path === _path)
+const { data: alldocs } = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
+const docs = computed(() => alldocs.value?.flat);
+const navigation = computed(() => alldocs.value?.nav);
+
 const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedContent> }> = computed(() => {
   if (!docs.value) return {};
   const peers = docs.value.filter(d => oneLvlUp(d._path!) === oneLvlUp(path)); // must not be parent
@@ -62,7 +63,7 @@ definePageMeta({
 });
 const treeProps: TreeOptionProps = {
   children: 'children',
-  label: (data: TreeNodeData, node: Node) => guessArticleTitle(getDoc(data._path))
+  label: (data: TreeNodeData, node: Node) => data.title
 };
 
 function navToToc(nav?: NavItem[] | null, depth = 0): TocLink[] {
@@ -132,15 +133,15 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
       :default-expanded-keys="[path]" :data="navigation as any" :props="treeProps">
       <template #default="{ node, data }">
         <el-tooltip :show-after="500" effect="light"
-          :content="`Created ${displayDatetime(getDoc(data._path)?.created)} · Edited ${displayDatetime(getDoc(data._path)?.updated)}`"
+          :content="`Created ${displayDatetime(data.created)} · Edited ${displayDatetime(data.updated)}`"
           placement="left">
           <span class="flex justify-between flex-1" v-shared="getTransitionName(data, 'tree-node')">
             <kumo-link :id="'content_' + hashCode(data._path).toString(16).padStart(8, '0')" :to="'/c' + data._path"
               class="mr-2 justify-start!" no-prefetch>
               {{ node.label }}
-              <article-tags class="ml-2" :article="getDoc(data._path)" id-prefix="tree" hide-cat short />
+              <article-tags class="ml-2" :article="data" id-prefix="tree" hide-cat short />
             </kumo-link>
-            <el-text class="max-w-80 flex-1" size="small">{{ getDoc(data._path)?.description }}</el-text>
+            <el-text class="max-w-80 flex-1" size="small">{{ data.description }}</el-text>
           </span>
         </el-tooltip>
       </template>

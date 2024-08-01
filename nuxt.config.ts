@@ -106,7 +106,7 @@ export default defineNuxtConfig({
             }
         },
         navigation: {
-            fields: ['updated', 'created', 'tags']
+            fields: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points']
         }
         // experimental: {
         //     clientDB: true
