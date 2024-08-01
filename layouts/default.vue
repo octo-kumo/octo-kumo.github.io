@@ -1,11 +1,11 @@
 <template>
-  <el-scrollbar class="drawer" :class="{ open: drawerIsOpen, 'drawer-collapsed': collapsed }">
-    <kumo-drawer :collapse="collapsed" class="menu" />
+  <el-scrollbar class="drawer" :class="{ open: drawerIsOpen }">
+    <client-only><kumo-drawer :collapse="collapsed" class="menu" /></client-only>
   </el-scrollbar>
   <kumo-header @back="drawerIsOpen = !drawerIsOpen" class="w-full justify-center flex">
   </kumo-header>
   <div class="overlay" v-show="overlay" @click="drawerIsOpen = false" />
-  <el-main class="p-0! main <md:ml-0!" :class="{ open: drawerIsOpen, 'drawer-collapsed': collapsed }">
+  <el-main class="p-0! main <md:ml-0!" :class="{ open: drawerIsOpen }">
     <div class="px-3">
       <slot />
     </div>
@@ -22,6 +22,7 @@ const phone = breakpoints.smaller('lg');
 const collapsed = computed(() => !phone.value && !drawerIsOpen.value);
 const overlay = computed(() => phone.value && drawerIsOpen.value);
 watch(() => route.path, () => {
+  // drawerIsOpen.value = !!drawerIsOpen.value;
   if (phone.value) drawerIsOpen.value = false;
 });
 onMounted(() => {
@@ -32,7 +33,8 @@ onMounted(() => {
     });
     console.log("PWA Offline ready!")
   }
-})
+});
+const drawerWidth = computed(() => collapsed.value ? '64px' : '16em');
 </script>
 <style lang="scss" scoped>
 .drawer {
@@ -55,12 +57,8 @@ onMounted(() => {
   }
 
   @screen md {
-    width: 16em;
+    width: v-bind(drawerWidth);
     z-index: 31;
-
-    &.drawer-collapsed {
-      width: 64px;
-    }
   }
 
   @screen lt-md {
@@ -85,11 +83,7 @@ onMounted(() => {
   view-transition-name: "app-main";
 
   @screen lg {
-    margin-left: 16em;
-
-    &.drawer-collapsed {
-      margin-left: 64px;
-    }
+    margin-left: v-bind(drawerWidth);
   }
 }
 

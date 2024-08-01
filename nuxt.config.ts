@@ -105,6 +105,9 @@ export default defineNuxtConfig({
                 sepia: 'monokai'
             }
         },
+        navigation: {
+            fields: ['updated', 'created', 'tags']
+        }
         // experimental: {
         //     clientDB: true
         // }
