@@ -102,6 +102,15 @@ pre {
     }
   }
 
+  &:not([data-lang]) {
+    overflow-x: hidden;
+
+    code {
+      text-wrap: balance;
+      max-width: 100%;
+    }
+  }
+
   &[data-lang]::before {
     color: var(--el-text-color-secondary);
     font-size: 12px;
