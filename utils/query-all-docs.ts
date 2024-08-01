@@ -1,9 +1,9 @@
 import type { NavItem } from "@nuxt/content";
 
 export default async function queryAllDocs(indexPage?: boolean): Promise<{ nav: NavItem[], flat: NavItem[] }> {
-    const nav = await fetchContentNavigation(queryContent("/")
-        .where({ _extension: { $eq: 'md' }, ...(indexPage ? { created: { $exists: true } } : {}) }).sort({ created: -1 }));
-    return { nav: removeNavChildSelf(nav), flat: flatten(nav).map(clean) };
+    const nav = removeNavChildSelf(await fetchContentNavigation(queryContent("/")
+        .where({ _extension: { $eq: 'md' }, ...(indexPage ? { created: { $exists: true } } : {}) }).sort({ created: -1 })));
+    return { nav, flat: flatten(nav).map(clean) };
 }
 
 function removeNavChildSelf(items: NavItem[], _path?: string) {

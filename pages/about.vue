@@ -11,6 +11,16 @@
       <el-descriptions-item label="Main CTF Category">
         <el-tag size="small">web</el-tag>
       </el-descriptions-item>
+      <el-descriptions-item label="Host">
+        Github Pages
+      </el-descriptions-item>
+      <el-descriptions-item label="Framework">nuxt.js</el-descriptions-item>
+      <el-descriptions-item label="UI Framework">
+        <el-link href="https://element-plus.org">element-plus</el-link>
+      </el-descriptions-item>
+      <el-descriptions-item label="License">
+        CC-BY-SA-4.0
+      </el-descriptions-item>
     </el-descriptions>
 
     <h4>Change Log</h4>
