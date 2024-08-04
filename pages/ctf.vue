@@ -35,6 +35,7 @@ async function openChallenge(chal: Challenge) {
     chal,
     ast: ast.value ?? undefined
   }), chal.name, {
+    autofocus: false,
     inputPlaceholder: "kumo{}",
     confirmButtonText: 'OK',
     cancelButtonText: 'Cancel',
@@ -47,9 +48,10 @@ async function openChallenge(chal: Challenge) {
       type: 'success',
       message: `${chal.name} has been solved`,
     });
+    umTrackEvent('ctf-solved', { chal: chal.name });
   }).catch(() => {
     console.log("cancelled")
-  })
+  });
 }
 </script>
 
