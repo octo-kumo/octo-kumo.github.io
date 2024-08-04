@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import TableOfContents from "~/components/TableOfContents.vue";
 import type Node from "element-plus/es/components/tree/src/model/node";
-import type { TreeNodeData, TreeOptionProps } from "element-plus/es/components/tree/src/tree.type";
+import type { FilterNodeMethodFunction, TreeNodeData, TreeOptionProps } from "element-plus/es/components/tree/src/tree.type";
 import type { NavItem, ParsedContent, TocLink } from "@nuxt/content";
 import type { Ref } from "@vue/reactivity";
 import type { ComputedRef } from "vue";
-
-const path = (useRoute().path.substring(2) || "/")
+import type { ElTree } from "element-plus";
+const route = useRoute();
+const path = (route.path.substring(2) || "/")
   .replace(/(?!^)\/$/, ''); // strip trailing slash
 
 function breadcrumbs(path: string) {
@@ -83,12 +84,34 @@ const TOC = computed(() => {
 });
 
 const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0');
+
+/*
+ONLY APPLICABLE TO WRITEUP STATISTICS
+*/
+interface Tree {
+  [key: string]: any
+}
+const statsControl = ref({ catFilter: [] });
+watch(statsControl, () => {
+  const tree = treeRef.value as Tree;
+  const catFilter = statsControl.value.catFilter;
+  tree.filter(catFilter);
+}, { deep: true });
+
+const treeRef = ref<InstanceType<typeof ElTree>>()
+const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNodeData) => {
+  if (values.length === 0) return true;
+  const cat = getCtfCategory(data);
+  return Boolean(cat && values.includes(cat));
+}
+///
+
 </script>
 <template>
   <template v-if="doc">
     <article class="content-page-sections mt-1">
       <el-breadcrumb separator="/" v-if="path && path !== '/'" v-shared="'content-bc'">
-        <el-breadcrumb-item v-for="b in breadcrumbs($route.path)" :to="{ path: b.path }">{{ b.name }}
+        <el-breadcrumb-item v-for="b in breadcrumbs(route.path)" :to="{ path: b.path }">{{ b.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
       <el-anchor :offset="60" v-if="TOC.length > 0" v-shared="'content-anchor'"
@@ -126,11 +149,13 @@ const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0
     </article>
     <comments class="content-page-sections py-1" v-if="isLeaf" />
     <el-divider v-shared="'content-tree-sep'" class="mx--3!" style="width: calc(100% + 1.5rem)" />
+    <writeup-statistics class="content-page-sections mb-1" v-if="path === '/' && docs" :docs="docs"
+      v-model="statsControl" />
   </template>
   <template v-if="docs && docs.length > 0">
-    <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path"
+    <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path" ref="treeRef"
       :default-expand-all="path === '/'" v-shared="'content-tree-nav'" highlight-current auto-expand-parent
-      :default-expanded-keys="[path]" :data="navigation as any" :props="treeProps">
+      :filter-node-method="filterTreeNode" :default-expanded-keys="[path]" :data="navigation as any" :props="treeProps">
       <template #default="{ node, data }">
         <el-tooltip :show-after="500" effect="light"
           :content="`Created ${displayDatetime(data.created)} · Edited ${displayDatetime(data.updated)}`"
