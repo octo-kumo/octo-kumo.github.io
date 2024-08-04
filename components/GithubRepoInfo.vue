@@ -19,7 +19,7 @@ const { data: rlsData } = useLazyAsyncData(`github-repo-api-${repo}-rls`, () => 
                 </el-icon>&nbsp;
                 {{ repoData?.name }}
             </el-link>
-            <div class="flex gap-2 mt-1">
+            <div class="flex gap-2 mt-1" v-if="repoData">
                 <el-tag v-if="repoData?.license">
                     {{ repoData?.license?.name }}
                 </el-tag>
@@ -31,7 +31,7 @@ const { data: rlsData } = useLazyAsyncData(`github-repo-api-${repo}-rls`, () => 
                         {{ repoData?.stargazers_count }}
                     </a>
                 </el-tag>
-                <el-tag v-for="ass in rlsData?.[0].assets">
+                <el-tag v-for="ass in rlsData?.[0].assets" v-if="(rlsData?.length ?? 0) > 0">
                     <a target="_blank" :href="ass.browser_download_url">
                         <el-icon>
                             <el-icon-download />

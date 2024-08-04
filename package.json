@@ -2,6 +2,7 @@
     "name": "octo-kumo.github.io",
     "private": false,
     "scripts": {
+        "cleanup": "nuxi cleanup",
         "build": "nuxi build",
         "dev": "nuxi dev",
         "analyze": "nuxi analyze",
