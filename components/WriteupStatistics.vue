@@ -40,6 +40,24 @@ const grouped = computed(() => docs.reduce((acc, doc) => {
     }
     return acc;
 }, {} as Record<string, NavItem[]>));
+const commonStyles = {
+    dataLabels: {
+        style: {
+            fontFamily: 'Jetbrains Mono',
+        }
+    },
+    legend: {
+        fontFamily: 'Jetbrains Mono',
+    },
+    tooltip: {
+        style: {
+            fontFamily: 'Jetbrains Mono',
+        }
+    },
+    theme: {
+        mode: colorMode.value
+    },
+};
 const categoryChart = computed(() => {
     const vals: [string, number, string][] = Object.entries(grouped.value).map(([_, docs], i, arr) => [_, docs.length, getColor(i / arr.length)]);
     vals.sort((a, b) => b[1] - a[1]);
@@ -50,21 +68,28 @@ const categoryChart = computed(() => {
         },
         series: vals.map(([_, docs, c]) => docs),
         options: <ApexOptions>{
+            labels: vals.map(([cat, _, c]) => cat),
             colors: vals.map(([_, __, c]) => c),
             title: {
-                text: 'By Writeup Count'
+                text: 'By Writeup Count',
+                style: {
+                    fontFamily: 'Jetbrains Mono',
+                }
             },
             plotOptions: {
                 pie: {
                     donut: {
                         labels: {
                             show: true,
+
                             value: {
-                                formatter: (val) => `${val} wp`
+                                formatter: (val) => `${val} wp`,
+                                fontFamily: 'Jetbrains Mono'
                             },
                             total: {
                                 show: true,
-                                label: 'Total Writeups',
+                                label: 'Writeups',
+                                fontFamily: 'Jetbrains Mono',
                                 formatter: (w: any) => w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0)
                             }
                         }
@@ -73,13 +98,9 @@ const categoryChart = computed(() => {
             },
             chart: {
                 id: 'catChart',
-                // group: 'writeups',
                 background: 'rgba(0, 0, 0, 0)',
             },
-            labels: vals.map(([cat, _, c]) => cat),
-            theme: {
-                mode: colorMode.value
-            },
+            ...commonStyles
         }
     }
 });
@@ -93,9 +114,17 @@ const valueChart = computed(() => {
         },
         series: vals.map(([_, value, c]) => value),
         options: <ApexOptions>{
+            labels: vals.map(([cat, _, c]) => cat),
             colors: vals.map(([_, __, c]) => c),
             title: {
-                text: 'By Total Points'
+                text: 'By Total Points',
+                style: {
+                    fontFamily: 'Jetbrains Mono',
+                }
+            },
+            chart: {
+                id: 'pntChart',
+                background: 'rgba(0, 0, 0, 0)',
             },
             plotOptions: {
                 pie: {
@@ -103,26 +132,20 @@ const valueChart = computed(() => {
                         labels: {
                             show: true,
                             value: {
+                                fontFamily: 'Jetbrains Mono',
                                 formatter: (val) => `${val}pt`
                             },
                             total: {
                                 show: true,
-                                label: 'Total Points',
+                                label: 'Points',
+                                fontFamily: 'Jetbrains Mono',
                                 formatter: (w: any) => w.globals.seriesTotals.reduce((a: number, b: number) => a + b, 0)
                             }
                         }
                     }
                 }
             },
-            chart: {
-                id: 'pntChart',
-                // group: 'writeups',
-                background: 'rgba(0, 0, 0, 0)',
-            },
-            labels: vals.map(([cat, _, c]) => cat),
-            theme: {
-                mode: colorMode.value
-            },
+            ...commonStyles
         }
     }
 });
