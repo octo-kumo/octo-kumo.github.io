@@ -25,7 +25,7 @@ withDefaults(defineProps<{
           <icons-users />
         </el-icon>
       </el-tag>
-      <el-tag v-if="article.points && article.solves" size="small" :type="article.solves > 50 ? 'info' : 'success'">
+      <el-tag v-if="article.points" size="small" :type="(article.solves ?? 999) > 50 ? 'info' : 'success'">
         {{ article.points }}
       </el-tag>
     </template>
