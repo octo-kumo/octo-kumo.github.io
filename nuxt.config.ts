@@ -96,7 +96,7 @@ export default defineNuxtConfig({
             rehypePlugins: ['rehype-mathjax']
         },
         highlight: {
-            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php',
+            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust',
                 JSON.parse(readFileSync('./assets/shiki/flag.tmLanguage.json', 'utf-8')),
             ],
             theme: {
@@ -106,7 +106,7 @@ export default defineNuxtConfig({
             }
         },
         navigation: {
-            fields: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points']
+            fields: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'rank', 'team']
         }
         // experimental: {
         //     clientDB: true
