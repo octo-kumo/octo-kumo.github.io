@@ -5,7 +5,7 @@
     <el-timeline class="mt-2!" v-auto-animate>
         <el-timeline-item v-for="{ item: doc, matches, score } in docsFiltered.slice(currPage * 5 - 5, currPage * 5)"
             :key="doc._path" hide-timestamp>
-            <kumo-link no-prefetch type="primary" :to="'/c' + doc._path">
+            <kumo-link no-prefetch type="primary" :to="'/c' + doc._path" class="font-mono">
                 <span v-html="highlight(doc.title, matches?.find(m => m.key === 'title')?.indices)"></span>
             </kumo-link>
             <el-tag v-if="score" :type="score < 0.1 ? 'success' : score < 0.5 ? 'warning' : 'danger'" size="small"
@@ -13,7 +13,7 @@
                 {{ (1 - score).toPrecision(2) }}
             </el-tag>
             <br />
-            <el-text class="font-mono!" size="small" v-if="isSearching">
+            <el-text class="font-mono" size="small" v-if="isSearching">
                 <span v-html="'/c' + highlight(doc._path, matches?.find(m => m.key === '_path')?.indices)"></span>
             </el-text>
             <el-text class="block mt-1!">
@@ -21,7 +21,7 @@
             </el-text>
             <article-tags :article="doc"
                 :custom-tag-html="(tag, i) => highlight(tag, matches?.find(m => m.key === 'tags' && m.refIndex === i)?.indices) ?? ''" />
-            <span class="el-timeline-item__timestamp is-bottom" v-text="displayDocDates(doc)" />
+            <span class="el-timeline-item__timestamp is-bottom font-mono" v-text="displayDocDates(doc)" />
         </el-timeline-item>
         <template v-if="docsFiltered.length === 0">
             <el-skeleton v-if="status === 'pending'" />

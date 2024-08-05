@@ -127,8 +127,9 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
       <article-tags :article="doc" />
       <el-tooltip placement="bottom-start" effect="light" :hide-after="0">
         <template #content><span class="font-mono">
-            <span class="opacity-50">Updated</span> {{ doc.updated }}<br />
-            <span class="opacity-50">Created</span> {{ doc.created }}</span></template>
+            <span class="opacity-50">Created</span> {{ doc.created }} <br />
+            <span class="opacity-50">Updated</span> {{ doc.updated }}
+          </span></template>
         <el-text size="small" class="font-mono">
           <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)" />
         </el-text>
