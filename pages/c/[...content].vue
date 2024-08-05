@@ -125,7 +125,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         {{ guessArticleTitle(doc) }}
       </span>
       <article-tags :article="doc" />
-      <el-tooltip placement="bottom" effect="light" :hide-after="0">
+      <el-tooltip placement="bottom-start" effect="light" :hide-after="0">
         <template #content><span class="font-mono">
             <span class="opacity-50">Updated</span> {{ doc.updated }}<br />
             <span class="opacity-50">Created</span> {{ doc.created }}</span></template>
