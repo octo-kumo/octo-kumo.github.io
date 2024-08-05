@@ -1,19 +1,17 @@
 <template>
-  <el-link
-      type="primary"
-      :href="href"
-      :target="href.startsWith('#')?'_self':target!">
-    <slot/>
-    <template #icon v-if="!href.startsWith('#')">
-      <el-icon>
-        <el-icon-link/>
+  <nuxt-link class="content-link align-baseline! text-base!" type="default" :href="href"
+    :target="href.startsWith('#') ? '_self' : target!">
+    <slot />
+    <template v-if="!href.startsWith('#')">
+      <el-icon class="align-baseline">
+        <el-icon-link />
       </el-icon>
     </template>
-  </el-link>
+  </nuxt-link>
 </template>
 
 <script setup lang="ts">
-import type {PropType} from 'vue'
+import type { PropType } from 'vue'
 
 defineProps({
   href: {
@@ -28,7 +26,21 @@ defineProps({
 })
 </script>
 <style lang="scss" scoped>
-a[data-footnote-ref], a[data-footnote-backref] {
-  scroll-margin-top: var(--el-menu-horizontal-height) !important;
+a.content-link {
+
+  &[data-footnote-ref],
+  &[data-footnote-backref] {
+    scroll-margin-top: var(--el-menu-horizontal-height) !important;
+  }
+
+  color: var(--el-text-color-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--el-color-primary);
+  text-decoration-thickness: .1em;
+  transition: text-decoration .2s ease-in-out;
+
+  &:hover {
+    text-decoration-thickness: .15em;
+  }
 }
 </style>

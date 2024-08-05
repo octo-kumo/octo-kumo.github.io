@@ -1,6 +1,6 @@
 <template>
-  <el-image class="max-w-full block! mx-auto w-fit my-1 rounded" :src="refinedSrc" :alt="alt" :width="width"
-    :height="height" lazy>
+  <el-image class="max-w-full block! mx-auto w-fit my-1 rounded drop-shadow-xl" :src="refinedSrc" :alt="alt"
+    :width="width" :height="height" lazy>
     <template #error>
       <div class="image-slot">
         <el-icon><el-icon-picture /></el-icon>

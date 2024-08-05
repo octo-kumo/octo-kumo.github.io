@@ -1,6 +1,6 @@
 ---
 created: 2024-06-06T21:14
-updated: 2024-07-07T22:04
+updated: 2024-08-05T00:31
 title: Markdown Test
 ---
 
@@ -194,9 +194,9 @@ are automatically converted into HTML entities. This makes it very
 easy to include example HTML source code using Markdown -- just paste
 it and indent it, and Markdown will handle the hassle of encoding the
 ampersands and angle brackets. For example, this:
-<div class="footer">
+
 &copy; 2004 Foo Corporation
-</div>
+
 Regular Markdown syntax is not processed within code blocks. E.g.,
 asterisks are just literal asterisks within a code block. This means
 it's also easy to use Markdown to write about Markdown's own syntax.

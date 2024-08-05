@@ -4,24 +4,26 @@ body,
   margin: 0;
   padding: 0;
   --font: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC',
-  'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+    'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   font-family: var(--font), serif;
 }
 
 html {
   --bg-color: #fff;
+  --text-color: #181818;
   background: var(--bg-color);
+  color: var(--el-text-color-primary);
 }
 
 html.dark {
   --bg-color: #181818;
-  color: white;
+  --text-color: white;
 }
 
-a {
-  font-weight: 400;
-  color: var(--el-color-primary);
-}
+// a {
+//   font-weight: 400;
+//   color: var(--el-color-primary);
+// }
 
 html {
   //scroll-behavior: smooth; /* or 'auto' if you prefer instant scrolling */

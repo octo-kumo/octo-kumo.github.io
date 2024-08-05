@@ -120,20 +120,21 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
       </el-anchor>
-      <span class="mb-2 text-4xl mt-4 block font-bold font-mono" v-shared="getTransitionName(doc, 'title')">
+      <span class="mb-2 text-4xl mt-4 block font-bold font-mono article-title"
+        v-shared="getTransitionName(doc, 'title')">
         {{ guessArticleTitle(doc) }}
       </span>
       <article-tags :article="doc" />
-      <el-tooltip placement="bottom" effect="light">
+      <el-tooltip placement="bottom" effect="light" :hide-after="0">
         <template #content><span class="font-mono">
-            Updated {{ doc.updated }}<br />
-            Created {{ doc.created }}</span></template>
+            <span class="opacity-50">Updated</span> {{ doc.updated }}<br />
+            <span class="opacity-50">Created</span> {{ doc.created }}</span></template>
         <el-text size="small" class="font-mono">
           <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)" />
         </el-text>
       </el-tooltip>
 
-      <ContentRenderer :value="doc" class="content mt-10">
+      <ContentRenderer :value="doc" class="content mt-8">
         <template #empty>
           <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80" />
         </template>
@@ -209,19 +210,32 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
   }
 }
 
+.article-title {
+  text-decoration: underline;
+  text-decoration-color: var(--el-color-primary);
+}
+
 :deep(.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content) {
   border-radius: .35rem;
 }
 
 :deep(.content) {
+  color: var(--el-text-color-regular);
   line-height: 150%;
 
-  a {
-    text-decoration: none;
+  p {
+    /* opacity: 0.85; */
   }
 
-  p {
-    opacity: 0.85;
+  ul li::marker {
+    @apply font-mono;
+    content: '- ';
+    font-size: 75%;
+  }
+
+  ol li::marker {
+    @apply font-mono;
+    font-size: 75%;
   }
 
   h1,
@@ -230,7 +244,37 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
   h4,
   h5,
   h6 {
+    @apply font-mono;
     scroll-margin-top: var(--el-menu-horizontal-height) !important;
+    position: relative;
+    color: var(--el-text-color-primary);
+    /* text-shadow: 0px 0px 1px var(--el-text-color-primary); */
+
+    &::before {
+      text-shadow: none;
+      font-size: 75%;
+      position: absolute;
+      text-align: right;
+      left: -.5em;
+      transform: translateX(-100%);
+      color: var(--el-text-color-secondary);
+    }
+  }
+
+  &>h1::before {
+    content: '#';
+  }
+
+  &>h2::before {
+    content: '#';
+  }
+
+  &>h3::before {
+    content: '##';
+  }
+
+  &>h4::before {
+    content: '###';
   }
 
   .katex-html {
