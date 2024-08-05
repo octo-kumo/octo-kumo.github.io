@@ -9,7 +9,7 @@ const query: QueryBuilderParams = {
 };
 
 function getTags(items: ParsedContent[]) {
-  return Array.from(new Set(items.flatMap(i => [...(i.tags ?? []), getCtfCategory(i)]))).filter(Boolean)
+  return [...new Set(items.map(i => getCtfCategory(i)).filter(Boolean)), ...new Set(items.flatMap(i => (i.tags ?? [])).filter(Boolean))];
 }
 
 const filter = reactive({} as any);
@@ -41,7 +41,7 @@ function stats(items: ParsedContent[]) {
         </el-tag>
       </el-space>
       <br />
-      <el-row :gutter="10">
+      <el-row :gutter="10" v-auto-animate>
         <el-col :xs="24" :sm="12" :key="article._path"
           v-for="article in list.filter(i => oneLvlUp(i._path) !== path && i._path !== path).filter(tagFilter)">
           <el-card class="challenge-card mb-2" shadow="hover">

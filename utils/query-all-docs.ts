@@ -6,12 +6,18 @@ export default async function queryAllDocs(indexPage?: boolean): Promise<{ nav: 
     return { nav, flat: flatten(nav).map(clean) };
 }
 
-function removeNavChildSelf(items: NavItem[], _path?: string) {
-    items = items.filter(c => c._path !== _path);
+function removeNavChildSelf(items: NavItem[], parent?: NavItem) {
+    items = items.filter(c => c._path !== parent?._path);
     for (let item of items) {
         if (item.children) {
             if (item._path === "/ctf") item.children?.sort(sorter);
-            item.children = removeNavChildSelf(item.children, item._path);
+            item.children = removeNavChildSelf(item.children, item);
+        }
+        if (oneLvlUp(oneLvlUp(item._path)) === '/ctf' && item.children?.length) {
+            item.points = item.children.reduce((acc, c) => acc + (c.points || 0), 0);
+            item.challenges = item.children.length;
+            if (parent?.points !== 0) item.percent = Math.round(item.points / parent?.points * 100);
+            // if (item.challenges !== 0 && parent?.points) item.description ||= `avg ${Math.round(item.points / item.challenges)} · ${}%`;
         }
     }
     return items;

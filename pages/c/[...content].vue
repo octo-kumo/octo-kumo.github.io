@@ -124,7 +124,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         v-shared="getTransitionName(doc, 'title')">
         {{ guessArticleTitle(doc) }}
       </span>
-      <article-tags :article="doc" />
+      <article-tags :article="docs?.find(d => d._path === path) ?? doc" />
       <el-tooltip placement="bottom-start" effect="light" :hide-after="0">
         <template #content><span class="font-mono">
             <span class="opacity-50">Created</span> {{ doc.created }} <br />
