@@ -72,6 +72,7 @@ watch(color, maybeRender, { immediate: true });
 
 <style lang="scss">
 pre {
+  line-height: 120%;
   position: relative;
   scrollbar-width: thin;
   overflow: auto;

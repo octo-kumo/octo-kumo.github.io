@@ -129,7 +129,7 @@ const valueChart = computed(() => {
 
 </script>
 <template>
-    <div class="flex flex-row items-center justify-between justify-items-center">
+    <div class="flex flex-col lg:flex-row items-center justify-between justify-items-center">
         <client-only>
             <vue-apex-charts ref="catChart" type="donut" :options="categoryChart.options" width="350" height="350"
                 @dataPointSelection="categoryChart.select" :series="toRaw(categoryChart.series)" />

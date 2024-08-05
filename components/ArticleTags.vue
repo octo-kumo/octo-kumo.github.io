@@ -14,7 +14,7 @@ withDefaults(defineProps<{
 </script>
 
 <template>
-  <div class="flex gap-1 my-1 article-tags" v-if="article"
+  <div class="flex gap-1 my-1 article-tags font-mono" v-if="article"
     v-shared="getTransitionName(article, 'tags-' + (idPrefix ?? ''))">
     <el-tag v-if="article.rank" size="small" :type="article.rank > 20 ? 'info' : 'primary'"><el-icon>
         <el-icon-trophy />
@@ -25,7 +25,8 @@ withDefaults(defineProps<{
           <icons-users />
         </el-icon>
       </el-tag>
-      <el-tag v-if="article.points" size="small" :type="(article.solves ?? 999) > 50 ? 'info' : 'success'">
+      <el-tag v-if="article.points && oneLvlUp(article._path) !== '/ctf'" size="small"
+        :type="(article.solves ?? 999) > 50 ? 'info' : 'success'">
         {{ article.points }}
       </el-tag>
     </template>

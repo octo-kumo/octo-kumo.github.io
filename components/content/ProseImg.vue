@@ -1,17 +1,17 @@
 <template>
-  <el-image
-      class="max-w-full"
-      :src="refinedSrc"
-      :alt="alt"
-      :width="width"
-      :height="height"
-      lazy
-  />
+  <el-image class="max-w-full block! mx-auto w-fit my-1 rounded" :src="refinedSrc" :alt="alt" :width="width"
+    :height="height" lazy>
+    <template #error>
+      <div class="image-slot">
+        <el-icon><el-icon-picture /></el-icon>
+      </div>
+    </template>
+  </el-image>
 </template>
 
 <script setup lang="ts">
-import {joinURL, withLeadingSlash, withTrailingSlash} from 'ufo'
-import {computed, useRuntimeConfig} from '#imports'
+import { joinURL, withLeadingSlash, withTrailingSlash } from 'ufo'
+import { computed, useRuntimeConfig } from '#imports'
 
 const props = defineProps({
   src: {
@@ -42,3 +42,19 @@ const refinedSrc = computed(() => {
   return props.src
 })
 </script>
+<style lang="scss" scoped>
+.image-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: var(--el-fill-color-light);
+  color: var(--el-text-color-secondary);
+  font-size: 30px;
+}
+
+.image-slot .el-icon {
+  font-size: 30px;
+}
+</style>

@@ -110,7 +110,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
 <template>
   <template v-if="doc">
     <article class="content-page-sections mt-1">
-      <el-breadcrumb separator="/" v-if="path && path !== '/'" v-shared="'content-bc'">
+      <el-breadcrumb separator="/" v-if="path && path !== '/'" v-shared="'content-bc'" class="font-mono">
         <el-breadcrumb-item v-for="b in breadcrumbs(route.path)" :to="{ path: b.path }">{{ b.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
@@ -120,13 +120,19 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
       </el-anchor>
-      <span class="mb-2 text-4xl mt-4 block font-bold" v-shared="getTransitionName(doc, 'title')">
+      <span class="mb-2 text-4xl mt-4 block font-bold font-mono" v-shared="getTransitionName(doc, 'title')">
         {{ guessArticleTitle(doc) }}
       </span>
       <article-tags :article="doc" />
-      <el-text size="small">
-        <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)" />
-      </el-text>
+      <el-tooltip placement="bottom" effect="light">
+        <template #content><span class="font-mono">
+            Updated {{ doc.updated }}<br />
+            Created {{ doc.created }}</span></template>
+        <el-text size="small" class="font-mono">
+          <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)" />
+        </el-text>
+      </el-tooltip>
+
       <ContentRenderer :value="doc" class="content mt-10">
         <template #empty>
           <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80" />
@@ -149,20 +155,21 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
     </article>
     <comments class="content-page-sections py-1" v-if="isLeaf" />
     <el-divider v-shared="'content-tree-sep'" class="mx--3!" style="width: calc(100% + 1.5rem)" />
-    <writeup-statistics class="content-page-sections mb-1" v-if="path === '/' && docs" :docs="docs"
+    <writeup-statistics class="content-page-sections mb-1" v-if="(path === '/ctf') && docs" :docs="docs"
       v-model="statsControl" />
   </template>
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path" ref="treeRef"
-      :default-expand-all="path === '/'" v-shared="'content-tree-nav'" highlight-current auto-expand-parent
-      :filter-node-method="filterTreeNode" :default-expanded-keys="[path]" :data="navigation as any" :props="treeProps">
+      :default-expand-all="false" v-shared="'content-tree-nav'" highlight-current auto-expand-parent
+      :filter-node-method="filterTreeNode" :default-expanded-keys="[path, '/ctf']" :data="navigation as any"
+      :props="treeProps">
       <template #default="{ node, data }">
         <el-tooltip :show-after="500" effect="light"
           :content="`Created ${displayDatetime(data.created)} · Edited ${displayDatetime(data.updated)}`"
-          placement="left">
+          placement="right">
           <span class="flex justify-between flex-1" v-shared="getTransitionName(data, 'tree-node')">
             <kumo-link :id="'content_' + hashCode(data._path).toString(16).padStart(8, '0')" :to="'/c' + data._path"
-              class="mr-2 justify-start!" no-prefetch>
+              class="mr-2 justify-start!" no-prefetch :class="{ 'font-bold!': oneLvlUp(data._path) === '/ctf' }">
               {{ node.label }}
               <article-tags class="ml-2" :article="data" id-prefix="tree" hide-cat short />
             </kumo-link>
@@ -193,7 +200,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
   </template>
   <el-backtop :right="50" :bottom="50" v-shared="'content-back-up'" />
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .content-page-sections {
   @apply max-w-prose mx-a lg:min-w-prose;
 
@@ -202,13 +209,19 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
   }
 }
 
-.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+:deep(.el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content) {
   border-radius: .35rem;
 }
 
-.content {
+:deep(.content) {
+  line-height: 150%;
+
   a {
     text-decoration: none;
+  }
+
+  p {
+    opacity: 0.85;
   }
 
   h1,

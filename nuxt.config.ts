@@ -93,7 +93,7 @@ export default defineNuxtConfig({
         markdown: {
             anchorLinks: false,
             remarkPlugins: ['remark-math'],
-            rehypePlugins: ['rehype-mathjax']
+            rehypePlugins: ['rehype-katex']
         },
         highlight: {
             langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust',
