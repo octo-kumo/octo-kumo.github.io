@@ -4,3 +4,6 @@
 [submodule "content/ctf"]
 	path = content/ctf
 	url = https://github.com/octo-kumo/ctf-writeups.git
+[submodule "content/htb"]
+	path = content/htb
+	url = https://github.com/octo-kumo/htb-writeups.git
