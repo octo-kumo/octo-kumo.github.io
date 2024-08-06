@@ -14,7 +14,7 @@ withDefaults(defineProps<{
 </script>
 
 <template>
-  <div class="flex gap-1 my-1 article-tags font-mono flex-wrap" v-if="article"
+  <div class="flex gap-1 my-1 article-tags font-mono" v-if="article" :class="{ 'flex-wrap': !short }"
     v-shared="getTransitionName(article, 'tags-' + (idPrefix ?? ''))">
     <el-tag v-if="article.rank" size="small" :type="article.rank > 20 ? 'info' : 'primary'" class="font-bold"><el-icon>
         <el-icon-trophy />
