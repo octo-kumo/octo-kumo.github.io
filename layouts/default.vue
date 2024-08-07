@@ -25,11 +25,25 @@ watch(() => route.path, () => {
   // drawerIsOpen.value = !!drawerIsOpen.value;
   if (phone.value) drawerIsOpen.value = false;
 });
-onMounted(() => {
+onMounted(async () => {
+  if ($pwa?.showInstallPrompt && !$pwa?.offlineReady && !$pwa?.needRefresh) {
+    ElMessage({
+      message: 'Installing PWA...',
+    });
+    await $pwa.install();
+  }
+  if ($pwa?.needRefresh) {
+    ElMessage({
+      message: 'Updating PWA...',
+    });
+    await $pwa.updateServiceWorker();
+  }
+
   if ($pwa?.offlineReady) {
     ElMessage({
       showClose: true,
       message: 'App ready to work offline',
+      type: 'success',
     });
     console.log("PWA Offline ready!")
   }

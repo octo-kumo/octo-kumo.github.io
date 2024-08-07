@@ -4,6 +4,7 @@
 
 import { resolve } from "node:url";
 import { readFileSync } from 'node:fs';
+import webmanifest from "./webmanifest";
 
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
 export default defineNuxtConfig({
@@ -39,7 +40,12 @@ export default defineNuxtConfig({
         },
         prerender: {
             routes: ['/', '/sitemap.xml']
-        }
+        },
+        esbuild: {
+            options: {
+                target: 'esnext',
+            },
+        },
     },
 
     devtools: { enabled: false },
@@ -56,13 +62,50 @@ export default defineNuxtConfig({
         // "nuxt-security",
         // '@nuxtjs/robots',
         // "nuxt-booster",
-        '@formkit/auto-animate/nuxt', "nuxt-og-image", "nuxt-delay-hydration"],
+        '@formkit/auto-animate/nuxt', "nuxt-og-image",
+        // "nuxt-delay-hydration"
+    ],
 
-    pwa: {},
-    delayHydration: {
-        mode: 'mount',
-        debug: process.env.NODE_ENV === 'development'
+    pwa: {
+        strategies: 'generateSW',
+        registerType: 'autoUpdate',
+        manifest: webmanifest,
+        workbox: {
+            globPatterns: ['**/*'],
+            runtimeCaching: [
+                {
+                    urlPattern: /^https:\/\/fonts\.bunny\.net\/.*/i,
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'bunny-fonts-cache',
+                        expiration: {
+                            maxEntries: 10,
+                            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                        },
+                        cacheableResponse: {
+                            statuses: [0, 200]
+                        }
+                    }
+                }
+            ]
+        },
+        client: {
+            installPrompt: true,
+            periodicSyncForUpdates: 3600,
+        },
+        devOptions: {
+            enabled: true,
+            suppressWarnings: true,
+            navigateFallback: '/',
+            navigateFallbackAllowlist: [/^\/$/],
+            type: 'module',
+        }
     },
+
+    // delayHydration: {
+    //     mode: 'mount',
+    //     debug: process.env.NODE_ENV === 'development'
+    // },
     // security: {
     //     nonce: true,
     //     ssg: {
@@ -143,7 +186,9 @@ export default defineNuxtConfig({
     },
 
     experimental: {
-        viewTransition: true
+        viewTransition: true,
+        payloadExtraction: true,
+        sharedPrerenderData: true
     },
     // future: {
     //     compatibilityVersion: 4,
