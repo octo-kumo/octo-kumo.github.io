@@ -1,0 +1,1 @@
+import{t,bg as o,S as u}from"./BoGQzV6D.js";const i=["class","style"],E=/^on[A-Z]/,f=(c={})=>{const{excludeListeners:a=!1,excludeKeys:e}=c,l=t(()=>((e==null?void 0:e.value)||[]).concat(i)),s=u();return s?t(()=>{var n;return o(Object.entries((n=s.proxy)==null?void 0:n.$attrs).filter(([r])=>!l.value.includes(r)&&!(a&&E.test(r))))}):t(()=>({}))};export{f as u};
