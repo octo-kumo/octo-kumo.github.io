@@ -14,7 +14,6 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-const { $pwa } = useNuxtApp();
 const route = useRoute();
 const breakpoints = useBreakpoints(breakpointsTailwind);
 const drawerIsOpen = useStorage("drawer-open", false);
@@ -24,29 +23,6 @@ const overlay = computed(() => phone.value && drawerIsOpen.value);
 watch(() => route.path, () => {
   // drawerIsOpen.value = !!drawerIsOpen.value;
   if (phone.value) drawerIsOpen.value = false;
-});
-onMounted(async () => {
-  if ($pwa?.showInstallPrompt && !$pwa?.offlineReady && !$pwa?.needRefresh) {
-    ElMessage({
-      message: 'Installing PWA...',
-    });
-    await $pwa.install();
-  }
-  if ($pwa?.needRefresh) {
-    ElMessage({
-      message: 'Updating PWA...',
-    });
-    await $pwa.updateServiceWorker();
-  }
-
-  if ($pwa?.offlineReady) {
-    ElMessage({
-      showClose: true,
-      message: 'App ready to work offline',
-      type: 'success',
-    });
-    console.log("PWA Offline ready!")
-  }
 });
 const drawerWidth = computed(() => collapsed.value ? '64px' : '16em');
 </script>

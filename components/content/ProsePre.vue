@@ -72,15 +72,17 @@ watch(color, maybeRender, { immediate: true });
 
 <style lang="scss">
 pre {
-  line-height: 120%;
-  position: relative;
-  scrollbar-width: thin;
-  overflow: auto;
-  padding: 5px;
-  border: 1px solid var(--el-border-color);
-  //box-shadow: var(--el-box-shadow-lighter);
-  border-radius: var(--el-border-radius-base);
-  background-color: var(--el-bg-color);
+  & {
+    line-height: 120%;
+    position: relative;
+    scrollbar-width: thin;
+    overflow: auto;
+    padding: 5px;
+    border: 1px solid var(--el-border-color);
+    //box-shadow: var(--el-box-shadow-lighter);
+    border-radius: var(--el-border-radius-base);
+    background-color: var(--el-bg-color);
+  }
 
   & code {
     @apply font-mono;
@@ -90,7 +92,9 @@ pre {
   }
 
   code .line {
-    display: block;
+    & {
+      display: block;
+    }
 
     &::before {
       content: counter(step);
@@ -104,7 +108,9 @@ pre {
   }
 
   &:not([data-lang]) {
-    overflow-x: hidden;
+    & {
+      overflow-x: hidden;
+    }
 
     code {
       text-wrap: balance;
@@ -149,10 +155,12 @@ pre {
 }
 
 div.mermaid {
-  position: relative;
-  scrollbar-width: thin;
-  overflow: auto;
-  padding: 5px;
+  & {
+    position: relative;
+    scrollbar-width: thin;
+    overflow: auto;
+    padding: 5px;
+  }
 
   &[data-file]::before {
     color: var(--el-text-color-secondary);

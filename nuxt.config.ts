@@ -90,11 +90,14 @@ export default defineNuxtConfig({
             ]
         },
         client: {
-            installPrompt: true,
             periodicSyncForUpdates: 3600,
         },
         devOptions: {
-            enabled: true
+            enabled: true,
+            suppressWarnings: true,
+            navigateFallback: '/',
+            navigateFallbackAllowlist: [/^\/$/],
+            type: 'module',
         }
     },
 

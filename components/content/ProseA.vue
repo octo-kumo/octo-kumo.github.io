@@ -27,17 +27,18 @@ defineProps({
 </script>
 <style lang="scss" scoped>
 a.content-link {
+  & {
+    color: var(--el-text-color-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--el-color-primary);
+    text-decoration-thickness: .1em;
+    transition: text-decoration .2s ease-in-out;
+  }
 
   &[data-footnote-ref],
   &[data-footnote-backref] {
     scroll-margin-top: var(--el-menu-horizontal-height) !important;
   }
-
-  color: var(--el-text-color-primary);
-  text-decoration: underline;
-  text-decoration-color: var(--el-color-primary);
-  text-decoration-thickness: .1em;
-  transition: text-decoration .2s ease-in-out;
 
   &:hover {
     text-decoration-thickness: .15em;

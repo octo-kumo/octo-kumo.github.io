@@ -2,6 +2,7 @@ export default <any>{
     "name": "octo-kump",
     "short_name": "云",
     "start_url": ".",
+    "theme_color": "#409eff",
     "display": "standalone",
     "background_color": "#fff",
     "description": "云's personal site",

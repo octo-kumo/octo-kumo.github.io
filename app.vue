@@ -1,8 +1,10 @@
 <template>
-  <NuxtLoadingIndicator color="var(--el-color-primary)" v-shared="'loading-bar'" />
+  <!-- <NuxtLoadingIndicator color="var(--el-color-primary)" v-shared="'loading-bar'" /> -->
+  <NuxtPwaAssets />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <!-- <client-only><pwa-prompt /></client-only> -->
 </template>
 <script setup lang="ts">
 const route = useRoute();

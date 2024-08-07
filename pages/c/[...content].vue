@@ -173,18 +173,18 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
       :filter-node-method="filterTreeNode" :default-expanded-keys="[path, '/ctf']" :data="navigation as any"
       :props="treeProps">
       <template #default="{ node, data }">
-        <el-tooltip :show-after="500" effect="light"
-          :content="`Created ${displayDatetime(data.created)} · Edited ${displayDatetime(data.updated)}`"
-          placement="right">
-          <span class="flex justify-between flex-1"><!--v-shared="getTransitionName(data, 'tree-node')"-->
-            <kumo-link :id="'content_' + hashCode(data._path).toString(16).padStart(8, '0')" :to="'/c' + data._path"
-              class="mr-2 justify-start!" no-prefetch :class="{ 'font-bold!': oneLvlUp(data._path) === '/ctf' }">
+        <span class="flex justify-between flex-1"><!--v-shared="getTransitionName(data, 'tree-node')"-->
+          <kumo-link :id="'content_' + hashCode(data._path).toString(16).padStart(8, '0')" :to="'/c' + data._path"
+            class="mr-2 justify-start!" no-prefetch :class="{ 'font-bold!': oneLvlUp(data._path) === '/ctf' }">
+            <el-tooltip :show-after="500" effect="light" :hide-after="0"
+              :content="`Created ${displayDatetime(data.created)} · Edited ${displayDatetime(data.updated)}`"
+              placement="bottom-start">
               {{ node.label }}
-              <article-tags class="ml-2" :article="data" id-prefix="tree" no-shared-element hide-cat short />
-            </kumo-link>
-            <el-text class="max-w-80 flex-1" size="small">{{ data.description }}</el-text>
-          </span>
-        </el-tooltip>
+            </el-tooltip>
+            <article-tags class="ml-2" :article="data" id-prefix="tree" no-shared-element hide-cat short />
+          </kumo-link>
+          <el-text class="max-w-80 flex-1" size="small">{{ data.description }}</el-text>
+        </span>
       </template>
     </el-tree>
   </template>
