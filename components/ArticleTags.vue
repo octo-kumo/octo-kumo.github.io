@@ -5,6 +5,7 @@ withDefaults(defineProps<{
   article?: ParsedContent | Partial<ParsedContent>,
   idPrefix?: string,
   hideCat?: boolean,
+  noSharedElement?: boolean,
   customTagHtml?: (tag: string, index: number) => string,
   short?: boolean
 }>(), {
@@ -15,7 +16,7 @@ withDefaults(defineProps<{
 
 <template>
   <div class="flex gap-1 my-1 article-tags font-mono" v-if="article" :class="{ 'flex-wrap': !short }"
-    v-shared="getTransitionName(article, 'tags-' + (idPrefix ?? ''))">
+    v-shared="(!noSharedElement) && getTransitionName(article, 'tags-' + (idPrefix ?? ''))">
     <el-tag v-if="article.rank" size="small" :type="article.rank > 20 ? 'info' : 'primary'" class="font-bold"><el-icon>
         <el-icon-trophy />
       </el-icon>&nbsp;{{ article.rank }}

@@ -176,11 +176,11 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         <el-tooltip :show-after="500" effect="light"
           :content="`Created ${displayDatetime(data.created)} · Edited ${displayDatetime(data.updated)}`"
           placement="right">
-          <span class="flex justify-between flex-1" v-shared="getTransitionName(data, 'tree-node')">
+          <span class="flex justify-between flex-1"><!--v-shared="getTransitionName(data, 'tree-node')"-->
             <kumo-link :id="'content_' + hashCode(data._path).toString(16).padStart(8, '0')" :to="'/c' + data._path"
               class="mr-2 justify-start!" no-prefetch :class="{ 'font-bold!': oneLvlUp(data._path) === '/ctf' }">
               {{ node.label }}
-              <article-tags class="ml-2" :article="data" id-prefix="tree" hide-cat short />
+              <article-tags class="ml-2" :article="data" id-prefix="tree" no-shared-element hide-cat short />
             </kumo-link>
             <el-text class="max-w-80 flex-1" size="small">{{ data.description }}</el-text>
           </span>
