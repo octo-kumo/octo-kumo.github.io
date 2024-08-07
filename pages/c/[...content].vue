@@ -162,9 +162,9 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         </kumo-link>
       </div>
     </article>
-    <comments class="print:hidden content-page-sections py-1" v-if="isLeaf" />
+    <lazy-comments class="print:hidden content-page-sections py-1" v-if="isLeaf" />
     <el-divider v-shared="'content-tree-sep'" class="print:hidden mx--3!" style="width: calc(100% + 1.5rem)" />
-    <writeup-statistics class="content-page-sections mb-1" v-if="(path === '/ctf') && docs" :docs="docs"
+    <lazy-writeup-statistics class="content-page-sections mb-1" v-if="(path === '/ctf') && docs" :docs="docs"
       v-model="statsControl" />
   </template>
   <template v-if="docs && docs.length > 0">
