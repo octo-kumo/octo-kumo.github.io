@@ -116,12 +116,12 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
 <template>
   <template v-if="doc">
     <article class="content-page-sections mt-1">
-      <el-breadcrumb separator="/" v-if="path && path !== '/'" v-shared="'content-bc'" class="font-mono">
+      <el-breadcrumb separator="/" v-if="path && path !== '/'" v-shared="'content-bc'" class="font-mono print:hidden">
         <el-breadcrumb-item v-for="b in breadcrumbs(route.path)" :to="{ path: b.path }">{{ b.name }}
         </el-breadcrumb-item>
       </el-breadcrumb>
       <el-anchor :offset="60" v-if="TOC.length > 0" v-shared="'content-anchor'"
-        class="toc w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg select-none"
+        class="toc w-50 bg-transparent! fixed! right-0 <lg:hidden! z-9 backdrop-blur-sm rounded-lg select-none print:hidden"
         :data-path="path">
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
@@ -143,10 +143,11 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
 
       <ContentRenderer :value="doc" class="content mt-8">
         <template #empty>
-          <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80" />
+          <!-- <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80" /> -->
         </template>
       </ContentRenderer>
-      <div class="flex justify-between mt-3" v-shared="'content-page-peer-nav'" v-if="nav.prev && nav.next">
+      <div class="flex justify-between mt-3 print:hidden" v-shared="'content-page-peer-nav'"
+        v-if="nav.prev && nav.next">
         <kumo-link :to="'/c' + (nav.prev?._path ?? '')" type="primary">
           <el-icon>
             <el-icon-arrow-left />
@@ -161,14 +162,14 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         </kumo-link>
       </div>
     </article>
-    <comments class="content-page-sections py-1" v-if="isLeaf" />
-    <el-divider v-shared="'content-tree-sep'" class="mx--3!" style="width: calc(100% + 1.5rem)" />
+    <comments class="print:hidden content-page-sections py-1" v-if="isLeaf" />
+    <el-divider v-shared="'content-tree-sep'" class="print:hidden mx--3!" style="width: calc(100% + 1.5rem)" />
     <writeup-statistics class="content-page-sections mb-1" v-if="(path === '/ctf') && docs" :docs="docs"
       v-model="statsControl" />
   </template>
   <template v-if="docs && docs.length > 0">
-    <el-tree class="text-base! content-page-sections mb-20" :current-node-key="path" node-key="_path" ref="treeRef"
-      :default-expand-all="false" v-shared="'content-tree-nav'" highlight-current auto-expand-parent
+    <el-tree class="text-base! content-page-sections mb-20 print:hidden" :current-node-key="path" node-key="_path"
+      ref="treeRef" :default-expand-all="false" v-shared="'content-tree-nav'" highlight-current auto-expand-parent
       :filter-node-method="filterTreeNode" :default-expanded-keys="[path, '/ctf']" :data="navigation as any"
       :props="treeProps">
       <template #default="{ node, data }">

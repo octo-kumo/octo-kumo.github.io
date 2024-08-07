@@ -2,10 +2,10 @@
   <el-scrollbar class="drawer" :class="{ open: drawerIsOpen }">
     <client-only><kumo-drawer :collapse="collapsed" class="menu" /></client-only>
   </el-scrollbar>
-  <kumo-header @back="drawerIsOpen = !drawerIsOpen" class="w-full justify-center flex">
+  <kumo-header @back="drawerIsOpen = !drawerIsOpen" class="w-full justify-center flex print:hidden">
   </kumo-header>
   <div class="overlay" v-show="overlay" @click="drawerIsOpen = false" />
-  <el-main class="p-0! main <md:ml-0!" :class="{ open: drawerIsOpen }">
+  <el-main class="p-0! main <md:ml-0! overflow-hidden" :class="{ open: drawerIsOpen }">
     <div class="px-3">
       <slot />
     </div>
