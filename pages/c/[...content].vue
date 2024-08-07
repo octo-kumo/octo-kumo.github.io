@@ -207,7 +207,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
       </kumo-link>
     </el-empty>
   </template>
-  <el-backtop :right="50" :bottom="50" v-shared="'content-back-up'" />
+  <el-backtop :right="50" :bottom="50" v-shared="'content-back-up'" class="print:hidden" />
 </template>
 <style lang="scss" scoped>
 .content-page-sections {
