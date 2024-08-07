@@ -94,11 +94,7 @@ export default defineNuxtConfig({
             periodicSyncForUpdates: 3600,
         },
         devOptions: {
-            enabled: true,
-            suppressWarnings: true,
-            navigateFallback: '/',
-            navigateFallbackAllowlist: [/^\/$/],
-            type: 'module',
+            enabled: true
         }
     },
 

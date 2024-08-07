@@ -21,6 +21,13 @@
       <el-descriptions-item label="License">
         CC-BY-SA-4.0
       </el-descriptions-item>
+      <el-descriptions-item label="PWA Installed?">
+        <client-only>
+          <el-tag v-if="$pwa?.isPWAInstalled" type="success">Yes</el-tag>
+          <el-tag v-else type="danger">No</el-tag>
+          <el-button @click="console.log($pwa?.install())">Install PWA</el-button>
+        </client-only>
+      </el-descriptions-item>
     </el-descriptions>
 
     <h4>Change Log</h4>
