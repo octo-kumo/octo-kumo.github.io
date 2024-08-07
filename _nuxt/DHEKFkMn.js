@@ -1,0 +1,1 @@
+import{cM as a}from"./Dtr5NDC8.js";const p=(e="")=>e.replace(/[|\\{}()[\]^$+*?.]/g,"\\$&").replace(/-/g,"\\x2d"),t=e=>a(e);export{t as c,p as e};
