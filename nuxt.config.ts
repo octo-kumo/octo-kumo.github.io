@@ -62,7 +62,7 @@ export default defineNuxtConfig({
     delayHydration: {
         mode: 'mount',
         debug: process.env.NODE_ENV === 'development'
-    }
+    },
     // security: {
     //     nonce: true,
     //     ssg: {
