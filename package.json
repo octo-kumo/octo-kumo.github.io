@@ -35,7 +35,9 @@
         "imagemin-webp": "latest",
         "nuxt": "latest",
         "nuxt-booster": "latest",
+        "nuxt-og-image": "3.0.0-rc.64",
         "nuxt-security": "latest",
+        "playwright": "^1.46.0",
         "sass": "1.76.0",
         "typescript": "latest"
     },
@@ -81,5 +83,6 @@
                 "vue"
             ]
         }
-    }
+    },
+    "packageManager": "pnpm@9.1.4+sha1.2432063d815cfa88fd9fef1d85a445e3f609851d"
 }

@@ -7,6 +7,12 @@ import { readFileSync } from 'node:fs';
 
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
 export default defineNuxtConfig({
+    ssr: true,
+    site: {
+        name: 'Yun',
+        url: SITE_URL,
+        logo: 'https://yun.ng/logo.png'
+    },
     app: {
         baseURL: process.env.BASE_URL || '/',
         head: {
@@ -19,15 +25,12 @@ export default defineNuxtConfig({
     },
 
     extends: ['nuxt-umami'],
-
     vue: {
         compilerOptions: {
             isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect"].includes(tag),
         },
     },
-
     css: ['~/assets/scss/index.scss'],
-
     nitro: {
         preset: process.env.NITRO_TARGET ?? "static",
         firebase: {
@@ -40,31 +43,21 @@ export default defineNuxtConfig({
     },
 
     devtools: { enabled: false },
-    ssr: true,
 
     typescript: {
         strict: true,
         shim: false,
     },
 
-    modules: [
-        '@vueuse/nuxt',
-        '@unocss/nuxt',
-        // '@pinia/nuxt',
+    modules: ['@vueuse/nuxt', '@unocss/nuxt', // '@pinia/nuxt',
         // 'v-shared-element/nuxt',
         // '@pinia-plugin-persistedstate/nuxt',
-        '@element-plus/nuxt',
-        '@nuxtjs/color-mode',
-        '@vite-pwa/nuxt',
-        "@nuxtjs/sitemap",
-        "@nuxt/content",
-        // "@nuxtjs/robots",
+        '@element-plus/nuxt', '@nuxtjs/color-mode', '@vite-pwa/nuxt', "@nuxtjs/sitemap", "@nuxt/content",
         // "@nuxt/image",
         // "nuxt-security",
-        '@formkit/auto-animate/nuxt',
         // '@nuxtjs/robots',
         // "nuxt-booster",
-    ],
+        '@formkit/auto-animate/nuxt', "nuxt-og-image"],
 
     pwa: {},
 
@@ -145,10 +138,6 @@ export default defineNuxtConfig({
         icon: 'ElIcon',
         importStyle: 'scss',
         themes: ['dark'],
-    },
-
-    site: {
-        url: SITE_URL
     },
 
     experimental: {
