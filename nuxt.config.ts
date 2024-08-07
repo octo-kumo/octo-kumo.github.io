@@ -55,16 +55,14 @@ export default defineNuxtConfig({
         '@element-plus/nuxt', '@nuxtjs/color-mode', '@vite-pwa/nuxt', "@nuxtjs/sitemap", "@nuxt/content", // "@nuxt/image",
         // "nuxt-security",
         // '@nuxtjs/robots',
-        "nuxt-booster",
-        '@formkit/auto-animate/nuxt', "nuxt-og-image",
-        // "nuxt-delay-hydration"
-    ],
+        // "nuxt-booster",
+        '@formkit/auto-animate/nuxt', "nuxt-og-image", "nuxt-delay-hydration"],
 
     pwa: {},
-    // delayHydration: {
-    //     mode: 'mount',
-    //     debug: process.env.NODE_ENV === 'development'
-    // },
+    delayHydration: {
+        mode: 'mount',
+        debug: process.env.NODE_ENV === 'development'
+    },
     // security: {
     //     nonce: true,
     //     ssg: {
