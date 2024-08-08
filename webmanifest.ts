@@ -1,5 +1,5 @@
 export default <any>{
-    "name": "octo-kump",
+    "name": "云",
     "short_name": "云",
     "start_url": ".",
     "theme_color": "#409eff",

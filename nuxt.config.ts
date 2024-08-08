@@ -86,18 +86,25 @@ export default defineNuxtConfig({
                             statuses: [0, 200]
                         }
                     }
+                },
+                {
+                    urlPattern: /^https:\/\/res\.cloudinary\.com\/kumonochisanaka\/image\/upload\/.*/i,
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'cloudinary-cache',
+                        expiration: {
+                            maxEntries: 10,
+                            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                        },
+                        cacheableResponse: {
+                            statuses: [0, 200]
+                        }
+                    }
                 }
             ]
         },
         client: {
             periodicSyncForUpdates: 3600,
-        },
-        devOptions: {
-            enabled: true,
-            suppressWarnings: true,
-            navigateFallback: '/',
-            navigateFallbackAllowlist: [/^\/$/],
-            type: 'module',
         }
     },
 
