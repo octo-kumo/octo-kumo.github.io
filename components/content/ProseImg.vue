@@ -39,6 +39,10 @@ const refinedSrc = computed(() => {
       return joinURL(_base, props.src)
     }
   }
+  // https://res.cloudinary.com/kumonochisanaka/image/upload/v1723105941/2024/08/bf88dc88535ec81d0427876365efe356.png
+  if (props.src?.startsWith('https://res.cloudinary.com/kumonochisanaka/image')) {
+    return props.src.replace('https://res.cloudinary.com/kumonochisanaka/image', 'https://image.yun.ng')
+  }
   return props.src
 })
 </script>
