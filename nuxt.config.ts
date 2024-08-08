@@ -67,11 +67,12 @@ export default defineNuxtConfig({
     ],
 
     pwa: {
+        selfDestroying: true,
         strategies: 'generateSW',
         registerType: 'autoUpdate',
         manifest: webmanifest,
         workbox: {
-            globPatterns: ['**/*'],
+            globPatterns: ['**/*', '**/*/'],
             runtimeCaching: [
                 {
                     urlPattern: /^https:\/\/fonts\.bunny\.net\/.*/i,
@@ -86,24 +87,11 @@ export default defineNuxtConfig({
                             statuses: [0, 200]
                         }
                     }
-                },
-                {
-                    urlPattern: /^https:\/\/res\.cloudinary\.com\/kumonochisanaka\/image\/upload\/.*/i,
-                    handler: 'CacheFirst',
-                    options: {
-                        cacheName: 'cloudinary-cache',
-                        expiration: {
-                            maxEntries: 10,
-                            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
-                        },
-                        cacheableResponse: {
-                            statuses: [0, 200]
-                        }
-                    }
                 }
             ]
         },
         client: {
+            installPrompt: false,
             periodicSyncForUpdates: 3600,
         }
     },
