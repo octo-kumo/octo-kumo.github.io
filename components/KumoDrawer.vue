@@ -15,7 +15,7 @@
         </el-icon>
         <span>Projects</span>
       </template>
-      <nuxt-link :to="n" class="no-underline text-inherit"
+      <nuxt-link :to="n" class="no-underline text-inherit" :noPrefetch="n.meta.layout === 'clean'"
         v-for="n in nav.filter(r => r.path.startsWith('/projects/'))">
         <el-menu-item :route="n" :index="n.path">
           {{ n.meta.title ?? guessPathName(n.name!) }}

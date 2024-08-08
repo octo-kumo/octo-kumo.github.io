@@ -19,7 +19,7 @@
         </template>
         <el-space direction="vertical" alignment="normal">
           <h3 class="m-0">
-            <kumo-link :to="item" type="primary">
+            <kumo-link :to="item" type="primary" :noPrefetch="item.meta.layout === 'clean'">
               {{ item.meta.title ?? guessPathName(item.name) }}
             </kumo-link>
           </h3>
