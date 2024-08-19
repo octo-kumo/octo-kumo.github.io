@@ -8,7 +8,7 @@
     </url>
     <url>
         <loc>https://yun.ng/c</loc>
-        <lastmod>2024-08-06T18:05:00Z</lastmod>
+        <lastmod>2024-08-16T16:54:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/ctf</loc>
@@ -18,7 +18,7 @@
     </url>
     <url>
         <loc>https://yun.ng/c/ctf</loc>
-        <lastmod>2024-08-07T04:03:00Z</lastmod>
+        <lastmod>2024-08-16T16:48:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/htb</loc>
@@ -55,6 +55,9 @@
     </url>
     <url>
         <loc>https://yun.ng/projects/civilisation-zero</loc>
+    </url>
+    <url>
+        <loc>https://yun.ng/projects/desktop-widgets</loc>
     </url>
     <url>
         <loc>https://yun.ng/projects/discord-chat-chart</loc>
@@ -108,11 +111,15 @@
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf</loc>
-        <lastmod>2024-08-08T23:09:00Z</lastmod>
+        <lastmod>2024-08-17T20:15:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-conclave</loc>
         <lastmod>2024-08-04T20:43:00Z</lastmod>
+    </url>
+    <url>
+        <loc>https://yun.ng/c/ctf/2024-ctfzone</loc>
+        <lastmod>2024-08-17T20:15:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-deadsec-ctf</loc>
@@ -129,6 +136,10 @@
     <url>
         <loc>https://yun.ng/c/ctf/2024-ictf</loc>
         <lastmod>2024-08-04T20:42:00Z</lastmod>
+    </url>
+    <url>
+        <loc>https://yun.ng/c/ctf/2024-idek-ctf</loc>
+        <lastmod>2024-08-18T21:35:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-n00b-ctf</loc>
@@ -243,6 +254,10 @@
         <lastmod>1970-01-01</lastmod>
     </url>
     <url>
+        <loc>https://yun.ng/c/ctf/2024-ctfzone/web</loc>
+        <lastmod>1970-01-01</lastmod>
+    </url>
+    <url>
         <loc>https://yun.ng/c/ctf/2024-deadsec-ctf/crypto</loc>
         <lastmod>1970-01-01</lastmod>
     </url>
@@ -308,6 +323,14 @@
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-ictf/web</loc>
+        <lastmod>1970-01-01</lastmod>
+    </url>
+    <url>
+        <loc>https://yun.ng/c/ctf/2024-idek-ctf/misc</loc>
+        <lastmod>1970-01-01</lastmod>
+    </url>
+    <url>
+        <loc>https://yun.ng/c/ctf/2024-idek-ctf/web</loc>
         <lastmod>1970-01-01</lastmod>
     </url>
     <url>
@@ -588,31 +611,31 @@
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf/ai/im-still-watching-you</loc>
-        <lastmod>2024-08-08T09:49:00Z</lastmod>
+        <lastmod>2024-08-17T20:13:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf/ai/im-watching-you</loc>
-        <lastmod>2024-08-08T09:50:00Z</lastmod>
+        <lastmod>2024-08-17T20:13:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf/crypto/certificate-of-completion</loc>
-        <lastmod>2024-08-08T09:49:00Z</lastmod>
+        <lastmod>2024-08-17T20:13:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf/crypto/checking-in</loc>
-        <lastmod>2024-08-08T09:49:00Z</lastmod>
+        <lastmod>2024-08-17T20:13:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf/crypto/prove-it</loc>
-        <lastmod>2024-08-08T09:33:00Z</lastmod>
+        <lastmod>2024-08-17T20:13:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf/crypto/quattro-formaggi</loc>
-        <lastmod>2024-08-08T09:04:00Z</lastmod>
+        <lastmod>2024-08-17T20:14:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf/forensics/blue</loc>
-        <lastmod>2024-08-08T09:58:00Z</lastmod>
+        <lastmod>2024-08-17T20:14:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf/forensics/just-some-cute-animals</loc>
@@ -620,7 +643,11 @@
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-bugcrowd-ctf/forensics/string-seeker</loc>
-        <lastmod>2024-08-08T09:49:00Z</lastmod>
+        <lastmod>2024-08-17T20:14:00Z</lastmod>
+    </url>
+    <url>
+        <loc>https://yun.ng/c/ctf/2024-ctfzone/web/breathtaking-roulette</loc>
+        <lastmod>2024-08-17T20:10:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-deadsec-ctf/crypto/not-an-active-field-for-a-reason</loc>
@@ -773,6 +800,22 @@
     <url>
         <loc>https://yun.ng/c/ctf/2024-ictf/web/p2c_release</loc>
         <lastmod>2024-07-21T18:39:00Z</lastmod>
+    </url>
+    <url>
+        <loc>https://yun.ng/c/ctf/2024-idek-ctf/misc/minecraft</loc>
+        <lastmod>2024-08-18T21:33:00Z</lastmod>
+    </url>
+    <url>
+        <loc>https://yun.ng/c/ctf/2024-idek-ctf/web/crator</loc>
+        <lastmod>2024-08-18T21:33:00Z</lastmod>
+    </url>
+    <url>
+        <loc>https://yun.ng/c/ctf/2024-idek-ctf/web/hello</loc>
+        <lastmod>2024-08-18T21:34:00Z</lastmod>
+    </url>
+    <url>
+        <loc>https://yun.ng/c/ctf/2024-idek-ctf/web/includeme</loc>
+        <lastmod>2024-08-18T21:34:00Z</lastmod>
     </url>
     <url>
         <loc>https://yun.ng/c/ctf/2024-n00b-ctf/algo/back-from-brazil</loc>
@@ -1107,4 +1150,4 @@
         <lastmod>2024-08-08T02:48:00Z</lastmod>
     </url>
 </urlset>
-<!-- XML Sitemap generated by @nuxtjs/sitemap v6.0.0-beta.1 at 2024-08-09T03:26:49.471Z -->
+<!-- XML Sitemap generated by @nuxtjs/sitemap v6.0.0-beta.1 at 2024-08-19T01:40:41.111Z -->
