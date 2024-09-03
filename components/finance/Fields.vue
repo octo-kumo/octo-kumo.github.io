@@ -5,25 +5,19 @@
     </template>
     <el-radio-group v-model="selectedRow" class="flex flex-col space-y-2 w-full">
       <div class="flex flex-row w-full" v-for="(field, index) in fields" :key="index">
-        <el-radio
-            :disabled="field.computed"
-            class="mr-0!"
-            v-model="selectedRow" :value="field.key">
+        <el-radio :disabled="field.computed" class="mr-0!" v-model="selectedRow" :value="field.key">
         </el-radio>
-        <math-field
-            v-model="values[field.key]"
-            :readonly="selectedRow === field.key"
-            :prefix="field.key+'='+field.prefix"
-            :suffix="field.suffix">
+        <math-field v-model="values[field.key]" :readonly="selectedRow === field.key"
+          :prefix="field.key + '=' + field.prefix" :suffix="field.suffix">
         </math-field>
       </div>
     </el-radio-group>
-    <p v-if="calculationError.length>0" v-text="calculationError.join('\n')"></p>
+    <p v-if="calculationError.length > 0" v-text="calculationError.join('\n')"></p>
   </el-card>
 </template>
 <script setup lang="ts">
-import {reactive, ref} from "vue";
-import type {Ref} from "@vue/reactivity";
+import { reactive, ref } from "vue";
+import type { Ref } from "@vue/reactivity";
 
 export interface EditorField {
   key: string,
@@ -73,5 +67,4 @@ watch(values, function () {
 });
 </script>
 
-<style lang="css">
-</style>
+<style lang="css"></style>
