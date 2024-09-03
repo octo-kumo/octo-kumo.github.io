@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <canvas ref="canvas" width="800" height="600" id="canvas" @mousedown="canvasDown" @mousemove="canvasMove"
-      @mouseup="canvasUp" @wheel="canvasWheel" @mouseleave="canvasLeave"></canvas>
+      @mouseup="canvasUp" @wheel="canvasWheel" @mouseleave="canvasLeave" @mouseenter="canvasEnter"></canvas>
     <div id="controls" v-auto-animate>
       <table class="px-2">
         <thead>
@@ -16,11 +16,12 @@
         </thead>
         <tbody>
           <tr v-for="(anchor, index) in anchors" :key="index">
-            <td>{{ index + 1 }}{{ selectedAnchor === anchor ? ' ←' : '' }}</td>
-            <td><math-field v-model="anchor.x" hide-eval /></td>
-            <td><math-field v-model="anchor.y" hide-eval /></td>
-            <td><math-field v-model="anchor.dx" hide-eval /></td>
-            <td><math-field v-model="anchor.dy" hide-eval /></td>
+            <td><el-checkbox v-model="anchor.disabled" :label="(index + 1) + (selectedAnchor === anchor ? ' ←' : '')" />
+            </td>
+            <td><math-field v-model="anchor.x" hide-eval :disabled='anchor.disabled' /></td>
+            <td><math-field v-model="anchor.y" hide-eval :disabled='anchor.disabled' /></td>
+            <td><math-field v-model="anchor.dx" hide-eval :disabled='anchor.disabled' /></td>
+            <td><math-field v-model="anchor.dy" hide-eval :disabled='anchor.disabled' /></td>
             <td><el-button @click="anchors.splice(index, 1)">x</el-button></td>
           </tr>
           <tr>
@@ -102,14 +103,19 @@ const dark = computed(() => colorMode.value === 'dark');
 const canvas: Ref<HTMLCanvasElement | undefined> = ref();
 const canvasOpt = {
   scale: 100,
+  _scale: 100,
+  _scaleCenter: [0, 0],
   ox: 400,
-  oy: 300
+  _ox: 400,
+  oy: 300,
+  _oy: 400,
 };
 type Anchor = {
   x: number;
   y: number;
   dx: number;
   dy: number;
+  disabled?: boolean;
 };
 
 function angularErrorSquared(x: number, y: number, anchor: Anchor): number {
@@ -188,6 +194,17 @@ function gradientDescent(
   }
   return { x, y };
 }
+function findIntersection(width: number, height: number, x1: number, y1: number, x2: number, y2: number) {
+  const yAtX0 = y1 + ((0 - x1) * (y2 - y1)) / (x2 - x1);
+  if (yAtX0 >= 0 && yAtX0 <= height && x1 <= 0) return [0, yAtX0];
+  const yAtXW = y1 + ((width - x1) * (y2 - y1)) / (x2 - x1);
+  if (yAtXW >= 0 && yAtXW <= height && x1 > width) return [width, yAtXW];
+  const xAtY0 = x1 + ((0 - y1) * (x2 - x1)) / (y2 - y1);
+  if (xAtY0 >= 0 && xAtY0 <= width && y1 <= 0) return [xAtY0, 0];
+  const xAtYH = x1 + ((height - y1) * (x2 - x1)) / (y2 - y1);
+  if (xAtYH >= 0 && xAtYH <= width && y1 > height) return [xAtYH, height];
+  return undefined;
+}
 function perpendicularDistance(x: number, y: number, anchor: Anchor): number {
   const { x: xi, y: yi, dx, dy } = anchor;
   const length = Math.hypot(dx, dy);
@@ -257,24 +274,32 @@ function drawGrid(ctx: CanvasRenderingContext2D) {
 }
 function startRender() {
   const ctx = canvas.value?.getContext('2d');
-  const { scale, ox, oy } = canvasOpt;
   if (!ctx) return;
   ctx.clearRect(0, 0, canvas.value!.width, canvas.value!.height);
   drawGrid(ctx);
   ctx.lineWidth = 2;
-  ctx.setLineDash([10, 10]);
   const { fore, anchor, anchorSelect, anchorHover, target } = colors.value;
   anchors.forEach(a => {
-    const tx = a.x * scale + ox, ty = a.y * scale + oy;
+    ctx.setLineDash([10, 10]);
+    let [tx, ty] = tranW2C(a.x, a.y);
     ctx.fillStyle = a === selectedAnchor.value ? anchorSelect : a === hoverAnchor.value ? anchorHover : anchor;
     ctx.strokeStyle = (a === selectedAnchorLine.value ? anchorSelect : a === hoverAnchorLine.value ? anchorHover : anchor) + '9';
+    let stroke = false;
+    if (tx < 0 || tx > ctx.canvas.width || ty < 0 || ty > ctx.canvas.height) {
+      stroke = true;
+      const i = findIntersection(ctx.canvas.width, ctx.canvas.height, tx, ty, tx + a.dx * 1e4, ty - a.dy * 1e4);
+      if (i) [tx, ty] = i;
+      else return;
+    }
     ctx.beginPath();
     ctx.moveTo(tx, ty);
-    ctx.lineTo(tx + a.dx * 1e4, ty + a.dy * 1e4);
+    ctx.lineTo(tx + a.dx * 1e4, ty - a.dy * 1e4);
     ctx.stroke();
+    ctx.setLineDash([]);
     ctx.beginPath();
     ctx.arc(tx, ty, 5, 0, 2 * Math.PI);
-    ctx.fill();
+    if (stroke) ctx.stroke();
+    else ctx.fill();
   });
 
   if (showOptimizationPath.value) {
@@ -284,8 +309,10 @@ function startRender() {
     for (let i = 0; i < iterationHistory.value.length - 1; i++) {
       const { x, y } = iterationHistory.value[i];
       const { x: nx, y: ny } = iterationHistory.value[i + 1];
-      ctx.moveTo(x * scale + ox, y * scale + oy);
-      ctx.lineTo(nx * scale + ox, ny * scale + oy);
+      const [tx, ty] = tranW2C(x, y);
+      const [tnx, tny] = tranW2C(nx, ny);
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(tnx, tny);
     }
     ctx.stroke();
   }
@@ -294,15 +321,17 @@ function startRender() {
   ctx.strokeStyle = target;
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.arc(result.value.x * scale + ox, result.value.y * scale + oy, radius.value * scale, 0, 2 * Math.PI);
-  ctx.moveTo(result.value.x * scale + ox - 5, result.value.y * scale + oy);
-  ctx.lineTo(result.value.x * scale + ox + 5, result.value.y * scale + oy);
-  ctx.moveTo(result.value.x * scale + ox, result.value.y * scale + oy - 5);
-  ctx.lineTo(result.value.x * scale + ox, result.value.y * scale + oy + 5);
+  const [rtx, rty] = tranW2C(result.value.x, result.value.y);
+  ctx.arc(rtx, rty, radius.value * canvasOpt.scale, 0, 2 * Math.PI);
+  ctx.moveTo(rtx - 5, rty);
+  ctx.lineTo(rtx + 5, rty);
+  ctx.moveTo(rtx, rty - 5);
+  ctx.lineTo(rtx, rty + 5);
   ctx.stroke();
   ctx.textAlign = 'center';
   ctx.font = '20px "STIX Two Math", "Cambria Math", "Times New Roman", serif';
-  ctx.fillText(`(${displayNumber(result.value.x)}, ${displayNumber(result.value.y)})`, result.value.x * scale + ox, result.value.y * scale + oy - 10);
+  ctx.fillText(`(${displayNumber(result.value.x)}, ${displayNumber(result.value.y)})`, rtx, rty - 10);
+  rescale();
   _frameId = requestAnimationFrame(startRender);
 }
 function getxy(e: MouseEvent): [number, number] {
@@ -311,25 +340,36 @@ function getxy(e: MouseEvent): [number, number] {
   const y = e.clientY - rect.top;  //y position within the element.
   return [x, y];
 }
+function tranC2W(x: number, y: number): [number, number] {
+  return [(x - canvasOpt.ox) / canvasOpt.scale, (-y + canvasOpt.oy) / canvasOpt.scale];
+}
+function tranW2C(x: number, y: number): [number, number] {
+  return [x * canvasOpt.scale + canvasOpt.ox, -y * canvasOpt.scale + canvasOpt.oy];
+}
+function hypot([x1, y1]: [number, number], [x2, y2]: [number, number]): number {
+  return Math.hypot(x1 - x2, y1 - y2);
+}
 const hoverAnchor: Ref<Anchor | undefined> = ref(undefined);
 const hoverAnchorLine: Ref<Anchor | undefined> = ref(undefined);
 const selectedAnchor: Ref<Anchor | undefined> = ref(undefined);
 const selectedAnchorLine: Ref<Anchor | undefined> = ref(undefined);
 const mouseDownPos: Ref<[number, number] | undefined> = ref(undefined);
 function getAnchor(x: number, y: number): Anchor | undefined {
-  return anchors.find(anchor => Math.hypot(anchor.x * canvasOpt.scale + canvasOpt.ox - x, anchor.y * canvasOpt.scale + canvasOpt.oy - y) < 5);
+  return anchors.find(anchor => hypot(tranW2C(anchor.x, anchor.y), [x, y]) < 5);
 }
 function getAnchorLine(x: number, y: number): Anchor | undefined {
-  const tx = (x - canvasOpt.ox) / canvasOpt.scale, ty = (y - canvasOpt.oy) / canvasOpt.scale;
-  return anchors.find(anchor => perpendicularDistance(tx, ty, anchor) * canvasOpt.scale < 5 && (anchor.dx === 0 || Math.sign(anchor.dx) === Math.sign(tx - anchor.x)) && (anchor.dy === 0 || Math.sign(anchor.dy) === Math.sign(ty - anchor.y)));
+  const [tx, ty] = tranC2W(x, y);
+  return anchors.find(anchor => perpendicularDistance(tx, ty, anchor) * canvasOpt.scale < 5 && (tx - anchor.x) * anchor.dx + (ty - anchor.y) * anchor.dy > 0);
 }
 function canvasDown(e: MouseEvent) {
   mouseDownPos.value = getxy(e);
   selectedAnchor.value = getAnchor(mouseDownPos.value[0], mouseDownPos.value[1]);
   selectedAnchorLine.value = getAnchorLine(mouseDownPos.value[0], mouseDownPos.value[1]);
+  e.preventDefault();
 }
 function canvasUp(e: MouseEvent) {
   mouseDownPos.value = undefined;
+  e.preventDefault();
 }
 function canvasMove(e: MouseEvent) {
   const [x, y] = getxy(e);
@@ -340,9 +380,9 @@ function canvasMove(e: MouseEvent) {
     mouseDownPos.value = [x, y];
     if (selectedAnchor.value) {
       selectedAnchor.value.x += dx / canvasOpt.scale;
-      selectedAnchor.value.y += dy / canvasOpt.scale;
+      selectedAnchor.value.y -= dy / canvasOpt.scale;
     } else if (selectedAnchorLine.value) {
-      const tx = (x - canvasOpt.ox) / canvasOpt.scale, ty = (y - canvasOpt.oy) / canvasOpt.scale;
+      const [tx, ty] = tranC2W(x, y);
       selectedAnchorLine.value.dx = tx - selectedAnchorLine.value.x;
       selectedAnchorLine.value.dy = ty - selectedAnchorLine.value.y;
       // normalize
@@ -350,24 +390,37 @@ function canvasMove(e: MouseEvent) {
       selectedAnchorLine.value.dx /= length;
       selectedAnchorLine.value.dy /= length;
     } else {
-      canvasOpt.ox += dx;
-      canvasOpt.oy += dy;
+      canvasOpt._ox = (canvasOpt.ox += dx);
+      canvasOpt._oy = (canvasOpt.oy += dy);
     }
   } else {
     hoverAnchor.value = getAnchor(x, y);
     hoverAnchorLine.value = getAnchorLine(x, y);
   }
+  e.preventDefault();
 }
 function canvasWheel(e: WheelEvent) {
   const [x, y] = getxy(e);
   const scale = Math.exp(-e.deltaY / 500);
-  canvasOpt.scale *= scale;
-  canvasOpt.ox = x + (canvasOpt.ox - x) * scale;
-  canvasOpt.oy = y + (canvasOpt.oy - y) * scale;
+  canvasOpt._scale *= scale;
+  canvasOpt._scaleCenter = [x, y];
+  canvasOpt._ox = x + (canvasOpt._ox - x) * scale;
+  canvasOpt._oy = y + (canvasOpt._oy - y) * scale;
   e.preventDefault();
 }
+function rescale() {
+  // if (canvasOpt.scale === canvasOpt._scale) return;
+  const [x, y] = canvasOpt._scaleCenter;
+  canvasOpt.scale = (canvasOpt.scale + canvasOpt._scale) / 2;
+  canvasOpt.ox = (canvasOpt.ox + canvasOpt._ox) / 2;
+  canvasOpt.oy = (canvasOpt.oy + canvasOpt._oy) / 2;
+  // console.log("rescale", scale, canvasOpt._scale);
+}
+function canvasEnter(e: MouseEvent) {
+  // mouseDownPos.value = undefined;
+}
 function canvasLeave(e: MouseEvent) {
-  mouseDownPos.value = undefined;
+  // mouseDownPos.value = undefined;
 }
 
 const newAnchor = ref(<Anchor>{
