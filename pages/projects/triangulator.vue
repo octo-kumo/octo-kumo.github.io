@@ -1,8 +1,8 @@
 <template>
-  <div class="flex">
+  <div class="flex h-600px">
     <canvas ref="canvas" width="800" height="600" id="canvas" @mousedown="canvasDown" @mousemove="canvasMove"
       @mouseup="canvasUp" @wheel="canvasWheel" @mouseleave="canvasLeave" @mouseenter="canvasEnter"></canvas>
-    <div id="controls" v-auto-animate>
+    <el-scrollbar id="controls" v-auto-animate>
       <table class="px-2">
         <thead>
           <tr>
@@ -16,7 +16,8 @@
         </thead>
         <tbody>
           <tr v-for="(anchor, index) in anchors" :key="index">
-            <td><el-checkbox v-model="anchor.disabled" :label="(index + 1) + (selectedAnchor === anchor ? ' ←' : '')" />
+            <td><el-checkbox v-model="anchor.disabled"
+                :label="(index + 1) + ((selectedAnchor === anchor || selectedAnchorLine == anchor) ? ' ←' : '')" />
             </td>
             <td><math-field v-model="anchor.x" hide-eval :disabled='anchor.disabled' /></td>
             <td><math-field v-model="anchor.y" hide-eval :disabled='anchor.disabled' /></td>
@@ -56,6 +57,17 @@
         <el-form-item label="Round Target Number">
           <el-checkbox v-model="roundTargetNumber" />
         </el-form-item>
+
+        <el-form-item label="Distance Falloff">
+          <el-select v-model="distanceFalloff">
+            <el-option v-for="item in falloffOptions" :key="item.label" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Error Graph">
+          <el-select v-model="errorGraph">
+            <el-option v-for="item in errorGraphOptions" :key="item.label" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <el-descriptions class="margin-top px-2" title="Results" border>
         <template #extra>
@@ -82,14 +94,8 @@
           {{ displayNumber(finalError) }}
         </el-descriptions-item>
       </el-descriptions>
-    </div>
+    </el-scrollbar>
   </div>
-  <!-- <div>
-    <ul>
-      <li v-for="item in iterationHistory" :key="item.x">{{ item.x.toPrecision(6) }}, {{ item.y.toPrecision(6) }},
-        {{ item.gx.toPrecision(6) }}, {{ item.gy.toPrecision(6) }}</li>
-    </ul>
-  </div> -->
 </template>
 
 <script lang="ts" setup>
@@ -104,7 +110,6 @@ const canvas: Ref<HTMLCanvasElement | undefined> = ref();
 const canvasOpt = {
   scale: 100,
   _scale: 100,
-  _scaleCenter: [0, 0],
   ox: 400,
   _ox: 400,
   oy: 300,
@@ -156,6 +161,7 @@ function gradientDescent(
   let learningRate = initialLearningRate;
   let history = [];
   let iteration = 0;
+  const falloff = distanceFalloff.value;
   onCancel(() => iteration = maxIterations);
   for (; iteration < maxIterations; iteration++) {
     prevError = error;
@@ -166,7 +172,8 @@ function gradientDescent(
       const theta = Math.atan2(dy, dx);
       let error = phi - theta;
       error = Math.atan2(Math.sin(error), Math.cos(error));
-      return sum + 2 * error * (-Math.sin(phi)) * L / (Math.hypot(x - xi, y - yi));
+      let f = falloff === 0 ? 1 : 1 / Math.pow(Math.hypot(x - xi, y - yi), falloff);
+      return sum + 2 * error * (-Math.sin(phi)) * L * f;
     }, 0);
     let gy = anchors.reduce((sum, anchor) => {
       const { x: xi, y: yi, dx, dy } = anchor;
@@ -175,12 +182,14 @@ function gradientDescent(
       const theta = Math.atan2(dy, dx);
       let error = phi - theta;
       error = Math.atan2(Math.sin(error), Math.cos(error));
-      return sum + 2 * error * (Math.cos(phi)) * L / (Math.hypot(x - xi, y - yi));
+      let f = falloff === 0 ? 1 : 1 / Math.pow(Math.hypot(x - xi, y - yi), falloff);
+      return sum + 2 * error * (Math.cos(phi)) * L * f;
     }, 0);
-    history.push({ x, y, gx, gy });
+    const h = { x, y, gx, gy, error: 0 };
     x -= learningRate * gx;
     y -= learningRate * gy;
-    error = totalAngularErrorSquared(x, y, anchors);
+    h.error = error = totalAngularErrorSquared(x, y, anchors);
+    history.push(h);
     learningRate = error < prevError ? learningRate * rewardMultiplier.value : learningRate * errorMultiplier.value;
     if (learningRate > L) learningRate = L;
     finalError.value = error;
@@ -227,6 +236,7 @@ const colors = computed(() => dark.value ? {
   anchor: '#eee',
   anchorSelect: '#99f',
   anchorHover: '#9f9',
+  anchorDisable: '#444',
 } : {
   target: '#f00',
   fore: '#000',
@@ -235,7 +245,36 @@ const colors = computed(() => dark.value ? {
   anchor: '#222',
   anchorSelect: '#22f',
   anchorHover: '#2f2',
+  anchorDisable: '#bbb',
 });
+function drawErrorGraph(ctx: CanvasRenderingContext2D) {
+  if ((!iterationHistory.value) || iterationHistory.value.length === 0) return;
+  const opt = errorGraph.value;
+  if (opt === 0) return;
+  ctx.setLineDash([]);
+  ctx.strokeStyle = colors.value.fore;
+  ctx.lineWidth = 1;
+  ctx.save()
+  ctx.translate(0, ctx.canvas.height - 50);
+  // ctx.rect(0, 0, 100, 50);
+  // ctx.stroke();
+
+  const trans =
+    opt === 1 ? (n: number) => n :
+      opt === 2 ? (n: number) => Math.log(n) :
+        opt === 3 ? (n: number) => Math.exp(n) :
+          opt === -1 ? (n: number) => 1 / n : (n: number) => n;
+  const maxError = Math.max(...iterationHistory.value.map(h => trans(h.error)));
+  const minError = Math.min(...iterationHistory.value.map(h => trans(h.error)));
+  const norm = (n: number) => (n - minError) / (maxError - minError);
+  ctx.beginPath();
+  ctx.moveTo(0, 50 - norm(trans(iterationHistory.value[0].error)) * 50);
+  iterationHistory.value.forEach((h, i) => {
+    ctx.lineTo(i * 100 / iterationHistory.value.length, 50 - 50 * norm(trans(h.error)));
+  });
+  ctx.stroke();
+  ctx.restore();
+}
 function drawGrid(ctx: CanvasRenderingContext2D) {
   ctx.setLineDash([]);
   ctx.strokeStyle = colors.value.grid;
@@ -277,13 +316,15 @@ function startRender() {
   if (!ctx) return;
   ctx.clearRect(0, 0, canvas.value!.width, canvas.value!.height);
   drawGrid(ctx);
+  drawErrorGraph(ctx);
   ctx.lineWidth = 2;
-  const { fore, anchor, anchorSelect, anchorHover, target } = colors.value;
+  const { fore, anchor, anchorSelect, anchorHover, anchorDisable, target } = colors.value;
   anchors.forEach(a => {
     ctx.setLineDash([10, 10]);
     let [tx, ty] = tranW2C(a.x, a.y);
-    ctx.fillStyle = a === selectedAnchor.value ? anchorSelect : a === hoverAnchor.value ? anchorHover : anchor;
-    ctx.strokeStyle = (a === selectedAnchorLine.value ? anchorSelect : a === hoverAnchorLine.value ? anchorHover : anchor) + '9';
+
+    ctx.fillStyle = a.disabled ? anchorDisable : a === selectedAnchor.value ? anchorSelect : a === hoverAnchor.value ? anchorHover : anchor;
+    ctx.strokeStyle = (a.disabled ? anchorDisable : a === selectedAnchorLine.value ? anchorSelect : a === hoverAnchorLine.value ? anchorHover : anchor) + '9';
     let stroke = false;
     if (tx < 0 || tx > ctx.canvas.width || ty < 0 || ty > ctx.canvas.height) {
       stroke = true;
@@ -364,7 +405,8 @@ function getAnchorLine(x: number, y: number): Anchor | undefined {
 function canvasDown(e: MouseEvent) {
   mouseDownPos.value = getxy(e);
   selectedAnchor.value = getAnchor(mouseDownPos.value[0], mouseDownPos.value[1]);
-  selectedAnchorLine.value = getAnchorLine(mouseDownPos.value[0], mouseDownPos.value[1]);
+  if (!selectedAnchor.value) selectedAnchorLine.value = getAnchorLine(mouseDownPos.value[0], mouseDownPos.value[1]);
+  else selectedAnchorLine.value = undefined;
   e.preventDefault();
 }
 function canvasUp(e: MouseEvent) {
@@ -403,14 +445,12 @@ function canvasWheel(e: WheelEvent) {
   const [x, y] = getxy(e);
   const scale = Math.exp(-e.deltaY / 500);
   canvasOpt._scale *= scale;
-  canvasOpt._scaleCenter = [x, y];
   canvasOpt._ox = x + (canvasOpt._ox - x) * scale;
   canvasOpt._oy = y + (canvasOpt._oy - y) * scale;
   e.preventDefault();
 }
 function rescale() {
   // if (canvasOpt.scale === canvasOpt._scale) return;
-  const [x, y] = canvasOpt._scaleCenter;
   canvasOpt.scale = (canvasOpt.scale + canvasOpt._scale) / 2;
   canvasOpt.ox = (canvasOpt.ox + canvasOpt._ox) / 2;
   canvasOpt.oy = (canvasOpt.oy + canvasOpt._oy) / 2;
@@ -446,6 +486,24 @@ const canvasCursor = computed(() => {
 const showOptions = ref(false);
 const roundTargetNumber = ref(false);
 const showOptimizationPath = ref(false);
+const distanceFalloff = ref(1);
+const falloffOptions = [
+  { label: 'None', value: 0 },
+  { label: 'Linear', value: 1 },
+  { label: 'Quadratic', value: 2 },
+  { label: 'Cubic', value: 3 },
+  { label: 'Quartic', value: 4 },
+  { label: 'Quintic', value: 5 },
+  { label: 'Inverse', value: -1 },
+];
+const errorGraph = ref(0);
+const errorGraphOptions = [
+  { label: 'Hide', value: 0 },
+  { label: 'Linear', value: 1 },
+  { label: 'Logarithmic', value: 2 },
+  { label: 'Exponential', value: 3 },
+  { label: 'Inverse', value: -1 },
+];
 const tolerance = ref(1e-9);
 const maxIterations = ref(100);
 const initialLearningRate = ref(0.1);
@@ -460,7 +518,7 @@ const result = computedAsync(
   { x: 1, y: 1 },
   evaluating,
 );
-const iterationHistory = ref(<{ x: number, y: number, gx: number, gy: number }[]>[]);
+const iterationHistory = ref(<{ x: number, y: number, gx: number, gy: number, error: number }[]>[]);
 const radius = computed(() => radiusOfProbability(result.value.x, result.value.y, anchors));
 onMounted(() => {
   if (import.meta.client) _frameId = requestAnimationFrame(startRender)
@@ -472,6 +530,8 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 #canvas {
+  width: 800px;
+  height: 600px;
   border: 1px solid var(--el-border-color);
   cursor: v-bind(canvasCursor)
 }
