@@ -1,1 +1,0 @@
-import{e as a}from"./D5Wa2WR6.js";import{p as i}from"./CnPVxWtu.js";const o=a({ariaLabel:String,ariaOrientation:{type:String,values:["horizontal","vertical","undefined"]},ariaControls:String}),e=r=>i(o,r);export{e as u};
