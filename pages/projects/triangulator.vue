@@ -396,11 +396,11 @@ const selectedAnchor: Ref<Anchor | undefined> = ref(undefined);
 const selectedAnchorLine: Ref<Anchor | undefined> = ref(undefined);
 const mouseDownPos: Ref<[number, number] | undefined> = ref(undefined);
 function getAnchor(x: number, y: number): Anchor | undefined {
-  return anchors.find(anchor => hypot(tranW2C(anchor.x, anchor.y), [x, y]) < 5);
+  return aFiltered.value.find(anchor => hypot(tranW2C(anchor.x, anchor.y), [x, y]) < 5);
 }
 function getAnchorLine(x: number, y: number): Anchor | undefined {
   const [tx, ty] = tranC2W(x, y);
-  return anchors.find(anchor => perpendicularDistance(tx, ty, anchor) * canvasOpt.scale < 5 && (tx - anchor.x) * anchor.dx + (ty - anchor.y) * anchor.dy > 0);
+  return aFiltered.value.find(anchor => perpendicularDistance(tx, ty, anchor) * canvasOpt.scale < 5 && (tx - anchor.x) * anchor.dx + (ty - anchor.y) * anchor.dy > 0);
 }
 function canvasDown(e: MouseEvent) {
   mouseDownPos.value = getxy(e);
@@ -474,6 +474,7 @@ const anchors = reactive<Anchor[]>([
   { x: 1, y: 0, dx: 0, dy: 1 },
   { x: 0, y: 1, dx: 1, dy: 0 }
 ]);
+const aFiltered = computed(() => anchors.filter(a => !a.disabled));
 const canvasCursor = computed(() => {
   if (mouseDownPos.value) {
     if (selectedAnchor.value || selectedAnchor.value) return 'grabbing';
@@ -514,12 +515,12 @@ const iterationsUsed = computed(() => iterationHistory.value.length);
 const finalError = ref(0);
 const evaluating = ref(false);
 const result = computedAsync(
-  async (onCancel) => gradientDescent(anchors, initialLearningRate.value, tolerance.value, maxIterations.value, onCancel),
+  async (onCancel) => gradientDescent(aFiltered.value, initialLearningRate.value, tolerance.value, maxIterations.value, onCancel),
   { x: 1, y: 1 },
   evaluating,
 );
 const iterationHistory = ref(<{ x: number, y: number, gx: number, gy: number, error: number }[]>[]);
-const radius = computed(() => radiusOfProbability(result.value.x, result.value.y, anchors));
+const radius = computed(() => radiusOfProbability(result.value.x, result.value.y, aFiltered.value));
 onMounted(() => {
   if (import.meta.client) _frameId = requestAnimationFrame(startRender)
 });
