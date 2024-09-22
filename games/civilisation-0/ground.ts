@@ -1,12 +1,13 @@
-import {getRandomMix32} from "~/games/civilisation-0/random";
-import {Tile} from "~/games/civilisation-0/tile";
-import {GridHelper, Object3D, PlaneGeometry, RepeatWrapping, Vector2} from "three";
-import {GroundObject} from "~/games/civilisation-0/ground_object";
-import type {TileWorld} from "~/games/civilisation-0/terrain/tileworld";
-import {Water} from "three/examples/jsm/objects/Water2";
-import {csmSetupMaterial, getTexture, loadAsset} from "~/games/civilisation-0/assets";
-import type {Mesh} from "three/src/objects/Mesh";
-import {DebugWorld} from "~/games/civilisation-0/terrain/debug_world";
+import { getRandomMix32 } from "~/games/civilisation-0/random";
+import { Tile } from "~/games/civilisation-0/tile";
+import { GridHelper, Object3D, PlaneGeometry, RepeatWrapping, Vector2 } from "three";
+import { GroundObject } from "~/games/civilisation-0/ground_object";
+import type { TileWorld } from "~/games/civilisation-0/terrain/tileworld";
+import { Water } from "three/examples/jsm/objects/Water2";
+import { csmSetupMaterial, getTexture, loadAsset } from "~/games/civilisation-0/assets";
+import type { Mesh } from "three/src/objects/Mesh";
+import { DebugWorld } from "~/games/civilisation-0/terrain/debug_world";
+import { RandomWorld } from "./terrain/random_world";
 
 export default class Ground extends Object3D {
     private readonly r: () => number;
@@ -25,8 +26,8 @@ export default class Ground extends Object3D {
         this.tiles = [];
         this.objects = [];
         // (this.world = new PerlinWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
-        (this.world = new DebugWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
-        // (this.world = new RandomWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
+        // (this.world = new DebugWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
+        (this.world = new RandomWorld(this, 100, 100, this.tiles, this.objects, r)).generate();
 
         this.makeWater();
         loadAsset('ground_riverOpen.glb', true).then(a => {

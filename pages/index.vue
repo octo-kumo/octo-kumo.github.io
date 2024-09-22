@@ -1,16 +1,19 @@
 <template>
   <div class="lg:max-w-prose! mx-auto!">
     <el-text class="text-4xl! font-bold" tag="h1">Hi!</el-text>
-    <el-text tag="p">Welcome to my person website, it is still in the works, expect perhaps unexpected errors, or
-      the
-      site crashing entirely.
+    <el-text tag="p">
+      Welcome to my person website, it is still in the works, expect perhaps unexpected errors, or
+      the site crashing entirely.
+    </el-text>
+    <el-text tag="p">
+      Below is an index of my writeups for CTF challenges, and below that is a list of random web tools and projects.
     </el-text>
     <el-divider />
     <note-search />
   </div>
   <el-row :gutter="20">
     <el-col
-      v-for="item in [...nav.filter(r => r.path.startsWith('/projects/')).sort((a, b) => Number(!a.meta.image) - Number(!b.meta.image)), contentPage]"
+      v-for="item in [...nav.filter(r => r.path.startsWith('/projects/')).sort((a, b) => Number(!a.meta.image) - Number(!b.meta.image)).sort((a, b) => Number(!b.meta.wip) - Number(!a.meta.wip)), contentPage]"
       :key="item.path" :cols="24" :lg="6" :md="8" :sm="12">
       <el-card class="my-3" shadow="hover">
         <template #header v-if="item.meta.image!">
@@ -27,6 +30,9 @@
           <div class="flex gap-2">
             <el-tag type="danger" v-if="item.meta.layout === 'clean'">
               full page
+            </el-tag>
+            <el-tag type="danger" v-if="item.meta.wip">
+              wip
             </el-tag>
           </div>
         </el-space>

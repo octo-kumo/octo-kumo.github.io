@@ -25,7 +25,8 @@ definePageMeta({
   layout: 'clean',
   title: 'Air Defence',
   description: 'Fancy game about fighting planes using an AA gun (WIP)',
-  image: '/img/airdef.webp'
+  image: '/img/airdef.webp',
+  wip: true,
 });
 onActivated(() => {
   import("three/examples/jsm/capabilities/WebGL").then(WEBGL => {
@@ -33,5 +34,4 @@ onActivated(() => {
   })
 })
 </script>
-<style scoped lang="css">
-</style>
+<style scoped lang="css"></style>

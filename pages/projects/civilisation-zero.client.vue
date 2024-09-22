@@ -25,6 +25,7 @@ definePageMeta({
   layout: 'clean',
   title: 'Civilisation 0',
   description: 'Civilisation at Home (WIP)',
+  wip: true,
   // image: '/img/airdef.webp'
 });
 onActivated(() => {
@@ -33,5 +34,4 @@ onActivated(() => {
   })
 })
 </script>
-<style scoped lang="css">
-</style>
+<style scoped lang="css"></style>

@@ -4,7 +4,7 @@
 <script setup lang="ts">
 definePageMeta({
   title: "Tank Field",
-  description: "Clone of Tank Stars! Supports PVP and terrain destruction!",
+  description: "Clone of Tank Stars! Supports PVP and terrain destruction! @2019",
   image: "https://raw.githubusercontent.com/octo-kumo/Tank/refs/heads/master/images/img.webp"
 });
 </script>
