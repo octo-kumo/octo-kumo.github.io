@@ -1,11 +1,13 @@
 <template>
   <div>
     <el-form @submit.prevent inline>
-      <el-text size='small' class="block"><em>3<sup>n</sup> possible implicants will be tried.</em></el-text>
-      <el-text size='small' class="block"><em>note that extra prime implicants are not pruned!</em></el-text>
+      <el-text size='small' class="block"><em>3<sup>n</sup> possible implicants will be tried</em></el-text>
+      <el-text size='small' class="block">
+        <em>Slow O(k!) recursion method used for finding essential prime implicants.</em>
+      </el-text>
       <el-form-item :label="'Variable Count' + form.varCount">
         <el-select v-model="form.varCount" placeholder="Input Size">
-          <el-option v-for="i in 4" :key="i" :label="i + 1" :value="i + 1"></el-option>
+          <el-option v-for="i in 5" :key="i" :label="i + 1" :value="i + 1"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="Mode">
@@ -13,6 +15,12 @@
           <el-option label="Product of Sum" value="pos"></el-option>
           <el-option label="Sum of Product" value="sop"></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="Prune (slow)">
+        <el-checkbox v-model="onlyEssential"></el-checkbox>
+      </el-form-item>
+      <el-form-item label="Hide Latex">
+        <el-checkbox v-model="form.hideLatex"></el-checkbox>
       </el-form-item>
       <el-form-item label="Expression" :error="formErrors['expr']" class="w-full">
         <el-input v-model="form.expression" placeholder="m(0,1,2,3)+d(4,5,6)">
@@ -26,11 +34,11 @@
       </div>
     </el-form>
     <div class='flex gap-4'>
-      <div ref="kmapTables" class="flex flex-row gap-1">
+      <div ref="kmapTables" class="grid grid-cols-2 gap-1">
         <table v-for="(zmap, z) in kmap.rows" class="kmap relative">
           <thead>
             <tr v-if="kmap.depth > 1">
-              <th v-html='katex.renderToString(`${z}`)'></th>
+              <th v-html='katex.renderToString(`${kmap.z_heads[z]}`)'></th>
               <th colspan="4" v-html='katex.renderToString("x_2 x_3")'></th>
             </tr>
             <tr>
@@ -61,7 +69,10 @@
           </div>
         </table>
       </div>
-      <div class="implicants-katex" v-html="implicantKatex">
+      <div>
+        <el-tag type="info">Cost: {{ cover.cost }}</el-tag>
+        <div class="implicants-katex" v-html="implicantKatex" v-if="!form.hideLatex">
+        </div>
       </div>
     </div>
     <el-table :data="truthTable.rows" :height="500">
@@ -81,7 +92,7 @@
 <script lang="ts" setup>
 import katex from 'katex';
 import 'katex/dist/katex.css';
-import { mode } from 'mathjs';
+import { useStorage } from '@vueuse/core'
 definePageMeta({
   title: "Digital Logic",
   description: "Utilities for digital logic"
@@ -121,6 +132,7 @@ type KMap = {
   depth: number;
   h_heads: string[];
   v_heads: string[];
+  z_heads: string[];
   rows: { bit: Bit, label: number }[][][];
 };
 
@@ -143,8 +155,8 @@ function SoP(expression: string): TruthTable {
   if (trues.find(i => i < 0) || dCare.find(i => i < 0))
     throw new Error('m and d values must be positive');
   const max = Math.max(...trues, ...dCare);
-  if (max >= 2 ** form.varCount) throw new Error('m and d values must be within range');
-  const inputSize = form.varCount;
+  if (max >= 2 ** form.value.varCount) throw new Error('m and d values must be within range');
+  const inputSize = form.value.varCount;
   const rows = Array.from({ length: 2 ** inputSize }, (_, i) => {
     return trues.includes(i) ? '1' : dCare.includes(i) ? 'x' : '0' as Bit;
   });
@@ -154,13 +166,13 @@ function SoP(expression: string): TruthTable {
 function kMap(truthTable: TruthTable): KMap {
   // generate kmap
   const v2 = ['00', '01', '11', '10'], v1 = ['0', '1'], v0 = ['0'];
-  if (truthTable.inputSize < 2 || truthTable.inputSize > 5) throw new Error('KMap only supports 2 to 5 inputs');
+  // if (truthTable.inputSize < 2 || truthTable.inputSize > 5) throw new Error('KMap only supports 2 to 5 inputs');
   const width = truthTable.inputSize > 2 ? 4 : 2;
   const height = truthTable.inputSize > 3 ? 4 : 2;
-  const depth = truthTable.inputSize > 4 ? 2 : 1;
+  const depth = truthTable.inputSize > 5 ? 4 : truthTable.inputSize > 4 ? 2 : 1;
   const h_heads = width > 2 ? v2 : v1;
   const v_heads = height > 2 ? v2 : v1;
-  const z_heads = depth > 1 ? v1 : v0;
+  const z_heads = depth > 2 ? v2 : depth > 1 ? v1 : v0;
   const rows = Array.from({ length: depth }, (_, z) => {
     return Array.from({ length: height }, (_, i) => {
       return Array.from({ length: width }, (_, j) => {
@@ -169,12 +181,14 @@ function kMap(truthTable: TruthTable): KMap {
       });
     });
   });
-  return { inputSize: truthTable.inputSize, width, height, h_heads, v_heads, rows, depth };
+  return { inputSize: truthTable.inputSize, width, height, h_heads, v_heads, z_heads, rows, depth };
 }
 const formErrors = reactive({} as any);
-const form = reactive({
+const onlyEssential = ref(false);
+const form = useStorage('digital-logic-form-items', {
   varCount: 4,
   mode: 'sop' as 'sop' | 'pos',
+  hideLatex: false,
   expression: 'm(1,3,4,9,11,13,15)+d(5,6,7,14)'
 });
 
@@ -182,10 +196,10 @@ function updateExpr(i: number, b: Bit) {
   const rows = truthTable.value.rows;
   rows[i] = b;
   const d = rows.map((v, i) => [v, i]).filter(([v, i]) => v === 'x').map(([v, i]) => i);
-  form.expression = 'm(' + rows.map((v, i) => [v, i]).filter(([v, i]) => v === '1').map(([v, i]) => i).join(',') + ')' +
+  form.value.expression = 'm(' + rows.map((v, i) => [v, i]).filter(([v, i]) => v === '1').map(([v, i]) => i).join(',') + ')' +
     (d.length ? '+d(' + d.join(',') + ')' : '');
 }
-function solveKMap(kmap: KMap, truthTable: TruthTable, target: Bit = '1'): Implicant[] {
+function solveKMap(kmap: KMap, truthTable: TruthTable, target: Bit = '1'): Cover {
   const allPossible = [] as Implicant[];
   // implicant array, [1,0,x] means (x1)(not x2)
   function checkImplicant(bits: Bit[]): Implicant | undefined {
@@ -197,18 +211,16 @@ function solveKMap(kmap: KMap, truthTable: TruthTable, target: Bit = '1'): Impli
       if (bits[i] === '0') FALSE_MASK |= 1 << (kmap.inputSize - i - 1);
       if (bits[i] !== 'x') area /= 2;
     }
-    let nonX = false;
     const imp: Implicant = { bits, cells: [], area };
     for (let i = 0; i < truthTable.rows.length; i++) {
       const trueMatch = (i & TRUE_MASK) === TRUE_MASK;
       const falseMatch = (i & FALSE_MASK) === 0;
       if (trueMatch && falseMatch) if (truthTable.rows[i] !== 'x') {
-        nonX = true;
         if (truthTable.rows[i] !== target) return undefined;
         else imp.cells.push(i);
       }
     }
-    return nonX ? imp : undefined;
+    return imp.cells.length > 0 ? imp : undefined;
   }
 
   const values: Bit[] = ['0', '1', 'x'];
@@ -223,7 +235,58 @@ function solveKMap(kmap: KMap, truthTable: TruthTable, target: Bit = '1'): Impli
       !((a.area > b.area || a.cells.length > b.cells.length) && b.cells.every(t => a.cells.includes(t)))))
     .filter((a, i, arr) => arr.every((b, j) => i <= j ||
       !(a.area === b.area && a.cells.length === b.cells.length && a.cells.every(t => b.cells.includes(t)))));
-  return primes;
+  const cover = createCover(primes, new Array(primes.length).fill(true), primes.map(calculateImplicantCost));
+  if (onlyEssential.value) {
+    return findBestCoverRecursive(cover, [...cover.coveredCells]);
+  }
+  else return cover;
+}
+interface Cover {
+  implicants: Implicant[],
+  cost: number;         // Total cost of the cover
+  coveredCells: Set<number>; // Set of all covered cells
+  included: boolean[];  // Boolean array representing included implicants
+  costs: number[];      // Precomputed costs for each implicant
+}
+function createCover(implicants: Implicant[], included: boolean[], costs: number[]): Cover {
+  const coveredCells = new Set<number>(implicants.filter((v, i) => included[i]).flatMap(imp => imp.cells));
+  return { cost: calculateTotalCost(included, costs), coveredCells, included, costs, implicants };
+}
+function calculateTotalCost(included: boolean[], costs: number[]): number {
+  let amm = 0;
+  const cost = included.reduce((sum, v, index) => {
+    if (v) amm++;
+    return v ? sum + costs[index] : sum;
+  }, 0);
+  if (amm === 1) return cost - 1;
+  if (cost !== 0) return cost + 1;
+  else return 0;
+}
+function calculateImplicantCost(implicant: Implicant): number {
+  const ins = implicant.bits.filter(bit => bit !== 'x').length;
+  return ins <= 1 ? 1 : ins + 2;
+}
+function findBestCoverRecursive(
+  cover: Cover,
+  requiredCells: number[],
+  bestCover: Cover | null = null
+): Cover {
+  if (!requiredCells.every(cell => cover.coveredCells.has(cell))) return bestCover || cover;
+  if (!bestCover || cover.cost < bestCover.cost) {
+    console.log("cost", cover.cost, "best", bestCover?.cost);
+    bestCover = { ...cover, included: [...cover.included] };
+  }
+  for (let i = 0; i < cover.implicants.length; i++) {
+    if (!cover.included[i]) continue;
+    cover.included[i] = false;
+    const newCover = createCover(cover.implicants, cover.included, cover.costs);
+    const candidateCover = findBestCoverRecursive(newCover, requiredCells, bestCover);
+    if (candidateCover.cost < bestCover.cost)
+      bestCover = candidateCover;
+    cover.included[i] = true;
+  }
+
+  return bestCover;
 }
 
 function drawImplicants(width: number, height: number, imps: Implicant[]): DrawImplicantRect[] {
@@ -252,7 +315,22 @@ function drawImplicants(width: number, height: number, imps: Implicant[]): DrawI
   }
   const impl = imps.map((imp: Implicant) => {
     const r: ImplicantRect = { x: 0, y: 0, zs: [0], width: 0, height: 0 };
-    if (imp.bits.length === 5) {
+    if (imp.bits.length === 6) {
+      [r.x, r.width] = kmapPosNSize(imp.bits[2], imp.bits[3]);
+      [r.y, r.height] = kmapPosNSize(imp.bits[4], imp.bits[5]);
+      const bitMap: { [k: string]: number[] } = {
+        '00': [0],
+        '01': [1],
+        '10': [3],
+        '11': [2],
+        '0x': [0, 1],
+        '1x': [3, 2],
+        'x0': [0, 3],
+        'x1': [1, 2],
+        'xx': [0, 1, 2, 3]
+      };
+      r.zs = bitMap[imp.bits[0] + imp.bits[1]];
+    } else if (imp.bits.length === 5) {
       [r.x, r.width] = kmapPosNSize(imp.bits[1], imp.bits[2]);
       [r.y, r.height] = kmapPosNSize(imp.bits[3], imp.bits[4]);
       r.zs = imp.bits[0] === '0' ? [0] : imp.bits[0] === '1' ? [1] : [0, 1];
@@ -316,7 +394,7 @@ function drawImplicants(width: number, height: number, imps: Implicant[]): DrawI
 const truthTable = computed(() => {
   try {
     formErrors['expr'] = null;
-    return SoP(form.expression)
+    return SoP(form.value.expression)
   } catch (e: any) {
     formErrors['expr'] = e.message;
     return { inputSize: 0, rows: [], truths: [] } as TruthTable;
@@ -328,43 +406,44 @@ const kmap = computed<KMap>(() => {
     return kMap(truthTable.value);
   } catch (e: any) {
     formErrors['kmap'] = e.message;
-    return { width: 0, height: 0, depth: 0, h_heads: [], v_heads: [], rows: [], inputSize: 0 };
+    return { width: 0, height: 0, depth: 0, h_heads: [], v_heads: [], z_heads: [], rows: [], inputSize: 0 };
   }
 });
-const implicants = computed(() => {
+const cover = computedAsync<Cover>(async () => {
   try {
     formErrors['implicants'] = null;
-    return solveKMap(kmap.value, truthTable.value, form.mode === 'sop' ? '1' : '0');
+    return solveKMap(kmap.value, truthTable.value, form.value.mode === 'sop' ? '1' : '0');
   } catch (e: any) {
     formErrors['implicants'] = e.message;
-    return [];
+    return createCover([], [], []);
   }
-});
+}, createCover([], [], []));
 const implicantsRects = ref<DrawImplicantRect[]>([]);
-watch(implicants, (imps) => {
+watch(cover, (cover) => {
   setTimeout(() => {
     try {
       formErrors['implicantsRects'] = null;
-      implicantsRects.value = drawImplicants(kmap.value.width, kmap.value.height, imps);
+      implicantsRects.value = drawImplicants(kmap.value.width, kmap.value.height, cover.implicants
+        .filter((_, i) => cover.included[i]));
     } catch (e: any) {
       formErrors['implicantsRects'] = e.message;
     }
   }, 50);
 }, { immediate: true });
 const implicantKatex = computed(() => {
-  const imps = implicants.value;
+  const imps = cover.value.implicants.filter((_, i) => cover.value.included[i]);
   let latex;
-  const T = form.mode === 'sop' ? '1' : '0';
-  const aT = form.mode === 'sop' ? '0' : '1';
-  if (imps.length === 0) latex = form.mode === 'sop' ? '0' : '1';
-  else if (imps.length === 1 && imps[0].bits.every(b => b === 'x')) latex = form.mode === 'sop' ? '1' : '0';
+  const T = form.value.mode === 'sop' ? '1' : '0';
+  const aT = form.value.mode === 'sop' ? '0' : '1';
+  if (imps.length === 0) latex = form.value.mode === 'sop' ? '0' : '1';
+  else if (imps.length === 1 && imps[0].bits.every(b => b === 'x')) latex = form.value.mode === 'sop' ? '1' : '0';
   else latex = imps.map(imp => {
     const term = imp.bits.map((b, i) => b === aT ? `\\overline{x_${i + 1}}` : b === T ? `x_${i + 1}` : '')
       .filter(i => i)
-      .join(form.mode === 'sop' ? '' : '+');
-    if (form.mode === 'sop') return term
+      .join(form.value.mode === 'sop' ? '' : '+');
+    if (form.value.mode === 'sop') return term
     else return `(${term})`
-  }).join(form.mode === 'sop' ? ' + ' : ' ');
+  }).join(form.value.mode === 'sop' ? ' + ' : ' ');
   latex = "f=" + latex;
   return katex.renderToString(latex, {
     displayMode: true,
@@ -373,6 +452,7 @@ const implicantKatex = computed(() => {
   }) + "<span class='font-mono text-xs'>$$<br/>" + latex + "<br/>$$</span>";
 });
 //m(0,3,4,7,9,10,12,15)+d(6)
+//m(0,1,2,5,6,7,9,10,11,12,13,14,17,18,19,21,22,23,26,28,29,30)
 </script>
 
 <style lang="scss" scoped>

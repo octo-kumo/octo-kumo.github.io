@@ -71,9 +71,6 @@ importers:
       mermaid:
         specifier: ^11.2.1
         version: 11.2.1
-      nuxt-umami:
-        specifier: ^3.0.2
-        version: 3.0.2(magicast@0.3.5)(rollup@4.23.0)(webpack-sources@3.2.3)
       p-queue:
         specifier: ^8.0.1
         version: 8.0.1
@@ -180,6 +177,9 @@ importers:
       nuxt-security:
         specifier: 2.0.0
         version: 2.0.0(magicast@0.3.5)(rollup@4.23.0)(webpack-sources@3.2.3)
+      nuxt-umami:
+        specifier: ^3.0.2
+        version: 3.0.2(magicast@0.3.5)(rollup@4.23.0)(webpack-sources@3.2.3)
       playwright:
         specifier: ^1.47.2
         version: 1.47.2
