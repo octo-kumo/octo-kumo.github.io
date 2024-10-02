@@ -2,6 +2,7 @@
   <div>
     <el-form @submit.prevent inline>
       <el-text size='small' class="block"><em>3<sup>n</sup> possible implicants will be tried.</em></el-text>
+      <el-text size='small' class="block"><em>note that extra prime implicants are not pruned!</em></el-text>
       <el-form-item :label="'Variable Count' + form.varCount">
         <el-select v-model="form.varCount" placeholder="Input Size">
           <el-option v-for="i in 4" :key="i" :label="i + 1" :value="i + 1"></el-option>
@@ -13,7 +14,7 @@
           <el-option label="Sum of Product" value="sop"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="Expression" :error="formErrors['expr']">
+      <el-form-item label="Expression" :error="formErrors['expr']" class="w-full">
         <el-input v-model="form.expression" placeholder="m(0,1,2,3)+d(4,5,6)">
           <template #prefix>Σ</template>
         </el-input>
@@ -24,8 +25,8 @@
         </el-tag>
       </div>
     </el-form>
-    <div class='flex'>
-      <div ref="kmapTables">
+    <div class='flex gap-4'>
+      <div ref="kmapTables" class="flex flex-row gap-1">
         <table v-for="(zmap, z) in kmap.rows" class="kmap relative">
           <thead>
             <tr v-if="kmap.depth > 1">
@@ -350,7 +351,7 @@ watch(implicants, (imps) => {
     }
   }, 50);
 }, { immediate: true });
-const implicantKatex = asyncComputed(async () => {
+const implicantKatex = computed(() => {
   const imps = implicants.value;
   let latex;
   if (imps.length === 0) latex = form.mode === 'sop' ? '0' : '1';
@@ -367,8 +368,8 @@ const implicantKatex = asyncComputed(async () => {
     displayMode: true,
     output: 'htmlAndMathml',
     throwOnError: false
-  }) + "<span class='font-mono text-xs'>" + latex + "</span>";
-}, '')
+  }) + "<span class='font-mono text-xs'>$$<br/>" + latex + "<br/>$$</span>";
+});
 //m(0,3,4,7,9,10,12,15)+d(6)
 </script>
 
@@ -413,6 +414,6 @@ const implicantKatex = asyncComputed(async () => {
 }
 
 .el-select {
-  min-width: 120px;
+  min-width: 10em;
 }
 </style>
