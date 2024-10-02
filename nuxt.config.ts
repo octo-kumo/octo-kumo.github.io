@@ -24,8 +24,6 @@ export default defineNuxtConfig({
             link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
         }
     },
-
-    extends: ['nuxt-umami'],
     vue: {
         compilerOptions: {
             isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect"].includes(tag),
@@ -55,7 +53,8 @@ export default defineNuxtConfig({
         shim: false,
     },
 
-    modules: ['@vueuse/nuxt', // '@pinia/nuxt',
+    modules: [
+        '@vueuse/nuxt', // '@pinia/nuxt',
         '@unocss/nuxt', // 'v-shared-element/nuxt',
         // '@pinia-plugin-persistedstate/nuxt',
         '@element-plus/nuxt', '@nuxtjs/color-mode', '@vite-pwa/nuxt', "@nuxtjs/sitemap", "@nuxt/content", // "@nuxt/image",
@@ -63,9 +62,15 @@ export default defineNuxtConfig({
         // '@nuxtjs/robots',
         // "nuxt-booster",
         '@formkit/auto-animate/nuxt', "nuxt-og-image",
+        'nuxt-umami'
         // "nuxt-delay-hydration"
     ],
-
+    umami: {
+        host: "https://anal.yun.ng",
+        id: 'fd089b30-9952-41b0-a817-fce38fefae17',
+        version: 2,
+        customEndpoint: "/api/send"
+    },
     pwa: {
         selfDestroying: true,
         strategies: 'generateSW',

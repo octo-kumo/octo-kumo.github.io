@@ -354,10 +354,12 @@ watch(implicants, (imps) => {
 const implicantKatex = computed(() => {
   const imps = implicants.value;
   let latex;
+  const T = form.mode === 'sop' ? '1' : '0';
+  const aT = form.mode === 'sop' ? '0' : '1';
   if (imps.length === 0) latex = form.mode === 'sop' ? '0' : '1';
   else if (imps.length === 1 && imps[0].bits.every(b => b === 'x')) latex = form.mode === 'sop' ? '1' : '0';
   else latex = imps.map(imp => {
-    const term = imp.bits.map((b, i) => b === '0' ? `\\overline{x_${i + 1}}` : b === '1' ? `x_${i + 1}` : '')
+    const term = imp.bits.map((b, i) => b === aT ? `\\overline{x_${i + 1}}` : b === T ? `x_${i + 1}` : '')
       .filter(i => i)
       .join(form.mode === 'sop' ? '' : '+');
     if (form.mode === 'sop') return term
