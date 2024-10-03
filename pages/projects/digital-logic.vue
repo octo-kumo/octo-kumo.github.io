@@ -3,7 +3,8 @@
     <el-form @submit.prevent inline>
       <el-text size='small' class="block"><em>3<sup>n</sup> possible implicants will be tried</em></el-text>
       <el-text size='small' class="block">
-        <em>Slow O(k!) recursion method used for finding essential prime implicants.</em>
+        <em>DFS used for finding essential prime implicants with max 10<sup>5</sup> iterations.</em>
+        <el-tag class="mx-2" v-if="form._iterations !== 0">{{ form._iterations }}</el-tag>
       </el-text>
       <el-form-item :label="'Variable Count' + form.varCount">
         <el-select v-model="form.varCount" placeholder="Input Size">
@@ -17,10 +18,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="Prune (slow)">
-        <el-checkbox v-model="onlyEssential"></el-checkbox>
+        <el-checkbox v-model="form.onlyEssential"></el-checkbox>
       </el-form-item>
       <el-form-item label="Hide Latex">
         <el-checkbox v-model="form.hideLatex"></el-checkbox>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="complementify">Complement</el-button>
+        <el-button @click="randomize">Randomize</el-button>
       </el-form-item>
       <el-form-item label="Expression" :error="formErrors['expr']" class="w-full">
         <el-input v-model="form.expression" placeholder="m(0,1,2,3)+d(4,5,6)">
@@ -33,7 +38,7 @@
         </el-tag>
       </div>
     </el-form>
-    <div class='flex gap-4'>
+    <div class='flex gap-4 flex-col lg:flex-row items-center'>
       <div ref="kmapTables" class="grid grid-cols-2 gap-1">
         <table v-for="(zmap, z) in kmap.rows" class="kmap relative">
           <thead>
@@ -70,8 +75,8 @@
         </table>
       </div>
       <div>
-        <el-tag type="info">Cost: {{ cover.cost }}</el-tag>
-        <div class="implicants-katex" v-html="implicantKatex" v-if="!form.hideLatex">
+        <el-tag type="danger">Cost: {{ cover.cost }}</el-tag>
+        <div class="implicants-katex" v-html="implicantKatex">
         </div>
       </div>
     </div>
@@ -92,7 +97,6 @@
 <script lang="ts" setup>
 import katex from 'katex';
 import 'katex/dist/katex.css';
-import { useStorage } from '@vueuse/core'
 definePageMeta({
   title: "Digital Logic",
   description: "Utilities for digital logic"
@@ -155,8 +159,8 @@ function SoP(expression: string): TruthTable {
   if (trues.find(i => i < 0) || dCare.find(i => i < 0))
     throw new Error('m and d values must be positive');
   const max = Math.max(...trues, ...dCare);
-  if (max >= 2 ** form.value.varCount) throw new Error('m and d values must be within range');
-  const inputSize = form.value.varCount;
+  if (max >= 2 ** form.varCount) throw new Error('m and d values must be within range');
+  const inputSize = form.varCount;
   const rows = Array.from({ length: 2 ** inputSize }, (_, i) => {
     return trues.includes(i) ? '1' : dCare.includes(i) ? 'x' : '0' as Bit;
   });
@@ -184,20 +188,38 @@ function kMap(truthTable: TruthTable): KMap {
   return { inputSize: truthTable.inputSize, width, height, h_heads, v_heads, z_heads, rows, depth };
 }
 const formErrors = reactive({} as any);
-const onlyEssential = ref(false);
-const form = useStorage('digital-logic-form-items', {
+const form = reactive({
+  _iterations: 0,
   varCount: 4,
+  onlyEssential: false,
   mode: 'sop' as 'sop' | 'pos',
   hideLatex: false,
   expression: 'm(1,3,4,9,11,13,15)+d(5,6,7,14)'
 });
-
+function toExpression(rows: Bit[]): string {
+  const m = rows.map((v, i) => v === '1' ? i : -1).filter(i => i !== -1);
+  const d = rows.map((v, i) => v === 'x' ? i : -1).filter(i => i !== -1);
+  return 'm(' + m.join(',') + ')' + (d.length ? '+d(' + d.join(',') + ')' : '');
+}
+function complementify() {
+  const rows = [...truthTable.value.rows];
+  for (let i = 0; i < rows.length; i++) {
+    if (rows[i] === '0') rows[i] = '1';
+    else if (rows[i] === '1') rows[i] = '0';
+  }
+  form.expression = toExpression(rows);
+}
+function randomize() {
+  const includeDC = Math.random() > 0.5;
+  const rows: Bit[] = Array.from({ length: 2 ** form.varCount }, () => Math.random() > 0.5 ? '1' : '0');
+  if (includeDC)
+    for (let i = 0; i < rows.length; i++) if (Math.random() > 0.8) rows[i] = 'x';
+  form.expression = toExpression(rows);
+}
 function updateExpr(i: number, b: Bit) {
-  const rows = truthTable.value.rows;
+  const rows = [...truthTable.value.rows];
   rows[i] = b;
-  const d = rows.map((v, i) => [v, i]).filter(([v, i]) => v === 'x').map(([v, i]) => i);
-  form.value.expression = 'm(' + rows.map((v, i) => [v, i]).filter(([v, i]) => v === '1').map(([v, i]) => i).join(',') + ')' +
-    (d.length ? '+d(' + d.join(',') + ')' : '');
+  form.expression = toExpression(rows);
 }
 function solveKMap(kmap: KMap, truthTable: TruthTable, target: Bit = '1'): Cover {
   const allPossible = [] as Implicant[];
@@ -236,9 +258,8 @@ function solveKMap(kmap: KMap, truthTable: TruthTable, target: Bit = '1'): Cover
     .filter((a, i, arr) => arr.every((b, j) => i <= j ||
       !(a.area === b.area && a.cells.length === b.cells.length && a.cells.every(t => b.cells.includes(t)))));
   const cover = createCover(primes, new Array(primes.length).fill(true), primes.map(calculateImplicantCost));
-  if (onlyEssential.value) {
-    return findBestCoverRecursive(cover, [...cover.coveredCells]);
-  }
+  form._iterations = 0;
+  if (form.onlyEssential) return optimizeCover(cover);
   else return cover;
 }
 interface Cover {
@@ -250,7 +271,7 @@ interface Cover {
 }
 function createCover(implicants: Implicant[], included: boolean[], costs: number[]): Cover {
   const coveredCells = new Set<number>(implicants.filter((v, i) => included[i]).flatMap(imp => imp.cells));
-  return { cost: calculateTotalCost(included, costs), coveredCells, included, costs, implicants };
+  return { cost: calculateTotalCost(included, costs), coveredCells, included: [...included], costs, implicants };
 }
 function calculateTotalCost(included: boolean[], costs: number[]): number {
   let amm = 0;
@@ -266,29 +287,34 @@ function calculateImplicantCost(implicant: Implicant): number {
   const ins = implicant.bits.filter(bit => bit !== 'x').length;
   return ins <= 1 ? 1 : ins + 2;
 }
-function findBestCoverRecursive(
-  cover: Cover,
-  requiredCells: number[],
-  bestCover: Cover | null = null
-): Cover {
-  if (!requiredCells.every(cell => cover.coveredCells.has(cell))) return bestCover || cover;
-  if (!bestCover || cover.cost < bestCover.cost) {
-    console.log("cost", cover.cost, "best", bestCover?.cost);
-    bestCover = { ...cover, included: [...cover.included] };
+// DFS
+function optimizeCover(cover: Cover, maxIter = 1e5): Cover {
+  const stack = [{ cover, essentialImplicants: new Set<number>() }];
+  const requiredCells = [...cover.coveredCells]
+  let bestCover = cover;
+  let iters = 0;
+  while (stack.length > 0) {
+    if (iters++ > maxIter) break;
+    const { cover, essentialImplicants } = stack.pop()!;
+    if (!requiredCells.every(cell => cover.coveredCells.has(cell))) continue;
+    if (!bestCover || cover.cost < bestCover.cost) {
+      bestCover = { ...cover, included: [...cover.included] };
+    }
+    for (let i = 0; i < cover.implicants.length; i++) {
+      if (!cover.included[i] || essentialImplicants.has(i)) continue;
+      cover.included[i] = false;
+      const newCover = createCover(cover.implicants, cover.included, cover.costs);
+      if (!requiredCells.every(cell => newCover.coveredCells.has(cell))) {
+        essentialImplicants.add(i);
+      } else {
+        stack.push({ cover: newCover, essentialImplicants: new Set(essentialImplicants) });
+      }
+      cover.included[i] = true;
+    }
   }
-  for (let i = 0; i < cover.implicants.length; i++) {
-    if (!cover.included[i]) continue;
-    cover.included[i] = false;
-    const newCover = createCover(cover.implicants, cover.included, cover.costs);
-    const candidateCover = findBestCoverRecursive(newCover, requiredCells, bestCover);
-    if (candidateCover.cost < bestCover.cost)
-      bestCover = candidateCover;
-    cover.included[i] = true;
-  }
-
+  form._iterations = iters;
   return bestCover;
 }
-
 function drawImplicants(width: number, height: number, imps: Implicant[]): DrawImplicantRect[] {
   const ts = kmapTables.value?.children;
   if (!ts) return [];
@@ -394,7 +420,7 @@ function drawImplicants(width: number, height: number, imps: Implicant[]): DrawI
 const truthTable = computed(() => {
   try {
     formErrors['expr'] = null;
-    return SoP(form.value.expression)
+    return SoP(form.expression)
   } catch (e: any) {
     formErrors['expr'] = e.message;
     return { inputSize: 0, rows: [], truths: [] } as TruthTable;
@@ -412,7 +438,7 @@ const kmap = computed<KMap>(() => {
 const cover = computedAsync<Cover>(async () => {
   try {
     formErrors['implicants'] = null;
-    return solveKMap(kmap.value, truthTable.value, form.value.mode === 'sop' ? '1' : '0');
+    return solveKMap(kmap.value, truthTable.value, form.mode === 'sop' ? '1' : '0');
   } catch (e: any) {
     formErrors['implicants'] = e.message;
     return createCover([], [], []);
@@ -433,23 +459,25 @@ watch(cover, (cover) => {
 const implicantKatex = computed(() => {
   const imps = cover.value.implicants.filter((_, i) => cover.value.included[i]);
   let latex;
-  const T = form.value.mode === 'sop' ? '1' : '0';
-  const aT = form.value.mode === 'sop' ? '0' : '1';
-  if (imps.length === 0) latex = form.value.mode === 'sop' ? '0' : '1';
-  else if (imps.length === 1 && imps[0].bits.every(b => b === 'x')) latex = form.value.mode === 'sop' ? '1' : '0';
-  else latex = imps.map(imp => {
-    const term = imp.bits.map((b, i) => b === aT ? `\\overline{x_${i + 1}}` : b === T ? `x_${i + 1}` : '')
+  const T = form.mode === 'sop' ? '1' : '0';
+  const aT = form.mode === 'sop' ? '0' : '1';
+  if (imps.length === 0) latex = form.mode === 'sop' ? '0' : '1';
+  else if (imps.length === 1 && imps[0].bits.every(b => b === 'x')) latex = form.mode === 'sop' ? '1' : '0';
+  else latex = imps.map((imp, i) => {
+    const term = imp.bits.map((b, i) => b === aT ? `\\bar{x_${i + 1}}` : b === T ? `x_${i + 1}` : '')
       .filter(i => i)
-      .join(form.value.mode === 'sop' ? '' : '+');
-    if (form.value.mode === 'sop') return term
-    else return `(${term})`
-  }).join(form.value.mode === 'sop' ? ' + ' : ' ');
-  latex = "f=" + latex;
+      .join(form.mode === 'sop' ? '' : '+');
+    const end = (i + 1) % 3 === 0 ? '\\\\\\\n&' : '';
+    if (form.mode === 'sop') return term + end;
+    else return `(${term})` + end;
+  }).join(form.mode === 'sop' ? ' + ' : ' ');
+  latex = "f&=" + latex;
+  latex = `\\begin{align*}\n${latex}\n\\end{align*}`;
   return katex.renderToString(latex, {
     displayMode: true,
     output: 'htmlAndMathml',
     throwOnError: false
-  }) + "<span class='font-mono text-xs'>$$<br/>" + latex + "<br/>$$</span>";
+  }) + (form.hideLatex ? '' : "<span class='block font-mono text-xs max-w-4xl'>$$<br/>" + latex + "<br/>$$</span>");
 });
 //m(0,3,4,7,9,10,12,15)+d(6)
 //m(0,1,2,5,6,7,9,10,11,12,13,14,17,18,19,21,22,23,26,28,29,30)
