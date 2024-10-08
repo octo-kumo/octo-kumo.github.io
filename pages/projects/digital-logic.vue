@@ -111,7 +111,8 @@ import 'katex/dist/katex.css';
 import { generateTruthTable, parseLogicExpression } from '~/libraries/logic-expr';
 definePageMeta({
   title: "Digital Logic",
-  description: "Utilities for digital logic"
+  description: "Utilities for digital logic",
+  image: '/img/digital-logic.webp',
 });
 
 type Bit = '0' | '1' | 'x';
@@ -552,4 +553,3 @@ const implicantKatex = computed(() => {
 }
 </style>
 <!-- TODO: add intersection detection system to better calculate padding -->
-<!-- add expression parser + evaluator to create truth tables -->
