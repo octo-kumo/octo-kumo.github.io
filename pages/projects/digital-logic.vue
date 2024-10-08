@@ -6,8 +6,15 @@
         <em>DFS used for finding essential prime implicants with max 10<sup>5</sup> iterations.</em>
         <el-tag class="mx-2" v-if="form._iterations !== 0">{{ form._iterations }}</el-tag>
       </el-text>
-      <el-form-item :label="'Variable Count' + form.varCount">
-        <el-select v-model="form.varCount" placeholder="Input Size">
+      <el-form-item label="Logic Expression">
+        <el-input v-model="form.logicExpr" placeholder="!(a + b) == !c && true || false">
+          <template #suffix>
+            <el-button link @click="evalLogicExpr">Evaluate</el-button>
+          </template>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="Variable Count">
+        <el-select v-model="form.varCount" placeholder="Input Size" :disabled="Boolean(form.logicExpr)">
           <el-option v-for="i in 5" :key="i" :label="i + 1" :value="i + 1"></el-option>
         </el-select>
       </el-form-item>
@@ -23,12 +30,12 @@
       <el-form-item label="Hide Latex">
         <el-checkbox v-model="form.hideLatex"></el-checkbox>
       </el-form-item>
-      <el-form-item>
+      <el-form-item v-if="!Boolean(form.logicExpr)">
         <el-button @click="complementify">Complement</el-button>
         <el-button @click="randomize">Randomize</el-button>
       </el-form-item>
       <el-form-item label="Expression" :error="formErrors['expr']" class="w-full">
-        <el-input v-model="form.expression" placeholder="m(0,1,2,3)+d(4,5,6)">
+        <el-input v-model="form.expression" placeholder="m(0,1,2,3)+d(4,5,6)" :disabled="Boolean(form.logicExpr)">
           <template #prefix>Σ</template>
         </el-input>
       </el-form-item>
@@ -44,10 +51,14 @@
           <thead>
             <tr v-if="kmap.depth > 1">
               <th v-html='katex.renderToString(`${kmap.z_heads[z]}`)'></th>
-              <th colspan="4" v-html='katex.renderToString("x_2 x_3")'></th>
+              <th colspan="4"
+                v-html="katex.renderToString(varName(kmap.inputSize - 4) + ' ' + varName(kmap.inputSize - 3))">
+              </th>
             </tr>
             <tr>
-              <th v-html="kmap.depth > 1 ? katex.renderToString('x_4 x_5') : ''"></th>
+              <th
+                v-html="kmap.depth > 1 ? katex.renderToString(varName(kmap.inputSize - 2) + ' ' + varName(kmap.inputSize - 1)) : ''">
+              </th>
               <th v-for="h in kmap.h_heads" :key="h">{{ h }}</th>
             </tr>
           </thead>
@@ -97,6 +108,7 @@
 <script lang="ts" setup>
 import katex from 'katex';
 import 'katex/dist/katex.css';
+import { generateTruthTable, parseLogicExpression } from '~/libraries/logic-expr';
 definePageMeta({
   title: "Digital Logic",
   description: "Utilities for digital logic"
@@ -194,8 +206,16 @@ const form = reactive({
   onlyEssential: false,
   mode: 'sop' as 'sop' | 'pos',
   hideLatex: false,
-  expression: 'm(1,3,4,9,11,13,15)+d(5,6,7,14)'
+  expression: 'm(1,3,4,9,11,13,15)+d(5,6,7,14)',
+  logicExpr: '',
 });
+const vars = ref<string[]>([]);
+function evalLogicExpr() {
+  const expr = parseLogicExpression(form.logicExpr);
+  vars.value = expr.variables;
+  form.varCount = expr.variables.length;
+  form.expression = toExpression(generateTruthTable(expr));
+}
 function toExpression(rows: Bit[]): string {
   const m = rows.map((v, i) => v === '1' ? i : -1).filter(i => i !== -1);
   const d = rows.map((v, i) => v === 'x' ? i : -1).filter(i => i !== -1);
@@ -217,6 +237,7 @@ function randomize() {
   form.expression = toExpression(rows);
 }
 function updateExpr(i: number, b: Bit) {
+  if (form.logicExpr) return;
   const rows = [...truthTable.value.rows];
   rows[i] = b;
   form.expression = toExpression(rows);
@@ -416,7 +437,6 @@ function drawImplicants(width: number, height: number, imps: Implicant[]): DrawI
   }
   return rects;
 }
-
 const truthTable = computed(() => {
   try {
     formErrors['expr'] = null;
@@ -456,6 +476,10 @@ watch(cover, (cover) => {
     }
   }, 50);
 }, { immediate: true });
+function varName(i: number) {
+  if (form.logicExpr) return (vars.value[i]?.replace(/(\d+)$/, '_{$1}')) ?? `x_{${i + 1}}`;
+  else return `x_{${i + 1}}`;
+}
 const implicantKatex = computed(() => {
   const imps = cover.value.implicants.filter((_, i) => cover.value.included[i]);
   let latex;
@@ -464,7 +488,7 @@ const implicantKatex = computed(() => {
   if (imps.length === 0) latex = form.mode === 'sop' ? '0' : '1';
   else if (imps.length === 1 && imps[0].bits.every(b => b === 'x')) latex = form.mode === 'sop' ? '1' : '0';
   else latex = imps.map((imp, i) => {
-    const term = imp.bits.map((b, i) => b === aT ? `\\bar{x_${i + 1}}` : b === T ? `x_${i + 1}` : '')
+    const term = imp.bits.map((b, i) => b === aT ? `\\bar{${varName(i)}}` : b === T ? varName(i) : '')
       .filter(i => i)
       .join(form.mode === 'sop' ? '' : '+');
     const end = (i + 1) % 3 === 0 ? '\\\\\\\n&' : '';
@@ -527,3 +551,5 @@ const implicantKatex = computed(() => {
   min-width: 10em;
 }
 </style>
+<!-- TODO: add intersection detection system to better calculate padding -->
+<!-- add expression parser + evaluator to create truth tables -->
