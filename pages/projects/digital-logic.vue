@@ -27,12 +27,37 @@
       <el-form-item label="Prune (slow)">
         <el-checkbox v-model="form.onlyEssential"></el-checkbox>
       </el-form-item>
-      <el-form-item label="Hide Latex">
-        <el-checkbox v-model="form.hideLatex"></el-checkbox>
+      <el-form-item label="Show Latex">
+        <el-checkbox v-model="form.showLatex"></el-checkbox>
+      </el-form-item>
+      <el-form-item label="Show Timing">
+        <el-checkbox v-model="form.showTiming"></el-checkbox>
       </el-form-item>
       <el-form-item v-if="!Boolean(form.logicExpr)">
         <el-button @click="complementify">Complement</el-button>
         <el-button @click="randomize">Randomize</el-button>
+      </el-form-item>
+      <el-form-item>
+        <template #label>
+          <el-checkbox v-model="form.shouldFactor">Factorization (Shannon)</el-checkbox>
+        </template>
+        <el-input-number v-model="form.factorCount" placeholder="Factor Count" :min="1" :max="form.varCount - 1" />
+      </el-form-item>
+      <el-form-item label="Factors" v-if="factorized">
+        <el-select v-model="form.factors" placeholder="Auto" clearable>
+          <template #label>
+            <span v-if='form.factors !== undefined'
+              v-html="katex.renderToString(factorCombs[form.factors].map(i => varName(i)).join(''))"></span>
+            <el-tag v-if='form.factors !== undefined && factorized.costsMap' class="ml-2">cost {{
+              factorized.costsMap.get(factorCombs[form.factors])?.cost }}</el-tag>
+          </template>
+          <el-option v-for="factors, i in factorCombs" :key="i" :value="i">
+            <span v-html="katex.renderToString(factors.map(i => varName(i)).join(''))"></span>
+            <el-tag v-if='factorized.costsMap' class="ml-2"
+              :type="factorized.costsMap.get(factors).cost === factorized.cost ? 'primary' : 'info'">
+              cost {{ factorized.costsMap.get(factors)?.cost }}</el-tag>
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="Expression" :error="formErrors['expr']" class="w-full">
         <el-input v-model="form.expression" placeholder="m(0,1,2,3)+d(4,5,6)" :disabled="Boolean(form.logicExpr)">
@@ -42,6 +67,9 @@
       <div class="flex gap-2">
         <el-tag type="danger" v-for="k in Object.keys(formErrors).filter(e => formErrors[e])">
           {{ k }} : {{ formErrors[k] }}
+        </el-tag>
+        <el-tag type="info" v-for="k in Object.keys(timing).filter(e => timing[e])" v-if="form.showTiming">
+          {{ k }} : {{ displayPeriod(timing[k]) }}
         </el-tag>
       </div>
     </el-form>
@@ -86,7 +114,12 @@
         </table>
       </div>
       <div>
-        <el-tag type="danger">Cost: {{ cover.cost }}</el-tag>
+        <div class="flex gap-2">
+          <el-tag type="danger">Cost: {{ cover.cost }}</el-tag>
+          <el-tag type="danger" v-if="factorized">Cost (sum of factors): {{
+            form.factors ? factorized.costsMap?.get(factorCombs[form.factors])?.cost : factorized.cost
+          }}</el-tag>
+        </div>
         <div class="implicants-katex" v-html="implicantKatex">
         </div>
       </div>
@@ -95,6 +128,8 @@
     <!--<div class="">
       <canvas ref="canvas" width="800" height="600"></canvas>
     </div>-->
+    <div class="">
+    </div>
     <el-table :data="truthTable.rows" :height="500">
       <el-table-column v-for="i in truthTable.inputSize" :key="i" align="center">
         <template #default="{ row, $index }">
@@ -132,7 +167,7 @@
 <script lang="ts" setup>
 import katex from 'katex';
 import 'katex/dist/katex.css';
-import { createCover, kMap, optimizeCover, solveKMap, SoP, type Bit, type Cover, type KMap, type TruthTable } from '~/libraries/logic-expr';
+import { createCover, kMap, optimizeCover, solveKMap, coverToLatex, SoP, optimizeFactorized, factorizedToLatex, type FactorizedCover, type Bit, type Cover, type KMap, type TruthTable } from '~/libraries/logic-expr';
 import { generateTruthTable, parseLogicExpression } from '~/libraries/logic-expr/expression';
 import { drawImplicants, type DrawImplicantRect } from '~/libraries/logic-expr/render';
 definePageMeta({
@@ -143,13 +178,18 @@ definePageMeta({
 const canvas = ref<HTMLCanvasElement | null>(null);
 const kmapTables = ref<HTMLTableElement | null>(null);
 const formErrors = reactive({} as any);
+const timing = reactive({} as any);
 const form = reactive({
+  factorCount: 1,
   varCount: 4,
   onlyEssential: false,
   mode: 'sop' as 'sop' | 'pos',
-  hideLatex: false,
+  showLatex: false,
   expression: 'm(1,3,4,9,11,13,15)+d(5,6,7,14)',
   logicExpr: '',
+  shouldFactor: false,
+  showTiming: false,
+  factors: undefined as number | undefined,
 });
 const vars = ref<string[]>([]);
 function varName(i: number) {
@@ -211,15 +251,39 @@ const kmap = computed<KMap>(() => {
 });
 const cover = computedAsync<Cover>(async () => {
   try {
+    timing['implicants'] = performance.now();
     formErrors['implicants'] = null;
     let cover = solveKMap(kmap.value, truthTable.value, form.mode === 'sop' ? '1' : '0');
-    if (form.onlyEssential) cover = optimizeCover(cover);
+    timing['implicants'] = performance.now() - timing['implicants'];
+    if (form.onlyEssential) {
+      timing['prune'] = performance.now();
+      cover = optimizeCover(cover);
+      timing['prune'] = performance.now() - timing['prune'];
+    }
     return cover;
   } catch (e: any) {
     formErrors['implicants'] = e.message;
     return createCover([], [], [], 'sop');
   }
 }, createCover([], [], [], 'sop'));
+const factorized = computedAsync<FactorizedCover | undefined>(async () => {
+  try {
+    if (!form.shouldFactor) return undefined;
+    timing['factorized'] = performance.now();
+    formErrors['factorized'] = null;
+    const factorized = optimizeFactorized(truthTable.value, form.factorCount);
+    timing['factorized'] = performance.now() - timing['factorized'];
+    return factorized;
+  } catch (e: any) {
+    formErrors['factorized'] = e.message;
+    return undefined;
+  }
+});
+const factorCombs = computed<number[][]>(() => {
+  if (!factorized.value?.costsMap) return [] as number[][];
+  return Array.from(factorized.value.costsMap.entries())
+    .sort((a, b) => a[1].cost - b[1].cost).map(([factors]) => factors);
+});
 const implicantsRects = ref<DrawImplicantRect[]>([]);
 watch(cover, (cover) => {
   try {
@@ -229,36 +293,41 @@ watch(cover, (cover) => {
   }
   setTimeout(() => {
     try {
+      timing['implicantsRects'] = performance.now();
       formErrors['implicantsRects'] = null;
       implicantsRects.value = drawImplicants(kmapTables.value!.children, kmap.value.width, kmap.value.height, cover.implicants
         .filter((_, i) => cover.included[i]));
+      timing['implicantsRects'] = performance.now() - timing['implicantsRects'];
     } catch (e: any) {
       formErrors['implicantsRects'] = e.message;
     }
   }, 50);
 }, { immediate: true });
-const implicantKatex = computed(() => {
-  const imps = cover.value.implicants.filter((_, i) => cover.value.included[i]);
-  let latex;
-  const T = form.mode === 'sop' ? '1' : '0';
-  const aT = form.mode === 'sop' ? '0' : '1';
-  if (imps.length === 0) latex = form.mode === 'sop' ? '0' : '1';
-  else if (imps.length === 1 && imps[0].bits.every(b => b === 'x')) latex = form.mode === 'sop' ? '1' : '0';
-  else latex = imps.map((imp, i) => {
-    const term = imp.bits.map((b, i) => b === aT ? `\\bar{${varName(i)}}` : b === T ? varName(i) : '')
-      .filter(i => i)
-      .join(form.mode === 'sop' ? '' : '+');
-    const end = (i + 1) % 3 === 0 ? '\\\\\\\n&' : '';
-    if (form.mode === 'sop') return term + end;
-    else return `(${term})` + end;
-  }).join(form.mode === 'sop' ? ' + ' : ' ');
-  latex = "f&=" + latex;
-  latex = `\\begin{align*}\n${latex}\n\\end{align*}`;
-  return katex.renderToString(latex, {
-    displayMode: true,
-    output: 'htmlAndMathml',
-    throwOnError: false
-  }) + (form.hideLatex ? '' : "<span class='block font-mono text-xs max-w-4xl'>$$<br/>" + latex + "<br/>$$</span>");
+const implicantKatex = computed<string>(() => {
+  try {
+    timing['implicantKatex'] = performance.now();
+    formErrors['latex'] = null;
+    let latex = coverToLatex(cover.value, form.mode, varName);
+    latex = "f&=" + latex;
+    if (form.shouldFactor && factorized.value) {
+      if (form.factors !== undefined) {
+        const fcover = factorized.value.costsMap?.get(factorCombs.value[form.factors]);
+        if (!fcover) latex += `\n\\\\\\text{Factorization not found}`;
+        else latex += `\n\\\\${factorizedToLatex(fcover, varName, 'f')}`;
+      } else latex += `\n\\\\${factorizedToLatex(factorized.value, varName, 'f')}`;
+    }
+    latex = `\\begin{align*}\n${latex}\n\\end{align*}`;
+    const html = katex.renderToString(latex, {
+      displayMode: true,
+      output: 'htmlAndMathml',
+      throwOnError: false
+    }) + (form.showLatex ? "<span class='block font-mono text-xs max-w-4xl'>$$<br/>" + latex + "<br/>$$</span>" : '');
+    timing['implicantKatex'] = performance.now() - timing['implicantKatex'];
+    return html;
+  } catch (e: any) {
+    formErrors['latex'] = e.message;
+    return '\\text{' + e.message + '}';
+  }
 });
 //m(0,3,4,7,9,10,12,15)+d(6)
 //m(0,1,2,5,6,7,9,10,11,12,13,14,17,18,19,21,22,23,26,28,29,30)
