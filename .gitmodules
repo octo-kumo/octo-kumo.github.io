@@ -9,4 +9,7 @@
 	url = https://github.com/octo-kumo/htb-writeups.git
 [submodule "libraries/vue-circuits"]
 	path = libraries/vue-circuits
-	url = git@github.com:octo-kumo/vue-circuits.git
+	url = https://github.com/octo-kumo/vue-circuits.git
+[submodule "content/blog"]
+	path = content/blog
+	url = https://github.com/octo-kumo/blog.git
