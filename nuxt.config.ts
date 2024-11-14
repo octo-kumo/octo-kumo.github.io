@@ -31,13 +31,13 @@ export default defineNuxtConfig({
     },
     css: ['~/assets/scss/index.scss'],
     nitro: {
-        preset: process.env.NITRO_TARGET ?? "static",
+        preset: process.env.NITRO_TARGET ?? "node",
         firebase: {
             gen: 2,
             nodeVersion: '20'
         },
         prerender: {
-            routes: ['/', '/sitemap.xml']
+            routes: process.env.NODE_ENV === 'production' ? ['/', '/sitemap.xml'] : []
         },
         esbuild: {
             options: {
@@ -54,9 +54,8 @@ export default defineNuxtConfig({
     },
 
     modules: [
-        '@vueuse/nuxt', // '@pinia/nuxt',
-        '@unocss/nuxt', // 'v-shared-element/nuxt',
-        // '@pinia-plugin-persistedstate/nuxt',
+        '@vueuse/nuxt',
+        '@unocss/nuxt',
         '@element-plus/nuxt', '@nuxtjs/color-mode', '@vite-pwa/nuxt', "@nuxtjs/sitemap", "@nuxt/content", // "@nuxt/image",
         // "nuxt-security",
         // '@nuxtjs/robots',
@@ -120,6 +119,7 @@ export default defineNuxtConfig({
     //     },
     // },
     content: {
+        ignores: ['^(?!.*\\.md$).+$'],
         sources: {
             content: {
                 driver: 'fs',

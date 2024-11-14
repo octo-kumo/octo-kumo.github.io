@@ -20,7 +20,7 @@
                 <span v-html="highlight(doc.description, matches?.find(m => m.key === 'description')?.indices)"></span>
             </el-text>
             <article-tags :article="doc"
-                :custom-tag-html="(tag, i) => highlight(tag, matches?.find(m => m.key === 'tags' && m.refIndex === i)?.indices) ?? ''" />
+                :custom-tag-html="(tag, i) => (highlight(tag, matches?.find(m => m.key === 'tags' && m.refIndex === i)?.indices) ?? '')" />
             <span class="el-timeline-item__timestamp is-bottom font-mono" v-text="displayDocDates(doc)" />
         </el-timeline-item>
         <template v-if="docsFiltered.length === 0">

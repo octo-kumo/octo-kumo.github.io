@@ -7,6 +7,7 @@
   <!-- <client-only><pwa-prompt /></client-only> -->
 </template>
 <script setup lang="ts">
+import "@/assets/scss/index.scss";
 const route = useRoute();
 if (!route.meta.customHead) useHead({
   title: route.meta.title ?? route.name,
@@ -20,6 +21,4 @@ if (!route.meta.disableSEO) useSeoMeta({
   ...(route.meta.image ? { ogImage: route.meta.image } : {}) as any,
 });
 </script>
-<style lang="scss">
-@import "@/assets/scss/index.scss";
-</style>
+<style lang="scss"></style>
