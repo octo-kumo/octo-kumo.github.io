@@ -32,7 +32,6 @@
         "@vueuse/nuxt": "^11.2.0",
         "imagemin": "^9.0.0",
         "imagemin-webp": "^8.0.0",
-        "nuxi": "3.15.0",
         "nuxt": "^3.14.159",
         "nuxt-og-image": "3.0.8",
         "nuxt-umami": "^3.0.2",
@@ -40,6 +39,7 @@
         "typescript": "^5.6.3"
     },
     "dependencies": {
+        "nuxi": "3.15.0",
         "@element-plus/icons-vue": "^2.3.1",
         "@formkit/auto-animate": "^0.8.2",
         "@giscus/vue": "^3.0.0",
