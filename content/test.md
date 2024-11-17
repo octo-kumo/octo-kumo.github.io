@@ -1,6 +1,6 @@
 ---
 created: 2024-06-06T21:14
-updated: 2024-08-05T00:31
+updated: 2024-11-16T23:09
 title: Markdown Test
 ---
 
@@ -249,3 +249,12 @@ $$
 \rho&=\frac{1}{\kappa}
 \end{align}
 $$
+
+### Spoiler
+
+||Spoiler||
+
+Inside other text ||can't see me||.
+
+||Owo?
+Is this spoiler?||

@@ -131,17 +131,25 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         {{ guessArticleTitle(doc) }}
       </span>
       <article-tags :article="docs?.find(d => d._path === path) ?? doc" />
-      <el-tooltip placement="bottom-start" effect="light" :hide-after="0">
-        <template #content><span class="font-mono">
-            <span class="opacity-50">Created</span> {{ doc.created }} <br />
-            <span class="opacity-50">Updated</span> {{ doc.updated }}
-          </span></template>
-        <el-text size="small" class="font-mono">
-          <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)" />
-        </el-text>
-      </el-tooltip>
+      <el-text size="small" class="block font-mono">
+        <hover-text class="block">
+          <template #default>
+            <span v-shared="getTransitionName(doc, 'dates')" v-text="displayDocDates(doc)" />
+          </template>
+          <template #hover><span class="font-mono">
+              <span class="opacity-50">Created</span> {{ doc.created }}&nbsp;&nbsp;
+              <span class="opacity-50">Updated</span> {{ doc.updated }}
+            </span></template>
+        </hover-text>
+      </el-text>
+      <el-text size="small" class="block font-mono">
+        <hover-text>
+          <template #default>{{ doc.readingTime.text }}</template>
+          <template #hover>{{ doc.readingTime.words + ' words' }}</template>
+        </hover-text>
+      </el-text>
 
-      <ContentRenderer :value="doc" class="content mt-8">
+      <ContentRenderer :value="doc" class="content mt-8" tag="section">
         <template #empty>
           <!-- <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80" /> -->
         </template>

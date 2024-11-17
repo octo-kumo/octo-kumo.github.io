@@ -5,7 +5,6 @@
 import { resolve } from "node:url";
 import { readFileSync } from 'node:fs';
 import webmanifest from "./webmanifest";
-
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
 export default defineNuxtConfig({
     ssr: true,
@@ -26,7 +25,7 @@ export default defineNuxtConfig({
     },
     vue: {
         compilerOptions: {
-            isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect"].includes(tag),
+            isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect", "Path"].includes(tag),
         },
     },
     css: ['~/assets/scss/index.scss'],
@@ -68,7 +67,6 @@ export default defineNuxtConfig({
     umami: {
         host: "https://anal.yun.ng",
         id: 'fd089b30-9952-41b0-a817-fce38fefae17',
-        version: 2,
         customEndpoint: "/api/send"
     },
     pwa: {
@@ -130,8 +128,8 @@ export default defineNuxtConfig({
         },
         markdown: {
             anchorLinks: false,
-            remarkPlugins: ['remark-math'],
-            rehypePlugins: ['rehype-katex']
+            remarkPlugins: ['remark-math', 'remark-reading-time'],
+            rehypePlugins: ['rehype-katex', 'rehype-preset-minify']
         },
         highlight: {
             langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust',
@@ -144,7 +142,7 @@ export default defineNuxtConfig({
             }
         },
         navigation: {
-            fields: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'rank', 'team']
+            fields: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'rank', 'team', 'readingTime']
         }
         // experimental: {
         //     clientDB: true

@@ -9,6 +9,9 @@
     <div class="px-3">
       <slot />
     </div>
+    <el-footer>
+      <kumo-footer />
+    </el-footer>
   </el-main>
 </template>
 <script setup lang="ts">
