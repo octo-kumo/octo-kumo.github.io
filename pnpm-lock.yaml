@@ -95,6 +95,9 @@ importers:
       nuxt-umami:
         specifier: ^3.0.2
         version: 3.0.2(magicast@0.3.5)(rollup@4.26.0)(webpack-sources@3.2.3)
+      nuxt-vitalizer:
+        specifier: ^0.10.0
+        version: 0.10.0(magicast@0.3.5)(rollup@4.26.0)(webpack-sources@3.2.3)
       p-queue:
         specifier: ^8.0.1
         version: 8.0.1
@@ -5020,6 +5023,9 @@ packages:
 
   nuxt-umami@3.0.2:
     resolution: {integrity: sha512-Sd2QptIWgC1zZ3dDy6GcpcYrVBGpnkDV/i2NN8gA0/fJPs+HAmdS1exZTn0UyS+BvbEYXJ7ZRn9dfoObWnUcwg==}
+
+  nuxt-vitalizer@0.10.0:
+    resolution: {integrity: sha512-z5leudr8wD2msKl7ETLGUICSOVoXVLMA8bAeRuWN4/UuYl7g7G2k7Idzl1z8ft/VmoYZ9ld3J0/2UZOZuxxzog==}
 
   nuxt@3.14.159:
     resolution: {integrity: sha512-1xz6AfFkun+byUIkBNX3/CTOTShPRFJe0y9HqWZX2aV9xdoz5ByeaHZfktokhOOSbvabjDyzkTbbHh3V673qHw==}
@@ -13138,6 +13144,17 @@ snapshots:
     dependencies:
       '@nuxt/kit': 3.14.159(magicast@0.3.5)(rollup@4.26.0)(webpack-sources@3.2.3)
       request-ip: 3.3.0
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
+      - webpack-sources
+
+  nuxt-vitalizer@0.10.0(magicast@0.3.5)(rollup@4.26.0)(webpack-sources@3.2.3):
+    dependencies:
+      '@nuxt/kit': 3.14.159(magicast@0.3.5)(rollup@4.26.0)(webpack-sources@3.2.3)
+      defu: 6.1.4
+      knitwork: 1.1.0
     transitivePeerDependencies:
       - magicast
       - rollup

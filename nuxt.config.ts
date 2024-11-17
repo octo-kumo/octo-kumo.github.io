@@ -20,6 +20,9 @@ export default defineNuxtConfig({
             meta: [
                 { name: 'viewport', content: 'width=device-width, initial-scale=1' },
             ],
+            htmlAttrs: {
+                lang: 'en',
+            },
             link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
         }
     },
@@ -61,9 +64,13 @@ export default defineNuxtConfig({
         // '@nuxtjs/robots',
         // "nuxt-booster",
         '@formkit/auto-animate/nuxt', "nuxt-og-image",
-        'nuxt-umami'
+        'nuxt-umami',
+        'nuxt-vitalizer'
         // "nuxt-delay-hydration"
     ],
+    vitalizer: {
+        disableStylesheets: 'entry'
+    },
     umami: {
         host: "https://anal.yun.ng",
         id: 'fd089b30-9952-41b0-a817-fce38fefae17',

@@ -53,6 +53,7 @@
         "nuxt": "^3.14.159",
         "nuxt-og-image": "3.0.8",
         "nuxt-umami": "^3.0.2",
+        "nuxt-vitalizer": "^0.10.0",
         "p-queue": "^8.0.1",
         "pngjs": "^7.0.0",
         "rehype-katex": "^7.0.1",

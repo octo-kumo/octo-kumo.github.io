@@ -59,6 +59,10 @@ defineOgImageComponent('Post', {
 });
 useContentHead(doc as Ref<ParsedContent>);
 useSeoMeta({
+  title: () => guessArticleTitle(doc?.value) ?? "Content",
+  ogTitle: () => guessArticleTitle(doc?.value) ?? "Content",
+  description: () => doc?.value?.description,
+  ogDescription: () => doc?.value?.description,
   articleModifiedTime: () => new Date(doc?.value?.updated ?? 0).toISOString()
 });
 definePageMeta({
@@ -126,10 +130,12 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         <table-of-contents v-for="child in TOC" :link="child">
         </table-of-contents>
       </el-anchor>
-      <span class="mb-2 text-4xl mt-4 block font-bold font-mono article-title"
-        v-shared="getTransitionName(doc, 'title')">
-        {{ guessArticleTitle(doc) }}
-      </span>
+      <h1>
+        <span class="mb-2 text-4xl mt-4 block font-bold font-mono article-title"
+          v-shared="getTransitionName(doc, 'title')">
+          {{ guessArticleTitle(doc) }}
+        </span>
+      </h1>
       <article-tags :article="docs?.find(d => d._path === path) ?? doc" />
       <el-text size="small" class="block font-mono">
         <hover-text class="block">
