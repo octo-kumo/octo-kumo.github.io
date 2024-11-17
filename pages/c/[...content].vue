@@ -170,8 +170,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
   <template v-if="docs && docs.length > 0">
     <el-tree class="text-base! content-page-sections mb-20 print:hidden" :current-node-key="path" node-key="_path"
       ref="treeRef" :default-expand-all="false" v-shared="'content-tree-nav'" highlight-current auto-expand-parent
-      :filter-node-method="filterTreeNode" :default-expanded-keys="[path, '/ctf']" :data="navigation as any"
-      :props="treeProps">
+      :filter-node-method="filterTreeNode" :default-expanded-keys="[path]" :data="navigation as any" :props="treeProps">
       <template #default="{ node, data }">
         <span class="flex justify-between flex-1"><!--v-shared="getTransitionName(data, 'tree-node')"-->
           <kumo-link :id="'content_' + hashCode(data._path).toString(16).padStart(8, '0')" :to="'/c' + data._path"
@@ -235,13 +234,13 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
     /* opacity: 0.85; */
   }
 
-  ul li::marker {
+  ul li:not(.el-timeline-item)::marker {
     @apply font-mono;
     content: '- ';
     font-size: 75%;
   }
 
-  ol li::marker {
+  ol li:not(.el-timeline-item)::marker {
     @apply font-mono;
     font-size: 75%;
   }

@@ -6,6 +6,7 @@ withDefaults(defineProps<{
   idPrefix?: string,
   hideCat?: boolean,
   noSharedElement?: boolean,
+  ignore?: string[],
   customTagHtml?: (tag: string, index: number) => string,
   short?: boolean
 }>(), {
@@ -49,7 +50,7 @@ withDefaults(defineProps<{
       </el-tag>
     </template>
     <el-tag size="small" v-if="getCtfCategory(article) && !hideCat">{{ getCtfCategory(article) }}</el-tag>
-    <el-tag size="small" v-for="(tag, i) in (article.tags ?? [])">
+    <el-tag size="small" v-for="(tag, i) in (article.tags ?? []).filter((c: any) => !ignore?.includes(c))">
       <span v-html="customTagHtml(tag, i)"></span>
     </el-tag>
   </div>
