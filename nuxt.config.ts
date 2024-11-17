@@ -37,6 +37,7 @@ export default defineNuxtConfig({
             nodeVersion: '20'
         },
         prerender: {
+            autoSubfolderIndex: false,
             routes: process.env.NODE_ENV === 'production' ? ['/', '/sitemap.xml'] : []
         },
         esbuild: {
