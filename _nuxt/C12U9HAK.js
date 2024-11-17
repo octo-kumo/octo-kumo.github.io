@@ -1,1 +1,0 @@
-import{_ as r}from"./DnNeTkSJ.js";import{d as a,h as e,a as i}from"./CyRl-7lx.js";const d=t=>{const n=i(t);return a({inheritAttrs:!1,setup(s,{attrs:o}){return()=>e("div",[e(r,void 0,{default:()=>e(n,o)})])}})};export{d as createClientPage};
