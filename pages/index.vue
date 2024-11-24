@@ -54,8 +54,8 @@ const contentPage: RouteRecord = {
 } as RouteRecord;
 
 definePageMeta({
-  title: "Index",
-  description: '云\'s personal website',
+  title: "Yun's Website",
+  description: "Yun's Personal website : Blog / CTF Writeups / Projects",
 });
 </script>
 <style lang="scss">
