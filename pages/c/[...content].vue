@@ -50,7 +50,7 @@ const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedCon
   ] : [];
   return { prev, next };
 })
-const isLeaf = computed(() => !docs.value?.some(d => d._path !== path && d._path?.startsWith(path)));
+// const isLeaf = computed(() => !docs.value?.some(d => d._path !== path && d._path?.startsWith(path)));
 
 defineOgImageComponent('Post', {
   doc: doc.value
@@ -177,7 +177,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         </kumo-link>
       </div>
     </article>
-    <lazy-comments class="print:hidden content-page-sections py-1" v-if="isLeaf" />
+    <lazy-comments class="print:hidden content-page-sections py-1" v-if="doc" />
     <el-divider v-shared="'content-tree-sep'" class="print:hidden mx--3!" style="width: calc(100% + 1.5rem)" />
     <lazy-writeup-statistics class="content-page-sections mb-1" v-if="(path === '/ctf') && docs" :docs="docs"
       v-model="statsControl" />
