@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TableOfContents from "~/components/TableOfContents.vue";
+import "katex/dist/katex.min.css";
 import type Node from "element-plus/es/components/tree/src/model/node";
 import type { FilterNodeMethodFunction, TreeNodeData, TreeOptionProps } from "element-plus/es/components/tree/src/tree.type";
 import type { NavItem, ParsedContent, TocLink } from "@nuxt/content";
@@ -296,10 +297,6 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
 
   &>h4::before {
     content: '###';
-  }
-
-  .katex-html {
-    display: none;
   }
 
   section.footnotes {

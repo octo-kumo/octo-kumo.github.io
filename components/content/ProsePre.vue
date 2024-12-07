@@ -123,7 +123,7 @@ pre {
     font-size: 12px;
     font-weight: bold;
     position: absolute;
-    right: 0.5em;
+    left: 1em;
     top: 0.3em;
   }
 
@@ -135,7 +135,8 @@ pre {
     content: '⚑ ' attr(data-lang);
   }
 
-  &[data-file] {
+  &[data-file],
+  &[data-lang] {
     padding-top: 25px;
   }
 
@@ -144,7 +145,7 @@ pre {
     font-size: 12px;
     font-weight: bold;
     position: absolute;
-    left: 1em;
+    right: 1em;
     top: 0.3em;
     border-bottom: solid 1px var(--el-border-color);
   }

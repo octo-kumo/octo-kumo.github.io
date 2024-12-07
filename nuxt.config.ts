@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     },
     vue: {
         compilerOptions: {
-            isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect", "Path"].includes(tag),
+            isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect", "Path", "Annotation"].includes(tag),
         },
     },
     css: ['~/assets/scss/index.scss'],
@@ -136,7 +136,12 @@ export default defineNuxtConfig({
         markdown: {
             anchorLinks: false,
             remarkPlugins: ['remark-reading-time', 'remark-math'],
-            rehypePlugins: ['rehype-preset-minify', 'rehype-katex']
+            rehypePlugins: {
+                'rehype-katex': {
+                    output: 'html'
+                },
+                'rehype-preset-minify': {},
+            }
         },
         highlight: {
             langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust',

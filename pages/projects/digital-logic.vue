@@ -118,7 +118,7 @@
           <el-tag type="danger">Cost: {{ cover.cost }}</el-tag>
           <el-tag type="danger" v-if="factorized">Cost (sum of factors): {{
             form.factors ? factorized.costsMap?.get(factorCombs[form.factors])?.cost : factorized.cost
-          }}</el-tag>
+            }}</el-tag>
         </div>
         <div class="implicants-katex" v-html="implicantKatex">
         </div>
@@ -166,7 +166,7 @@
 
 <script lang="ts" setup>
 import katex from 'katex';
-import 'katex/dist/katex.css';
+import 'katex/dist/katex.min.css';
 import { createCover, kMap, optimizeCover, solveKMap, coverToLatex, SoP, optimizeFactorized, factorizedToLatex, type FactorizedCover, type Bit, type Cover, type KMap, type TruthTable } from '~/libraries/logic-expr';
 import { generateTruthTable, parseLogicExpression } from '~/libraries/logic-expr/expression';
 import { drawImplicants, type DrawImplicantRect } from '~/libraries/logic-expr/render';
