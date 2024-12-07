@@ -135,8 +135,8 @@ export default defineNuxtConfig({
         },
         markdown: {
             anchorLinks: false,
-            remarkPlugins: ['remark-math', 'remark-reading-time'],
-            rehypePlugins: ['rehype-katex', 'rehype-preset-minify']
+            remarkPlugins: ['remark-reading-time', 'remark-math'],
+            rehypePlugins: ['rehype-preset-minify', 'rehype-katex']
         },
         highlight: {
             langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust',
