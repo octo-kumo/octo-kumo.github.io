@@ -1,4 +1,4 @@
-import type {Challenge} from "assets/ctfs/index";
+import type { Challenge } from "assets/ctfs/index";
 
 export default <Challenge>{
     name: "Simple Steg",
@@ -11,7 +11,7 @@ I guess the anime girl looks fine.
 
 Anyways as I was solving it, I encountered a password and couldn't crack it, it shouldn't be long though.
 I also don't think anything other than letters are involved...`,
-    diff: "simple",
+    diff: "easy",
     tags: ['forensics'],
-    files: [{url: "https://res.cloudinary.com/kumonochisanaka/image/upload/v1721145689/image.jpg", name: "anime.jpg"}]
+    files: [{ url: "https://res.cloudinary.com/kumonochisanaka/image/upload/v1721145689/image.jpg", name: "anime.jpg" }]
 }
