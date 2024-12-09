@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {saveAs} from "~/libraries/file-saver";
-import type {Ref} from "@vue/reactivity";
-import type {PNG as IPNG} from "pngjs/browser";
+import { saveAs } from "~/libraries/file-saver";
+import type { Ref } from "@vue/reactivity";
+import type { PNG as IPNG } from "pngjs/browser";
 import type IJSZIP from "jszip";
 
 definePageMeta({
@@ -19,11 +19,11 @@ const errors: Ref<Error[]> = ref([]);
 const loadings: Ref<boolean[]> = ref([]);
 const initLoaded: Ref<boolean> = ref(true);
 const minTransparency = ref(255);
-const subWidths = computed(() => pngs.value.map(({width}, i) => computed({
+const subWidths = computed(() => pngs.value.map(({ width }, i) => computed({
   get: () => width / cols.value[i],
   set: newValue => cols.value[i] = width / newValue
 })));
-const subHeights = computed(() => pngs.value.map(({height}, i) => computed({
+const subHeights = computed(() => pngs.value.map(({ height }, i) => computed({
   get: () => height / rows.value[i],
   set: newValue => rows.value[i] = height / newValue
 })));
@@ -47,8 +47,10 @@ function gcd(a: number, b: number) {
 
 async function loadLibraries() {
   if (PNG) return;
+  if (!import.meta.browser) return;
+  if (import.meta.prerender) return;
   PNG = (await import("pngjs/browser")).PNG;
-  JSZip = (await import("jszip"));
+  JSZip = (await import("jszip")) as any as IJSZIP;
 }
 
 async function onFilesChange() {
@@ -60,12 +62,12 @@ async function onFilesChange() {
   for (let i = 0; i < files.value.length; i++) {
     loadings.value[i] = true;
     const buf = files.value[i].raw.type === "image/png" ?
-        await files.value[i].raw.arrayBuffer() :
-        await convertFile(files.value[i].raw);
+      await files.value[i].raw.arrayBuffer() :
+      await convertFile(files.value[i].raw);
     try {
-      await new Promise((resolve, reject) => new PNG({filterType: 4}).parse(buf, async (error: Error, png: IPNG) => {
+      await new Promise((resolve, reject) => new PNG({ filterType: 4 }).parse(buf, async (error: Error, png: IPNG) => {
         if (!png) return reject(error);
-        const {width, height} = pngs.value[i] = png;
+        const { width, height } = pngs.value[i] = png;
         const g = gcd(width, height);
         cols.value[i] = Math.floor(width / g);
         rows.value[i] = Math.floor(height / g);
@@ -84,7 +86,7 @@ async function onFilesChange() {
   initLoaded.value = true;
 }
 
-watch(files, onFilesChange, {deep: true});
+watch(files, onFilesChange, { deep: true });
 
 function convertFile(file: File): Promise<ArrayBuffer> {
   return new Promise((resolve, reject) => {
@@ -123,7 +125,7 @@ async function crop_all() {
 async function crop_index(index: number) {
   await loadLibraries();
   const file = files.value[index].raw;
-  const {width, height, data} = pngs.value[index];
+  const { width, height, data } = pngs.value[index];
   const subImageWidth = width / cols.value[index];
   const subImageHeight = height / rows.value[index];
   const zip = new JSZip();
@@ -133,7 +135,7 @@ async function crop_index(index: number) {
       const startY = Math.floor(row * subImageHeight);
       if (width - startX < subImageWidth || height - startY < subImageHeight) continue;
 
-      const subImage = new PNG({filterType: 4, width: subImageWidth, height: subImageHeight});
+      const subImage = new PNG({ filterType: 4, width: subImageWidth, height: subImageHeight });
       let maxTr = 0;
       for (let y = 0; y < subImageHeight; y++) for (let x = 0; x < subImageWidth; x++) {
         const sourceIndex = ((startY + y) * width + startX + x) * 4;
@@ -149,11 +151,11 @@ async function crop_index(index: number) {
       if (minTransparency.value > maxTr) continue;
 
       zip.file(format.value.replace("{name}", file.name)
-          .replace("{x}", String(col))
-          .replace("{y}", String(row)) + ".png", new Blob([PNG.sync.write(subImage)]), {binary: true});
+        .replace("{x}", String(col))
+        .replace("{y}", String(row)) + ".png", new Blob([PNG.sync.write(subImage)]), { binary: true });
     }
   }
-  zip.generateAsync({type: 'blob'}).then(blob => saveAs(blob, `${file.name}.zip`));
+  zip.generateAsync({ type: 'blob' }).then(blob => saveAs(blob, `${file.name}.zip`));
 }
 </script>
 
@@ -169,13 +171,13 @@ async function crop_index(index: number) {
         discarded, you can also discard empty grids.
       </p>
       <p><b>
-        Everything happens in your browser, nothing is uploaded to anywhere.
-      </b></p>
+          Everything happens in your browser, nothing is uploaded to anywhere.
+        </b></p>
       <p><b>
-        You may run out of memory if the images are too large!
-      </b></p>
+          You may run out of memory if the images are too large!
+        </b></p>
     </el-card>
-    <el-divider/>
+    <el-divider />
     <el-card>
       <el-row :gutter="5" class="space-y-2">
         <el-col :cols="24">
@@ -195,10 +197,10 @@ async function crop_index(index: number) {
           </el-input>
         </el-col>
         <el-col :cols="24" :md="8">
-          <el-input v-model="minTransparency" placeholder="Empty Item Elimination (max alpha)"
-                    type="number" :min="0" :max="255">
+          <el-input v-model="minTransparency" placeholder="Empty Item Elimination (max alpha)" type="number" :min="0"
+            :max="255">
             <template #suffix>≤ keep</template>
-            <template #prefix>discard <</template>
+            <template #prefix>discard << /template>
           </el-input>
         </el-col>
         <el-col :cols="24" :md="8">
@@ -208,33 +210,26 @@ async function crop_index(index: number) {
         </el-col>
       </el-row>
     </el-card>
-    <el-divider/>
+    <el-divider />
     <el-row :gutter="10">
-      <el-col :cols="24" :md="8" class="mb-2" v-for="(f,i) in files">
+      <el-col :cols="24" :md="8" class="mb-2" v-for="(f, i) in files">
         <el-card v-loading="loadings[i]" shadow="hover">
-          <el-image
-              :src="urls[i]"
-              style="height: 200px;width: 100%;"
-              fit="cover" lazy
-          ></el-image>
+          <el-image :src="urls[i]" style="height: 200px;width: 100%;" fit="cover" lazy></el-image>
           <template #header>
             {{ f.name }}
           </template>
 
           <div v-if="pngs[i]" class="flex gap-2">
-            <el-tag type="primary"
-                    v-text="pngs[i]?.width + '×' + pngs[i]?.height"></el-tag>
-            <el-tag type="primary"
-                    v-text="f.raw.type.replace('image/','')"></el-tag>
-            <el-tag type="info"
-                    v-text="displayFilesize(f.size, true)"></el-tag>
+            <el-tag type="primary" v-text="pngs[i]?.width + '×' + pngs[i]?.height"></el-tag>
+            <el-tag type="primary" v-text="f.raw.type.replace('image/', '')"></el-tag>
+            <el-tag type="info" v-text="displayFilesize(f.size, true)"></el-tag>
           </div>
           <el-text v-if="errors[i]">
             {{ errors[i].message }}
           </el-text>
 
-          <template #footer v-if="!isNaN(cols[i])&&!isNaN(rows[i])">
-            <div class="flex gap-4 mb-2" v-if="subWidths[i]&&subHeights[i]">
+          <template #footer v-if="!isNaN(cols[i]) && !isNaN(rows[i])">
+            <div class="flex gap-4 mb-2" v-if="subWidths[i] && subHeights[i]">
               <el-input type="number" v-model="subWidths[i].value"></el-input>
               <el-input type="number" v-model="subHeights[i].value"></el-input>
             </div>
