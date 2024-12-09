@@ -200,7 +200,7 @@ async function crop_index(index: number) {
           <el-input v-model="minTransparency" placeholder="Empty Item Elimination (max alpha)" type="number" :min="0"
             :max="255">
             <template #suffix>≤ keep</template>
-            <template #prefix>discard << /template>
+            <template #prefix>discard </template>
           </el-input>
         </el-col>
         <el-col :cols="24" :md="8">
