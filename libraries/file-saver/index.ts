@@ -24,17 +24,17 @@ const _global = typeof window === 'object' && window.window === window
             : this;
 
 function bom(blob: Blob | string, opts?: FileSaverOptions | boolean) {
-    if (typeof opts === 'undefined') opts = {autoBom: false}
+    if (typeof opts === 'undefined') opts = { autoBom: false }
     else if (typeof opts !== 'object') {
         console.warn('Deprecated: Expected third argument to be a object')
-        opts = {autoBom: !opts}
+        opts = { autoBom: !opts }
     }
     if (typeof blob === 'string') blob = new Blob([blob]);
 
     // prepend BOM for UTF-8 XML and text/* types (including HTML)
     // note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
     if (opts.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
-        return new Blob([String.fromCharCode(0xFEFF), blob], {type: blob.type})
+        return new Blob([String.fromCharCode(0xFEFF), blob], { type: blob.type })
     }
     return blob
 }
@@ -43,7 +43,6 @@ function bom(blob: Blob | string, opts?: FileSaverOptions | boolean) {
 // Detect WebView inside a native macOS app by ruling out all browsers
 // We just need to check for 'Safari' because all other browsers (besides Firefox) include that too
 // https://www.whatismybrowser.com/guides/the-latest-user-agent/macos
-const isMacOSWebView = _global?.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent);
 
 export function saveAs(blob: Blob | string, name: string, opts?: FileSaverOptions) {
     // Namespace is used to prevent conflict w/ Chrome Poper Blocker extension (Issue #561)
