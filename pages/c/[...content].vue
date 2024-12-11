@@ -7,6 +7,7 @@ import type { NavItem, ParsedContent, TocLink } from "@nuxt/content";
 import type { Ref } from "@vue/reactivity";
 import type { ComputedRef } from "vue";
 import type { ElTree } from "element-plus";
+import isContentEmpty from "~/utils/is-content-empty";
 const route = useRoute();
 const path = (route.path.substring(2) || "/")
   .replace(/(?!^)\/$/, ''); // strip trailing slash
@@ -156,7 +157,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         </hover-text>
       </el-text>
 
-      <ContentRenderer :value="doc" class="content mt-8" tag="section">
+      <ContentRenderer :value="doc" class="content mt-8" tag="section" v-if="!isContentEmpty(doc)">
         <template #empty>
           <!-- <el-empty description="No folder note" class="h-32 flex-auto" :image-size="80" /> -->
         </template>
@@ -177,8 +178,9 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
         </kumo-link>
       </div>
     </article>
-    <lazy-comments class="print:hidden content-page-sections py-1" v-if="doc" />
-    <el-divider v-shared="'content-tree-sep'" class="print:hidden mx--3!" style="width: calc(100% + 1.5rem)" />
+    <lazy-comments class="print:hidden content-page-sections py-1" v-if="!isContentEmpty(doc)" />
+    <el-divider v-shared="'content-tree-sep'" class="print:hidden mx--3!" style="width: calc(100% + 1.5rem)"
+      v-if="!isContentEmpty(doc)" />
     <lazy-writeup-statistics class="content-page-sections mb-1" v-if="(path === '/ctf') && docs" :docs="docs"
       v-model="statsControl" />
   </template>
