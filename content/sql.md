@@ -1,6 +1,6 @@
 ---
 created: 2024-06-09T16:58
-updated: 2024-07-07T22:05
+updated: 2024-12-15T17:31
 title: SQL Database Version Check Cheat Sheet
 ---
 
@@ -21,3 +21,4 @@ SELECT service_level, fixpack_num FROM TABLE (sysproc.env_get_inst_info());
 SELECT DBINFO('version', 'full');
 -- Sybase ASE
 SELECT @@version;
+```
