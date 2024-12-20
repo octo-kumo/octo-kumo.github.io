@@ -6,6 +6,7 @@ import { resolve } from "node:url";
 import { readFileSync } from 'node:fs';
 import webmanifest from "./webmanifest";
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
+const PRODUCTION = process.env.NODE_ENV === 'production'
 export default defineNuxtConfig({
     ssr: true,
     site: {
@@ -38,10 +39,10 @@ export default defineNuxtConfig({
             gen: 2,
             nodeVersion: '20'
         },
-        prerender: {
+        prerender: PRODUCTION ? {
             autoSubfolderIndex: false,
-            routes: process.env.NODE_ENV === 'production' ? ['/', '/sitemap.xml'] : []
-        },
+            routes: ['/', '/sitemap.xml']
+        } : undefined,
         esbuild: {
             options: {
                 target: 'esnext',
@@ -63,9 +64,8 @@ export default defineNuxtConfig({
         // "nuxt-security",
         // '@nuxtjs/robots',
         // "nuxt-booster",
-        '@formkit/auto-animate/nuxt', "nuxt-og-image",
-        'nuxt-umami',
-        'nuxt-vitalizer'
+        '@formkit/auto-animate/nuxt',
+        ...(PRODUCTION ? ["nuxt-og-image", 'nuxt-vitalizer', 'nuxt-umami'] : []),
         // "nuxt-delay-hydration"
     ],
     vitalizer: {
@@ -198,7 +198,7 @@ export default defineNuxtConfig({
 
     experimental: {
         viewTransition: true,
-        payloadExtraction: true,
+        payloadExtraction: PRODUCTION,
         sharedPrerenderData: true
     },
     // future: {

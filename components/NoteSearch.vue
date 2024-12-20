@@ -1,5 +1,21 @@
 <template>
-    <el-input v-model="search" placeholder="Fuzzy search!" :prefix-icon="ElIconSearch" />
+    <el-input v-model="search" placeholder="Fuzzy search!" :prefix-icon="ElIconSearch">
+        <template #append>
+            <el-select v-model="searchMode" placeholder="Select" style="width: 115px">
+                <el-option v-for="item in Object.keys(SEARCH_MODES)" :key="item" :label="item" :value="item" />
+            </el-select>
+        </template>
+    </el-input>
+    <div v-if="searchMode === 'Custom'" class="mt-2! flex flex-row gap-2">
+        <el-input-tag v-model="filterTags" placeholder="Filter tags (enter)" clearable />
+        <el-select v-model="typeFilter" multiple collapse-tags placeholder="Type" style="width: 15rem">
+            <el-option v-for="item, i in TYPES" :key="i" :label="item.label" :value="i" />
+        </el-select>
+        <el-button :type="getSortBtnType('points')" :icon="getSortBtnIcon('points')" class="mx-0!"
+            @click="toggleSort('points')">Points</el-button>
+        <el-button :type="getSortBtnType('solves')" :icon="getSortBtnIcon('solves')" class="mx-0!"
+            @click="toggleSort('solves')">Solves</el-button>
+    </div>
     <el-pagination v-model:current-page="currPage" class="justify-center" layout="prev, pager, next"
         :total="docsFiltered.length" :page-size="5" hide-on-single-page />
     <el-timeline class="mt-2!" v-auto-animate>
@@ -24,43 +40,100 @@
             <span class="el-timeline-item__timestamp is-bottom font-mono" v-text="displayDocDates(doc)" />
         </el-timeline-item>
         <template v-if="docsFiltered.length === 0">
-            <el-skeleton v-if="status === 'pending'" />
-            <el-empty v-else />
+            <el-skeleton v-if="docStatus === 'pending'" />
+            <el-empty v-else description="No results found!" />
         </template>
     </el-timeline>
 </template>
 <script lang="ts" setup>
-import Fuse, { type RangeTuple } from 'fuse.js';
-
+import type { NavItem } from '@nuxt/content';
+import Fuse, { type FuseResult, type RangeTuple } from 'fuse.js';
 const currPage = ref(1);
 const search = ref("");
-const { data: alldocs, status } = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
+const filterTags = ref<string[]>();
+const { data: alldocs, status: docStatus } = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
 const docs = computed(() => alldocs.value?.flat?.filter(a => a.created)?.sort((a, b) => -a.created.localeCompare(b.created)));
-const fuse = new Fuse([], {
-    threshold: 0.6,
-    distance: 100,
+
+const customSortKey = ref<'points' | 'solves'>();
+const customSortDir = ref<'asc' | 'desc'>();
+
+function toggleSort(key: 'points' | 'solves') {
+    if (customSortKey.value === key) {
+        customSortDir.value = customSortDir.value === 'desc' ? 'asc' : customSortDir.value === 'asc' ? undefined : 'desc';
+        if (!customSortDir.value) customSortKey.value = undefined;
+    } else {
+        customSortKey.value = key;
+        customSortDir.value = 'desc';
+    }
+}
+const getSortBtnType = (key: 'points' | 'solves') => customSortKey.value !== key ? 'default' : customSortDir.value === 'desc' ? 'primary' : 'danger';
+const getSortBtnIcon = (key: 'points' | 'solves') => customSortKey.value !== key ? ElIconSort : customSortDir.value === 'asc' ? ElIconSortUp : ElIconSortDown;
+
+const SEARCH_KEYS = [{ name: "title", weight: 1 }, { name: "_path", weight: 1 }, { name: "description", weight: 0.8 }, {
+    name: "tags",
+    weight: 1
+}]
+const SEARCH_DEFAULTS = {
     useExtendedSearch: true,
     isCaseSensitive: false,
     shouldSort: true,
     includeScore: true,
     includeMatches: true,
     minMatchCharLength: 2,
-    keys: [{ name: "title", weight: 1 }, { name: "_path", weight: 1 }, { name: "description", weight: 0.8 }, {
-        name: "tags",
-        weight: 1
-    }]
-});
-watch(docs, () => fuse.setCollection((docs.value ?? []) as never[]), { immediate: true });
+    findAllMatches: true,
+    keys: SEARCH_KEYS,
+    distance: 100,
+}
+const SEARCH_MODES = {
+    Fuzzy: {
+        threshold: 0.6,
+        ...SEARCH_DEFAULTS
+    },
+    Exact: {
+        ignoreLocation: true,
+        threshold: 0,
+        ...SEARCH_DEFAULTS
+    },
+    Custom: {
+        threshold: 1,
+        ...SEARCH_DEFAULTS
+    }
+} as const;
 
+const TYPES = [
+    { label: "CTF Events", filter: /^\/ctf\/[^/]+$/ },
+    { label: "CTF Writeups", filter: /^\/ctf\/[^/]+\/[^/]+\/[^/]+$/ },
+    { label: "Blog", filter: /^\/blog\/.+$/ },
+    { label: "HackTheBox", filter: /^\/htb\/.+$/ },
+] as const;
+
+const typeFilter = ref<number[]>([]);
+
+function customFilter(items: FuseResult<NavItem>[]): FuseResult<NavItem>[] {
+    if (searchMode.value !== "Custom") return items;
+    items = items.filter(item => (filterTags.value ?? []).every(tag => item.item?._tags?.includes(tag)));
+    if (typeFilter.value.length) items = items.filter(item => typeFilter.value.some(i => TYPES[i].filter.test(item.item._path)));
+
+    const key = customSortKey.value;
+    if (key) items = items.filter(i => i.item[key]).sort((a, b) => {
+        const aVal = a.item[key];
+        const bVal = b.item[key];
+        if (aVal === bVal) return 0;
+        if (customSortDir.value === 'asc') return aVal > bVal ? 1 : -1;
+        return aVal < bVal ? 1 : -1;
+    });
+    return items;
+}
+
+const searchMode = ref("Fuzzy" as keyof typeof SEARCH_MODES);
+const fuse = computed(() => new Fuse(docs.value ?? [], SEARCH_MODES[searchMode.value]));
+watch(docs, () => fuse.value.setCollection((docs.value ?? []) as never[]), { immediate: true });
 const isSearching = computed(() => search.value.length > 1)
-const docsFiltered = computed(() => isSearching.value ? fuse.search(search.value).filter(e => (e?.score ?? 1) < 0.9) : (docs.value ?? []).map(w => ({
+const docsFiltered = computed(() => customFilter(isSearching.value ? fuse.value.search(search.value).filter(e => (e?.score ?? 1) < 0.9) : (docs.value ?? []).map(w => ({
     item: w,
     matches: null,
     score: null
-})))
-// definePageMeta({
-//   layout: 'clean'
-// });
+} as unknown as FuseResult<NavItem>))));
 function highlight(text?: string, indices?: readonly RangeTuple[]) {
     if (!indices || !text) return text;
     return indices.reduce((str, [start, end]) => {

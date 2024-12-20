@@ -53,7 +53,7 @@ const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedCon
 })
 // const isLeaf = computed(() => !docs.value?.some(d => d._path !== path && d._path?.startsWith(path)));
 
-defineOgImageComponent('Post', {
+if (typeof defineOgImageComponent !== "undefined") defineOgImageComponent('Post', {
   doc: doc.value
 }, {
   width: 800,
