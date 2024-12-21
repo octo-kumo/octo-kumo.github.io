@@ -1,6 +1,6 @@
-import {type Matrix4, Object3D, Vector3} from "three";
-import {loadInstance} from "~/games/civilisation-0/assets";
-import type {AssetName} from "~/games/civilisation-0/types";
+import { type Matrix4, Object3D, Vector3 } from "three";
+import { loadInstance } from "~/games/base/assets";
+import type { AssetName } from "~/games/base/types";
 
 export class GroundObject extends Object3D {
     private _update?: (matrix: Matrix4) => void | undefined;

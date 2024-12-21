@@ -8,7 +8,7 @@
       </template>
       <p>Please use some other web browser that supports webgl</p>
     </el-card>
-    <el-button class="fixed top-0 left-0" tag="a" href="/" type="primary">
+    <el-button class="fixed top-0 left-0" tag="a" href="/" type="primary" link>
       <template #icon>
         <el-icon>
           <el-icon-back></el-icon-back>

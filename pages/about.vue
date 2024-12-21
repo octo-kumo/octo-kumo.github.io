@@ -55,4 +55,9 @@ onMounted(() => {
   fetchCommitHistory();
   setInterval(fetchCommitHistory, 300000);
 });
+
+definePageMeta({
+  title: "About",
+  description: "About Yun, the author of this website.",
+});
 </script>

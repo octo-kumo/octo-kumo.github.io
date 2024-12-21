@@ -1,8 +1,8 @@
-import {TileWorld} from "~/games/civilisation-0/terrain/tileworld";
-import {AllAssets} from "~/games/civilisation-0/types";
-import {loadAsset, textToShape} from "~/games/civilisation-0/assets";
-import {AxesHelper, MeshStandardMaterial, SphereGeometry} from "three";
-import {Mesh} from "three/src/objects/Mesh";
+import { TileWorld } from "~/games/civilisation-0/terrain/tileworld";
+import { AllAssets } from "~/games/base/types";
+import { loadAsset, textToShape } from "~/games/base/assets";
+import { AxesHelper, MeshStandardMaterial, SphereGeometry } from "three";
+import { Mesh } from "three/src/objects/Mesh";
 
 const wideObjs = ['wall', 'siege']
 
@@ -38,7 +38,7 @@ export class DebugWorld extends TileWorld {
 
         for (let m = 0; m < 1; m += 0.1) {
             for (let r = 0; r < 1; r += 0.1) {
-                let mat = new MeshStandardMaterial({metalness: m, roughness: r, color: 0xffffff});
+                let mat = new MeshStandardMaterial({ metalness: m, roughness: r, color: 0xffffff });
                 let geo = new SphereGeometry(0.2, 32, 32);
                 geo.computeVertexNormals();
                 let mesh = new Mesh(geo, mat);

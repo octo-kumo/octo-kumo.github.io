@@ -1,20 +1,20 @@
-import {type GLTF, GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import type {AssetName} from "~/games/civilisation-0/types";
+import { type GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import type { AssetName } from "~/games/base/types";
 import {
     DoubleSide,
     InstancedMesh,
     Material,
     Matrix4,
     MeshBasicMaterial,
+    MeshStandardMaterial,
     ShapeGeometry,
     type Texture,
     TextureLoader,
     Vector3
 } from "three";
-import {Mesh} from "three/src/objects/Mesh";
-import type {Scene} from "three/src/scenes/Scene";
-import {Font, FontLoader} from "three/examples/jsm/loaders/FontLoader";
-import type CSM from "three-csm";
+import { Mesh } from "three/src/objects/Mesh";
+import type { Scene } from "three/src/scenes/Scene";
+import { Font, FontLoader } from "three/examples/jsm/loaders/FontLoader";
 
 const purgatory = new Matrix4();
 purgatory.setPosition(99999, 99999, 99999); // send them to hell
@@ -37,27 +37,20 @@ const objects: {
     [key in AssetName]?: IObject
 } = {};
 let scene: Scene | undefined;
-let csm: CSM | undefined;
 const loader = new GLTFLoader();
 const texture_loader = new TextureLoader();
-const URL_PREFIX = "/projects/assets/c0/"
+const URL_PREFIX = "/projects/assets/"
 
 export function getTexture(name: AssetName) {
     return texture[name] ??= texture_loader.loadAsync(URL_PREFIX + name);
 }
 
-export function setCSM(_csm: CSM) {
-    csm = _csm;
-}
 
-export function csmSetupMaterial(material: Material | Material[]) {
-    // console.log(material)
+export function setupMaterial(material: Material | Material[]) {
     if (material instanceof Material) {
-        // (material as MeshStandardMaterial).metalness = 0;
-        csm?.setupMaterial(material);
+        (material as MeshStandardMaterial).metalness = 0;
     } else if (Array.isArray(material)) material.forEach(m => {
-        // (m as MeshStandardMaterial).metalness = 0;
-        csm?.setupMaterial(m);
+        (m as MeshStandardMaterial).metalness = 0;
     });
 }
 
@@ -74,7 +67,7 @@ export function loadAsset(name: AssetName, rs = false, cs = false) {
                 const _mesh = child as Mesh;
                 _mesh.receiveShadow = rs;
                 _mesh.castShadow = cs;
-                csmSetupMaterial(_mesh.material);
+                setupMaterial(_mesh.material);
             }
         });
         return r;
@@ -85,7 +78,6 @@ async function expandObject(name: AssetName) {
     const oldObject = objects[name];
     const newCap = oldObject?.capacity ? oldObject?.capacity * 2 : 1;
     return (expandingObjectPool[name] ??= {})[newCap] ??= (async function () {
-        // console.log("expanding instanced-mesh", name, "to", newCap);
         const asset = await loadAsset(name);
 
         const newObject: IObject = {
@@ -97,7 +89,7 @@ async function expandObject(name: AssetName) {
         asset.scene.traverse(child => {
             if (child.type === 'Mesh') {
                 const _mesh = child as Mesh;
-                csmSetupMaterial(_mesh.material);
+                setupMaterial(_mesh.material);
                 const mesh = new InstancedMesh(_mesh.geometry, _mesh.material, newCap);
                 const offset = new Vector3();
                 child.getWorldPosition(offset);
@@ -156,7 +148,6 @@ export async function textToShape(text: string, size: number, justify: 'left' | 
         color: color,
         side: DoubleSide
     });
-    csm?.setupMaterial(mat);
 
     const shapes = font.generateShapes(text, size);
     const geometry = new ShapeGeometry(shapes);

@@ -64,7 +64,6 @@
         "sass": "1.83.0",
         "three": "^0.171.0",
         "three-bvh-csg": "^0.0.16",
-        "three-csm": "^4.2.1",
         "vue3-apexcharts": "^1.8.0",
         "vue3-chessboard": "^1.3.3"
     },

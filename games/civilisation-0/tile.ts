@@ -1,6 +1,6 @@
-import {type Matrix4, Object3D, type Vector3} from "three";
-import {loadInstance} from "~/games/civilisation-0/assets";
-import type {AssetName} from "~/games/civilisation-0/types";
+import { type Matrix4, Object3D, type Vector3 } from "three";
+import { loadInstance } from "~/games/base/assets";
+import type { AssetName } from "~/games/base/types";
 
 
 export class Tile extends Object3D {
@@ -8,7 +8,7 @@ export class Tile extends Object3D {
     height = 0;
     tname: AssetName;
 
-    constructor(position: Vector3, name: AssetName = "ground_grass.glb", rotation = 0) {
+    constructor(position: Vector3, name: AssetName = "c0/ground_grass.glb", rotation = 0) {
         super();
         this.tname = name;
         this.position.copy(position);
