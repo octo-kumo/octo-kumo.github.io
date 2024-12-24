@@ -65,6 +65,8 @@ export function loadAsset(name: AssetName, rs = false, cs = false) {
         r.scene.traverse(child => {
             if (child.type === 'Mesh') {
                 const _mesh = child as Mesh;
+                _mesh.geometry.computeVertexNormals();
+                _mesh.geometry.computeBoundingBox();
                 _mesh.receiveShadow = rs;
                 _mesh.castShadow = cs;
                 setupMaterial(_mesh.material);

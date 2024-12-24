@@ -24,7 +24,7 @@ const objectTexture = new TextureLoader().load(URL_PREFIX + "base/basicChecker.p
 objectTexture.wrapS = RepeatWrapping;
 objectTexture.wrapT = RepeatWrapping;
 
-const landTexture = new TextureLoader().load(URL_PREFIX + "base/sand.png");
+export const landTexture = new TextureLoader().load(URL_PREFIX + "base/sand.png");
 landTexture.wrapS = RepeatWrapping;
 landTexture.wrapT = RepeatWrapping;
 

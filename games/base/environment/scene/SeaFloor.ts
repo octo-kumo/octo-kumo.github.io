@@ -1,7 +1,7 @@
-import { BufferAttribute, BufferGeometry, Camera, MathUtils, Mesh, Vector2, Vector3 } from "three";
+import { BoxGeometry, BufferAttribute, BufferGeometry, Camera, MathUtils, Mesh, Vector2, Vector3 } from "three";
 import * as oceanMaterials from "../materials/OceanMaterial.js";
 import { Random } from "../scripts/Random.js";
-
+import { INTERSECTION, Brush, Evaluator, SUBTRACTION } from 'three-bvh-csg';
 const tilesPerAxis = 32;
 const tileSize = 32;
 const tilesRadius = MathUtils.clamp(8, 1, tilesPerAxis / 2);
@@ -18,6 +18,8 @@ const base3 = new Vector2(0.02, 0.1);
 const erosion = new Vector3(0.008, 0.02, 0.1);
 
 const hill = new Vector2(0.03, 100);
+
+const evaluator = new Evaluator();
 
 const reliefPoints = [
     0, 0,
@@ -196,6 +198,14 @@ export function Start() {
                 }
             }
 
+
+            const left = (tileX * tileSize - halfSize) * scale
+            const right = ((tileX + 1) * tileSize - halfSize) * scale
+            const top = (tileZ * tileSize - halfSize) * scale
+            const bottom = ((tileZ + 1) * tileSize - halfSize) * scale
+
+            const ABOVE_GROUND = new BoxGeometry(right - left, 100, bottom - top).translate((left + right) / 2, 50, (top + bottom) / 2);
+
             let geometry = new BufferGeometry();
             geometry.setAttribute("position", new BufferAttribute(vertices, 3));
             geometry.setIndex(indices);
@@ -204,7 +214,6 @@ export function Start() {
             let mesh = new Mesh();
             mesh.geometry = geometry;
             mesh.material = oceanMaterials.triplanar;
-            mesh.receiveShadow = true;
             mesh.visible = false;
 
             tiles[tileZ * tilesPerAxis + tileX] = mesh;

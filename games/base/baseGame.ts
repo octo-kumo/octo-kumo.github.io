@@ -54,7 +54,7 @@ export default class ThreeGame {
     constructor(ocean = true) {
         this.OCEAN = ocean;
         this.scene = new Scene();
-        this.resize_observer = new ResizeObserver(this.on_resize.bind(this));
+        this.resize_observer = new ResizeObserver(this.onResize.bind(this));
         this.renderer = new WebGLRenderer({ antialias: true });
         this.clock = new Clock(true);
         this.stats = new Stats();
@@ -133,7 +133,7 @@ export default class ThreeGame {
         world.open();
     }
 
-    private on_resize() {
+    onResize() {
         if (this.parent) {
             this.renderer.setSize(this.parent.clientWidth, this.parent.clientHeight);
             this.camera.aspect = this.parent.clientWidth / this.parent.clientHeight;
@@ -161,10 +161,11 @@ export default class ThreeGame {
         this.cameraUp.copy(new Vector3(0, 1, 0).applyQuaternion(this.camera.quaternion));
         this.cameraForward.copy(new Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion));
 
-        this.renderer.render(this.scene, this.camera);
         this.controls.update(delta);
         this.updateStats();
         this.update(delta);
+
+        this.renderer.render(this.scene, this.camera);
     }
 
     attach(parent?: HTMLElement) {
@@ -234,7 +235,7 @@ export default class ThreeGame {
         this.sunLight.color.setFromVector3(skyLight);
         this.scene.fog?.color.copy(this.sunLight.color);
         this.hemiLight.color.copy(this.sunLight.color);
-        this.hemiLight.groundColor.copy(new Color(0, skyLight.length() / 5, 0));
+        this.hemiLight.groundColor.copy(new Color(0, skyLight.length() / 10, skyLight.length() / 5));
     }
 
 

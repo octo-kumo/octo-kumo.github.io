@@ -8,7 +8,7 @@ import webmanifest from "./webmanifest";
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
 const PRODUCTION = process.env.NODE_ENV === 'production'
 export default defineNuxtConfig({
-    ssr: true,
+    ssr: PRODUCTION,
     site: {
         name: 'Yun',
         url: SITE_URL,
@@ -34,6 +34,10 @@ export default defineNuxtConfig({
     },
     css: ['~/assets/scss/index.scss'],
     nitro: {
+        minify: PRODUCTION,
+        sourceMap: !PRODUCTION,
+        timing: true,
+        compressPublicAssets: PRODUCTION,
         preset: process.env.NITRO_TARGET ?? "node",
         firebase: {
             gen: 2,
@@ -41,6 +45,7 @@ export default defineNuxtConfig({
         },
         prerender: PRODUCTION ? {
             autoSubfolderIndex: false,
+            concurrency: 3,
             routes: ['/', '/sitemap.xml']
         } : undefined,
         esbuild: {
@@ -197,9 +202,9 @@ export default defineNuxtConfig({
     },
 
     experimental: {
-        viewTransition: true,
+        viewTransition: PRODUCTION,
         payloadExtraction: PRODUCTION,
-        sharedPrerenderData: true
+        sharedPrerenderData: PRODUCTION
     },
     // future: {
     //     compatibilityVersion: 4,

@@ -64,7 +64,7 @@ export function Start() {
 }
 
 export function Update(camera: Camera, time: number) {
-    angle = (time * 0.05) % Math.PI * 2;//- Math.PI / 3;
+    angle = (time * 0.05) % Math.PI * 2 - Math.PI / 2;
     setSkyRotationMatrix(angle);
     initial.applyMatrix3(rotationMatrix.value);
     dirToLight.set(-initial.x, initial.y, -initial.z);
