@@ -1,7 +1,7 @@
 import type { ContentDocLike } from "~/types/custom-types";
 
 export const chal_categories = [
-    "ai", "web", "crypto", "forensic", "forensics", "algo", "pwn", "rev", "misc", "osint", "box", "hardware", "blockchain", "defence"
+    "ai", "web", "crypto", "forensic", "forensics", "algo", "pwn", "rev", "misc", "osint", "box", "hardware", "blockchain", "defence", "radio", "network"
 ];
 
 export default function getCtfCategory(doc?: ContentDocLike) {
