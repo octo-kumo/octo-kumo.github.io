@@ -13,3 +13,6 @@
 [submodule "content/blog"]
 	path = content/blog
 	url = https://github.com/octo-kumo/blog.git
+[submodule "libraries/arm-sim"]
+	path = libraries/arm-sim
+	url = https://github.com/octo-kumo/arm-sim.git
