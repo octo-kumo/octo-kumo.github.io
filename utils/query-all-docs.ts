@@ -9,6 +9,9 @@ export default async function queryAllDocs(indexPage?: boolean): Promise<{ nav: 
 }
 
 function updateNavItem(items: ContentNavigationItem[], parent?: ContentNavigationItem) {
+    items.forEach(item => {
+        item.title = guessArticleTitle(item);
+    });
     items = items.filter(c => c.path !== parent?.path);
     for (let item of items) {
         if (item.children) {

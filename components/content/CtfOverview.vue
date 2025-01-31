@@ -25,8 +25,6 @@ function tagFilter(article: Partial<PageCollections['content']>) {
 function stats(items: Partial<PageCollections['content']>[]) {
   return items.map(w => w.points ?? 0).reduce((acc: number, v: number) => acc + v, 0);
 }
-
-console.log(list);
 </script>
 
 <template>

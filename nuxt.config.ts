@@ -145,7 +145,7 @@ export default defineNuxtConfig({
                 },
                 highlight: {
                     langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust',
-                        // JSON.parse(readFileSync('./assets/shiki/flag.tmLanguage.json', 'utf-8')),
+                        JSON.parse(readFileSync('./public/shiki/flag.tmLanguage.json', 'utf-8')),
                     ],
                     theme: {
                         default: 'one-light',
