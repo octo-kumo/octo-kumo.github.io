@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import TableOfContents from "~/components/TableOfContents.vue";
 import "katex/dist/katex.min.css";
-import type Node from "element-plus/es/components/tree/src/model/node";
-import type { FilterNodeMethodFunction, TreeNodeData, TreeOptionProps } from "element-plus/es/components/tree/src/tree.type";
-import type { NavItem, ParsedContent, TocLink } from "@nuxt/content";
-import type { Ref } from "@vue/reactivity";
-import type { ComputedRef } from "vue";
-import type { ElTree } from "element-plus";
 import isContentEmpty from "~/utils/is-content-empty";
+import type { ContentNavigationItem, PageCollections, TocLink } from "@nuxt/content";
+import type { FilterNodeMethodFunction, TreeNodeData, TreeOptionProps } from "element-plus/es/components/tree/src/tree.type.mjs";
+import type Node from "element-plus/es/components/tree/src/model/node";
+import type { ElTree } from "element-plus";
 const route = useRoute();
 const path = (route.path.substring(2) || "/")
   .replace(/(?!^)\/$/, ''); // strip trailing slash
@@ -28,30 +26,31 @@ function breadcrumbs(path: string) {
 
 // function recursiveSort(nav?: NavItem[] | null) {
 //   if (!(nav && Array.isArray(nav) && nav.length > 0)) return
-//   nav.sort((a, b) => String(getDoc(b._path)?.created).localeCompare(getDoc(a._path)?.created))
+//   nav.sort((a, b) => String(getDoc(b.path)?.created).localeCompare(getDoc(a.path)?.created))
 //   nav.forEach(c => recursiveSort(c.children));
 //   return nav
 // }
 
-const { data: doc, status } = await useLazyAsyncData(`c/doc_${path}`, () => queryContent(path).findOne().then(r => {
-  r.title = guessArticleTitle(r);
-  return r;
-}));
+const { data: doc, status } = await useLazyAsyncData(`c/doc_${path}`, () =>
+  queryCollection('content').path(path).first().then((r: PageCollections['content']) => {
+    r.title = guessArticleTitle(r);
+    return r;
+  }));
 const { data: alldocs } = await useLazyAsyncData(`c/docs`, () => queryAllDocs());
 const docs = computed(() => alldocs.value?.flat);
 const navigation = computed(() => alldocs.value?.nav);
 
-const nav: ComputedRef<{ prev?: Partial<ParsedContent>, next?: Partial<ParsedContent> }> = computed(() => {
+const nav: ComputedRef<{ prev?: Partial<ContentNavigationItem>, next?: Partial<ContentNavigationItem> }> = computed(() => {
   if (!docs.value) return {};
-  const peers = docs.value.filter(d => oneLvlUp(d._path!) === oneLvlUp(path)); // must not be parent
-  const meIndex = peers.findIndex(d => d._path === path);
+  const peers = docs.value.filter(d => oneLvlUp(d.path) === oneLvlUp(path)); // must not be parent
+  const meIndex = peers.findIndex(d => d.path === path);
   const [prev, next] = peers.length > 1 ? [
     peers[(meIndex - 1 + peers.length) % peers.length],
     peers[(meIndex + 1) % peers.length],
   ] : [];
   return { prev, next };
 })
-// const isLeaf = computed(() => !docs.value?.some(d => d._path !== path && d._path?.startsWith(path)));
+// const isLeaf = computed(() => !docs.value?.some(d => d.path !== path && d.path?.startsWith(path)));
 
 if (typeof defineOgImageComponent !== "undefined") defineOgImageComponent('Post', {
   doc: doc.value
@@ -59,7 +58,6 @@ if (typeof defineOgImageComponent !== "undefined") defineOgImageComponent('Post'
   width: 800,
   height: 300,
 });
-useContentHead(doc as Ref<ParsedContent>);
 useSeoMeta({
   title: () => guessArticleTitle(doc?.value) ?? "Content",
   ogTitle: () => guessArticleTitle(doc?.value) ?? "Content",
@@ -76,13 +74,13 @@ definePageMeta({
 });
 const treeProps: TreeOptionProps = {
   children: 'children',
-  label: (data: TreeNodeData, node: Node) => data.title
+  label: (data: TreeNodeData, node: Node) => data.title as string
 };
 
-function navToToc(nav?: NavItem[] | null, depth = 0): TocLink[] {
+function navToToc(nav?: ContentNavigationItem[] | null, depth = 0): TocLink[] {
   if (depth >= 2) return [];
   return nav?.map((a: any) => ({
-    id: 'content_' + hashCode(a._path).toString(16).padStart(8, '0'),
+    id: 'content_' + hashCode(a.path).toString(16).padStart(8, '0'),
     text: guessArticleTitle(a),
     children: navToToc(a.children, depth + 1),
     depth: depth
@@ -138,7 +136,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
           {{ guessArticleTitle(doc) }}
         </span>
       </h1>
-      <article-tags :article="docs?.find(d => d._path === path) ?? doc" />
+      <article-tags :article="docs?.find(d => d.path === path) ?? doc" />
       <el-text size="small" class="block font-mono">
         <hover-text class="block">
           <template #default>
@@ -152,8 +150,8 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
       </el-text>
       <el-text size="small" class="block font-mono">
         <hover-text>
-          <template #default>{{ doc.readingTime.text }}</template>
-          <template #hover>{{ doc.readingTime.words + ' words' }}</template>
+          <template #default>{{ doc.readingTime?.text }}</template>
+          <template #hover>{{ doc.readingTime?.words + ' words' }}</template>
         </hover-text>
       </el-text>
 
@@ -164,13 +162,13 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
       </ContentRenderer>
       <div class="flex justify-between mt-3 print:hidden" v-shared="'content-page-peer-nav'"
         v-if="nav.prev && nav.next">
-        <kumo-link :to="'/c' + (nav.prev?._path ?? '')" type="primary">
+        <kumo-link :to="'/c' + (nav.prev?.path ?? '')" type="primary">
           <el-icon>
             <el-icon-arrow-left />
           </el-icon>
           {{ guessArticleTitle(nav.prev) }}
         </kumo-link>
-        <kumo-link :to="'/c' + (nav.next?._path ?? '')" type="primary">
+        <kumo-link :to="'/c' + (nav.next?.path ?? '')" type="primary">
           {{ guessArticleTitle(nav.next) }}
           <el-icon>
             <el-icon-arrow-right />
@@ -185,13 +183,13 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
       v-model="statsControl" />
   </template>
   <template v-if="docs && docs.length > 0">
-    <el-tree class="text-base! content-page-sections mb-20 print:hidden" :current-node-key="path" node-key="_path"
+    <el-tree class="text-base! content-page-sections mb-20 print:hidden" :current-node-key="path" node-key="path"
       ref="treeRef" :default-expand-all="false" v-shared="'content-tree-nav'" highlight-current auto-expand-parent
       :filter-node-method="filterTreeNode" :default-expanded-keys="[path]" :data="navigation as any" :props="treeProps">
       <template #default="{ node, data }">
         <span class="flex justify-between flex-1"><!--v-shared="getTransitionName(data, 'tree-node')"-->
-          <kumo-link :id="'content_' + hashCode(data._path).toString(16).padStart(8, '0')" :to="'/c' + data._path"
-            class="mr-2 justify-start!" no-prefetch :class="{ 'font-bold!': oneLvlUp(data._path) === '/ctf' }">
+          <kumo-link :id="'content_' + hashCode(data.path).toString(16).padStart(8, '0')" :to="'/c' + data.path"
+            class="mr-2 justify-start!" no-prefetch :class="{ 'font-bold!': oneLvlUp(data.path) === '/ctf' }">
             <el-tooltip :show-after="500" effect="light" :hide-after="0"
               :content="`Created ${displayDatetime(data.created)} · Edited ${displayDatetime(data.updated)}`"
               placement="bottom-start">
@@ -230,7 +228,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
   @apply max-w-prose mx-a lg:min-w-prose;
 
   @media (min-width: 1024px) {
-    padding-right: v-bind('contentSpacingRight');
+    padding-right: v-bind(contentSpacingRight);
   }
 }
 

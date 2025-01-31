@@ -5,7 +5,7 @@ export const chal_categories = [
 ];
 
 export default function getCtfCategory(doc?: ContentDocLike) {
-    const cat = doc?._path?.split("/").at(-2) ?? 'unknown'
+    const cat = doc?.path?.split("/").at(-2) ?? 'unknown'
     if (chal_categories.includes(cat)) return cat;
     return undefined;
 }

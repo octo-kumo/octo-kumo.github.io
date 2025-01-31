@@ -9,7 +9,7 @@ const { data: markdown } = useLazyAsyncData(`github-repo-${repo}`, () => $fetch(
 <template>
   <div class="max-w-prose mx-auto">
     <github-repo-info :repo="repo" />
-    <MDC :value="markdown"></MDC>
+    <MDC :value="markdown ?? ''"></MDC>
   </div>
 </template>
 

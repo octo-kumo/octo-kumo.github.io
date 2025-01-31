@@ -1,6 +1,6 @@
-import type { NavItem, ParsedContent } from "@nuxt/content";
+import type { ContentDocLike } from "~/types/custom-types";
 
-export default function (item?: ParsedContent | NavItem | Partial<ParsedContent> | null): string {
+export default function (item?: ContentDocLike): string {
     if (item?.title && item?.tags?.includes('blog') && /^\d{4}-\d{2}-\d{2}$/.test(item?.title ?? "")) {
         return new Date(item?.title).toLocaleDateString(undefined, {
             timeZone: 'UTC',
@@ -10,5 +10,5 @@ export default function (item?: ParsedContent | NavItem | Partial<ParsedContent>
             weekday: 'short',
         });
     }
-    return item?.title || item?._path?.split('/')?.pop() || 'Unknown';
+    return item?.title || item?.path?.split('/')?.pop() || 'Unknown';
 }

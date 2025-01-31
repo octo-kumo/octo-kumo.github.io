@@ -20,8 +20,8 @@
         :total="docsFiltered.length" :page-size="5" hide-on-single-page />
     <el-timeline class="mt-2!" v-auto-animate>
         <el-timeline-item v-for="{ item: doc, matches, score } in docsFiltered.slice(currPage * 5 - 5, currPage * 5)"
-            :key="doc._path" hide-timestamp>
-            <kumo-link no-prefetch type="primary" :to="'/c' + doc._path" class="font-mono">
+            :key="doc.path" hide-timestamp>
+            <kumo-link no-prefetch type="primary" :to="'/c' + doc.path" class="font-mono">
                 <span v-html="highlight(doc.title, matches?.find(m => m.key === 'title')?.indices)"></span>
             </kumo-link>
             <el-tag v-if="score" :type="score < 0.1 ? 'success' : score < 0.5 ? 'warning' : 'danger'" size="small"
@@ -30,7 +30,7 @@
             </el-tag>
             <br />
             <el-text class="font-mono" size="small" v-if="isSearching">
-                <span v-html="'/c' + highlight(doc._path, matches?.find(m => m.key === '_path')?.indices)"></span>
+                <span v-html="'/c' + highlight(doc.path, matches?.find(m => m.key === 'path')?.indices)"></span>
             </el-text>
             <el-text class="block mt-1!">
                 <span v-html="highlight(doc.description, matches?.find(m => m.key === 'description')?.indices)"></span>
@@ -46,7 +46,7 @@
     </el-timeline>
 </template>
 <script lang="ts" setup>
-import type { NavItem } from '@nuxt/content';
+import type { PageCollections } from '@nuxt/content';
 import Fuse, { type FuseResult, type RangeTuple } from 'fuse.js';
 const currPage = ref(1);
 const search = ref("");
@@ -69,7 +69,7 @@ function toggleSort(key: 'points' | 'solves') {
 const getSortBtnType = (key: 'points' | 'solves') => customSortKey.value !== key ? 'default' : customSortDir.value === 'desc' ? 'primary' : 'danger';
 const getSortBtnIcon = (key: 'points' | 'solves') => customSortKey.value !== key ? ElIconSort : customSortDir.value === 'asc' ? ElIconSortUp : ElIconSortDown;
 
-const SEARCH_KEYS = [{ name: "title", weight: 1 }, { name: "_path", weight: 1 }, { name: "description", weight: 0.8 }, {
+const SEARCH_KEYS = [{ name: "title", weight: 1 }, { name: "path", weight: 1 }, { name: "description", weight: 0.8 }, {
     name: "tags",
     weight: 1
 }]
@@ -109,16 +109,18 @@ const TYPES = [
 
 const typeFilter = ref<number[]>([]);
 
-function customFilter(items: FuseResult<NavItem>[]): FuseResult<NavItem>[] {
+function customFilter(items: FuseResult<PageCollections['content']>[]): FuseResult<PageCollections['content']>[] {
     if (searchMode.value !== "Custom") return items;
     items = items.filter(item => (filterTags.value ?? []).every(tag => item.item?._tags?.includes(tag)));
-    if (typeFilter.value.length) items = items.filter(item => typeFilter.value.some(i => TYPES[i].filter.test(item.item._path)));
+    if (typeFilter.value.length) items = items.filter(item => typeFilter.value.some(i => TYPES[i].filter.test(item.item.path)));
 
     const key = customSortKey.value;
     if (key) items = items.filter(i => i.item[key]).sort((a, b) => {
         const aVal = a.item[key];
         const bVal = b.item[key];
         if (aVal === bVal) return 0;
+        if (!aVal) return 1;
+        if (!bVal) return -1;
         if (customSortDir.value === 'asc') return aVal > bVal ? 1 : -1;
         return aVal < bVal ? 1 : -1;
     });
@@ -133,7 +135,7 @@ const docsFiltered = computed(() => customFilter(isSearching.value ? fuse.value.
     item: w,
     matches: null,
     score: null
-} as unknown as FuseResult<NavItem>))));
+} as unknown as any))));
 function highlight(text?: string, indices?: readonly RangeTuple[]) {
     if (!indices || !text) return text;
     return indices.reduce((str, [start, end]) => {

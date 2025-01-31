@@ -1,37 +1,39 @@
-import type { NavItem } from "@nuxt/content";
+import type { ContentNavigationItem } from "@nuxt/content";
 
-export default async function queryAllDocs(indexPage?: boolean): Promise<{ nav: NavItem[], flat: NavItem[] }> {
-    const nav = updateNavItem(await fetchContentNavigation(queryContent("/")
-        .where({ _extension: { $eq: 'md' }, ...(indexPage ? { created: { $exists: true } } : {}) }).sort({ created: -1 })));
+export default async function queryAllDocs(indexPage?: boolean): Promise<{ nav: ContentNavigationItem[], flat: ContentNavigationItem[] }> {
+    const docs = await queryCollectionNavigation('content',
+        ['title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'rank', 'team', 'readingTime']
+    ).order('created', 'DESC');
+    const nav = updateNavItem(docs);
     return { nav, flat: flatten(nav).map(clean) };
 }
 
-function updateNavItem(items: NavItem[], parent?: NavItem) {
-    items = items.filter(c => c._path !== parent?._path);
+function updateNavItem(items: ContentNavigationItem[], parent?: ContentNavigationItem) {
+    items = items.filter(c => c.path !== parent?.path);
     for (let item of items) {
         if (item.children) {
-            if (item._path === "/ctf") item.children?.sort(sorter);
+            if (item.path === "/ctf") item.children?.sort(sorter);
             item.children = updateNavItem(item.children, item);
         }
-        if (oneLvlUp(oneLvlUp(item._path)) === '/ctf' && item.children?.length) {
+        if (oneLvlUp(oneLvlUp(item.path)) === '/ctf' && item.children?.length) {
             // for category notes
-            item.points = item.children.reduce((acc, c) => acc + (c.points || 0), 0);
+            item.points = item.children.reduce((acc, c) => acc + ((c.points as number) || 0), 0);
             item.challenges = item.children.length;
-            if (parent?.points !== 0) item.percent = Math.round(item.points / parent?.points * 100);
+            if (parent?.points) item.percent = Math.round((item.points as number) / (parent?.points as number) * 100);
             // if (item.challenges !== 0 && parent?.points) item.description ||= `avg ${Math.round(item.points / item.challenges)} · ${}%`;
         }
-        item._tags = [...new Set([...(item.tags || []), getCtfCategory(item)].filter(Boolean))];
+        item._tags = [...new Set([...((item.tags as string[]) || []), getCtfCategory(item)].filter(Boolean))];
     }
     return items;
 }
 
-function clean(item: NavItem) {
+function clean(item: ContentNavigationItem) {
     item = { ...item };
     delete item.children;
     return item;
 }
 
-function flatten(query: NavItem[]): NavItem[] {
+function flatten(query: ContentNavigationItem[]): ContentNavigationItem[] {
     let all = [];
     for (let item of query) {
         item.title = guessArticleTitle(item);
@@ -40,6 +42,6 @@ function flatten(query: NavItem[]): NavItem[] {
     }
     return all;
 }
-function sorter(a: NavItem, b: NavItem) {
-    return -a.created?.localeCompare(b.created);
+function sorter(a: ContentNavigationItem, b: ContentNavigationItem) {
+    return -(a.created as string)?.localeCompare(b.created as string);
 }

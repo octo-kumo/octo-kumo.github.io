@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { NavItem } from '@nuxt/content';
+import type { ContentNavigationItem, PageCollections } from "@nuxt/content";
 import type { ApexOptions } from "apexcharts";
 import VueApexCharts, { type VueApexChartsComponent } from 'vue3-apexcharts'
 
@@ -29,7 +29,7 @@ function syncCharts(c1: VueApexChartsComponent, c2: VueApexChartsComponent) {
 const catChart = ref<VueApexChartsComponent | null>(null);
 const pntChart = ref<VueApexChartsComponent | null>(null);
 const model = defineModel<{ catFilter: string[] }>({ default: {} });
-const props = defineProps<{ docs: NavItem[] }>();
+const props = defineProps<{ docs: ContentNavigationItem[] }>();
 const docs = props.docs;
 const colorMode = useColorMode();
 const grouped = computed(() => docs.reduce((acc, doc) => {
@@ -39,7 +39,7 @@ const grouped = computed(() => docs.reduce((acc, doc) => {
         acc[cat].push(doc);
     }
     return acc;
-}, {} as Record<string, NavItem[]>));
+}, {} as Record<string, ContentNavigationItem[]>));
 const commonStyles = {
     dataLabels: {
         style: {
@@ -105,7 +105,7 @@ const categoryChart = computed(() => {
     }
 });
 const valueChart = computed(() => {
-    const vals: [string, number, string][] = Object.entries(grouped.value).map(([_, docs], i, arr) => [_, docs.map(d => d.points ?? 0).reduce((a, b) => a + b, 0), getColor(i / arr.length)])
+    const vals: [string, number, string][] = Object.entries(grouped.value).map(([_, docs], i, arr) => [_, docs.map(d => (d.points as number) ?? 0).reduce((a, b) => a + b, 0), getColor(i / arr.length)])
     vals.sort((a, b) => b[1] - a[1]);
     return {
         select(event: any, chartContext: any, opts: any) {

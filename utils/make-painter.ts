@@ -1,7 +1,8 @@
-import type {Ref} from "@vue/reactivity";
+import type { Ref } from "@vue/reactivity";
 
-export default async function (canvas: HTMLCanvasElement, stroke: Ref<number>, erase: Ref<boolean>) {
+export default async function (canvas: HTMLCanvasElement & { clear?: () => void }, stroke: Ref<number>, erase: Ref<boolean>) {
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     let flag = false,
         prevX = 0,
         currX = 0,
@@ -14,6 +15,7 @@ export default async function (canvas: HTMLCanvasElement, stroke: Ref<number>, e
     ctx.lineCap = "round";
 
     function draw() {
+        if (!ctx) return;
         ctx.beginPath();
         if (erase.value) {
             ctx.globalCompositeOperation = "destination-out";

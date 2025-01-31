@@ -1,12 +1,18 @@
-import type { MarkdownNode, ParsedContent } from "@nuxt/content"
+import type { MarkdownRoot } from "@nuxt/content";
+import type { MDCNode, MDCRoot, MDCText } from "@nuxtjs/mdc";
+import type { ContentDocLike } from "~/types/custom-types";
 
-export default (content?: ParsedContent) => {
-  if (!content?.body?.children.length) return true
+export default (content?: ContentDocLike) => {
+  if (!content) return true;
+  if (!(content?.body as any)?.value?.length) return true
   return empty(content.body);
 }
-
-function empty(node: MarkdownNode) {
-  if (node.value) return false;
-  if (node.children) return node.children.every(empty);
+type TrueType = MDCNode & {
+  value: MDCNode[];
+}
+function empty(node?: MDCRoot | MDCNode): boolean {
+  if (!node) return true;
+  if ((node as MDCText).value) return false;
+  if ((node as TrueType).value) return (node as TrueType).value.every(empty);
   return true;
 }

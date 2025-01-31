@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { ParsedContent } from "@nuxt/content";
+import type { PageCollections } from '@nuxt/content';
+
 
 withDefaults(defineProps<{
-  article?: ParsedContent | Partial<ParsedContent>,
+  article?: PageCollections['content'] | Partial<PageCollections['content']>,
   idPrefix?: string,
   hideCat?: boolean,
   noSharedElement?: boolean,
@@ -34,7 +35,7 @@ withDefaults(defineProps<{
           <icons-users />
         </el-icon>
       </el-tag>
-      <el-tag v-if="article.points && oneLvlUp(article._path) !== '/ctf'" size="small"
+      <el-tag v-if="article.points && oneLvlUp(article.path) !== '/ctf'" size="small"
         :type="(article.solves ?? 999) > 50 ? 'info' : 'success'">
         {{ article.points }}
       </el-tag>

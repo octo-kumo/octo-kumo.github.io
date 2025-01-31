@@ -21,16 +21,13 @@ jobs:
         run: |
           git pull --recurse-submodules
           git submodule update --remote --recursive
-      - uses: pnpm/action-setup@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          version: latest
-      - uses: actions/setup-node@v4
-        with:
-          cache: 'pnpm'
-          cache-dependency-path: './pnpm-lock.yaml'
-          node-version: latest
-      - run: pnpm install --no-frozen-lockfile
-      - run: pnpm generate
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install
+      - name: Generate
+        run: bun run generate
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:

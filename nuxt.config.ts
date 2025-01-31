@@ -70,7 +70,8 @@ export default defineNuxtConfig({
         // '@nuxtjs/robots',
         // "nuxt-booster",
         '@formkit/auto-animate/nuxt',
-        ...(PRODUCTION ? ["nuxt-og-image", 'nuxt-vitalizer', 'nuxt-umami'] : []),
+        "nuxt-og-image",
+        ...(PRODUCTION ? ['nuxt-vitalizer', 'nuxt-umami'] : []),
         // "nuxt-delay-hydration"
     ],
     vitalizer: {
@@ -130,40 +131,33 @@ export default defineNuxtConfig({
     //     },
     // },
     content: {
-        ignores: ['^(?!.*\\.md$).+$'],
-        sources: {
-            content: {
-                driver: 'fs',
-                prefix: '/c',
-                base: resolve(__dirname, 'content')
-            }
-        },
-        markdown: {
-            anchorLinks: false,
-            remarkPlugins: ['remark-reading-time', 'remark-math'],
-            rehypePlugins: {
-                'rehype-katex': {
-                    output: 'html'
+        build: {
+            markdown: {
+                remarkPlugins: {
+                    'remark-reading-time': {},
+                    'remark-math': {}
                 },
-                'rehype-preset-minify': {},
+                rehypePlugins: {
+                    'rehype-katex': {
+                        output: 'html'
+                    },
+                    'rehype-preset-minify': {},
+                },
+                highlight: {
+                    langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust',
+                        // JSON.parse(readFileSync('./assets/shiki/flag.tmLanguage.json', 'utf-8')),
+                    ],
+                    theme: {
+                        default: 'one-light',
+                        dark: 'one-dark-pro',
+                        sepia: 'monokai'
+                    }
+                }
             }
         },
-        highlight: {
-            langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust',
-                JSON.parse(readFileSync('./assets/shiki/flag.tmLanguage.json', 'utf-8')),
-            ],
-            theme: {
-                default: 'one-light',
-                dark: 'one-dark-pro',
-                sepia: 'monokai'
-            }
-        },
-        navigation: {
-            fields: ['_id', '_path', 'title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'rank', 'team', 'readingTime']
+        renderer: {
+            anchorLinks: false,
         }
-        // experimental: {
-        //     clientDB: true
-        // }
     },
 
     // vueuse
