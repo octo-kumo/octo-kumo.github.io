@@ -1,0 +1,1 @@
+import{_ as p}from"./9gpSyfmt.js";import{d as r,u as i,h as e,a as s}from"./D_GclKcP.js";const m=o=>{const n=s(o);return r({inheritAttrs:!1,setup(u,{attrs:t}){return i().isHydrating?()=>e("div",[e(p,void 0,{default:()=>e(n,t)})]):()=>e(n,t)}})};export{m as createClientPage};
