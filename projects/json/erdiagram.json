@@ -1,0 +1,1259 @@
+[
+    {
+        "attributes": [],
+        "name": "ER Diagram",
+        "weak": false,
+        "id": "7dc737ac-d4f1-4672-979a-a04cdf551962",
+        "x": 512.0,
+        "y": 128.0,
+        "type": "entity"
+    },
+    {
+        "specs": [
+            {
+                "amm": "1",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "N",
+                "role": "",
+                "total": true
+            }
+        ],
+        "attributes": [],
+        "name": "BELONGS_TO",
+        "weak": true,
+        "id": "ab363a46-9558-445d-aba4-eba6b8f5306c",
+        "x": 512.0,
+        "y": 192.0,
+        "nodes": [
+            "ER Diagram",
+            "Object"
+        ],
+        "type": "relationship"
+    },
+    {
+        "attributes": [
+            {
+                "key": true,
+                "derived": false,
+                "unique": true,
+                "dataType": "VARCHAR",
+                "dataParam": "36",
+                "attributes": [],
+                "name": "uid",
+                "weak": false,
+                "id": "68f2eae7-e9ec-48df-8d29-25ec580abb2c",
+                "x": 112.0,
+                "y": -80.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "name",
+                "weak": false,
+                "id": "9aae3ced-6ede-49b9-8e4a-cce99276a169",
+                "x": 112.0,
+                "y": -48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "128",
+                "attributes": [],
+                "name": "pfp",
+                "weak": false,
+                "id": "cae10271-65f2-41b7-be42-b5494fc60c6d",
+                "x": 112.0,
+                "y": 48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": true,
+                "dataType": "VARCHAR",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "email",
+                "weak": false,
+                "id": "26a911b7-c700-4724-99e4-a0baac46dbbd",
+                "x": 112.0,
+                "y": -16.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "CHAR",
+                "dataParam": "40",
+                "attributes": [],
+                "name": "pwd_hash",
+                "weak": false,
+                "id": "9bdf928a-fa22-4714-9bcb-e342d4966a7c",
+                "x": 112.0,
+                "y": 16.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": true,
+                "unique": false,
+                "dataType": "INT",
+                "dataParam": "",
+                "attributes": [],
+                "name": "messages_sent",
+                "weak": false,
+                "id": "5b808457-1754-4470-b2f7-9062c1899f5d",
+                "x": 112.0,
+                "y": 80.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "DATETIME",
+                "attributes": [],
+                "name": "last_login",
+                "weak": false,
+                "id": "a8928cc6-e917-4d4a-bab3-b6bab11d5fff",
+                "x": 112.0,
+                "y": 112.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "User",
+        "weak": false,
+        "id": "442f24ad-03aa-45df-bfa4-210392cd45c7",
+        "x": 1152.0,
+        "y": 128.0,
+        "type": "entity"
+    },
+    {
+        "specs": [
+            {
+                "amm": "N",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "M",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "DATETIME",
+                "dataParam": "",
+                "attributes": [],
+                "name": "start_time",
+                "weak": false,
+                "id": "09fbac74-d211-4c6a-a709-4687a4c164cb",
+                "x": -94.67315913742186,
+                "y": 0.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "CAN_EDIT",
+        "weak": false,
+        "id": "e507e4a9-02b2-4a11-acda-9152b4139d57",
+        "x": 848.0,
+        "y": 304.0,
+        "nodes": [
+            "Container",
+            "Editor"
+        ],
+        "type": "relationship"
+    },
+    {
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "TEXT",
+                "dataParam": "",
+                "attributes": [],
+                "name": "text",
+                "weak": false,
+                "id": "7fe35c2b-4c0f-4a00-a3be-5936a5b69ff8",
+                "x": 80.0,
+                "y": 48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "DATETIME",
+                "dataParam": "",
+                "attributes": [],
+                "name": "datetime",
+                "weak": false,
+                "id": "299b12fb-29b1-421f-9df4-ec77ddeffb1d",
+                "x": 0.0,
+                "y": 48.0,
+                "type": "attribute"
+            },
+            {
+                "key": true,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "36",
+                "attributes": [],
+                "name": "mid",
+                "weak": false,
+                "id": "60bc09a9-7e9d-4b53-8e70-79fa137e24ea",
+                "x": -80.0,
+                "y": 48.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "MESSAGE",
+        "weak": true,
+        "id": "d78fe8ad-a3d4-49dc-934d-27b894c2ef72",
+        "x": 1024.0,
+        "y": 192.0,
+        "type": "entity"
+    },
+    {
+        "specs": [
+            {
+                "amm": "1",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "N",
+                "role": "",
+                "total": true
+            },
+            {
+                "amm": "1",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [],
+        "name": "SENT",
+        "weak": true,
+        "id": "52bea985-88f3-4c3a-bc29-98ab67295d9b",
+        "x": 1024.0,
+        "y": 128.0,
+        "nodes": [
+            "User",
+            "MESSAGE",
+            "Container"
+        ],
+        "type": "relationship"
+    },
+    {
+        "attributes": [
+            {
+                "key": true,
+                "derived": false,
+                "unique": true,
+                "dataType": "VARCHAR",
+                "dataParam": "36",
+                "attributes": [],
+                "name": "cid",
+                "weak": false,
+                "id": "de6e65c1-f8c7-493a-82bf-3e156cdda63b",
+                "x": -64.0,
+                "y": 48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "name",
+                "weak": false,
+                "id": "dd067d29-1dbb-422e-97bb-dc4c1bfe7a7c",
+                "x": -64.0,
+                "y": 80.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "Container",
+        "weak": false,
+        "id": "a799997b-2c59-4302-b090-567ca1f5bd10",
+        "x": 896.0,
+        "y": 128.0,
+        "type": "entity"
+    },
+    {
+        "specs": [
+            {
+                "amm": "1",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "N",
+                "role": "",
+                "total": true
+            }
+        ],
+        "attributes": [],
+        "name": "FROM",
+        "weak": false,
+        "id": "7c54ee38-efc2-4b4c-bf56-b3ceb4ea21b7",
+        "x": 768.0,
+        "y": 128.0,
+        "nodes": [
+            "Container",
+            "Diagram"
+        ],
+        "type": "relationship"
+    },
+    {
+        "attributes": [
+            {
+                "key": true,
+                "derived": false,
+                "unique": true,
+                "dataType": "VARCHAR",
+                "dataParam": "36",
+                "attributes": [],
+                "name": "did",
+                "weak": false,
+                "id": "feff16e3-b43a-469c-9149-2e828cb5a7b8",
+                "x": 48.0,
+                "y": -48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "name",
+                "weak": false,
+                "id": "ba6f6f26-b251-4a68-a33e-c5f155182f5e",
+                "x": -48.0,
+                "y": -48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": true,
+                "unique": false,
+                "dataType": "INT",
+                "dataParam": "",
+                "attributes": [],
+                "name": "object_count",
+                "weak": false,
+                "id": "e4de2144-8cb8-4fba-9220-aae804d3b498",
+                "x": 0.0,
+                "y": -80.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "Diagram",
+        "weak": false,
+        "id": "90b116c4-e980-4dea-ae44-8a626ffa4632",
+        "x": 768.0,
+        "y": 64.0,
+        "type": "entity"
+    },
+    {
+        "disjoint": true,
+        "specs": [
+            {
+                "amm": "",
+                "role": "",
+                "total": true
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [],
+        "name": "o",
+        "weak": false,
+        "id": "492e4dbf-65da-4762-a425-a88fe871d079",
+        "x": 640.0,
+        "y": 64.0,
+        "nodes": [
+            "Diagram",
+            "ER Diagram",
+            "Schema",
+            "EER Diagram"
+        ],
+        "type": "specialization"
+    },
+    {
+        "attributes": [],
+        "name": "Schema",
+        "weak": false,
+        "id": "da506b8b-4b0a-40b7-bed2-176de956c6ea",
+        "x": 512.0,
+        "y": 64.0,
+        "type": "entity"
+    },
+    {
+        "disjoint": false,
+        "specs": [
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [],
+        "name": "o",
+        "weak": false,
+        "id": "6a46dc31-6e7c-45f2-8c25-be0cc590a8ee",
+        "x": 1152.0,
+        "y": 304.0,
+        "nodes": [
+            "User",
+            "Admin",
+            "Editor",
+            "Viewer"
+        ],
+        "type": "specialization"
+    },
+    {
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "DATETIME",
+                "dataParam": "",
+                "attributes": [],
+                "name": "start_time",
+                "weak": false,
+                "id": "10dab354-b669-4528-a7ae-29027419c883",
+                "x": -96.0,
+                "y": 32.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "BOOL",
+                "dataParam": "",
+                "attributes": [],
+                "name": "retired",
+                "weak": false,
+                "id": "4922e619-1072-44c8-921b-13c0634295d4",
+                "x": -96.0,
+                "y": 0.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "Admin",
+        "weak": false,
+        "id": "be5b2929-3e40-4459-9e7a-4ee796be8608",
+        "x": 1056.0,
+        "y": 432.0,
+        "type": "entity"
+    },
+    {
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "FLOAT",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "reputation",
+                "weak": false,
+                "id": "362fc6fb-ada3-45d1-b896-a42d05beb2ad",
+                "x": -96.0,
+                "y": 16.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "Editor",
+        "weak": false,
+        "id": "17d4a8a2-411a-4290-8ef4-54a3958dc0ef",
+        "x": 1056.0,
+        "y": 304.0,
+        "type": "entity"
+    },
+    {
+        "attributes": [],
+        "name": "Viewer",
+        "weak": false,
+        "id": "b6d27021-cc89-4023-8412-18c7879dbef6",
+        "x": 1056.0,
+        "y": 368.0,
+        "type": "entity"
+    },
+    {
+        "specs": [
+            {
+                "amm": "M",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "N",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "DATETIME",
+                "dataParam": "",
+                "attributes": [],
+                "name": "start_time",
+                "weak": false,
+                "id": "7f927b54-8831-4438-9dde-9f1b44bd95d9",
+                "x": -96.0,
+                "y": 0.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "CAN_VIEW",
+        "weak": false,
+        "id": "154a1d61-ab24-4985-82bf-b786162df276",
+        "x": 896.0,
+        "y": 368.0,
+        "nodes": [
+            "Viewer",
+            "Container"
+        ],
+        "type": "relationship"
+    },
+    {
+        "attributes": [],
+        "name": "EER Diagram",
+        "weak": false,
+        "id": "f54b6356-b502-4830-a374-e42f09471df9",
+        "x": 512.0,
+        "y": 0.0,
+        "type": "entity"
+    },
+    {
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "FLOAT",
+                "dataParam": "16",
+                "attributes": [],
+                "name": "x",
+                "weak": false,
+                "id": "297fb367-b475-4b5b-b39a-2ec81d4e6cf9",
+                "x": 128.0,
+                "y": -48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "FLOAT",
+                "dataParam": "16",
+                "attributes": [],
+                "name": "y",
+                "weak": false,
+                "id": "2bcd026d-4430-4adb-9368-c5819f9c25c2",
+                "x": 128.0,
+                "y": -16.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "name",
+                "weak": false,
+                "id": "26955a19-3081-4e61-b8ec-c5670b69e77a",
+                "x": 127.33657956871093,
+                "y": 16.0,
+                "type": "attribute"
+            },
+            {
+                "key": true,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "36",
+                "attributes": [],
+                "name": "id",
+                "weak": false,
+                "id": "dfa1c712-5e85-4170-aced-60fa9477b978",
+                "x": 128.0,
+                "y": 48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "BOOL",
+                "dataParam": "",
+                "attributes": [],
+                "name": "outlined",
+                "weak": false,
+                "id": "cc4d2993-2769-4222-b750-b571a5801a44",
+                "x": 128.0,
+                "y": -80.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "Object",
+        "weak": true,
+        "id": "37f0571c-da7c-465b-950f-6c74ee83546a",
+        "x": 512.0,
+        "y": 256.0,
+        "type": "entity"
+    },
+    {
+        "disjoint": true,
+        "specs": [
+            {
+                "amm": "",
+                "role": "",
+                "total": true
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [],
+        "name": "Family Tree: Object",
+        "weak": false,
+        "id": "f652ed72-b6ef-443e-9291-b99b063d17ff",
+        "x": 512.0,
+        "y": 320.0,
+        "nodes": [
+            "Object",
+            "Attribute",
+            "Entity",
+            "Relationship"
+        ],
+        "type": "specialization"
+    },
+    {
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "BOOL",
+                "dataParam": "",
+                "attributes": [],
+                "name": "isKey",
+                "weak": false,
+                "id": "5e32d609-7140-4133-9174-d25f84aa3c10",
+                "x": -112.0,
+                "y": -16.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "BOOL",
+                "dataParam": "",
+                "attributes": [],
+                "name": "isDerived",
+                "weak": false,
+                "id": "263ffc8c-d1aa-4638-b287-4ad006a1e5aa",
+                "x": -112.0,
+                "y": 16.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "Attribute",
+        "weak": true,
+        "id": "f93668fd-ab46-486d-a949-5ccc9e358460",
+        "x": 384.0,
+        "y": 320.0,
+        "type": "entity"
+    },
+    {
+        "attributes": [],
+        "name": "Entity",
+        "weak": true,
+        "id": "03a0b0b4-5042-4a1e-ad72-333106e89402",
+        "x": 384.0,
+        "y": 384.0,
+        "type": "entity"
+    },
+    {
+        "attributes": [],
+        "name": "Relationship",
+        "weak": true,
+        "id": "71d2d332-6944-4407-90d8-1a0451b373df",
+        "x": 640.0,
+        "y": 384.0,
+        "type": "entity"
+    },
+    {
+        "specs": [
+            {
+                "amm": "1",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "N",
+                "role": "",
+                "total": true
+            }
+        ],
+        "attributes": [],
+        "name": "ATTR_OF",
+        "weak": false,
+        "id": "442cb38e-6439-40c0-91b1-9e3d9059cc8c",
+        "x": 384.0,
+        "y": 256.0,
+        "nodes": [
+            "Object",
+            "Attribute"
+        ],
+        "type": "relationship"
+    },
+    {
+        "specs": [
+            {
+                "amm": "N",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "M",
+                "role": "",
+                "total": true
+            }
+        ],
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "role",
+                "weak": false,
+                "id": "0c8c908b-721e-47a3-b82f-556964698873",
+                "x": -80.0,
+                "y": 48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "BOOL",
+                "dataParam": "",
+                "attributes": [],
+                "name": "total",
+                "weak": false,
+                "id": "119792ec-7243-4ff0-9938-c959978a21a7",
+                "x": 0.0,
+                "y": 48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "8",
+                "attributes": [],
+                "name": "cardinality",
+                "weak": false,
+                "id": "493f99d4-da35-4a89-8915-a483a3718bf9",
+                "x": 80.0,
+                "y": 48.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "RELATES",
+        "weak": false,
+        "id": "c1120a34-375c-4e5a-a7bf-98cb175aa397",
+        "x": 512.0,
+        "y": 384.0,
+        "nodes": [
+            "Entity",
+            "Relationship"
+        ],
+        "type": "relationship"
+    },
+    {
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "BOOL",
+                "dataParam": "",
+                "attributes": [],
+                "name": "disjoint",
+                "weak": false,
+                "id": "8115e6e7-3334-4f85-872f-5069e2763da8",
+                "x": -96.0,
+                "y": 0.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "Specialization",
+        "weak": true,
+        "id": "f59c3f5c-b8e2-4355-b619-00fef8ca9952",
+        "x": 768.0,
+        "y": 432.0,
+        "type": "entity"
+    },
+    {
+        "disjoint": false,
+        "specs": [
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [],
+        "name": "Family Tree: Relationship",
+        "weak": false,
+        "id": "f94b8a4a-9e74-4bac-985b-c7fd0662e5a0",
+        "x": 768.0,
+        "y": 384.0,
+        "nodes": [
+            "Relationship",
+            "Specialization"
+        ],
+        "type": "specialization"
+    },
+    {
+        "specs": [
+            {
+                "amm": "N",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "M",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "DATETIME",
+                "dataParam": "",
+                "attributes": [],
+                "name": "datetime",
+                "weak": false,
+                "id": "88c4234e-4393-490f-a932-8490d71213f8",
+                "x": 112.0,
+                "y": 0.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "LAST_EDITED_BY",
+        "weak": false,
+        "id": "91e9c7fd-52e1-48be-850e-3dea68d4b22b",
+        "x": 1152.0,
+        "y": 0.0,
+        "nodes": [
+            "User",
+            "Diagram"
+        ],
+        "type": "relationship"
+    },
+    {
+        "specs": [
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "DATETIME",
+                "dataParam": "",
+                "attributes": [],
+                "name": "datetime",
+                "weak": false,
+                "id": "06e049c3-3fd1-4346-9b4e-1182e8b2db6d",
+                "x": 48.0,
+                "y": -32.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "CREATED_BY",
+        "weak": false,
+        "id": "36e8d90f-386d-4764-a7cc-239e6cd21539",
+        "x": 1024.0,
+        "y": 80.0,
+        "nodes": [
+            "User",
+            "Container"
+        ],
+        "type": "relationship"
+    },
+    {
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "FLOAT",
+                "dataParam": "16",
+                "attributes": [],
+                "name": "x",
+                "weak": false,
+                "id": "aae84897-3ae6-4698-b47a-e50dcf6662ab",
+                "x": -96.0,
+                "y": 0.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "FLOAT",
+                "dataParam": "16",
+                "attributes": [],
+                "name": "y",
+                "weak": false,
+                "id": "7d8b7b6f-d2d3-4664-accb-0bcc67ec7c26",
+                "x": -96.66342043128907,
+                "y": 32.66342043128907,
+                "type": "attribute"
+            },
+            {
+                "key": true,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "name",
+                "weak": false,
+                "id": "367d9be3-5401-4952-8f37-78f4e5533ce4",
+                "x": -96.0,
+                "y": -32.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "Table",
+        "weak": true,
+        "id": "64125bee-e104-4f33-9f85-ca0598ee4df6",
+        "x": 256.0,
+        "y": 64.0,
+        "type": "entity"
+    },
+    {
+        "specs": [
+            {
+                "amm": "N",
+                "role": "references",
+                "total": false
+            },
+            {
+                "amm": "M",
+                "role": "by",
+                "total": false
+            }
+        ],
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "role",
+                "weak": false,
+                "id": "8d23f3f7-cad1-4d4a-8043-8ee353907771",
+                "x": -48.0,
+                "y": -32.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "BOOL",
+                "dataParam": "",
+                "attributes": [],
+                "name": "required",
+                "weak": false,
+                "id": "f4394e92-f607-4ab4-a5ed-bd01da26f415",
+                "x": 48.0,
+                "y": -32.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "FOREIGN",
+        "weak": false,
+        "id": "7652c68a-15c3-4259-9bcd-06f27378523f",
+        "x": 256.0,
+        "y": -48.0,
+        "nodes": [
+            "Table",
+            "Table"
+        ],
+        "type": "relationship"
+    },
+    {
+        "specs": [
+            {
+                "amm": "1",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "N",
+                "role": "",
+                "total": true
+            }
+        ],
+        "attributes": [],
+        "name": "BELONGS_TO",
+        "weak": true,
+        "id": "bf977265-d01e-4da8-9228-e88c99543da2",
+        "x": 384.0,
+        "y": 64.0,
+        "nodes": [
+            "Schema",
+            "Table"
+        ],
+        "type": "relationship"
+    },
+    {
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "BOOL",
+                "dataParam": "",
+                "attributes": [],
+                "name": "isKey",
+                "weak": false,
+                "id": "9e95c902-9a1b-4b24-b794-0c2aa8e974d5",
+                "x": -96.0,
+                "y": 48.0,
+                "type": "attribute"
+            },
+            {
+                "key": true,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "32",
+                "attributes": [],
+                "name": "name",
+                "weak": false,
+                "id": "02f14d67-cfaa-4351-a623-b9a4bcb55d86",
+                "x": -96.0,
+                "y": -48.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "16",
+                "attributes": [],
+                "name": "type",
+                "weak": false,
+                "id": "7120696f-9b84-47ae-b2f7-385a93d96a15",
+                "x": -96.0,
+                "y": -16.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "BOOL",
+                "dataParam": "",
+                "attributes": [],
+                "name": "notNull",
+                "weak": false,
+                "id": "7d478e80-789a-45c6-9439-e8197572463a",
+                "x": -96.0,
+                "y": 80.0,
+                "type": "attribute"
+            },
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "VARCHAR",
+                "dataParam": "16",
+                "attributes": [],
+                "name": "param",
+                "weak": false,
+                "id": "b9c0082a-e32f-46d9-b426-86b282d0aef7",
+                "x": -96.0,
+                "y": 16.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "Column",
+        "weak": true,
+        "id": "63f93251-7d18-4c29-b710-32b68f2e33c4",
+        "x": 256.0,
+        "y": 256.0,
+        "type": "entity"
+    },
+    {
+        "specs": [
+            {
+                "amm": "1",
+                "role": "has",
+                "total": false
+            },
+            {
+                "amm": "N",
+                "role": "belongs to",
+                "total": true
+            }
+        ],
+        "attributes": [],
+        "name": "COLUMN_OF",
+        "weak": true,
+        "id": "2a0c37b3-9fa0-4563-b2dd-08bdbf218ac8",
+        "x": 256.0,
+        "y": 144.0,
+        "nodes": [
+            "Table",
+            "Column"
+        ],
+        "type": "relationship"
+    },
+    {
+        "specs": [
+            {
+                "amm": "N",
+                "role": "",
+                "total": false
+            },
+            {
+                "amm": "M",
+                "role": "",
+                "total": false
+            }
+        ],
+        "attributes": [
+            {
+                "key": false,
+                "derived": false,
+                "unique": false,
+                "dataType": "DATETIME",
+                "dataParam": "",
+                "attributes": [],
+                "name": "datetime",
+                "weak": false,
+                "id": "c466ce90-78df-462e-847a-acb57253ffd8",
+                "x": 112.0,
+                "y": 0.0,
+                "type": "attribute"
+            }
+        ],
+        "name": "LAST_VIEW",
+        "weak": false,
+        "id": "b86f6e15-4ea7-4c23-9dca-62bbb4d507e4",
+        "x": 1088.0,
+        "y": -32.0,
+        "nodes": [
+            "User",
+            "Diagram"
+        ],
+        "type": "relationship"
+    }
+]

@@ -1,0 +1,1 @@
+import{E as e,G as l,j as o}from"./BoMtqdNF.js";const i=["class","style"],d=/^on[A-Z]/,f=(u={})=>{const{excludeListeners:c=!1,excludeKeys:t}=u,a=e(()=>((t==null?void 0:t.value)||[]).concat(i)),s=o();return s?e(()=>{var n;return l(Object.entries((n=s.proxy)==null?void 0:n.$attrs).filter(([r])=>!a.value.includes(r)&&!(c&&d.test(r))))}):e(()=>({}))};export{f as u};
