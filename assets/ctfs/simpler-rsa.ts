@@ -2,7 +2,7 @@ import type { Challenge } from "assets/ctfs/index";
 
 export default <Challenge>{
     name: "Simpler RSA",
-    sha256: "a80f52e553c26c69abfd05ef5de65f78e330068c5a2a3bb299c3a54c1298f637",
+    sha256: "qA9S5VPCbGmr_QXvXeZfeOMwBoxaKjuymcOlTBKY9jc",
     desc: `RSA is so complicated! I made it simpler.
 
 \`\`\`python

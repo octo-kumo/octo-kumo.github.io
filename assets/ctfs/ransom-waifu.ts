@@ -2,7 +2,7 @@ import type { Challenge } from "assets/ctfs/index";
 
 export default <Challenge>{
     name: "Ransom Waifu",
-    sha256: "32dc7f83b4cad52553ca770e41e4bd9347e1c885f666ab2c163d3eac3dccab7e",
+    sha256: "Mtx_g7TK1SVTyncOQeS9k0fhyIX2ZqssFj0-rD3Mq34",
     desc: `
 The hackers' ransomware has locked up my waifu!
 Help me find the passwords those hackers used!

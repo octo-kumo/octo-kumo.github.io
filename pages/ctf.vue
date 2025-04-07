@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import challenges, { type Challenge } from "@/assets/ctfs";
 import ChallengeTitle from "~/components/ChallengeTitle.vue";
-import { sha256 } from "ohash";
+import { digest } from "ohash";
 import { useStorage } from '@vueuse/core'
 import type { MDCElement, MDCNode } from "@nuxtjs/mdc";
 import type { Ref } from "@vue/reactivity";
@@ -39,11 +39,11 @@ async function openChallenge(chal: Challenge) {
     inputPlaceholder: "kumo{}",
     confirmButtonText: 'OK',
     cancelButtonText: 'Cancel',
-    inputValidator: (str) => sha256(str) === chal.sha256,
+    inputValidator: (str) => digest(str) === chal.sha256,
     inputErrorMessage: 'Flag is not correct >_<',
     inputType: flags.value[chal.name] === chal.sha256 ? 'success' : ''
   }).then(({ value }) => {
-    flags.value[chal.name] = sha256(value);
+    flags.value[chal.name] = digest(value);
     ElMessage({
       type: 'success',
       message: `${chal.name} has been solved`,

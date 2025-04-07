@@ -2,8 +2,7 @@
   <div class="lg:max-w-prose! mx-auto!">
     <el-text class="text-4xl! font-bold" tag="h1">Hi!</el-text>
     <el-text tag="p">
-      Welcome to my person website, it is still in the works, expect perhaps unexpected errors, or
-      the site crashing entirely.
+      Welcome to my person website, my portfolio is at <kumo-link to="/portfolio" type="primary">/portfolio</kumo-link>.
     </el-text>
     <el-text tag="p">
       Below is an index of my writeups for CTF challenges, and below that is a list of random web tools and projects.
@@ -43,6 +42,9 @@
 </template>
 <script setup lang="ts">
 import type { RouteRecord } from "vue-router";
+import { useStorage } from '@vueuse/core';
+import { ElMessageBox } from 'element-plus';
+const firstVisit = useStorage("firstVisit",true);
 const router = useRouter();
 const nav = ref(router.getRoutes());
 const contentPage: RouteRecord = {
@@ -56,6 +58,20 @@ const contentPage: RouteRecord = {
 definePageMeta({
   title: "Yun's Website",
   description: "Yun's Personal website : Blog / CTF Writeups / Projects",
+});
+
+onMounted(() => {
+  if (firstVisit.value) {
+    firstVisit.value = false;
+    setTimeout(() => {
+      ElMessageBox.confirm("Do you want to see my portfolio?","First Visit")
+        .then(() => {
+          router.push("/portfolio");
+        })
+        .catch(() => {
+        });
+    }, 1000);
+  }
 });
 </script>
 <style lang="scss">

@@ -1,11 +1,13 @@
-import { defineConfig, presetUno, presetWebFonts, transformerDirectives } from 'unocss'
+import { defineConfig, presetWebFonts, transformerDirectives } from 'unocss'
+import presetWind3 from '@unocss/preset-wind3'
 
 export default defineConfig({
     presets: [
-        presetUno(),
+        presetWind3(),
         presetWebFonts({
             provider: 'bunny',
             fonts: {
+                sans: 'Space Grotesk',
                 mono: ['JetBrains Mono'],
             }
         }),

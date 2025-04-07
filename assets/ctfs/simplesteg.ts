@@ -2,7 +2,7 @@ import type { Challenge } from "assets/ctfs/index";
 
 export default <Challenge>{
     name: "Simple Steg",
-    sha256: "b79cd662cea35f71c5e7bf51663b79db7ee5b090c66fe262758edb23406bcdbe",
+    sha256: "t5zWYs6jX3HF579RZjt5237lsJDGb-JidY7bI0Brzb4",
     desc: `
 > Artwork: [@壱珂/ichika87](https://twitter.com/ichika087/status/1813158792424792107)
 

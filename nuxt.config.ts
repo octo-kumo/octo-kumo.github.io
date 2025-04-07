@@ -65,6 +65,7 @@ export default defineNuxtConfig({
     modules: [
         '@vueuse/nuxt',
         '@unocss/nuxt',
+        '@tresjs/nuxt',
         '@element-plus/nuxt', '@nuxtjs/color-mode', '@vite-pwa/nuxt', "@nuxtjs/sitemap", "@nuxt/content", // "@nuxt/image",
         // "nuxt-security",
         // '@nuxtjs/robots',
@@ -193,6 +194,10 @@ export default defineNuxtConfig({
         icon: 'ElIcon',
         importStyle: 'scss',
         themes: ['dark'],
+    },
+
+    ogImage: {
+        enabled: PRODUCTION
     },
 
     experimental: {

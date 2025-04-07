@@ -1,8 +1,8 @@
-import type {Challenge} from "assets/ctfs/index";
+import type { Challenge } from "assets/ctfs/index";
 
 export default <Challenge>{
     name: "xor",
-    sha256: "90c9ca84b9327331650466d360998c57dfb14a2e15054a13b78eceb2d83661cb",
+    sha256: "kMnKhLkyczFlBGbTYJmMV9-xSi4VBUoTt47Ostg2Ycs",
     desc: `
 Imagine you have a flag, and you're standing in front of a huge field with countless flagpoles.
 
@@ -15,5 +15,5 @@ So, there's a world out there in this vast field where your flag is planted on t
 However, I have made a quantum spacetime compressor based on **xor**, that will help you verify if your flag is correct.`,
     diff: "medium",
     tags: ['rev'],
-    files: [{url: "https://yun.ng/ctf/rev/xor", name: "xor"}]
+    files: [{ url: "https://yun.ng/ctf/rev/xor", name: "xor" }]
 }
