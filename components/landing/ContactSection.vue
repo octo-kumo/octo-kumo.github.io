@@ -23,9 +23,10 @@
         </div>
       </div>
       <div class="mt-2 p-4 justify-center flex">
-        <a href="/" class="text-xl p-4 border border-solid border-white rounded-xl decoration-none text-white">Back to
-          main
-          site</a>
+        <a href="/" class="text-xl p-4 border border-solid border-white rounded-xl decoration-none text-white
+        hover:bg-white hover:text-black transition-all">
+          Back to main site
+        </a>
       </div>
     </div>
   </div>

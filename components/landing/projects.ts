@@ -243,7 +243,7 @@ export const projects: ProjectDef[] = [
     {
         name: "Anime Character Extractor",
         desc: "Analyzes anime videos, extract all character faces, and cluster them. Manually labeled and cleaned training data.",
-        image: "https://res.cloudinary.com/kumonochisanaka/image/upload/v1743833563/c7yllsfevuiodciydhno.png",
+        image: "https://image.yun.ng/upload/v1743833563/c7yllsfevuiodciydhno.webp",
         langs: ["python"],
         keys: ["MaskRCNN", "ai", "tensorflow", "keras", "Autoencoder", "NumPy", "Pandas"],
         year: '2021',
@@ -347,7 +347,7 @@ export const projects: ProjectDef[] = [
         keys: ['scraping', 'pixiv'],
         github: 'octo-kumo/pixiv-manager',
         link: 'https://github.com/octo-kumo/pixiv-manager/releases',
-        image: 'https://github.com/octo-kumo/pixiv-manager/raw/master/github/images/img.png',
+        image: 'https://github.com/octo-kumo/pixiv-manager/raw/master/github/images/img.jpg',
         year: '2023-2024'
     },
     {
@@ -357,7 +357,7 @@ export const projects: ProjectDef[] = [
         keys: ['three.js', 'vue.js', 'game', 'simulation'],
         github: 'octo-kumo/air-defence',
         link: 'https://yun.ng/projects/air-defence',
-        image: 'https://res.cloudinary.com/kumonochisanaka/image/upload/v1743829040/ebuggnx4tsxge4ypp1l3.png',
+        image: 'https://image.yun.ng/upload/v1743829040/ebuggnx4tsxge4ypp1l3.webp',
         year: '2023-2024'
     },
     {
@@ -416,7 +416,7 @@ export const projects: ProjectDef[] = [
         keys: ['kmap', 'vue.js'],
         desc: "RPN logic expression parser + evaluator + truth table generation / custom truth table + kmap generation + kmap solver + DFS minimal cover pruning + shannon factorization + good UI",
         link: "https://yun.ng/projects/digital-logic",
-        image: 'https://res.cloudinary.com/kumonochisanaka/image/upload/v1743830774/llytz7xpqxizeqxnvr91.png'
+        image: 'https://image.yun.ng/upload/v1743830774/llytz7xpqxizeqxnvr91.webp'
     },
     {
         name: "2D Triangulator",
@@ -425,7 +425,7 @@ export const projects: ProjectDef[] = [
         keys: ['simulation', 'vue.js'],
         desc: "N vector universal 2D triangulator, useful to finding minecraft bases",
         link: "https://yun.ng/projects/triangulator",
-        image: 'https://res.cloudinary.com/kumonochisanaka/image/upload/v1743830833/nlvxtyr0zy2fwkfdpyex.png'
+        image: 'https://image.yun.ng/upload/v1743830833/nlvxtyr0zy2fwkfdpyex.webp'
     },
     {
         name: "Finance Tools",
@@ -450,7 +450,7 @@ export const projects: ProjectDef[] = [
         keys: ['jmonkeyengine', 'serial', 'network', 'android', 'hardware'],
         desc: "3D ground control station for a drone using custom serial communication protocol. Displays the world map below you, auto load/unloads + LOD. Works on android.",
         github: "octo-kumo/drone-controller",
-        image: "https://res.cloudinary.com/kumonochisanaka/image/upload/v1743831406/kstqunyercuh9bm4zrwj.png"
+        image: "https://image.yun.ng/upload/v1743831406/kstqunyercuh9bm4zrwj.webp"
     },
     {
         name: "Deploy Flow",
