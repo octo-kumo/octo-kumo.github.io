@@ -94,8 +94,7 @@ const TOC = computed(() => {
 });
 
 const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0');
-const pageViews = inject<Ref<number>>('pageViews', ref(0));
-
+const pageViews = useState<number>('page-views');
 
 /*
 ONLY APPLICABLE TO WRITEUP STATISTICS
