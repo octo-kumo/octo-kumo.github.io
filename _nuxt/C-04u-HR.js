@@ -1,0 +1,4 @@
+import{h as u,u as g,r as o,o as y,i as m}from"./LXL7uvHp.js";async function h(e){const t=await e(),a=t.default||t;return $(a)}const f=new WeakMap;function $(e){if(f.has(e))return f.get(e);const t={...e};return t.render?t.render=(a,l,n,i,s,d)=>{var r;return i.mounted$??a.mounted$?u((r=e.render)==null?void 0:r.bind(a)(a,l,n,i,s,d)):u("div")}:t.template&&(t.template=`
+      <template v-if="mounted$">${e.template}</template>
+      <template v-else><div></div></template>
+    `),t.setup=(a,l)=>{var d;const n=g(),i=o(n.isHydrating===!1);y(()=>{i.value=!0});const s=((d=e.setup)==null?void 0:d.call(e,a,l))||{};return m(s)?Promise.resolve(s).then(r=>typeof r!="function"?(r||(r={}),r.mounted$=i,r):(...v)=>i.value||!n.isHydrating?u(r(...v)):u("div")):typeof s=="function"?(...r)=>i.value||!n.isHydrating?u(s(...r)):u("div"):Object.assign(s,{mounted$:i})},f.set(e,t),t}export{h as createClientPage};
