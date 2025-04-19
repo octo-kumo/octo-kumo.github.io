@@ -94,6 +94,8 @@ const TOC = computed(() => {
 });
 
 const contentSpacingRight = computed(() => TOC.value.length > 0 ? '12.5rem' : '0');
+const pageViews = inject<Ref<number>>('pageViews', ref(0));
+
 
 /*
 ONLY APPLICABLE TO WRITEUP STATISTICS
@@ -150,7 +152,7 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
       </el-text>
       <el-text size="small" class="block font-mono">
         <hover-text>
-          <template #default>{{ doc.readingTime?.text }}</template>
+          <template #default>{{ doc.readingTime?.text }} · <ClientOnly><span>{{ pageViews }} views</span></ClientOnly></template>
           <template #hover>{{ doc.readingTime?.words + ' words' }}</template>
         </hover-text>
       </el-text>
