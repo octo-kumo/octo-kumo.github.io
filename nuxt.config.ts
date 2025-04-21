@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { resolve } from 'path'
 import { readFileSync } from 'node:fs';
 import webmanifest from "./webmanifest";
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
@@ -49,6 +50,16 @@ export default defineNuxtConfig({
                 target: 'esnext',
             },
         },
+        storage: {
+            'cache:content': {
+                driver: 'fs',
+                base: resolve(__dirname, 'node_modules/.content')
+            },
+            'cache:content:parsed': {
+                driver: 'fs',
+                base: resolve(__dirname, 'node_modules/.content.parsed')
+            }
+        }
     },
 
     vite: {
@@ -197,7 +208,7 @@ export default defineNuxtConfig({
         },
         runtimeCacheStorage: {
             driver: 'fs',
-            base: './node_modules/.og-image',
+            base: resolve(__dirname, 'node_modules/.og-image'),
             cacheMaxAgeSeconds: 60 * 60 * 24 * 365,
         }
     },
