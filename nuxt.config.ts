@@ -1,8 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
-// import {transformAssetUrls} from "vite-plugin-vuetify";
-
-import { resolve } from "node:url";
 import { readFileSync } from 'node:fs';
 import webmanifest from "./webmanifest";
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
@@ -45,7 +41,7 @@ export default defineNuxtConfig({
         },
         prerender: PRODUCTION ? {
             autoSubfolderIndex: false,
-            concurrency: 3,
+            concurrency: 4,
             routes: ['/', '/sitemap.xml']
         } : undefined,
         esbuild: {
@@ -112,25 +108,6 @@ export default defineNuxtConfig({
             periodicSyncForUpdates: 3600,
         }
     },
-
-    // delayHydration: {
-    //     mode: 'mount',
-    //     debug: process.env.NODE_ENV === 'development'
-    // },
-    // security: {
-    //     nonce: true,
-    //     ssg: {
-    //         meta: true,
-    //         hashScripts: true,
-    //         hashStyles: false
-    //     },
-    //     headers: {
-    //         contentSecurityPolicy: {
-    //             'img-src': ['self', 'data:', 'https://*'],
-    //             'frame-src': ['self', 'https://www.youtube.com', 'https://utteranc.es'],
-    //         }
-    //     },
-    // },
     content: {
         build: {
             markdown: {
@@ -145,7 +122,7 @@ export default defineNuxtConfig({
                     'rehype-preset-minify': {},
                 },
                 highlight: {
-                    langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust',
+                    langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust', 'csharp',
                         JSON.parse(readFileSync('./public/shiki/flag.tmLanguage.json', 'utf-8')),
                     ],
                     theme: {
@@ -180,6 +157,20 @@ export default defineNuxtConfig({
     },
 
     vite: {
+        cacheDir: 'node_modules/.vite',
+        build: {
+            assetsInlineLimit: 4096,
+            minify: 'esbuild',
+            sourcemap: !PRODUCTION,
+            chunkSizeWarningLimit: 600,
+            rollupOptions: {
+                output: {
+                    manualChunks: {
+                        vue: ['vue', 'vue-router'], // split core libs
+                    }
+                }
+            }
+        },
         css: {
             preprocessorOptions: {
                 scss: {
@@ -188,6 +179,7 @@ export default defineNuxtConfig({
                 },
             },
         },
+
     },
 
     elementPlus: {
@@ -201,6 +193,7 @@ export default defineNuxtConfig({
     },
 
     experimental: {
+        buildCache: PRODUCTION,
         viewTransition: PRODUCTION,
         payloadExtraction: PRODUCTION,
         sharedPrerenderData: PRODUCTION

@@ -13,10 +13,23 @@ jobs:
       NODE_ENV: production
       NITRO_TARGET: static
       SITE_URL: https://yun.ng
+      BUN_INSTALL_CACHE_DIR: ~/.bun/install/cache
+      BUN_RUNTIME_TRANSPILER_CACHE_PATH: .cache/transpiler
+      NODE_OPTIONS: "--max-old-space-size=10240"
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: 'true'
+      - name: Cache Bun & build caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            node_modules
+            .vite
+            .nitro
+            .cache/transpiler
+          key: ${{ runner.os }}-bun-${{ hashFiles('package.json','bun.lockb') }}
       - name: Git Submodule Update
         run: |
           git pull --recurse-submodules
