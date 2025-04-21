@@ -189,7 +189,11 @@ export default defineNuxtConfig({
     },
 
     ogImage: {
-        enabled: PRODUCTION
+        enabled: PRODUCTION,
+        zeroRuntime: PRODUCTION,
+        defaults: {
+            extension: 'jpeg',
+        }
     },
 
     experimental: {

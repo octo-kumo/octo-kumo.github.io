@@ -26,6 +26,7 @@ jobs:
           path: |
             ~/.bun/install/cache
             node_modules
+            node_modules/.vite
             .vite
             .nitro
             .cache/transpiler
