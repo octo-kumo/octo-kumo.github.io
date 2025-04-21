@@ -197,7 +197,8 @@ export default defineNuxtConfig({
         },
         runtimeCacheStorage: {
             driver: 'fs',
-            base: './node_modules/.og-image'
+            base: './node_modules/.og-image',
+            cacheMaxAgeSeconds: 60 * 60 * 24 * 365,
         }
     },
 
