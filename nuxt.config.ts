@@ -194,6 +194,10 @@ export default defineNuxtConfig({
         zeroRuntime: PRODUCTION,
         defaults: {
             extension: 'jpeg',
+        },
+        runtimeCacheStorage: {
+            driver: 'fs',
+            base: './node_modules/.og-image'
         }
     },
 
