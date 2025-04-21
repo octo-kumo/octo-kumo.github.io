@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     nitro: {
         minify: PRODUCTION,
         sourceMap: !PRODUCTION,
-        timing: true,
+        timing: false,
         compressPublicAssets: PRODUCTION,
         preset: process.env.NITRO_TARGET ?? "node",
         firebase: {
@@ -49,6 +49,33 @@ export default defineNuxtConfig({
                 target: 'esnext',
             },
         },
+    },
+
+    vite: {
+        cacheDir: 'node_modules/.vite',
+        build: {
+            target: 'esnext',
+            minify: 'esbuild',
+            assetsInlineLimit: 4096,
+            sourcemap: !PRODUCTION,
+            chunkSizeWarningLimit: 600,
+            rollupOptions: {
+                output: {
+                    manualChunks: {
+                        vue: ['vue', 'vue-router'], // split core libs
+                    }
+                }
+            }
+        },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern',
+                    // additionalData: `@use "@/assets/scss/element/index.scss" as element;`,
+                },
+            },
+        },
+
     },
 
     devtools: { enabled: false },
@@ -154,32 +181,6 @@ export default defineNuxtConfig({
         icons: {
             scale: 1.2,
         },
-    },
-
-    vite: {
-        cacheDir: 'node_modules/.vite',
-        build: {
-            assetsInlineLimit: 4096,
-            minify: 'esbuild',
-            sourcemap: !PRODUCTION,
-            chunkSizeWarningLimit: 600,
-            rollupOptions: {
-                output: {
-                    manualChunks: {
-                        vue: ['vue', 'vue-router'], // split core libs
-                    }
-                }
-            }
-        },
-        css: {
-            preprocessorOptions: {
-                scss: {
-                    api: 'modern',
-                    additionalData: `@use "@/assets/scss/element/index.scss" as element;`,
-                },
-            },
-        },
-
     },
 
     elementPlus: {
