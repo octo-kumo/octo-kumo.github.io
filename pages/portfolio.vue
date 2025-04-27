@@ -18,7 +18,6 @@ definePageMeta({
   title: "Yun's Portfolio",
   description: "Welcome to my portfolio! My name is Yun, and I'm a software engineering student!"
 });
-
 const hero = ref<InstanceType<any> | null>(null)
 const about = ref<InstanceType<any> | null>(null)
 const skills = ref<InstanceType<any> | null>(null)

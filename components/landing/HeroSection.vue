@@ -8,7 +8,7 @@
       <h1 @click="clicks++" ref="tagline" :class="{ 'cursor-pointer': clicks < CLICKS }">
         an aspiring software engineer.
       </h1>
-      <h2 :class="{ 'opacity-50': progress > 0.1 }" class="transition-opacity">traveler, please scroll down</h2>
+      <h2 :class="{ 'opacity-50': progress > 0.1 }" class="transition-opacity"><ruby>traveler<rt class="opacity-30">{{ pageViews }}th</rt></ruby>, please scroll down</h2>
       <div class="scroll-indicator" :class="{ 'hidden': progress > 0.1 }" @click="emit('navigate', 'about')">
         <div class="chevron"></div>
         <div class="chevron"></div>
@@ -25,6 +25,7 @@ const emit = defineEmits<{
 }>();
 const clicks = ref(0);
 const tagline = ref<HTMLHeadingElement>();
+const pageViews = useState<number>('page-views');
 defineProps<{
   progress: number;
 }>();

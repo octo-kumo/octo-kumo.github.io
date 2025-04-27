@@ -1,6 +1,6 @@
 <template>
   <div class="lg:max-w-prose! mx-auto!">
-    <el-text class="text-4xl! font-bold" tag="h1">Hi!</el-text>
+    <el-text class="text-4xl! font-bold" tag="h1">Hi! {{ pageViews }}th visitor!</el-text>
     <el-text tag="p">
       Welcome to my person website, my portfolio is at <kumo-link to="/portfolio" type="primary">/portfolio</kumo-link>.
     </el-text>
@@ -54,7 +54,7 @@ const contentPage: RouteRecord = {
     description: "Markdown Content Archive"
   } as any
 } as RouteRecord;
-
+const pageViews = useState<number>('page-views');
 definePageMeta({
   title: "Yun's Website",
   description: "Yun's Personal website : Blog / CTF Writeups / Projects",
