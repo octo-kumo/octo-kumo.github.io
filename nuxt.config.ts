@@ -1,5 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { resolve } from 'path'
 import { readFileSync } from 'node:fs';
 import webmanifest from "./webmanifest";
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
@@ -49,21 +48,10 @@ export default defineNuxtConfig({
             options: {
                 target: 'esnext',
             },
-        },
-        storage: {
-            'cache:content': {
-                driver: 'fs',
-                base: resolve(__dirname, 'node_modules/.content')
-            },
-            'cache:content:parsed': {
-                driver: 'fs',
-                base: resolve(__dirname, 'node_modules/.content.parsed')
-            }
         }
     },
 
     vite: {
-        cacheDir: 'node_modules/.vite',
         build: {
             target: 'esnext',
             minify: 'esbuild',
@@ -95,14 +83,6 @@ export default defineNuxtConfig({
         strict: true,
         shim: false,
     },
-    mdc: {
-        components: {
-            prose: false,
-            map: {
-                'img': 'ContentProseImg'
-            }
-        }
-    },
     modules: [
         '@vueuse/nuxt',
         '@unocss/nuxt',
@@ -130,25 +110,6 @@ export default defineNuxtConfig({
         strategies: 'generateSW',
         registerType: 'autoUpdate',
         manifest: webmanifest,
-        workbox: {
-            globPatterns: ['**/*', '**/*/'],
-            runtimeCaching: [
-                {
-                    urlPattern: /^https:\/\/fonts\.bunny\.net\/.*/i,
-                    handler: 'CacheFirst',
-                    options: {
-                        cacheName: 'bunny-fonts-cache',
-                        expiration: {
-                            maxEntries: 10,
-                            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
-                        },
-                        cacheableResponse: {
-                            statuses: [0, 200]
-                        }
-                    }
-                }
-            ]
-        },
         client: {
             installPrompt: false,
             periodicSyncForUpdates: 3600,
@@ -213,16 +174,10 @@ export default defineNuxtConfig({
         zeroRuntime: PRODUCTION,
         defaults: {
             extension: 'jpeg',
-        },
-        runtimeCacheStorage: {
-            driver: 'fs',
-            base: resolve(__dirname, 'node_modules/.og-image'),
-            cacheMaxAgeSeconds: 60 * 60 * 24 * 365,
         }
     },
 
     experimental: {
-        buildCache: PRODUCTION,
         viewTransition: PRODUCTION,
         payloadExtraction: PRODUCTION,
         sharedPrerenderData: PRODUCTION

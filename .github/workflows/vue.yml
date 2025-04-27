@@ -26,10 +26,6 @@ jobs:
           path: |
             ~/.bun/install/cache
             node_modules
-            node_modules/.vite
-            .vite
-            .nitro
-            .cache/transpiler
           key: ${{ runner.os }}-bun-${{ hashFiles('package.json','bun.lockb') }}-${{ github.run_id }}
           restore-keys: ${{ runner.os }}-bun-${{ hashFiles('package.json','bun.lockb') }}-
       - name: Git Submodule Update
