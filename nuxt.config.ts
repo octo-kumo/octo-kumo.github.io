@@ -95,11 +95,20 @@ export default defineNuxtConfig({
         strict: true,
         shim: false,
     },
-
+    mdc: {
+        components: {
+            prose: true
+        }
+    },
+    components: {
+        global: true,
+        dirs: ['~/components/content']
+    },
     modules: [
         '@vueuse/nuxt',
         '@unocss/nuxt',
         '@tresjs/nuxt',
+        '@nuxtjs/mdc',
         '@element-plus/nuxt', '@nuxtjs/color-mode', '@vite-pwa/nuxt', "@nuxtjs/sitemap", "@nuxt/content", // "@nuxt/image",
         // "nuxt-security",
         // '@nuxtjs/robots',
