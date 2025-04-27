@@ -282,6 +282,16 @@ const filterTreeNode: FilterNodeMethodFunction = (values: string[], data: TreeNo
       transform: translateX(-100%);
       color: var(--el-text-color-secondary);
     }
+
+    a {
+      color: var(--el-text-color-primary);
+      text-decoration: underline;
+      text-decoration-color: var(--el-color-primary-light-5);
+
+      &:hover {
+        text-decoration-color: var(--el-color-primary);
+      }
+    }
   }
 
   &>h1::before {
