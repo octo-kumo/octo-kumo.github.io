@@ -97,12 +97,11 @@ export default defineNuxtConfig({
     },
     mdc: {
         components: {
-            prose: true
+            prose: false,
+            map: {
+                'img': 'ContentProseImg'
+            }
         }
-    },
-    components: {
-        global: true,
-        dirs: ['~/components/content']
     },
     modules: [
         '@vueuse/nuxt',
