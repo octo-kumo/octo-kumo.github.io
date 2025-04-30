@@ -38,7 +38,7 @@ jobs:
       - name: Install dependencies
         run: bun install
       - name: Generate
-        run: bun --bun run generate
+        run: bun run generate
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
