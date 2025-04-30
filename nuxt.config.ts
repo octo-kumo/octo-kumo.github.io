@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { readFileSync } from 'node:fs';
+import fs from 'fs-extra';
+import { resolve } from 'pathe'
 import webmanifest from "./webmanifest";
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
 const PRODUCTION = process.env.NODE_ENV === 'production'
@@ -9,6 +10,22 @@ export default defineNuxtConfig({
         name: 'Yun',
         url: SITE_URL,
         logo: 'https://yun.ng/logo.png'
+    },
+    build: {
+        analyze: process.env.ANALYZE ? {
+            analyzerMode: 'static',
+            open: false,
+            filename: resolve('.nuxt/analyze/client.html')
+        } : false
+    },
+    hooks: {
+        'nitro:build:public-assets': async ({ nuxt, nitro }: any) => {
+            if (process.env.ANALYZE) {
+                const src = resolve(nuxt.options.rootDir, '.nuxt/analyze/client.html')
+                const dest = resolve(nitro.options.output.publicDir, 'analyze.html')
+                await fs.copy(src, dest)
+            }
+        }
     },
     app: {
         baseURL: process.env.BASE_URL || '/',
@@ -130,7 +147,7 @@ export default defineNuxtConfig({
                 },
                 highlight: {
                     langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust', 'csharp',
-                        JSON.parse(readFileSync('./public/shiki/flag.tmLanguage.json', 'utf-8')),
+                        JSON.parse(fs.readFileSync('./public/shiki/flag.tmLanguage.json', 'utf-8')),
                     ],
                     theme: {
                         default: 'one-light',
