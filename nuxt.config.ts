@@ -25,7 +25,7 @@ export default defineNuxtConfig({
     },
     vue: {
         compilerOptions: {
-            isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect", "Path", "Annotation"].includes(tag),
+            isCustomElement: (tag: string) => ["mjx-container", "MjxContainer", "G", "Use", "Defs", "Rect", "Path", "Annotation", "lite-youtube"].includes(tag),
         },
     },
     css: ['~/assets/scss/index.scss'],
