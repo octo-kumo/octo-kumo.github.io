@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Vue
     env:
+      ANALYZE: true
       NODE_ENV: production
       NITRO_TARGET: static
       SITE_URL: https://yun.ng
