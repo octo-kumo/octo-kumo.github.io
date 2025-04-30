@@ -1,6 +1,6 @@
 <template>
   <ClientOnly>
-    <div class="relative w-full py-8">
+    <div class="relative w-full py-8 aspect-video">
       <lite-youtube
         :videoid="vid"
         class="absolute inset-0 w-full h-full"
