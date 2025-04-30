@@ -4,8 +4,22 @@ export default defineContentConfig({
     collections: {
         content: defineCollection({
             type: 'page',
-            source: '**/*.md',
-            // exclude: ['**/_*/**', '**/_*.md'], // doesnt work
+            source: {
+                include: '**/*.md',
+                exclude: [
+                    '**/node_modules/**',
+                    '**/.DS_Store',
+                    '**/.obsidian/**',
+                    '**/.idea/**',
+                    '**/.venv/**',
+                    '**/.vscode/**',
+                    '**/__pycache__/**',
+                    '**/.trash/**',
+                    '**/templates/**',
+                    '**/.smart-connections',
+                    '**/.smart-env'
+                ]
+            },
             schema: z.object({
                 created: z.date(),
                 updated: z.date(),

@@ -11,22 +11,6 @@ export default defineNuxtConfig({
         url: SITE_URL,
         logo: 'https://yun.ng/logo.png'
     },
-    build: {
-        analyze: process.env.ANALYZE ? {
-            analyzerMode: 'static',
-            open: false,
-            filename: resolve('.nuxt/analyze/client.html')
-        } : false
-    },
-    hooks: {
-        'nitro:build:public-assets': async (nitro: any) => {
-            if (process.env.ANALYZE) {
-                const src = resolve(process.cwd(), '.nuxt/analyze/client.html')
-                const dest = resolve(nitro.options.output.publicDir, 'analyze.html')
-                await fs.copy(src, dest)
-            }
-        }
-    },
     app: {
         baseURL: process.env.BASE_URL || '/',
         head: {
