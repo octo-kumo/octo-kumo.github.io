@@ -482,6 +482,16 @@ export const projects: ProjectDef[] = [
         keys: ["huffman", "video compression", "de1-soc", "arm", 'bad apple'],
         desc: "Playing \"Bad Apple\" on a DE1-SoC by using python to resize and delta-encode the video into 8x8 blocks, then generate Huffman if-chain C code for on-the-fly huffman decoding.",
         video: "vN1YDjCYprw"
+    },
+    {
+        name: "space-rs",
+        year: "2025",
+        langs: ['rust'],
+        keys: ["game", "simulation", "wasm"],
+        desc: "Space RS is a 2D N-body simulation game written in rust, it also simulates the roche limit and tidal disintegration.",
+        github: "octo-kumo/space-rs",
+        link: "https://yun.ng/space-rs",
+        video: "ch8ig_aDqTE"
     }
 ] satisfies ProjectDef[];
 
