@@ -19,9 +19,9 @@ export default defineNuxtConfig({
         } : false
     },
     hooks: {
-        'nitro:build:public-assets': async ({ nuxt, nitro }: any) => {
+        'nitro:build:public-assets': async (nitro: any) => {
             if (process.env.ANALYZE) {
-                const src = resolve(nuxt.options.rootDir, '.nuxt/analyze/client.html')
+                const src = resolve(process.cwd(), '.nuxt/analyze/client.html')
                 const dest = resolve(nitro.options.output.publicDir, 'analyze.html')
                 await fs.copy(src, dest)
             }
