@@ -3,7 +3,6 @@
     <div class="relative w-full py-8">
       <lite-youtube
         :videoid="vid"
-        playlabel="Play video"
         class="absolute inset-0 w-full h-full"
       />
     </div>
