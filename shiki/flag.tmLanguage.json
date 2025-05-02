@@ -1,0 +1,26 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "displayName": "Flag",
+    "fileTypes": [
+        "ctf",
+        "flag"
+    ],
+    "name": "flag",
+    "firstLineMatch": "^\\w+{.+}",
+    "scopeName": "source.flag",
+    "patterns": [
+        {
+            "name": "keyword.control.ctf",
+            "match": "\\w+(?=\\{[!-~]+\\})"
+        },
+        {
+            "name": "keyword.operator.ctf",
+            "match": "[{}]"
+        },
+        {
+            "name": "string.unquoted.flag",
+            "match": "(?<=\\{)[!-~]+(?=\\})"
+        }
+    ],
+    "repository": {}
+}
