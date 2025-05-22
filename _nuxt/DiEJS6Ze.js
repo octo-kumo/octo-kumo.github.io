@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./D6TKx5I8.js","./BeEOpU2C.js","./Chessboard.tb4JuRUn.css"])))=>i.map(i=>d[i]);
+import{_ as t}from"./DuxNVKiY.js";import{m as _,v as n,a,z as r}from"./BeEOpU2C.js";const s=r(()=>t(()=>import("./D6TKx5I8.js"),__vite__mapDeps([0,1,2]),import.meta.url).then(e=>e.default||e)),l=_({__name:"chess-ai",setup(e){return(c,m)=>{const o=s;return a(),n(o)}}});export{l as default};

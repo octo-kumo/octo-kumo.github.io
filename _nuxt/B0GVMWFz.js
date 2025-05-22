@@ -1,0 +1,1 @@
+import{o as e}from"./DuxNVKiY.js";import{m as t,c as o,a as r}from"./BeEOpU2C.js";const p=t({__name:"index",setup(a){return e({title:"Projects"}),(n,s)=>(r(),o("h1",null,"Projects"))}});export{p as default};

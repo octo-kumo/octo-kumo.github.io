@@ -1,0 +1,4 @@
+import{h as s,r as f,o as m,i as v}from"./BeEOpU2C.js";import{u as c}from"./DuxNVKiY.js";async function $(e){const t=await e(),i=t.default||t;return p(i)}const l=new WeakMap;function p(e){if(l.has(e))return l.get(e);const t={...e};return t.render?t.render=(i,d,u,n,a,r)=>n.mounted$??i.mounted$?s(e.render?.bind(i)(i,d,u,n,a,r)):s("div"):t.template&&=`
+      <template v-if="mounted$">${e.template}</template>
+      <template v-else><div></div></template>
+    `,t.setup=(i,d)=>{const u=c(),n=f(u.isHydrating===!1);m(()=>{n.value=!0});const a=e.setup?.(i,d)||{};return v(a)?Promise.resolve(a).then(r=>typeof r!="function"?(r||={},r.mounted$=n,r):(...o)=>n.value||!u.isHydrating?s(r(...o)):s("div")):typeof a=="function"?(...r)=>n.value||!u.isHydrating?s(a(...r)):s("div"):Object.assign(a,{mounted$:n})},l.set(e,t),t}export{$ as createClientPage};
