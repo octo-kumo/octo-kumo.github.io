@@ -76,7 +76,6 @@ export default defineNuxtConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    api: 'modern',
                     // additionalData: `@use "@/assets/scss/element/index.scss" as element;`,
                 },
             },
@@ -139,7 +138,7 @@ export default defineNuxtConfig({
                     'rehype-preset-minify': {},
                 },
                 highlight: {
-                    langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust', 'csharp',
+                    langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust', 'csharp', 'kotlin',
                         JSON.parse(fs.readFileSync('./public/shiki/flag.tmLanguage.json', 'utf-8')),
                     ],
                     theme: {
@@ -166,7 +165,6 @@ export default defineNuxtConfig({
     },
 
     unocss: {
-        uno: true,
         attributify: true,
         icons: {
             scale: 1.2,
