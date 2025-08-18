@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import fs from 'fs-extra';
-import { resolve } from 'pathe'
+import { visualizer } from "rollup-plugin-visualizer";
+import { type PluginOption } from "vite";
 import webmanifest from "./webmanifest";
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000"
 const PRODUCTION = process.env.NODE_ENV === 'production'
@@ -10,6 +11,11 @@ export default defineNuxtConfig({
         name: 'Yun',
         url: SITE_URL,
         logo: 'https://yun.ng/logo.png'
+    },
+    build: {
+        analyze: {
+            template: 'sunburst',
+        }
     },
     app: {
         baseURL: process.env.BASE_URL || '/',
@@ -75,7 +81,10 @@ export default defineNuxtConfig({
                 },
             },
         },
-
+        plugins: [visualizer({
+            emitFile: true,
+            filename: "stats.html",
+        }) as PluginOption],
     },
 
     devtools: { enabled: false },
