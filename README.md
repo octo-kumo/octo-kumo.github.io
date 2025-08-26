@@ -5,18 +5,17 @@
 Make sure to install the dependencies:
 
 ```bash
-npm install
+bun install
 ```
 
 ## Development Server
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 ## Production
 
 ```bash
-npm run build
-npm run preview
+bun run generate
 ```

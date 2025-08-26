@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     site: {
         name: 'Yun',
         url: SITE_URL,
-        logo: 'https://yun.ng/logo.png'
+        logo: '/logo.png'
     },
     build: {
         analyze: {
@@ -89,8 +89,16 @@ export default defineNuxtConfig({
     devtools: { enabled: false },
 
     typescript: {
+        typeCheck: true,
         strict: true,
-        shim: false,
+        shim: true,
+        tsConfig: {
+            compilerOptions: {
+                types: ["@types/bun"],
+                // fuck nuxt 4 update
+                noUncheckedIndexedAccess: false
+            }
+        }
     },
     modules: [
         '@vueuse/nuxt',
@@ -103,7 +111,8 @@ export default defineNuxtConfig({
         // "nuxt-booster",
         '@formkit/auto-animate/nuxt',
         "nuxt-og-image",
-        ...(PRODUCTION ? ['nuxt-vitalizer', 'nuxt-umami'] : []),
+        'nuxt-vitalizer', 'nuxt-umami'
+        // ...(PRODUCTION ? ['nuxt-vitalizer', 'nuxt-umami'] : []),
         // "nuxt-delay-hydration"
     ],
     vitalizer: {
@@ -138,7 +147,8 @@ export default defineNuxtConfig({
                     'rehype-preset-minify': {},
                 },
                 highlight: {
-                    langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python', 'cpp', 'sql', 'sh', 'php', 'rust', 'csharp', 'kotlin',
+                    langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python',
+                        'cpp', 'sql', 'sh', 'php', 'rust', 'csharp', 'kotlin',
                         JSON.parse(fs.readFileSync('./public/shiki/flag.tmLanguage.json', 'utf-8')),
                     ],
                     theme: {
