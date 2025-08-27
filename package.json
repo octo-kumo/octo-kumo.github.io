@@ -50,6 +50,7 @@
     "@vite-pwa/nuxt": "^1.0.4",
     "@vueuse/nuxt": "^13.7.0",
     "apexcharts": "^5.3.4",
+    "better-sqlite3": "^12.2.0",
     "dat.gui": "^0.7.9",
     "element-plus": "^2.11.1",
     "fetch-event-stream": "^0.1.5",
