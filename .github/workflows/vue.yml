@@ -19,12 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: 'true'
+          submodules: "true"
       - name: Cache Bun & build caches
         uses: actions/cache@v4
         with:
           path: |
             ~/.bun/install/cache
+            .nuxt
+            .data
             node_modules
           key: ${{ runner.os }}-bun-${{ hashFiles('package.json','bun.lockb') }}-${{ github.run_id }}
           restore-keys: ${{ runner.os }}-bun-${{ hashFiles('package.json','bun.lockb') }}-

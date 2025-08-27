@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { CSSProperties } from "vue";
 
+import displayDocDates from "~/utils/display-doc-dates";
+import getCtfCategory from "~/utils/get-ctf-category";
+import guessArticleTitle from "~/utils/guess-article-title";
+import { computed } from "vue";
 defineOptions({
   inheritAttrs: false,
 });
@@ -76,12 +80,11 @@ const background = computed<CSSProperties>(() => {
   };
 });
 
-const siteConfig = useSiteConfig();
 const siteName = computed(() => {
-  return props.siteName || siteConfig.name;
+  return props.siteName || "云";
 });
 const siteLogo = computed(() => {
-  return props.siteLogo || siteConfig.logo || "/logo.png";
+  return props.siteLogo || "/logo.png";
 });
 </script>
 
