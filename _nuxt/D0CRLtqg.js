@@ -1,0 +1,1 @@
+import{_ as r}from"./BuICEgOE.js";import{c as a,a as o,r as s}from"./Cdy4ovlM.js";const t={};function n(e,c){return o(),a("thead",null,[s(e.$slots,"default")])}const d=Object.assign(r(t,[["render",n]]),{__name:"ProseThead"});export{d as default};

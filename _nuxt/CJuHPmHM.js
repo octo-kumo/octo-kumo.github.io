@@ -1,0 +1,1 @@
+import{_ as a}from"./BuICEgOE.js";import{c as r,a as t,r as o}from"./Cdy4ovlM.js";const s={};function c(e,n){return t(),r("table",null,[o(e.$slots,"default",{},void 0,!0)])}const d=Object.assign(a(s,[["render",c],["__scopeId","data-v-ac4bc1d2"]]),{__name:"ProseTable"});export{d as default};

@@ -1,0 +1,1 @@
+import{_ as r}from"./BuICEgOE.js";import{c as o,a as s,r as t}from"./Cdy4ovlM.js";const n={};function a(e,c){return s(),o("em",null,[t(e.$slots,"default")])}const l=Object.assign(r(n,[["render",a]]),{__name:"ProseEm"});export{l as default};

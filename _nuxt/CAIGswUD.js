@@ -1,0 +1,1 @@
+import{f as l}from"./DGHzHT3a.js";import{b as t,g as u}from"./Cdy4ovlM.js";const i=["class","style"],E=/^on[A-Z]/,m=(o={})=>{const{excludeListeners:c=!1,excludeKeys:e}=o,a=t(()=>(e?.value||[]).concat(i)),s=u();return s?t(()=>{var r;return l(Object.entries((r=s.proxy)==null?void 0:r.$attrs).filter(([n])=>!a.value.includes(n)&&!(c&&E.test(n))))}):t(()=>({}))};export{m as u};

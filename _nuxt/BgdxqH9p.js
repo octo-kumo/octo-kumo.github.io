@@ -1,0 +1,1 @@
+import{h as c,j as n}from"./DGHzHT3a.js";import{g as a}from"./CM4f_-Vl.js";var i="[object Object]",s=Function.prototype,p=Object.prototype,e=s.toString,f=p.hasOwnProperty,b=e.call(Object);function l(r){if(!c(r)||n(r)!=i)return!1;var o=a(r);if(o===null)return!0;var t=f.call(o,"constructor")&&o.constructor;return typeof t=="function"&&t instanceof t&&e.call(t)==b}export{l as i};

@@ -1,0 +1,1 @@
+import{_ as r}from"./BuICEgOE.js";import{c as t,a as o,r as s}from"./Cdy4ovlM.js";const n={};function a(e,c){return o(),t("th",null,[s(e.$slots,"default",{},void 0,!0)])}const f=Object.assign(r(n,[["render",a],["__scopeId","data-v-3c291def"]]),{__name:"ProseTh"});export{f as default};

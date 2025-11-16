@@ -1,0 +1,1 @@
+import{_ as o}from"./BuICEgOE.js";import{c as r,a as s,r as t}from"./Cdy4ovlM.js";const a={};function n(e,c){return s(),r("code",null,[t(e.$slots,"default",{},void 0,!0)])}const f=Object.assign(o(a,[["render",n],["__scopeId","data-v-624adb97"]]),{__name:"ProseCode"});export{f as default};
