@@ -81,7 +81,7 @@ const background = computed<CSSProperties>(() => {
 });
 
 const siteName = computed(() => {
-  return props.siteName || "云";
+  return  "Yun's Blog";
 });
 const siteLogo = computed(() => {
   return props.siteLogo || "/logo.png";
