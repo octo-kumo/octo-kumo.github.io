@@ -205,7 +205,6 @@ export default defineNuxtConfig({
     ogImage: {
         enabled: PRODUCTION,
         zeroRuntime: PRODUCTION,
-        buildCache: PRODUCTION,
         defaults: {
             extension: 'jpeg',
         }
