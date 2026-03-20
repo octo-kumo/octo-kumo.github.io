@@ -48,7 +48,7 @@ export default defineNuxtConfig({
         },
         prerender: PRODUCTION ? {
             autoSubfolderIndex: false,
-            concurrency: 4,
+            concurrency: 8,
             routes: ['/', '/sitemap.xml'],
             // failOnError: false
         } : undefined,
@@ -205,6 +205,7 @@ export default defineNuxtConfig({
     ogImage: {
         enabled: PRODUCTION,
         zeroRuntime: PRODUCTION,
+        buildCache: PRODUCTION,
         defaults: {
             extension: 'jpeg',
         }

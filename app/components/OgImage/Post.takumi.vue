@@ -1,66 +1,29 @@
 <script setup lang="ts">
-import type { CSSProperties } from "vue";
-
 import displayDocDates from "~/utils/display-doc-dates";
 import getCtfCategory from "~/utils/get-ctf-category";
 import guessArticleTitle from "~/utils/guess-article-title";
 import { computed } from "vue";
 import type { PageCollections } from "@nuxt/content";
-defineOptions({
-  inheritAttrs: false,
-});
+
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps({
   path: String,
-  title: {
-    type: String,
-    default: "Blog",
-  },
-  description: {
-    type: String,
-    default: "No description provided",
-  },
-  color: {
-    type: String,
-  },
-  docPath: {
-    type: String,
-    required: true,
-  },
-  padding: {
-    type: String,
-    default: "0 50px",
-  },
-  titleFontSize: {
-    type: String,
-    default: "50px",
-  },
-  descriptionFontSize: {
-    type: String,
-    default: "35px",
-  },
-  icon: {
-    type: [String, Boolean],
-    default: "logos:nuxt",
-  },
-  image: {
-    type: String,
-    required: false,
-  },
-  siteName: {
-    type: String,
-    required: false,
-  },
-  siteLogo: {
-    type: String,
-    required: false,
-  },
-  readingMins: {
-    type: Number,
-    required: false,
-  },
+  title: { type: String, default: "Blog" },
+  description: { type: String, default: "" },
+  color: { type: String },
+  docPath: { type: String, required: true },
+  padding: { type: String, default: "0 50px" },
+  titleFontSize: { type: String, default: "50px" },
+  descriptionFontSize: { type: String, default: "35px" },
+  icon: { type: [String, Boolean], default: "logos:nuxt" },
+  image: { type: String, required: false },
+  siteName: { type: String, required: false },
+  siteLogo: { type: String, required: false },
+  readingMins: { type: Number, required: false },
 });
-const { data: doc, status } = await useAsyncData(`c/doc_${props.docPath}`, () =>
+
+const { data: doc } = await useAsyncData(`c/doc_${props.docPath}`, () =>
   queryCollection("content")
     .path(props.docPath)
     .first()
@@ -70,100 +33,53 @@ const { data: doc, status } = await useAsyncData(`c/doc_${props.docPath}`, () =>
       return r;
     })
 );
-const background = computed<CSSProperties>(() => {
-  // we want to make a
-  // const isBackgroundTw = props.background?.startsWith('bg-')
-  const cubeTop = "#1d3043";
-  const cubeLeft = "#000";
-  const cubeRight = "#18222c";
 
-  return {
-    display: "flex",
-    position: "absolute",
-    right: "-50%",
-    top: "0%",
-    width: "100%",
-    height: "100%",
-    backgroundSize: "80px 140px",
-    backgroundPosition: "0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px",
-    backgroundColor: cubeRight,
-    backgroundImage: `linear-gradient(30deg, ${cubeTop} 12%, transparent 12.5%, transparent 87%, ${cubeTop} 87.5%, ${cubeTop}),linear-gradient(150deg, ${cubeTop} 12%, transparent 12.5%, transparent 87%, ${cubeTop} 87.5%, ${cubeTop}),linear-gradient(30deg, ${cubeTop} 12%, transparent 12.5%, transparent 87%, ${cubeTop} 87.5%, ${cubeTop}),linear-gradient(150deg, ${cubeTop} 12%, transparent 12.5%, transparent 87%, ${cubeTop} 87.5%, ${cubeTop}),linear-gradient(60deg, ${cubeLeft} 25%, transparent 25.5%, transparent 75%, ${cubeLeft} 75%, ${cubeLeft}),linear-gradient(60deg, ${cubeLeft} 25%, transparent 25.5%, transparent 75%, ${cubeLeft} 75%, ${cubeLeft})`,
-  };
-});
-
-const siteName = computed(() => {
-  return  "Yun's Blog";
-});
-const siteLogo = computed(() => {
-  return props.siteLogo || "/logo.png";
-});
+const siteName = computed(() => "Yun's Blog");
+const siteLogo = computed(() => props.siteLogo || "/logo.png");
 </script>
 
 <template>
-  <div class="bg-black w-full h-full absolute" />
-  <div :style="background" />
-  <div class="w-full flex flex-row z-10">
-    <div class="flex-1" style="padding: 50px">
-      <div class="flex flex-col h-full justify-between text-gray-100">
-        <div class="flex flex-row justify-between items-center">
-          <div class="flex flex-col">
-            <div class="flex flex-row gap-1">
-              <span class="color-blue font-bold">
-                {{ getCtfCategory(doc) }}
-              </span>
-              <span v-for="tag in doc?.tags ?? []" class="color-gray">
-                #{{ tag }}
-              </span>
-            </div>
-            <div class="color-gray text-sm">
-              {{ displayDocDates(doc) }}
-            </div>
-            <div class="text-5xl leading-relaxed mb-2 font-mono font-bold">
-              {{ guessArticleTitle(doc) }}
-            </div>
-            <div v-if="description" class="text-2xl">
-              {{ description }}
-            </div>
-            <div class="text-2xl" v-if="readingMins">
-              {{ readingMins }} min read
-            </div>
-          </div>
-        </div>
-        <div class="text-white w-full flex flex-row">
-          <img
-            v-if="siteLogo"
-            :src="siteLogo"
-            height="50"
-            class="rounded mr-5" />
-          <div style="font-size: 30px" class="font-bold mt-2">
-            {{ siteName }}
-          </div>
-        </div>
+  <!-- Backgrounds -->
+  <div class="absolute inset-0" style="z-index: -9999; background: black;" />
+  <img src="/img/og_bg.png" class="absolute bottom-0 right-0" style="z-index: -1; width: 400px; height: 300px;" />
+
+  <!-- Main content -->
+  <div class="flex flex-col justify-between h-full p-8 py-4 text-gray-100">
+    <div class="flex flex-col">
+      <div class="flex gap-1">
+        <span class="color-blue font-bold">{{ getCtfCategory(doc) }}</span>
+        <span v-for="tag in doc?.tags ?? []" class="color-gray">#{{ tag }}</span>
       </div>
+      <div class="color-gray text-sm">{{ displayDocDates(doc) }}</div>
+      <div class="text-5xl leading-none mb-2 font-mono font-bold">{{ guessArticleTitle(doc) }}</div>
+      <div v-if="doc?.description || description" class="text-2xl">{{ doc?.description || description }}</div>
+      <div v-if="readingMins" class="text-2xl">{{ readingMins }} min read</div>
     </div>
-    <div class="items-end justify-center">
-      <img
-        v-if="image"
-        :src="image"
-        height="630"
-        width="630"
-        style="object-fit: cover"
-        class="rounded-xl max-w-full" />
+
+    <div class="flex items-center gap-3">
+      <img v-if="siteLogo" :src="siteLogo" height="50" class="rounded" />
+      <span style="font-size: 30px" class="font-bold">{{ siteName }}</span>
     </div>
   </div>
+
+  <!-- CTF badges -->
   <div class="absolute bottom-0 right-0 flex flex-col items-end">
     <span v-if="doc?.rank" class="tag">🏆 {{ doc?.rank }}</span>
     <span v-if="doc?.solves" class="tag">{{ doc?.solves }} solves</span>
     <span v-if="doc?.points" class="tag">{{ doc?.points }} points</span>
   </div>
-  <style>
-    .tag {
-      background-color: #0006;
-      color: white;
-      border: 1px solid white;
-      border-radius: 5px;
-      padding: 5px;
-      margin: 5px;
-    }
-  </style>
 </template>
+
+<style>
+.text-5xl {
+  font-family: 'JetBrains Mono', monospace;
+}
+.tag {
+  background-color: #0006;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+}
+</style>
