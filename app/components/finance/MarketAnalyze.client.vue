@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import VueApexCharts, { type VueApexChartsComponent } from "vue3-apexcharts";
+import VueApexCharts, { type VueApexChartsComponentProps } from "vue3-apexcharts";
 import * as math from "mathjs";
-import type { ApexOptions } from "apexcharts";
+import type { ApexAxisChartSeries, ApexOptions } from "apexcharts";
 import type { Ref } from "@vue/reactivity";
 
-const chart: Ref<VueApexChartsComponent | undefined> = ref();
+const chart: Ref<VueApexChartsComponentProps | undefined> = ref();
 const colorMode = useColorMode();
 const chartOptions: Ref<ApexOptions> = ref(<ApexOptions>{
   chart: {

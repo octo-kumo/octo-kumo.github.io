@@ -22,7 +22,7 @@ const {
   status: status_cn
 } = useLazyAsyncData('simu-cn', () => fetch('https://raw.githubusercontent.com/octo-kumo/hsr-sim-universe-utils/master/out/handbook_eventsCHS.json').then(r => r.json()));
 const loaded = computed(() => (lang.value === 'EN' ? status_en.value : status_cn.value) !== 'pending');
-const handbook_events = computed(() => lang.value === 'EN' ? data_en.value : data_cn.value);
+const handbook_events = computed(() => (lang.value === 'EN' ? data_en.value : data_cn.value) as any[]);
 const prompt_lines = (lines: any[]) => lines.filter(e => Array.isArray(e));
 const prompt_options = (lines: any[]) => lines.find(e => !Array.isArray(e));
 
@@ -35,7 +35,7 @@ function searchScore(str: string, query: string) {
   return true;
 }
 
-function check_recursive(event_key: string | number, event_trigger: string): any {
+function check_recursive(event_key: number, event_trigger: string): any {
   if (events[event_key + "_" + event_trigger]) return true;
   // return false;
   return Object.entries(handbook_events.value[event_key].dialogue.triggers).some(([k, e]: [string, any]) =>

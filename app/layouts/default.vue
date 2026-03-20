@@ -72,7 +72,7 @@ const drawerWidth = computed(() => collapsed.value ? '64px' : '16em');
 .main {
   transition: var(--el-transition-all);
   min-height: calc(100vh - var(--el-menu-horizontal-height));
-  background-image: url("/bg/bg_texture.png");
+  /* background-image: url("/bg/bg_texture.png"); */
   view-transition-name: "app-main";
 
   @screen lg {
@@ -81,7 +81,7 @@ const drawerWidth = computed(() => collapsed.value ? '64px' : '16em');
 }
 
 html.dark .main {
-  background-image: url("/bg/bg_texture.dark.png");
+  /* background-image: url("/bg/bg_texture.dark.png"); */
 }
 
 .overlay {

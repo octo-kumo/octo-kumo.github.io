@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ContentNavigationItem, PageCollections } from "@nuxt/content";
 import type { ApexOptions } from "apexcharts";
-import VueApexCharts, { type VueApexChartsComponent } from 'vue3-apexcharts'
+import VueApexCharts, { type VueApexChartsComponentProps } from 'vue3-apexcharts'
 
 const colors: Record<string, (v: number) => string> = {
     "dark": (v: number) => `color-mix(in oklch, #66b1ff ${((1 - v) * 100).toFixed(2)}%, #f78989 ${((v) * 100).toFixed(2)}%)`,
@@ -12,7 +12,7 @@ function getColor(v: number) {
     return (m && m(v)) || colors.dark(v);
 }
 let syncLock = false;
-function syncCharts(c1: VueApexChartsComponent, c2: VueApexChartsComponent) {
+function syncCharts(c1: VueApexChartsComponentProps, c2: VueApexChartsComponentProps) {
     if (syncLock) return;
     console.log("syncing...")
     syncLock = true;
@@ -22,12 +22,12 @@ function syncCharts(c1: VueApexChartsComponent, c2: VueApexChartsComponent) {
     const p2: string[] = ((c2?.chart as any)?.w.globals.selectedDataPoints[0] ?? []).map((i: number) => l2[i]);
     // const s1 = p2.filter((i: string) => !p1.includes(i));
     const s2 = p1.filter((i: string) => !p2.includes(i));
-    s2.forEach(i => c2.toggleDataPointSelection(l2.indexOf(i)));
+    s2.forEach(i => c2.chart?.toggleDataPointSelection(l2.indexOf(i)));
     syncLock = false;
 }
 
-const catChart = ref<VueApexChartsComponent | null>(null);
-const pntChart = ref<VueApexChartsComponent | null>(null);
+const catChart = ref<VueApexChartsComponentProps | null>(null);
+const pntChart = ref<VueApexChartsComponentProps | null>(null);
 const model = defineModel<{ catFilter: string[] }>({ default: {} });
 const props = defineProps<{ docs: ContentNavigationItem[] }>();
 const docs = props.docs;

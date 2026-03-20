@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from "@vue/reactivity";
-import VueApexCharts, { type VueApexChartsComponent } from "vue3-apexcharts";
-import type { ApexOptions } from "apexcharts";
+import VueApexCharts, { type VueApexChartsComponentProps } from "vue3-apexcharts";
+import type { ApexAxisChartSeries, ApexOptions } from "apexcharts";
 
 const form = reactive({
   pa: "Apple",
@@ -13,7 +13,7 @@ const form = reactive({
   p2a: 30,
   p2b: 50,
 });
-const chart: Ref<VueApexChartsComponent | undefined> = ref();
+const chart: Ref<VueApexChartsComponentProps | undefined> = ref();
 const colorMode = useColorMode();
 const chartOptions: Ref<ApexOptions> = ref(<ApexOptions>{
   theme: {

@@ -30,7 +30,7 @@ import ArithmeticGradient from "~/components/finance/arithmetic-gradient.vue";
 definePageMeta({
   title: 'Finance',
   description: 'Collection of calculators for finance stuff',
-  image: '/img/finance.webp'
+  // image: '/img/finance.webp'
 });
 const components = [
   {element: TimeValue, name: 'Time Value'},

@@ -47,6 +47,7 @@
   </div>
   <el-pagination
     v-model:current-page="currPage"
+    :background="false"
     class="justify-center"
     layout="prev, pager, next"
     :total="docsFiltered.length"

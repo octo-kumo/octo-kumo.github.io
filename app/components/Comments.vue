@@ -10,7 +10,7 @@
         reactions-enabled="1"
         emit-metadata="0"
         input-position="top"
-        :theme="color.value"
+        :theme="transform(color.value)"
         lang="en"
         loading="lazy"
         crossorigin="anonymous"
@@ -20,4 +20,9 @@
 <script setup lang="ts">
 const color = useColorMode();
 import Giscus from "@giscus/vue";
+function transform(theme: string) {
+  if (theme === "dark") return "transparent_dark";
+  if (theme === "light") return "light";
+  return theme;
+}
 </script>

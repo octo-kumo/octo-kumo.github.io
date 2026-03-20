@@ -94,8 +94,8 @@ function Vector3ToStarMap(dir: Vector3, value: number[]) {
 
 export function Start() {
     dither.value = new TextureLoader().load(URL_PREFIX + "base/bluenoise.png", function (texture: Texture) {
-        ditherSize.value.x = texture.image.width;
-        ditherSize.value.y = texture.image.height;
+        ditherSize.value.x = (texture.image as HTMLImageElement).width;
+        ditherSize.value.y = (texture.image as HTMLImageElement).height;
         texture.wrapS = RepeatWrapping;
         texture.wrapT = RepeatWrapping;
     });

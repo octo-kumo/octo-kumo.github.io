@@ -84,6 +84,20 @@ export default defineNuxtConfig({
             emitFile: true,
             filename: "stats.html",
         }) as PluginOption],
+        optimizeDeps: {
+            include: [
+                'three',
+                'dayjs', // CJS
+                'dayjs/plugin/*.js',
+                'lodash-unified',
+                '@giscus/vue',
+                '@element-plus/icons-vue',
+                '@tresjs/cientos',
+                '@tresjs/post-processing',
+                'fuse.js',
+                'mermaid', '@tresjs/core', 'powerglitch', 'vue3-apexcharts'
+            ]
+        }
     },
 
     devtools: { enabled: false },
@@ -144,7 +158,7 @@ export default defineNuxtConfig({
                     'rehype-katex': {
                         output: 'html'
                     },
-                    'rehype-preset-minify': {},
+                    // 'rehype-preset-minify': {},
                 },
                 highlight: {
                     langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python',

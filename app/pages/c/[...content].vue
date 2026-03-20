@@ -12,7 +12,6 @@ import type {
   TreeNodeData,
   TreeOptionProps,
 } from "element-plus/es/components/tree/src/tree.type.mjs";
-import type Node from "element-plus/es/components/tree/src/model/node";
 import type { ElTree } from "element-plus";
 const route = useRoute();
 const path = (route.path.substring(2) || "/").replace(/(?!^)\/$/, ""); // strip trailing slash
@@ -72,11 +71,11 @@ const nav: ComputedRef<{
 });
 // const isLeaf = computed(() => !docs.value?.some(d => d.path !== path && d.path?.startsWith(path)));
 
-if (typeof defineOgImageComponent !== "undefined")
-  defineOgImageComponent(
+if (typeof defineOgImage !== "undefined")
+  defineOgImage(
     "Post",
     {
-      doc: doc.value,
+      doc: doc.value!,
     },
     {
       width: 800,
@@ -99,7 +98,7 @@ definePageMeta({
 });
 const treeProps: TreeOptionProps = {
   children: "children",
-  label: (data: TreeNodeData, node: Node) => data.title as string,
+  label: (data, node) => data.title as string,
 };
 
 function navToToc(nav?: ContentNavigationItem[] | null, depth = 0): TocLink[] {
@@ -116,7 +115,7 @@ function navToToc(nav?: ContentNavigationItem[] | null, depth = 0): TocLink[] {
 
 const TOC = computed(() => {
   let toc = doc.value?.body?.toc?.links ?? [];
-  if (path === "/") toc = [...toc, ...navToToc(navigation.value)];
+  // if (path === "/") toc = [...toc, ...navToToc(navigation.value)];
   return toc;
 });
 
@@ -356,6 +355,9 @@ const filterTreeNode: FilterNodeMethodFunction = (
   line-height: 150%;
 
   p {
+    margin-block-start: 0.8em;
+    margin-block-end: 0.8em;
+    line-height: 1.5;
     /* opacity: 0.85; */
   }
 
@@ -402,6 +404,10 @@ const filterTreeNode: FilterNodeMethodFunction = (
       }
     }
   }
+  &>h2{margin-block-end: 0.3em;margin-block-start: 1.8em;}
+  &>h3{margin-block-end: 0.25em;margin-block-start: 1.5em;}
+  &>h4{margin-block-end: 0.2em;margin-block-start: 1.2em;}
+  &>h5, &>h6{margin-block-end: 0.1em;margin-block-start: 1em;}
 
   & > h1::before {
     content: "#";

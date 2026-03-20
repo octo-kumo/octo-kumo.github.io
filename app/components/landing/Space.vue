@@ -2,7 +2,7 @@
 import { Html as THTML } from '@tresjs/cientos'
 import type { OrbitControls } from '#components';
 import { DirectionalLight, Vector3, type PerspectiveCamera } from 'three';
-const { onLoop } = useRenderLoop()
+const { onBeforeRender } = useLoop()
 
 const props = defineProps<{
   sections: {
@@ -54,7 +54,7 @@ const keyframes = [{
 }]
 
 
-onLoop(() => {
+onBeforeRender(() => {
   const ci = keyframes.findIndex(camera => progress.value < camera.value)
   const cc = keyframes[ci - 1]
   const nc = keyframes[ci]
@@ -124,12 +124,12 @@ const workOpen = reactive({
       </Sphere>
     </TresGroup>
     <THTML v-if="progress > 0.5" wrapper-class="space-webpage" center :zIndexRange="[100, 0]"
-      :position="[Math.cos(1) * 7.5, 0.01, Math.sin(1) * 7.5]" :distance-factor="6" occlude="raycast" sprite>
+      :position="[Math.cos(1) * 7.5, 0.01, Math.sin(1) * 7.5]" :distance-factor="6" occlude="blending" sprite>
       <landing-wwf class="cursor-pointer" @mouseenter="workOpen.wwf = true" @mouseleave="workOpen.wwf = false" />
     </THTML>
     <THTML v-if="progress > 0.5" wrapper-class="space-webpage" center :zIndexRange="[100, 0]"
       :position="[Math.cos(3) * 11, 0.18, Math.sin(3) * 11]" :rotation="[1.54, 10.48, 20.48]" :distance-factor="0.35"
-      occlude="raycast">
+      occlude="blending">
       <iframe src="https://yun.ng" class="w-screen h-screen" style="border:none;overflow:hidden;"></iframe>
     </THTML>
   </TresCanvas>

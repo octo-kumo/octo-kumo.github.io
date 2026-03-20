@@ -4,13 +4,27 @@ export default async function queryAllDocs(indexPage?: boolean): Promise<{ nav: 
     const docs = await queryCollectionNavigation('content',
         ['title', 'description', 'created', 'updated', 'tags', 'solves', 'points', 'rank', 'team', 'readingTime']
     ).order('created', 'DESC');
+    console.log("queryAllDocs")
     const nav = updateNavItem(docs);
     return { nav, flat: flatten(nav).map(clean) };
 }
 
+const PATH_BLACK_LIST = ['.node_modules', '.git'];
 function updateNavItem(items: ContentNavigationItem[], parent?: ContentNavigationItem) {
+    items = items.filter(i => !PATH_BLACK_LIST.some(bl => i.path.includes(bl)));
     items.forEach(item => {
         item.title = guessArticleTitle(item);
+        if (item.path === parent?.path) {
+            const blacklist = ['children', 'stem',]; //keys not to be inherited by parent
+            for (let key of Object.keys(item)) {
+                if (blacklist.includes(key)) continue;
+                if (!Object.prototype.hasOwnProperty.call(item, key)) continue;
+                parent[key] = item[key];
+            }
+            if (item.path === '/ctf') {
+                console.log({ item, parent });
+            }
+        }
     });
     items = items.filter(c => c.path !== parent?.path);
     for (let item of items) {

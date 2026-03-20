@@ -7,7 +7,8 @@ export default defineConfig({
         presetWebFonts({
             provider: 'bunny',
             fonts: {
-                sans: 'Space Grotesk',
+                serif: 'Source Serif Pro',
+                sans: ['Space Grotesk', 'Work Sans'],
                 mono: ['JetBrains Mono'],
             }
         }),

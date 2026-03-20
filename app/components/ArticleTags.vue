@@ -19,13 +19,20 @@ withDefaults(defineProps<{
 <template>
   <div class="flex gap-1 my-1 article-tags font-mono" v-if="article" :class="{ 'flex-wrap': !short }"
     v-shared="(!noSharedElement) && getTransitionName(article, 'tags-' + (idPrefix ?? ''))">
-    <el-tag v-if="article.rank" size="small" :type="article.rank > 20 ? 'info' : 'primary'" class="font-bold"><el-icon>
+    <el-tag v-if="article.rank" size="small" :type="article.rank > 20 ? 'info' : 'primary'" class="font-bold">
+      <slot>
+        <span class="flex"><el-icon>
         <el-icon-trophy />
-      </el-icon>&nbsp;{{ article.rank }}
+      </el-icon>&nbsp;{{ article.rank }}</span>
+      </slot>
     </el-tag>
-    <el-tag v-if="article.challenges" size="small" type="info" class="font-bold"><el-icon>
+    <el-tag v-if="article.challenges" size="small" type="info" class="font-bold">
+      <slot>
+        <span class="flex">
+      <el-icon>
         <el-icon-flag />
-      </el-icon>&nbsp;{{ article.challenges }}
+      </el-icon>&nbsp;{{ article.challenges }}</span>
+      </slot>
     </el-tag>
     <el-tag v-if="article.percent" size="small" type="info">
       {{ article.percent }}%
