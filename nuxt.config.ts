@@ -215,8 +215,6 @@ export default defineNuxtConfig({
         payloadExtraction: PRODUCTION ? 'client' : false,
         sharedPrerenderData: PRODUCTION,
         extractAsyncDataHandlers: PRODUCTION,
-        buildCache: PRODUCTION,
-
     },
     // future: {
     //     compatibilityVersion: 4,

@@ -51,14 +51,14 @@ const siteLogo = computed(() => props.siteLogo || "/logo.png");
         <span v-for="tag in doc?.tags ?? []" class="color-gray">#{{ tag }}</span>
       </div>
       <div class="color-gray text-sm">{{ displayDocDates(doc) }}</div>
-      <div class="text-5xl leading-none mb-2 font-mono font-bold">{{ guessArticleTitle(doc) }}</div>
+      <div class="text-4xl leading-none mb-2 font-mono font-bold">{{ guessArticleTitle(doc) }}</div>
       <div v-if="doc?.description || description" class="text-2xl">{{ doc?.description || description }}</div>
       <div v-if="readingMins" class="text-2xl">{{ readingMins }} min read</div>
     </div>
 
     <div class="flex items-center gap-3">
       <img v-if="siteLogo" :src="siteLogo" height="50" class="rounded" />
-      <span style="font-size: 30px" class="font-bold">{{ siteName }}</span>
+      <span style="font-size: 30px" class="font-bold px-4">{{ siteName }}</span>
     </div>
   </div>
 
@@ -71,9 +71,6 @@ const siteLogo = computed(() => props.siteLogo || "/logo.png");
 </template>
 
 <style>
-.text-5xl {
-  font-family: 'JetBrains Mono', monospace;
-}
 .tag {
   background-color: #0006;
   color: white;
