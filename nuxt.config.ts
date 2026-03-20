@@ -212,8 +212,11 @@ export default defineNuxtConfig({
 
     experimental: {
         viewTransition: PRODUCTION,
-        payloadExtraction: PRODUCTION,
-        sharedPrerenderData: PRODUCTION
+        payloadExtraction: PRODUCTION ? 'client' : false,
+        sharedPrerenderData: PRODUCTION,
+        extractAsyncDataHandlers: PRODUCTION,
+        buildCache: PRODUCTION,
+
     },
     // future: {
     //     compatibilityVersion: 4,
