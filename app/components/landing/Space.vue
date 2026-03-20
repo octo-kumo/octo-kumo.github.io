@@ -2,7 +2,7 @@
 import { Html as THTML } from '@tresjs/cientos'
 import type { OrbitControls } from '#components';
 import { DirectionalLight, Vector3, type PerspectiveCamera } from 'three';
-const { onBeforeRender } = useLoop()
+defineEmits(['navigate']);
 
 const props = defineProps<{
   sections: {
@@ -53,8 +53,7 @@ const keyframes = [{
   light: new Vector3(0, 0, -1)
 }]
 
-
-onBeforeRender(() => {
+function befRender(){
   const ci = keyframes.findIndex(camera => progress.value < camera.value)
   const cc = keyframes[ci - 1]
   const nc = keyframes[ci]
@@ -68,8 +67,7 @@ onBeforeRender(() => {
     }
     lightRef.value?.position.lerpVectors(cc.light, nc.light, easeT);
   }
-});
-
+}
 
 const workOpen = reactive({
   wwf: false
@@ -79,8 +77,8 @@ const workOpen = reactive({
 
 <template>
   <TresCanvas class="fade-in" render-mode="on-demand" clear-color="#000000" window-size :antialias='true' shadows>
-
-    <TresPerspectiveCamera :position="[0, 2, 5]" ref="cameraRef" />
+    <LandingRunsEveryFrame :func="befRender" />
+    <TresPerspectiveCamera :position="[0, 2, 5]" ref="cameraRef"/>
     <OrbitControls ref="controls" />
     <Stars />
     <TresDirectionalLight :position="[0, 0, -1]" :intensity="1" castShadow ref="lightRef" />
@@ -96,7 +94,7 @@ const workOpen = reactive({
     <!-- <Grid :args="[10.5, 10.5]" cell-color="#555555" :cell-size="0.6" :cell-thickness="0.5" section-color="#409eff"
       :section-size="2" :section-thickness="1.3" :infinite-grid="true" :fade-from="0" :fade-distance="12"
       :fade-strength="1" :position="[0, 0, 0]" /> -->
-    <ScrollControls v-model="progress" :distance="0" :smooth-scroll="0.1" htmlScroll />
+    <ScrollControls v-model="progress" :distance="0" :smooth-scroll="0.1" htmlScroll/>
     <MouseParallax :factor="0.05" :ease="[3, 3]" />
 
     <TresGroup :visible="progress > 0.4">
@@ -124,12 +122,12 @@ const workOpen = reactive({
       </Sphere>
     </TresGroup>
     <THTML v-if="progress > 0.5" wrapper-class="space-webpage" center :zIndexRange="[100, 0]"
-      :position="[Math.cos(1) * 7.5, 0.01, Math.sin(1) * 7.5]" :distance-factor="6" occlude="blending" sprite>
+      :position="[Math.cos(1) * 7.5, 0.01, Math.sin(1) * 7.5]" :distance-factor="6" :occlude="'raycast' as unknown as 'blending'" sprite>
       <landing-wwf class="cursor-pointer" @mouseenter="workOpen.wwf = true" @mouseleave="workOpen.wwf = false" />
     </THTML>
     <THTML v-if="progress > 0.5" wrapper-class="space-webpage" center :zIndexRange="[100, 0]"
       :position="[Math.cos(3) * 11, 0.18, Math.sin(3) * 11]" :rotation="[1.54, 10.48, 20.48]" :distance-factor="0.35"
-      occlude="blending">
+      :occlude="'raycast' as unknown as 'blending'">
       <iframe src="https://yun.ng" class="w-screen h-screen" style="border:none;overflow:hidden;"></iframe>
     </THTML>
   </TresCanvas>

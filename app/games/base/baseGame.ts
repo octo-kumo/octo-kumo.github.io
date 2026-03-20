@@ -1,7 +1,6 @@
-import { Scene } from "three";
+import { PCFShadowMap, Scene } from "three";
 import { WebGLRenderer } from "three";
 import {
-    AmbientLight,
     Clock,
     Color,
     DirectionalLight,
@@ -9,7 +8,6 @@ import {
     FogExp2,
     HemisphereLight,
     Object3D,
-    PCFSoftShadowMap,
     Uniform,
     Vector3,
     type MeshStandardMaterial,
@@ -92,7 +90,7 @@ export default class ThreeGame {
         // this.envScene.background = new Color(0x87CEEB);
         this.renderer.autoClearColor = false;
         this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = PCFSoftShadowMap;
+        this.renderer.shadowMap.type = PCFShadowMap;
         this.scene.fog = new FogExp2(0x87CEEB, 0.02);
     }
 

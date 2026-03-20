@@ -73,6 +73,7 @@
     "pngjs": "^7.0.0",
     "powerglitch": "^2.5.0",
     "rehype-katex": "^7.0.1",
+    "rehype-preset-minify": "^7.0.1",
     "remark-inline-spoiler": "^1.0.1",
     "remark-math": "^6.0.0",
     "remark-reading-time": "^2.1.0",

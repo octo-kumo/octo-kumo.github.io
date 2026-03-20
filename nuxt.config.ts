@@ -49,7 +49,7 @@ export default defineNuxtConfig({
         prerender: PRODUCTION ? {
             autoSubfolderIndex: false,
             concurrency: 4,
-            routes: ['/', '/sitemap.xml']
+            routes: ['/', '/sitemap.xml'],
         } : undefined,
         esbuild: {
             options: {
@@ -158,7 +158,7 @@ export default defineNuxtConfig({
                     'rehype-katex': {
                         output: 'html'
                     },
-                    // 'rehype-preset-minify': {},
+                    'rehype-preset-minify': {},
                 },
                 highlight: {
                     langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python',
