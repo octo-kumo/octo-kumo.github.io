@@ -75,7 +75,7 @@ if (typeof defineOgImage !== "undefined")
   defineOgImage(
     "Post",
     {
-      doc: doc.value!,
+      docPath: path,
     },
     {
       width: 800,

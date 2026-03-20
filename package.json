@@ -54,6 +54,7 @@
     "baseline-browser-mapping": "^2.10.9",
     "better-sqlite3": "^12.8.0",
     "caniuse-lite": "^1.0.30001780",
+    "consola": "^3.4.2",
     "dat.gui": "^0.7.9",
     "element-plus": "^2.13.6",
     "fetch-event-stream": "^0.1.6",

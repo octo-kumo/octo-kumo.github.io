@@ -21,9 +21,6 @@ function updateNavItem(items: ContentNavigationItem[], parent?: ContentNavigatio
                 if (!Object.prototype.hasOwnProperty.call(item, key)) continue;
                 parent[key] = item[key];
             }
-            if (item.path === '/ctf') {
-                console.log({ item, parent });
-            }
         }
     });
     items = items.filter(c => c.path !== parent?.path);

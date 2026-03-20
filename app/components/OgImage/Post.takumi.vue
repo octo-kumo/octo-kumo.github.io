@@ -5,6 +5,7 @@ import displayDocDates from "~/utils/display-doc-dates";
 import getCtfCategory from "~/utils/get-ctf-category";
 import guessArticleTitle from "~/utils/guess-article-title";
 import { computed } from "vue";
+import type { PageCollections } from "@nuxt/content";
 defineOptions({
   inheritAttrs: false,
 });
@@ -22,9 +23,9 @@ const props = defineProps({
   color: {
     type: String,
   },
-  doc: {
-    type: Object,
-    required: false,
+  docPath: {
+    type: String,
+    required: true,
   },
   padding: {
     type: String,
@@ -59,6 +60,16 @@ const props = defineProps({
     required: false,
   },
 });
+const { data: doc, status } = await useAsyncData(`c/doc_${props.docPath}`, () =>
+  queryCollection("content")
+    .path(props.docPath)
+    .first()
+    .then((r: PageCollections["content"] | null) => {
+      if (!r) return r;
+      r.title = guessArticleTitle(r);
+      return r;
+    })
+);
 const background = computed<CSSProperties>(() => {
   // we want to make a
   // const isBackgroundTw = props.background?.startsWith('bg-')
