@@ -2,6 +2,8 @@
 import { Html as THTML } from '@tresjs/cientos'
 import type { OrbitControls } from '#components';
 import { DirectionalLight, Vector3, type PerspectiveCamera } from 'three';
+import { onMounted, onUnmounted } from 'vue';
+import { useElementSize, useMouse, useWindowSize } from '@vueuse/core'
 defineEmits(['navigate']);
 
 const props = defineProps<{
@@ -52,6 +54,14 @@ const keyframes = [{
   lookAt: new Vector3(Math.cos(3) * 13, 0, Math.sin(3) * 13),
   light: new Vector3(0, 0, -1)
 }]
+const { x, y } = useMouse();
+const { width, height } = useWindowSize();
+const factor = 0.05;
+const ease = 3;
+const cursorX = computed(() => (x.value / width.value - 0.5) * factor);
+const cursorY = computed(() => -(y.value / height.value - 0.5) * factor);
+const ox = ref(0);
+const oy = ref(0);
 
 function befRender(){
   const ci = keyframes.findIndex(camera => progress.value < camera.value)
@@ -66,9 +76,15 @@ function befRender(){
       controls.value.instance.target = cc.lookAt.clone().lerp(nc.lookAt, easeT);
     }
     lightRef.value?.position.lerpVectors(cc.light, nc.light, easeT);
+    ox.value += (cursorX.value - ox.value) * ease * 0.008;
+    oy.value += (cursorY.value - oy.value) * ease * 0.008;
+    if(cameraRef.value){
+      cameraRef.value.position.x += ox.value;
+      cameraRef.value.position.y += oy.value;
+    }
+
   }
 }
-
 const workOpen = reactive({
   wwf: false
 })
@@ -77,10 +93,10 @@ const workOpen = reactive({
 
 <template>
   <TresCanvas class="fade-in" render-mode="on-demand" clear-color="#000000" window-size :antialias='true' shadows>
-    <LandingRunsEveryFrame :func="befRender" />
     <TresPerspectiveCamera :position="[0, 2, 5]" ref="cameraRef"/>
     <OrbitControls ref="controls" />
     <Stars />
+    <LandingRunsEveryFrame :func="befRender" />
     <TresDirectionalLight :position="[0, 0, -1]" :intensity="1" castShadow ref="lightRef" />
     <TresMesh :position="[0, 0, 4.9]" >
       <TresSphereGeometry :args="[1, 32, 32]" />
@@ -95,7 +111,6 @@ const workOpen = reactive({
       :section-size="2" :section-thickness="1.3" :infinite-grid="true" :fade-from="0" :fade-distance="12"
       :fade-strength="1" :position="[0, 0, 0]" /> -->
     <ScrollControls v-model="progress" :distance="0" :smooth-scroll="0.1" htmlScroll/>
-    <MouseParallax :factor="0.05" :ease="[3, 3]" />
 
     <TresGroup :visible="progress > 0.4">
       <TresAmbientLight color="#ffffff" :intensity="0.5" />
