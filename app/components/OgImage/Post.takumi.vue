@@ -51,8 +51,8 @@ const siteLogo = computed(() => props.siteLogo || "/logo.png");
         <span v-for="tag in doc?.tags ?? []" class="color-gray">#{{ tag }}</span>
       </div>
       <div class="color-gray text-sm">{{ displayDocDates(doc) }}</div>
-      <div class="text-4xl leading-none mb-1 mt-2 font-mono font-bold line-clamp-2">{{ guessArticleTitle(doc) }}</div>
-      <div v-if="doc?.description || description" class="text-2xl line-clamp-2">{{ doc?.description || description }}</div>
+      <div class="text-4xl leading-none mb-1 mt-2 font-mono font-bold">{{ guessArticleTitle(doc) }}</div>
+      <div v-if="doc?.description || description" class="text-2xl">{{ doc?.description || description }}</div>
       <div v-if="readingMins" class="text-2xl">{{ readingMins }} min read</div>
     </div>
 
