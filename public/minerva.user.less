@@ -323,16 +323,6 @@
           text-overflow: ellipsis;
           overflow: hidden;
 
-
-          @supports (-webkit-line-clamp: 10) {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: initial;
-            display: -webkit-box;
-            -webkit-line-clamp: 10;
-            -webkit-box-orient: vertical;
-          }
-
           &:first-child {
             display: none;
             transition: all 0.2s;
