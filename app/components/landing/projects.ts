@@ -4,7 +4,7 @@ export type ProjectDef = {
     langs: string[];
     keys?: string[];
     github?: string;
-    link?: string;
+    link?: string | (() => string);
     year: string;
     video?: string;
     image?: string;
@@ -492,8 +492,64 @@ export const projects: ProjectDef[] = [
         github: "octo-kumo/space-rs",
         link: "https://yun.ng/space-rs",
         video: "ch8ig_aDqTE"
-    }
+    },
+    {
+        name: 'lines-game',
+        year: "2025",
+        langs: ['typescript', 'html'],
+        keys: ["game"],
+        desc: "A simple lines game where theres some image with many lines on it, each line can invert the color on 1 side of the image, and stacked together they can XOR each other. You just need to click on lines to toggle them. Theres a normal CSS version and a canvas version.\nNot very interesting, may be good for wallpapers.",
+        link: "https://yun.ng/lines-game",
+    },
+    {
+        name: 'yunix',
+        year: "2025",
+        langs: ['c', 'asm'],
+        keys: ["os", "kernel", "x86-64", "unix"],
+        desc: "Not very useful bootable OS that only has a kernel level shell, without a filesystem nor userland."
+    },
+    {
+        name: "Stars",
+        year: "2026",
+        langs: ['react', 'typescript', 'javascript', 'html', 'css'],
+        keys: ['simulation', 'game', 'three.js', 'glsl', 'ai', 'agent'],
+        desc: "Stars is a visually appealing star-planetary system generator, editor, and visualizer. AI Agent was used during the development process to assist with design, coding, debugging. I was heavily involved in finding bugs, solving bugs the agent couldn\'t solve, and designing the UI and UX.\nMade for fun, and at first it was meant to be a background world-crafting generator for my sci-fi novel, but I ended up putting a lot of effort into it and making it a standalone product.\nIt features many type of stars to choose from, many planets to choose from, physically accurate* data generation, and many customization options. It also features a super detailed star shader.",
+        link: "https://yun.ng/stars/",
+        image: "https://yun.ng/stars/banner.svg"
+    },
+    {
+        name: "air-defence-rs",
+        year: "2026",
+        langs: ['rust', 'rhai'],
+        keys: ["game", "simulation", "bevy", "ai", "scripting"],
+        desc: "Air defence is a 3D turret shooting game, where you write code to control the turret which has to identify planes and shoot them down. The game has lore, dialogues and levels. The AI you write is given some 2D grid of visual data to work with, I've yet to make a AI that actually works yet, game is super rough, may crash. No viruses included. Made for fun, and to learn rust and bevy.",
+        link: genPlatformLink({
+            win: "https://github.com/octo-kumo/files/raw/refs/heads/master/air-defence-windows-x86_64.exe",
+            linux: "https://github.com/octo-kumo/files/raw/refs/heads/master/air-defence-linux-x86_64"
+        }),
+    },
+    {
+        name: "r/place-rs",
+        year: "2026",
+        langs: ['rust', 'bevy', 'javascript', 'html', 'css'],
+        keys: ["simulation", "game", "spacetimedb", "multiplayer", "realtime", "websocket", "database"],
+        desc: "https://yun.ng/the-place \nA r/place clone, with a infinite* canvas and a super fast and efficient rust backend using spacetimedb, a database I've been thinking of trying out for a while now.\nI made 2 versions, 1 web and 1 bevy desktop version. The web version just use normal canvas but with spacetimedb sdk to communicate with the backend, because the latest of spacetimedb sdk has yet to support wasm, the desktop version uses bevy for rendering and has rust version of spacetimedb sdk to communicate with the same backend.",
+        link: genPlatformLink({
+            win: "https://github.com/octo-kumo/files/raw/refs/heads/master/the_place-windows-x86_64.exe",
+            linux: "https://github.com/octo-kumo/files/raw/refs/heads/master/the_place-linux-x86_64"
+        }),
+    },
 ] satisfies ProjectDef[];
+
+function genPlatformLink(info: { win: string, linux: string }) {
+    return () => {
+        if (typeof navigator === 'undefined') return info.linux;
+        const platform = navigator?.platform?.toLowerCase();
+        if (platform?.includes('linux')) return info.linux;
+        if (platform?.includes('win')) return info.win;
+        return info.linux;
+    }
+}
 
 projects.forEach(v => {
     if (v.keys) v.keys = v.keys.map(f => f.toLowerCase());

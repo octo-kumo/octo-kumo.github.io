@@ -12,7 +12,7 @@
   </div>
   <el-row :gutter="20">
     <el-col
-      v-for="item in [...nav.filter(r => r.path.startsWith('/projects/')).sort((a, b) => Number(!a.meta.image) - Number(!b.meta.image)).sort((a, b) => Number(!b.meta.wip) - Number(!a.meta.wip)), contentPage]"
+      v-for="item in [...EXTRA, ...nav.filter(r => r.path.startsWith('/projects/'))].sort((a, b) => Number(!a.meta.image) - Number(!b.meta.image)).sort((a, b) => Number(!b.meta.wip) - Number(!a.meta.wip))"
       :key="item.path" :cols="24" :lg="6" :md="8" :sm="12">
       <el-card class="my-3" shadow="hover">
         <template #header v-if="item.meta.image!">
@@ -47,13 +47,28 @@ import { ElMessageBox } from 'element-plus';
 const firstVisit = useStorage("firstVisit",true);
 const router = useRouter();
 const nav = ref(router.getRoutes());
-const contentPage: RouteRecord = {
+const EXTRA: RouteRecord[] = [{
   path: "/c",
   meta: {
     title: "Content",
     description: "Markdown Content Archive"
   } as any
-} as RouteRecord;
+}, {
+  path: "https://yun.ng/stars/",
+  meta:{
+    title: "Stars",
+    description: "A tool to generate and visualize star systems",
+    layout: "clean",
+    image: "https://yun.ng/stars/banner.svg"
+  } as any
+}, {
+  path: "https://yun.ng/the-place/",
+  meta: {
+    title: "The Place",
+    description: "A r/place clone, with a infinite* canvas and a super fast and efficient rust backend using spacetimedb.",
+    layout: "clean"
+  } as any
+}] as RouteRecord[];
 const pageViews = useState<number>('page-views');
 definePageMeta({
   title: "Yun's Website",

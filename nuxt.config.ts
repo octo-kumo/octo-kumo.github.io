@@ -163,7 +163,8 @@ export default defineNuxtConfig({
                 },
                 highlight: {
                     langs: ['json', 'js', 'ts', 'html', 'css', 'md', 'yaml', 'python',
-                        'cpp', 'sql', 'sh', 'php', 'rust', 'csharp', 'kotlin',
+                        'cpp', 'sql', 'sh', 'php', 'rust', 'csharp', 'kotlin', 'c', 'java', 'asm',
+                        'json', 'powershell',
                         JSON.parse(fs.readFileSync('./public/shiki/flag.tmLanguage.json', 'utf-8')),
                     ],
                     theme: {

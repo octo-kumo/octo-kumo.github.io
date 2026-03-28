@@ -142,8 +142,8 @@ const filteredProjects = computed(() => {
                   fill="#fff" />
               </svg>
             </a>
-            <a v-if="project.link" :href="project.link" target="_blank">
-              <svg fill="#ffffff" height="20" width="20" version="1.1" id="Layer_1" v-if="project.link.endsWith('.jar')"
+            <a v-if="project.link" :href="typeof project.link === 'function' ? project.link() : project.link" target="_blank">
+              <svg fill="#ffffff" height="20" width="20" version="1.1" id="Layer_1" v-if="(typeof project.link === 'function' ? project.link() : project.link).endsWith('.jar')"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 viewBox="0 0 305.001 305.001" xml:space="preserve">
                 <g id="XMLID_7_">

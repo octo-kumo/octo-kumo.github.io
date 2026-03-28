@@ -15,10 +15,10 @@
         </el-icon>
         <span>Projects</span>
       </template>
-      <nuxt-link :to="n" class="no-underline text-inherit" :noPrefetch="n.meta.layout === 'clean'"
+      <nuxt-link :to="n" class="no-underline text-inherit" :noPrefetch="n.meta?.layout === 'clean'"
         v-for="n in nav.filter(r => r.path.startsWith('/projects/'))">
         <el-menu-item :route="n" :index="n.path">
-          {{ n.meta.title ?? guessPathName(n.name!) }}
+          {{ n.meta?.title ?? guessPathName(n.name!) }}
         </el-menu-item>
       </nuxt-link>
     </el-sub-menu>
@@ -53,6 +53,8 @@
   </el-menu>
 </template>
 <script setup lang="ts">
+import { useRoute, useRouter } from 'nuxt/app';
+
 const route = useRoute();
 const router = useRouter();
 const nav = router.getRoutes();
