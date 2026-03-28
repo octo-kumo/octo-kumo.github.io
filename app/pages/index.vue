@@ -54,7 +54,7 @@ const EXTRA: RouteRecord[] = [{
     description: "Markdown Content Archive"
   } as any
 }, {
-  path: "https://yun.ng/stars/",
+  path: "/stars/",
   meta:{
     title: "Stars",
     description: "A tool to generate and visualize star systems",
@@ -62,7 +62,7 @@ const EXTRA: RouteRecord[] = [{
     image: "https://yun.ng/stars/banner.svg"
   } as any
 }, {
-  path: "https://yun.ng/the-place/",
+  path: "/the-place/",
   meta: {
     title: "The Place",
     description: "A r/place clone, with a infinite* canvas and a super fast and efficient rust backend using spacetimedb.",

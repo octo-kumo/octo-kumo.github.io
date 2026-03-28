@@ -50,6 +50,7 @@ export default defineNuxtConfig({
             autoSubfolderIndex: false,
             concurrency: 8,
             routes: ['/', '/sitemap.xml'],
+            ignore: ['/stars', '/the-place']
             // failOnError: false
         } : undefined,
         esbuild: {
