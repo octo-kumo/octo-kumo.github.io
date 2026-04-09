@@ -1,0 +1,1 @@
+import{_ as r}from"#entry";import{a as t,c as o,r as s}from"./BG2W1alK.js";const n={};function a(e,c){return t(),o("th",null,[s(e.$slots,"default",{},void 0,!0)])}const f=Object.assign(r(n,[["render",a],["__scopeId","data-v-3c291def"]]),{__name:"ProseTh"});export{f as default};

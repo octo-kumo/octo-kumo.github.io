@@ -1,0 +1,1 @@
+function e(t){return t?.title&&t?.tags?.includes("blog")&&/^\d{4}-\d{2}-\d{2}$/.test(t?.title??"")?new Date(t?.title).toLocaleDateString(void 0,{timeZone:"UTC",year:"numeric",month:"short",day:"numeric",weekday:"short"}):t?.title||t?.path?.split("/")?.pop()||"Unknown"}export{e as g};

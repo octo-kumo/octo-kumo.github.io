@@ -1,0 +1,1 @@
+import{_ as r}from"#entry";import{a as o,c as t,r as n}from"./BG2W1alK.js";const a={};function s(e,c){return o(),t("strong",null,[n(e.$slots,"default",{},void 0,!0)])}const f=Object.assign(r(a,[["render",s],["__scopeId","data-v-da0aa9d8"]]),{__name:"ProseStrong"});export{f as default};

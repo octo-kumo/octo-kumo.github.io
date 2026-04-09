@@ -1,0 +1,1 @@
+import{_ as o}from"#entry";import{a as r,c as s,r as t}from"./BG2W1alK.js";const a={};function n(e,c){return r(),s("code",null,[t(e.$slots,"default",{},void 0,!0)])}const f=Object.assign(o(a,[["render",n],["__scopeId","data-v-624adb97"]]),{__name:"ProseCode"});export{f as default};

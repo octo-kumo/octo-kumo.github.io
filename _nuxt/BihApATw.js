@@ -1,0 +1,1 @@
+import{p as r}from"./DimNrb9k.js";import"#entry";import"./BG2W1alK.js";import"./BSZFgSs5.js";import"./Bmyhlbjf.js";import"./BTghAutr.js";import"./DsqdWQfm.js";async function s(){return r(chal.desc)}export{s as default};

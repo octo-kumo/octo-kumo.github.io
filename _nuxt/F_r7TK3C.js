@@ -1,0 +1,44 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./BihApATw.js","./DimNrb9k.js","./BZ1STnNf.js","./BG2W1alK.js","./entry.s5fRVsAZ.css","./BSZFgSs5.js","./Bmyhlbjf.js","./BTghAutr.js","./DsqdWQfm.js"])))=>i.map(i=>d[i]);
+import{O as q,A as D,a6 as T,a7 as F}from"#entry";import{E as M}from"./CDGjPN4s.js";import{_ as $}from"./BTghAutr.js";import{E as P}from"./u2j0z70j.js";import{B as R,M as Y}from"./D04epWVV.js";import{d as k,a as o,c as u,v as b,A as p,B as s,q as f,z as h,F as g,Q as _,y as d,ai as K,x as w,u as l,b as x,h as J}from"./BG2W1alK.js";import{E as L}from"./0VL8p7LM.js";import{E as N}from"./DrJwfe5s.js";import{E as W}from"./Bz7wImvA.js";import{E as X}from"./BQs5asi5.js";import{E as G}from"./DTs77fFK.js";/* empty css        */import"./Bks_aG1F.js";import"./HcQ-xNVC.js";import"./DUOvlDQj.js";import{E as H}from"./BwJIvJdJ.js";/* empty css        */import{u as B}from"./BSGhkL6r.js";import"./Bmyhlbjf.js";import{E as Q}from"./CJQgx_g-.js";import"./xo7Mu9T6.js";import"./BSZFgSs5.js";import"./BB_Ol6Sd.js";import"./KA73p3Eq.js";import"./CoNWyH7A.js";import"./B7a2BCWm.js";import"./CxbW7CAT.js";import"./Bp3YSIOJ.js";import"./CQfKChWy.js";import"./CetQnpbY.js";import"./09WRq2xb.js";import"./CaBAFN7Q.js";import"./Dn3hTxku.js";import"./CQLLzJbY.js";import"./Bu7joISz.js";import"./BdKzFvfe.js";import"./DTvPv-au.js";import"./B3DpQ4GT.js";import"./ZWh7P-zI.js";import"./CPo8wDWO.js";const U={class:"flex gap-1"},Z={key:1,class:"flex gap-1"},ee=k({__name:"ChallengeDetails",props:{chal:{},ast:{}},setup(C){return(t,r)=>{const i=M,y=$,v=P;return o(),u("div",null,[b("div",U,[p(i,null,{default:s(()=>[f(h(t.chal.diff),1)]),_:1}),(o(!0),u(g,null,_(t.chal.tags,m=>(o(),d(i,{type:"info"},{default:s(()=>[f(h(m),1)]),_:2},1024))),256))]),t.ast?(o(),d(K,{key:0},{default:s(()=>[p(y,{body:t.ast.body},null,8,["body"])]),_:1})):w("",!0),t.ast&&t.chal.files&&t.chal.files.length>0?(o(),u("div",Z,[(o(!0),u(g,null,_(t.chal.files,m=>(o(),d(v,{type:"primary",icon:m.type==="web"?l(R):l(Y),target:"_blank",href:m.url},{default:s(()=>[f(h(m.name),1)]),_:2},1032,["icon","href"]))),256))])):w("",!0)])}}}),S=Object.assign(ee,{__name:"ChallengeDetails"}),te={name:"Azurlane",desc:`
+I made a tool for azurlane!
+
+Can you find the flag ship?
+`,diff:"easy",sha256:"ES6B9bohVJKjz0o1-9Fxw7Vb6htVBwBMY_SluikojWI",tags:["web"],files:[{type:"web",url:"https://ctf.yun.ng/azurlane",name:"azurlane tool"}]},ae={name:"Simple Steg",sha256:"t5zWYs6jX3HF579RZjt5237lsJDGb-JidY7bI0Brzb4",desc:`
+> Artwork: [@壱珂/ichika87](https://twitter.com/ichika087/status/1813158792424792107)
+
+My friend sent me this nice drawing, but told me it is a ctf challenge, huh?
+I guess the anime girl looks fine.
+
+Anyways as I was solving it, I encountered a password and couldn't crack it, it shouldn't be long though.
+I also don't think anything other than letters are involved...`,diff:"easy",tags:["forensics"],files:[{url:"https://res.cloudinary.com/kumonochisanaka/image/upload/v1721145689/image.jpg",name:"anime.jpg"}]},oe={name:"xor",sha256:"kMnKhLkyczFlBGbTYJmMV9-xSi4VBUoTt47Ostg2Ycs",desc:`
+Imagine you have a flag, and you're standing in front of a huge field with countless flagpoles.
+
+Each time you make a decision or a random guess, your flag is planted on one of these poles.
+
+According to the Many-Worlds Interpretation of quantum mechanics, every possible outcome of your decision or guess actually happens.
+
+So, there's a world out there in this vast field where your flag is planted on the correct pole.
+
+However, I have made a quantum spacetime compressor based on **xor**, that will help you verify if your flag is correct.`,diff:"medium",tags:["rev"],files:[{url:"https://yun.ng/ctf/rev/xor",name:"xor"}]},se={name:"Ransom Waifu",sha256:"Mtx_g7TK1SVTyncOQeS9k0fhyIX2ZqssFj0-rD3Mq34",desc:`
+The hackers' ransomware has locked up my waifu!
+Help me find the passwords those hackers used!
+
+In fact, I've already recovered 2/3 of the password! but I need your help to find the last part!`,diff:"medium",tags:["rev"],files:[{type:"web",url:"https://ransom.wwctf.com/",name:"https://ransom.wwctf.com/"}]},ne={name:"Simpler RSA",sha256:"qA9S5VPCbGmr_QXvXeZfeOMwBoxaKjuymcOlTBKY9jc",desc:`RSA is so complicated! I made it simpler.
+
+\`\`\`python
+from secret import flag
+from Crypto.Util.number import bytes_to_long, getPrime
+
+flag = bytes_to_long(flag)
+p = getPrime(2048)
+q = getPrime(2048)
+c = pow(flag, p, q)  # i believe this is the fancy rsa encryption?
+print(f'{p=}')
+print(f'{q=}')
+print(f'{c=}')
+
+# p = 20322136122026329892580404875086132520732558134579258531781672192065024437324055172065343417524169304918928056147680414370351055409439818026607876517460045945556933456319117456860928521423787112252544266864178773974904640732880445449138842965327995838722222110164109025916914430044528254715080648900354468118393295346137198518513075775514617222780524163798065365970392865107270392212968677531885628998155305428785133820145555740608026626724539584106018453003156159305252013173659975815845286802275956807162426425721298560633326719023970391963404981189820163950120529861779878077006530640930032570206978446007206971761
+# q = 19097560527100693557502945814016176943507375936656621847599300620729196257594977906326233653252987169303598004653720974045696589437233399711658994040877123702369987961301047714594623670674571987772814959679153558360152976652255742578324469478560556855210734037861198243000935281050776548747455717266013266531885744852759548255091579407464355390341944708706006878618904548103612995804547530724085856234186750409404880456083750984829553552127853848824218180459231650990529456828407224866655873224370892839628814748212142246752082561042142636866939231370987974125358875253454199574864895153300338298982667319003886687691
+# c = 4281681357519343869235268029657832985104802601857889851833662824770073601279722389949102805423012693423900316266993146428480448851806951090530135683459342224839031144425810971344588481297094697047852347659595441639804230546879345999083627138617034295731725402645279785129174304818023129638779656619113578465655082808462489379872294929944719545647280271454196700396004152529288987570497804498041888697213294509916951489315431831556860863264254674452235360890586742441263188663158067860877772336480637257856658858967478284817730555629113613134338975168062044831796369552664256963808360408525644200922627703094455580032
+\`\`\`
+    `,diff:"easy",tags:["crypto"],files:[]},I=[te,ae,oe,se,ne],re={class:"flex gap-1"},le=["textContent"],ie=k({__name:"ChallengeTitle",props:{chal:{},solved:{type:Boolean}},setup(C){return(t,r)=>{const i=M;return o(),u("div",re,[b("span",{textContent:h(t.chal.name)},null,8,le),t.solved?(o(),d(i,{key:0,type:"success",class:"ml-1"},{default:s(()=>[...r[0]||(r[0]=[f("Solved",-1)])]),_:1})):w("",!0)])}}}),me=Object.assign(ie,{__name:"ChallengeTitle"}),ce={class:"flex gap-1 flex-wrap mt-1"},Qe=k({__name:"ctf",setup(C){const t=B("challenges_flags",{}),r=B("challenges_filters",{}),i=x(()=>Object.keys(r.value).filter(e=>r.value[e])),y=x(()=>Array.from(new Set(I.flatMap(e=>[...e.tags,e.diff]))).sort());function v(e){return i.value.length===0?!0:e.tags.some(a=>i.value.includes(a))||i.value.includes(e.diff)}function m(e){for(let a of e)a.children&&m(a.children),a.tag==="a"&&a?.props&&(a.props.target="_blank")}async function j(e){const{data:a}=await q(e.desc,()=>D(()=>import("./BihApATw.js"),__vite__mapDeps([0,1,2,3,4,5,6,7,8]),import.meta.url).then(c=>(c.default||c)()),"$pfejp1UYCJ");m(a.value?.body?.children??[]),H.prompt(()=>J(S,{chal:e,ast:a.value??void 0}),e.name,{autofocus:!1,inputPlaceholder:"kumo{}",confirmButtonText:"OK",cancelButtonText:"Cancel",inputValidator:c=>T(c)===e.sha256,inputErrorMessage:"Flag is not correct >_<",inputType:t.value[e.name]===e.sha256?"success":""}).then(({value:c})=>{t.value[e.name]=T(c),Q({type:"success",message:`${e.name} has been solved`}),F("ctf-solved",{chal:e.name})}).catch(()=>{console.log("cancelled")})}return(e,a)=>{const c=L,V=N,E=W,A=X,z=G;return o(),u(g,null,[p(E,{shadow:"never"},{header:s(()=>[...a[0]||(a[0]=[f(" CTF Challenges ",-1)])]),default:s(()=>[p(c,null,{default:s(()=>[...a[1]||(a[1]=[f(" Collection of my own challenges, I am completely new to this! ",-1)])]),_:1}),b("div",ce,[(o(!0),u(g,null,_(l(y),n=>(o(),d(V,{class:"select-none",checked:l(r)[n],type:"primary",onChange:O=>l(r)[n]=!l(r)[n]},{default:s(()=>[f(h(n),1)]),_:2},1032,["checked","onChange"]))),256))])]),_:1}),p(A),p(z,{wrap:"",size:30,alignment:"flex-start",class:"w-100%"},{default:s(()=>[(o(!0),u(g,null,_(l(I).filter(v),n=>(o(),d(E,{shadow:"hover",onClick:O=>j(n),class:"cursor-pointer"},{header:s(()=>[p(me,{chal:n,solved:l(t)[n.name]===n.sha256},null,8,["chal","solved"])]),default:s(()=>[p(l(S),{chal:n},null,8,["chal"])]),_:2},1032,["onClick"]))),256))]),_:1})],64)}}});export{Qe as default};

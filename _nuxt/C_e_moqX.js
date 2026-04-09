@@ -1,0 +1,1 @@
+import{q as t}from"./Blq52E8r.js";import"#entry";import"./BG2W1alK.js";import"./BSZFgSs5.js";async function n(){return t("content").path("blog").select("title","description","created","path").order("created","DESC").all()}export{n as default};
