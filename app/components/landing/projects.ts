@@ -539,6 +539,14 @@ export const projects: ProjectDef[] = [
             linux: "https://github.com/octo-kumo/files/raw/refs/heads/master/the_place-linux-x86_64"
         }),
     },
+    {
+        name: "compiler",
+        year: "2026",
+        langs: ['c'],
+        keys: ["ast", "parsing", "vm"],
+        desc: "A tree-walking interpreter for a statically-typed functional scripting language, written in C. Includes a hand-written recursive descent parser, a type inference engine, and a tree-walking VM with first-class functions, closures, and a small extensible runtime of built-in functions.",
+        github: "octo-kumo/compiler",
+    }
 ] satisfies ProjectDef[];
 
 function genPlatformLink(info: { win: string, linux: string }) {

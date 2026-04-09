@@ -2,7 +2,7 @@
   <div class="lg:max-w-prose! mx-auto!">
     <el-text class="text-4xl! font-bold" tag="h1">Hi! {{ pageViews }}th visitor!</el-text>
     <el-text tag="p">
-      Welcome to my person website, my portfolio is at <kumo-link to="/portfolio" type="primary">/portfolio</kumo-link>.
+      Welcome to my person website, my portfolio is at <kumo-link :noPrefetch="true" to="/portfolio" type="primary">/portfolio</kumo-link>.
     </el-text>
     <el-text tag="p">
       Below is an index of my writeups for CTF challenges, and below that is a list of random web tools and projects.
