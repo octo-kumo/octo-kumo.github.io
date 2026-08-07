@@ -1,0 +1,181 @@
+//- index.pug — Yun's Portfolio (framework-free port of octo-kumo.github.io landing)
+//- Build-time vars injected by build.ts:
+//-   basePath    — URL path prefix, default "/portfolio" ("" for site root)
+//-   siteUrl     — main site URL (default https://yun.ng)
+//-   writeupsUrl — search index URL (default https://v2.yun.ng/search-index.json)
+//-   cacheVer    — cache-busting version string
+//-   dataJson    — inline JSON blob { projects, writeups } (escaped)
+//-   *Icon       — inline contact SVGs
+
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Yun's Portfolio
+    meta(name="description", content="Welcome to my portfolio! My name is Yun, and I'm a software engineering student!")
+    meta(name="color-scheme", content="dark")
+    link(rel="icon", type="image/x-icon", href="/favicon.ico")
+    link(rel="stylesheet", href="/fonts.css?v=" + cacheVer)
+    link(rel="stylesheet", href=basePath + "/assets/portfolio.css?v=" + cacheVer)
+  body
+    div#portfolio
+      //- 3D background (mounted by src/scripts/space.ts)
+      div#space.canvas-wrap.fade-in(aria-hidden="true")
+
+      //- Vertical section nav
+      nav#sidenav.vertical-nav.fade-in
+        ul
+          li.nav-item(data-nav="hero")
+            span.nav-icon 🛸
+            span.nav-label Home
+          li.nav-item(data-nav="about")
+            span.nav-icon 🚀
+            span.nav-label About
+          li.nav-item(data-nav="skills")
+            span.nav-icon 💻
+            span.nav-label Skills
+          li.nav-item(data-nav="work")
+            span.nav-icon 🪐
+            span.nav-label Work
+          li.nav-item(data-nav="writeups")
+            span.nav-icon 📝
+            span.nav-label Writeups
+          li.nav-item(data-nav="contact")
+            span.nav-icon 📧
+            span.nav-label Contact
+
+      //- Hero
+      section#hero.hero-section
+        div.hello Hello, 
+          span.wave 👋
+          |  I am
+        div.tagline
+          h1#tagline an aspiring software engineer.
+          h2#hero-sub
+            ruby traveler
+              rt#page-views
+            | , please scroll down
+          div#scroll-indicator.scroll-indicator
+            div.chevron
+            div.chevron
+            div.chevron
+
+      //- About
+      section#about.about-section
+        div.about-section-content
+          h1 About
+          p I'm a undergrad software engineering student who loves everything and anything software related.
+          p.
+            I've done a lot of coding, here is a rough timelapse starting at 10yo: I started
+            <span class="tt" data-tip="my first language was Java!">coding</span>, made Java games in my
+            <span class="tt" data-tip="mostly based on javax.swing + awt">custom game engines</span>,
+            started web dev, then my <span class="tt" data-tip="it was in PHP!">first personal site</span>.
+            Made a bunch of <span class="tt" data-tip="mostly to help me do my highschool homework">GUI tools</span> and
+            <span class="tt" data-tip="battle cats clone, boardgames, etc">games</span>.
+            <span class="tt" data-tip="Tank Stars clone">First</span> and then several
+            <span class="tt" data-tip="libgdx allowed this, akin to Unity">multi-platform</span> games,
+            and <span class="tt" data-tip="scrapper and API for azurlane the anime waifu game">first open-source library</span>.
+            <span class="tt" data-tip="reddit clone + firebase">Android development</span>,
+            <span class="tt" data-tip="...hacks">Minecraft mods</span>, discord bots,
+            <span class="tt" data-tip="won 3rd 3 times and got 3 speakers + 2 keyboards + 1 mouse and mousepad.">hackathons</span>.
+            Started using JS frameworks,
+            <span class="tt" data-tip="auto deploy + dev channel + docker + FEVN stack, lecture notes for highschool">fullstack web development</span>,
+            <span class="tt" data-tip="mostly node.js + socket.js + some client">multiplatform multiplayer games</span>,
+            <span class="tt" data-tip="made with vue ❤">my second personal site</span>,
+            and began <span class="tt" data-tip="still playing actively to this day, my writeups are right here on this website">playing CTFs</span>.
+            Started doing data analysis and
+            <span class="tt" data-tip="like full auto anime face extraction &amp; clustering by character">artificial intelligence</span>.
+            <span class="tt" data-tip="EvilER: an entity relationship / schema diagram editor with auto SQL generation">desktop application</span>,
+            and a <span class="tt" data-tip="Fun fact: the database schema behind this was designed using the desktop version">realtime collaborative web version</span> of it;
+            <span class="tt" data-tip="internship at STUCK for Hypersketch">iOS development</span>,
+            <span class="tt" data-tip="p2p socket based kahoot clone in Java">networking</span>,
+            <span class="tt" data-tip="hypersonic re-entry vehicle simulated using realistic atmosphere and referenced research on drag at mach speeds">numerical simulations</span>,
+            and <span class="tt" data-tip="SSEF 030 : Fitting video clips to music based on Mood Analysis of both video and audio / music video generator">AI capstone project</span>.
+            Graduation from highschool and then more tools, simulations, scrapers, CTFs, utilities,
+            <span class="tt" data-tip="like this one">websites</span>, assembly, projects etc in university.
+          br
+          small.about-muted Do note the above are when I 
+            b started
+            |  doing something.
+          br
+          small.about-muted iOS and Android are deserted due to lack of need / problem.
+          br
+          small.about-muted I do arduino, DIY and other hardware related projects too.
+          p
+            i Phew
+            | , that was quite the mouthful, and you don't have to read it.
+          h3
+            b TLDR
+            | , I've tried a lot of things.
+          small.about-tldr I play osu, minecraft, rts, mahjong, go, tower defense, factorio, civ6 and gacha games.
+
+      //- Skills (marquee + lookup tool)
+      section#skills.skills-section
+        div#marquee.marquee-container.fade-sides
+        div.skill-controls
+          h1.skill-title Skills: Lookup Tool
+          i.skill-quote &ldquo;Can you do X? Do you have experience with Y?&rdquo;
+          div.skill-search
+            input#portfolio-search.search-input(placeholder="Type here...", autocomplete="off")
+          div.gallery.scroll-container
+            div#gallery-inner.gallery-inner
+
+      //- Work
+      section#work.work-section
+        h1.work-title Hire me to have your own custom planet!
+
+      //- Writeups (real section, no iframe — searches v2 search index)
+      section#writeups.writeup-section
+        div.writeup-content
+          h1 Writeups
+          i.writeup-quote &ldquo;CTF writeups, blog posts and random notes&rdquo;
+          div.writeup-search
+            input#writeup-search.search-input(placeholder='Search... (supports "exact phrase", -exclude, type:blog, tag:xss, ctf:tkbctf5, cat:web)', autocomplete="off")
+          div#writeup-status.writeup-status
+          div#writeup-results.writeup-results.scroll-container
+
+      //- Contact
+      section#contact.contact-section
+        div.contact-box
+          div.contact-row
+            img#pfp.contact-pfp(src="/img/pfp.square.small.jpg", alt="pfp")
+            div
+              h1.contact-title Contact
+              p.contact-sub Feel free to contact me for anything~
+              div.contact-links
+                a.contact-link(href="https://github.com/octo-kumo/", target="_blank", rel="noopener")
+                  span.svg-inline !{githubIcon}
+                  span.contact-name octo-kumo
+                a.contact-link(href="https://discord.com/users/456001047756800000", target="_blank", rel="noopener")
+                  span.svg-inline !{discordIcon}
+                  span.contact-name y.k.z
+                a.contact-link(href="https://www.linkedin.com/in/z-yun/", target="_blank", rel="noopener")
+                  span.svg-inline !{linkedinIcon}
+                  span.contact-name z-yun
+                a.contact-link(href="mailto:yun@yun.ng")
+                  span.svg-inline !{mailIcon}
+                  span.contact-name yun@yun.ng
+          div.contact-faq
+            h1 FAQ
+            div
+              h2 Q: Is this a template? Where can I get it?
+              p A: I made the website, so there is no template.
+                br
+                | You can however, look at my code and improvise.
+          div.back-wrap
+            a#back-link.back-link(href=siteUrl) Back to main site
+
+      //- 3D overlay hover cards (WWF team + BDC)
+      div#wwf-tip.space-tip
+        small 2024-now
+        br
+        span Member of CTF team 
+          a(href="https://ctftime.org/team/283853", target="_blank", rel="noopener") World Wide Flags
+      div#bdc-tip.space-tip
+        small 2026-now
+        br
+        span Business Development Bank of Canada
+
+    script#portfolio-data(type="application/json") !{dataJson}
+    script(type="module", src=basePath + "/assets/" + jsName)

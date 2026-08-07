@@ -1,0 +1,44 @@
+/* Self-hosted fonts — subset at build time to the characters actually used
+   (framework/fonts.ts scans the built pages + UI source; re-run the build when
+   content introduces new characters). CJK falls back to system fonts.
+   font-display: swap prevents invisible-text during load (FOIT). */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/space-grotesk.woff2) format('woff2');
+  unicode-range: U+0020-007E, U+00A0-00A3, U+00A7-00A9, U+00AB-00AD, U+00AF-00B5, U+00B7, U+00B9, U+00BB, U+00BD-00BF, U+00C1-00C2, U+00C4-00C7, U+00C9, U+00D7-00D9, U+00DC, U+00DE-00EF, U+00F1-00F7, U+00F9-00FD, U+00FF, U+0152, U+02BB, U+02C6, U+02DC, U+2013-2014, U+2018-2019, U+201C-201D, U+2026, U+2039-203A, U+20AC, U+2122, U+2191, U+2212;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/jetbrains-mono-400.woff2) format('woff2');
+  unicode-range: U+0020-007E, U+00A0-00A3, U+00A7-00A9, U+00AB-00AD, U+00AF-00B5, U+00B7, U+00B9, U+00BB, U+00BD-00BF, U+00C1-00C2, U+00C4-00C7, U+00C9, U+00D7-00D9, U+00DC, U+00DE-00EF, U+00F1-00F7, U+00F9-00FD, U+00FF, U+0152, U+02C6, U+02DC, U+2013-2014, U+2018-2019, U+201C-201D, U+2026, U+2039-203A, U+20AC, U+2122, U+2191, U+2212;
+}
+@font-face {
+  font-family: 'Source Serif Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/source-serif-pro-400.woff2) format('woff2');
+  unicode-range: U+0020-007E, U+00A0-00A3, U+00A7-00A9, U+00AB-00AD, U+00AF-00B5, U+00B7, U+00B9, U+00BB, U+00BD-00BF, U+00C1-00C2, U+00C4-00C7, U+00C9, U+00D7-00D9, U+00DC, U+00DE-00EF, U+00F1-00F7, U+00F9-00FD, U+00FF, U+0152, U+02BB, U+02C6, U+02DC, U+2013-2014, U+2018-2019, U+201C-201D, U+2026, U+2039-203A, U+20AC, U+2122, U+2191, U+2212;
+}
+@font-face {
+  font-family: 'Source Serif Pro';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/source-serif-pro-400i.woff2) format('woff2');
+  unicode-range: U+0020-007E, U+00A0-00A3, U+00A7-00A9, U+00AB-00AD, U+00AF-00B5, U+00B7, U+00B9, U+00BB, U+00BD-00BF, U+00C1-00C2, U+00C4-00C7, U+00C9, U+00D7-00D9, U+00DC, U+00DE-00EF, U+00F1-00F7, U+00F9-00FD, U+00FF, U+0152, U+02BB, U+02C6, U+02DC, U+2013-2014, U+2018-2019, U+201C-201D, U+2026, U+2039-203A, U+20AC, U+2122, U+2191, U+2212;
+}
+@font-face {
+  font-family: 'Source Serif Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/source-serif-pro-700.woff2) format('woff2');
+  unicode-range: U+0020-007E, U+00A0-00A3, U+00A7-00A9, U+00AB-00AD, U+00AF-00B5, U+00B7, U+00B9, U+00BB, U+00BD-00BF, U+00C1-00C2, U+00C4-00C7, U+00C9, U+00D7-00D9, U+00DC, U+00DE-00EF, U+00F1-00F7, U+00F9-00FD, U+00FF, U+0152, U+02BB, U+02C6, U+02DC, U+2013-2014, U+2018-2019, U+201C-201D, U+2026, U+2039-203A, U+20AC, U+2122, U+2191, U+2212;
+}

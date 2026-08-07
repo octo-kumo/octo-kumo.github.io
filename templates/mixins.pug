@@ -1,0 +1,23 @@
+mixin nav-link(href, text, opts)
+  if href.startsWith("http") || (opts && opts.newTab)
+    a.nav-link(href=href, target="_blank", rel= opts && opts.opener ? undefined : "noopener")= text
+  else
+    a.nav-link(href=href)= text
+
+mixin tag(text, borderColor, textColor)
+  span.tag= text
+
+mixin meta-tag(text, icon, borderColor, textColor)
+  span.meta-tag= icon + " " + text
+
+mixin peer-nav(prev, next)
+  if prev || next
+    .peer-nav
+      if prev
+        a(href="/c"+prev.path)= "← " + prev.title
+      else
+        span
+      if next
+        a(href="/c"+next.path)= next.title + " →"
+      else
+        span

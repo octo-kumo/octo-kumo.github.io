@@ -1,0 +1,713 @@
+/* ============================================================
+   portfolio.css — framework-free port of octo-kumo.github.io
+   app/components/landing. All styles are semantic classes
+   (no utility-class stacking); flattened from the original SFCs.
+   ============================================================ */
+
+/* ── base (portfolio.vue + layouts/clean.vue) ─────────────── */
+:root {
+  color-scheme: dark;
+  --base-color: #fff; /* chevrons (was undefined in original → fell back to currentColor) */
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  font-family: 'Space Grotesk', sans-serif !important;
+  --font: 'Space Grotesk' !important;
+}
+
+* {
+  font-family: 'Space Grotesk', sans-serif !important;
+}
+
+#portfolio {
+  color: #fff;
+  overflow-x: hidden;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fade-in 1s ease-in-out forwards;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 3D background canvas — fixed, behind everything */
+.canvas-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+.canvas-wrap canvas {
+  display: block;
+}
+
+/* ── VerticalNav.vue ─────────────────────────────────────── */
+.vertical-nav {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  pointer-events: none;
+  display: none; /* hidden < md */
+}
+@media (min-width: 768px) {
+  .vertical-nav { display: block; }
+}
+.vertical-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.vertical-nav li {
+  margin-bottom: 20px;
+  cursor: pointer;
+  font-size: 24px;
+}
+.nav-item {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0.3;
+  pointer-events: auto;
+}
+.nav-item:hover,
+.nav-item.active {
+  opacity: 1;
+}
+.nav-label {
+  display: none; /* inline >= lg */
+}
+@media (min-width: 1024px) {
+  .nav-label { display: inline; }
+}
+
+/* ── HeroSection.vue ──────────────────────────────────────── */
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+.hello {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+.tagline {
+  user-select: none;
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  width: 100%;
+  transform: translateX(-50%);
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+.tagline h1 {
+  font-size: 2rem;
+  margin-bottom: 0;
+  cursor: default;
+}
+.tagline h1.clickable {
+  cursor: pointer;
+}
+.tagline h2 {
+  font-size: 1.5rem;
+  transition: opacity 0.3s ease-in-out;
+}
+.tagline h2.faded {
+  opacity: 0.5;
+}
+#page-views {
+  opacity: 0.3;
+}
+.scroll-indicator {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  transition: opacity 0.3s ease-in-out;
+}
+.scroll-indicator.hidden {
+  opacity: 0;
+}
+.chevron {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff; /* all four borders — renders as a rhombus when rotated 45° (the original's --base-color var was undefined, so every border fell back to currentColor/white) */
+  transform: rotate(45deg);
+  position: absolute;
+  opacity: 0;
+  animation: scroll-pulse 2s infinite;
+}
+.chevron:nth-child(2) {
+  animation-delay: 0.15s;
+  margin-top: 10px;
+}
+.chevron:nth-child(3) {
+  animation-delay: 0.3s;
+  margin-top: 20px;
+}
+@keyframes scroll-pulse {
+  0%   { opacity: 0; transform: rotate(45deg) translateY(-10px) scale(0.9); }
+  50%  { opacity: 1; transform: rotate(45deg) translateY(0) scale(1); }
+  100% { opacity: 0; transform: rotate(45deg) translateY(10px) scale(0.9); }
+}
+
+/* ── AboutSection.vue + TText.vue ─────────────────────────── */
+.about-section {
+  position: relative;
+}
+.about-section a {
+  color: inherit;
+}
+.about-section-content {
+  margin-inline: auto;
+  padding: 4rem 2rem;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: clip;
+}
+@media (min-width: 768px) {
+  .about-section-content { max-width: 65ch; }
+}
+.about-muted {
+  opacity: 0.3;
+}
+.about-tldr {
+  opacity: 0.3;
+  transition: opacity 0.3s;
+}
+.about-tldr:hover {
+  opacity: 1;
+}
+.tt {
+  position: relative;
+  display: inline;
+  cursor: help;
+  text-decoration: underline dashed;
+  text-decoration-color: #a5c8ff;
+  text-underline-offset: 2px;
+  transition: all 0.3s;
+}
+.tt:hover {
+  text-underline-offset: 4px;
+  background: #075985;
+}
+.tt::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background: #111827;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+.tt:hover::after {
+  opacity: 1;
+}
+
+/* ── SkillsSection.vue ────────────────────────────────────── */
+.skills-section {
+  z-index: 200;
+  background-color: #000;
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+.fade-sides {
+  --feather-size: 15%;
+  -webkit-mask-image: linear-gradient(90deg,
+      transparent 0%,
+      black var(--feather-size),
+      black calc(100% - var(--feather-size)),
+      transparent 100%);
+  mask-image: linear-gradient(90deg,
+      transparent 0%,
+      black var(--feather-size),
+      black calc(100% - var(--feather-size)),
+      transparent 100%);
+}
+
+/* scrollbars (used by gallery, card desc, chips) */
+.scroll-container::-webkit-scrollbar {
+  background: transparent;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+.scroll-container:hover::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 100, 0.7);
+}
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.scroll-container:hover {
+  scrollbar-color: rgba(100, 100, 100, 0.7) transparent;
+}
+
+/* marquee */
+.marquee-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.marquee-row {
+  position: absolute;
+  left: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: row;
+  user-select: none;
+  text-align: center;
+  animation: marquee var(--duration) linear infinite;
+}
+.marquee-row.reverse {
+  animation-direction: reverse;
+}
+.marquee-row.paused {
+  animation-play-state: paused;
+}
+.marquee-copy {
+  display: flex;
+  margin-right: 2rem;
+}
+.marquee-copy > * + * {
+  margin-left: 2rem;
+}
+.marquee-word {
+  font-size: 1.5rem;
+  opacity: 0.1;
+  transition: opacity 0.3s;
+  pointer-events: auto;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.marquee-word:hover,
+.marquee-word.selected {
+  opacity: 1;
+}
+.marquee-word.center {
+  opacity: 0.5;
+}
+.marquee-word.center.selected {
+  opacity: 1;
+}
+@keyframes marquee {
+  0% {
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(var(--marquee-offset, 70vh)) translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(var(--marquee-offset, 70vh)) translate3d(50%, 0, 0);
+  }
+}
+
+/* lookup box */
+.skill-controls {
+  width: 65ch;
+  max-width: 100%;
+  background-color: rgb(0 0 0 / 0.8);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem;
+  border-radius: 0.25rem;
+}
+.skill-search {
+  position: relative;
+}
+.skill-title {
+  margin: 0;
+  font-size: 2rem;
+}
+.skill-quote {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.search-input {
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  font: inherit;
+  font-size: 20px;
+  border: 0;
+  border-bottom: 1px solid #6b7280;
+  outline: none;
+  margin-bottom: 4px;
+  transition: all 0.3s;
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20fill%3D%22%23ffffff%22%20version%3D%221.1%22%20viewBox%3D%220%200%20488.4%20488.4%22%20xml%3Aspace%3D%22preserve%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22m0%20203.25c0%20112.1%2091.2%20203.2%20203.2%20203.2%2051.6%200%2098.8-19.4%20134.7-51.2l129.5%20129.5c2.4%202.4%205.5%203.6%208.7%203.6s6.3-1.2%208.7-3.6c4.8-4.8%204.8-12.5%200-17.3l-129.6-129.5c31.8-35.9%2051.2-83%2051.2-134.7%200-112.1-91.2-203.2-203.2-203.2s-203.2%2091.1-203.2%20203.2zm381.9%200c0%2098.5-80.2%20178.7-178.7%20178.7s-178.7-80.2-178.7-178.7%2080.2-178.7%20178.7-178.7%20178.7%2080.1%20178.7%20178.7z%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+.search-input:focus {
+  border-bottom: 5px solid #0ea5e9;
+  margin-bottom: 0;
+}
+
+/* gallery + project cards */
+.gallery {
+  position: relative;
+  overflow: hidden;
+}
+.gallery-inner {
+  display: flex;
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.gallery-inner.gallery-centered {
+  justify-content: center;
+}
+.project-card {
+  position: relative;
+  z-index: 0;
+  padding: 1rem;
+  padding-top: 0;
+  margin: 0.5rem;
+  background-color: #000;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border-radius: 0.25rem;
+  border: 1px solid;
+  width: 16rem;
+  min-width: 16rem;
+  height: 20rem;
+  transition: transform 0.3s ease;
+}
+.project-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--image);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+  filter: brightness(0.6);
+  z-index: -1;
+}
+.card-year {
+  display: block; /* in flow, above the title — the original's abspos badge rendered at its static position, i.e. a line of its own */
+  opacity: 0.5;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin-bottom: 0.25rem;
+}
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+.card-desc {
+  max-height: 10.5rem;
+  overflow-y: auto;
+}
+.card-desc-text {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  text-wrap: balance;
+}
+.card-chips {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  overflow-x: auto;
+  user-select: none;
+}
+.card-chips-keys {
+  margin-top: 0.25rem;
+}
+.chip {
+  padding: 0.125rem 0.25rem;
+  font-size: 0.75rem;
+  border: 1px solid;
+  border-radius: 0.25rem;
+  opacity: 0.5;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.chip:hover {
+  opacity: 1;
+}
+.chip-keys {
+  padding-block: 0.05rem;
+}
+.card-icons {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  overflow-x: auto;
+  align-items: center;
+  user-select: none;
+}
+
+/* ── WorkSection.vue ──────────────────────────────────────── */
+.work-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+.work-title {
+  position: absolute;
+  top: 30%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  transform: translateY(-50%);
+  z-index: 2; /* above the 3D html overlays (z:1), below section chrome */
+}
+
+/* ── WriteupSection.vue (overhauled: real section, no iframe) */
+.writeup-section {
+  z-index: 200;
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-color: #000;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  overflow: hidden;
+}
+.writeup-content {
+  width: 65ch;
+  max-width: calc(100vw - 2rem);
+  margin: 6vh auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 88vh;
+  background-color: rgb(0 0 0 / 0.8);
+  padding: 2rem;
+  border-radius: 0.25rem;
+}
+.writeup-content h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+.writeup-quote {
+  opacity: 0.7;
+}
+.writeup-search {
+  position: relative;
+}
+.writeup-status {
+  min-height: 1.2em;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+.writeup-results {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+}
+.w-row {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+.w-row:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.w-row-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.w-row-meta {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  margin: 0.15rem 0;
+}
+.w-row-desc {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+.w-tag {
+  display: inline-block;
+  padding: 0 6px;
+  margin-right: 4px;
+  font-size: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+/* ── ContactSection.vue ───────────────────────────────────── */
+.contact-section {
+  z-index: 200;
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+.contact-box {
+  width: 65ch;
+  max-width: 100%;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  background-color: #000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.contact-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+@media (min-width: 640px) {
+  .contact-row { flex-direction: row; }
+}
+.contact-pfp {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 9999px;
+  margin-inline: auto;
+}
+.contact-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 0.5rem;
+}
+.contact-sub {
+  text-align: center;
+  margin: 0 0 0.5rem;
+}
+.contact-links {
+  display: flex;
+  flex-direction: row;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.contact-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: #fff;
+}
+.contact-name {
+  font-size: 1.5rem;
+}
+.svg-inline svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+.contact-faq {
+  margin-top: 0.5rem;
+  padding: 1rem;
+}
+.back-wrap {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+}
+.back-link {
+  font-size: 1.25rem;
+  padding: 1rem;
+  border: 1px solid #fff;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.back-link:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* ── WWF/BDC hover cards + 3D html overlay ─────────────────── */
+#perf-overlay {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 9999;
+  background: rgb(0 0 0 / 0.75);
+  color: #7fff7f;
+  font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 6px 10px;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 4px;
+  white-space: pre;
+  pointer-events: none;
+  display: none;
+}
+
+.space-tip {
+  position: fixed;
+  background: #000;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #fff;
+  z-index: 100000000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+.space-tip small {
+  opacity: 0.5;
+}
+.space-tip a {
+  color: inherit;
+}
+.space-card {
+  cursor: pointer;
+}
+.space-webpage {
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  z-index: 1; /* above the canvas (z:0), below section content */
+  will-change: transform;
+  pointer-events: none;
+}
+.space-webpage > * {
+  pointer-events: auto;
+}

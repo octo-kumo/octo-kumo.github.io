@@ -1,0 +1,34 @@
+{
+  "name": "yun-ng-v2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun run build.ts",
+    "build:debug": "DEBUG=1 bun run build.ts",
+    "dev": "bun run build.ts && docker compose up -d --build",
+    "serve": "docker compose up -d --build",
+    "stop": "docker compose down",
+    "logs": "docker compose logs -f",
+    "deploy": "bun run build.ts && cd dist && git init && git add -A && git commit -m 'deploy' && git push -f git@github.com:octo-kumo/octo-kumo.github.io.git master:gh-pages"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^1.0.3",
+    "beautiful-mermaid": "^1.1.3",
+    "front-matter": "^4.0.2",
+    "marked": "^15.0.0",
+    "pug": "^3.0.4",
+    "shiki": "^3.0.0",
+    "temml": "^0.13.4",
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/fontkit": "^2.0.9",
+    "@types/js-yaml": "^4.0.9",
+    "@types/pug": "^2.0.10",
+    "@types/three": "^0.183.1",
+    "fontkit": "^2.0.4",
+    "js-yaml": "^4.1.0",
+    "subset-font": "^2.5.0"
+  }
+}

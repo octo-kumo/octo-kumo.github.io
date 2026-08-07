@@ -1,0 +1,791 @@
+- name: BDC
+  hidden: true # 3D logo planet only — not shown in the skills gallery
+  year: '2026-now'
+  langs: []
+  keys: []
+  desc: Working at the Business Development Bank of Canada (BDC).
+- name: Stars
+  year: '2026'
+  langs:
+    - react
+    - typescript
+    - javascript
+    - html
+    - css
+  keys:
+    - simulation
+    - game
+    - three.js
+    - glsl
+    - ai
+    - agent
+  desc: >-
+    Stars is a visually appealing star-planetary system generator, editor, and visualizer. AI Agent was used during the development process to assist with design, coding, debugging. I was heavily
+    involved in finding bugs, solving bugs the agent couldn't solve, and designing the UI and UX.
+
+    Made for fun, and at first it was meant to be a background world-crafting generator for my sci-fi novel, but I ended up putting a lot of effort into it and making it a standalone product.
+
+    It features many type of stars to choose from, many planets to choose from, physically accurate* data generation, and many customization options. It also features a super detailed star shader.
+  image: https://yun.ng/stars/banner.svg
+  link: https://yun.ng/stars/
+- name: air-defence-rs
+  year: '2026'
+  langs:
+    - rust
+    - rhai
+  keys:
+    - game
+    - simulation
+    - bevy
+    - ai
+    - scripting
+  desc: >-
+    Air defence is a 3D turret shooting game, where you write code to control the turret which has to identify planes and shoot them down. The game has lore, dialogues and levels. The AI you write is
+    given some 2D grid of visual data to work with, I've yet to make a AI that actually works yet, game is super rough, may crash. No viruses included. Made for fun, and to learn rust and bevy.
+  link: {}
+- name: r/place-rs
+  year: '2026'
+  langs:
+    - rust
+    - bevy
+    - javascript
+    - html
+    - css
+  keys:
+    - simulation
+    - game
+    - spacetimedb
+    - multiplayer
+    - realtime
+    - websocket
+    - database
+  desc: >-
+    https://yun.ng/the-place 
+
+    A r/place clone, with a infinite* canvas and a super fast and efficient rust backend using spacetimedb, a database I've been thinking of trying out for a while now.
+
+    I made 2 versions, 1 web and 1 bevy desktop version. The web version just use normal canvas but with spacetimedb sdk to communicate with the backend, because the latest of spacetimedb sdk has yet
+    to support wasm, the desktop version uses bevy for rendering and has rust version of spacetimedb sdk to communicate with the same backend.
+  link: {}
+- name: compiler
+  year: '2026'
+  langs:
+    - c
+  keys:
+    - ast
+    - parsing
+    - vm
+  desc: >-
+    A tree-walking interpreter for a statically-typed functional scripting language, written in C. Includes a hand-written recursive descent parser, a type inference engine, and a tree-walking VM with
+    first-class functions, closures, and a small extensible runtime of built-in functions.
+  github: octo-kumo/compiler
+- name: ARM Simulator
+  year: '2025'
+  langs:
+    - typescript
+    - asm
+  keys:
+    - arm
+    - assembly
+    - cpu
+  desc: Simulation of a ARM CPU.
+  github: octo-kumo/arm-sim
+- name: Drone Ground Station
+  year: '2025'
+  langs:
+    - java
+    - glsl
+  keys:
+    - jmonkeyengine
+    - serial
+    - network
+    - android
+    - hardware
+  desc: 3D ground control station for a drone using custom serial communication protocol. Displays the world map below you, auto load/unloads + LOD. Works on android.
+  github: octo-kumo/drone-controller
+  image: https://image.yun.ng/upload/v1743831406/kstqunyercuh9bm4zrwj.webp
+- name: Deploy Flow
+  year: '2025'
+  langs:
+    - python
+  keys:
+    - ai
+    - deepseek
+    - agent
+    - cli
+    - terraform
+    - cloud
+    - aws
+  desc: >-
+    AI-driven deployment tool that autonomously analyzes repositories, generates Terraform configurations and deployment scripts, and provisions cloud infrastructure, with ongoing refinement of remote
+    execution.
+  image: https://github.com/octo-kumo/deployflow/raw/master/img/img2.png
+  github: octo-kumo/deployflow
+- name: 云酱 (discord bot)
+  year: '2025'
+  langs:
+    - typescript
+    - javascript
+    - shell
+    - digital ocean
+  desc: >-
+    A discord bot that supports: drawing stat charts of your chat history (discord-chat-chart), playing the game 24, stock market simulator (you can trade any stock with it, uses real market info),
+    loto, music playing, chat experience, loto etc. It also performs automated 5s interval bitcoin trading (simulated based on real prices). It also responds to mentions and replies with AI agent
+    response, and can draw AI drawings given prompt for you.
+  keys:
+    - ai
+    - cloud
+    - finance
+    - quantitative trading
+    - data analysis
+    - discord.js
+- name: Minecraft Server
+  year: '2025'
+  langs:
+    - java
+  keys:
+    - minecraft
+    - gcp
+    - linux
+    - pufferpanel
+  desc: >-
+    Forked & modified several mods for version compatibility, forked emogg to make it work well with DiscordIntegration such that you can send discord server's emojis in game, see them in discord and
+    vice versa.
+- name: Bad Apple on DE1-SoC
+  year: '2025'
+  langs:
+    - python
+    - c
+    - asm
+  keys:
+    - huffman
+    - video compression
+    - de1-soc
+    - arm
+    - bad apple
+  desc: Playing "Bad Apple" on a DE1-SoC by using python to resize and delta-encode the video into 8x8 blocks, then generate Huffman if-chain C code for on-the-fly huffman decoding.
+  video: vN1YDjCYprw
+- name: space-rs
+  year: '2025'
+  langs:
+    - rust
+  keys:
+    - game
+    - simulation
+    - wasm
+  desc: Space RS is a 2D N-body simulation game written in rust, it also simulates the roche limit and tidal disintegration.
+  github: octo-kumo/space-rs
+  video: ch8ig_aDqTE
+  link: https://yun.ng/space-rs
+- name: lines-game
+  year: '2025'
+  langs:
+    - typescript
+    - html
+  keys:
+    - game
+  desc: >-
+    A simple lines game where theres some image with many lines on it, each line can invert the color on 1 side of the image, and stacked together they can XOR each other. You just need to click on
+    lines to toggle them. Theres a normal CSS version and a canvas version.
+
+    Not very interesting, may be good for wallpapers.
+  link: https://yun.ng/lines-game
+- name: yunix
+  year: '2025'
+  langs:
+    - c
+    - asm
+  keys:
+    - os
+    - kernel
+    - x86-64
+    - unix
+  desc: Not very useful bootable OS that only has a kernel level shell, without a filesystem nor userland.
+- name: hsr-sim-universe-utils
+  desc: Parses decompiled resources from game Honkai Starrail to create structured easy to use JSONs of certain parts.
+  langs:
+    - javascript
+  github: octo-kumo/hsr-sim-universe-utils
+  year: '2024'
+  link: https://yun.ng/projects/simulated-universe
+- name: htb-writeups
+  year: '2024'
+  langs:
+    - md
+  github: octo-kumo/htb-writeups
+  keys:
+    - cybersecurity
+    - linux
+  desc: HackTheBox writeups, not that many because I don't use HTB that much.
+  link: https://yun.ng/c/htb
+- name: Timetable Widget
+  year: '2024'
+  langs:
+    - java
+  keys:
+    - widget
+    - scraping
+  github: octo-kumo/desktop-widgets
+  image: https://github.com/octo-kumo/desktop-widgets/raw/master/images/img2.png
+  desc: Automatically fetches the timetable and displays today's schedule as a widget, only for mcgill.
+- name: mc-forensics
+  year: '2024'
+  langs:
+    - java
+    - javascript
+  keys:
+    - nbt
+  desc: Minecraft forensics tool, with built-in JS evaluation engine to run custom scripts on NBT data.
+  image: https://github.com/octo-kumo/mc-forensics/raw/master/img.png
+  github: octo-kumo/mc-forensics
+- name: globe-ctf
+  year: '2024'
+  langs:
+    - typescript
+    - scss
+    - html
+    - javascript
+    - plpgsql
+  keys:
+    - fullstack
+    - three.js
+    - postgres
+    - rls
+    - supabase
+    - vue.js
+    - nuxt.js
+    - drizzle-orm
+    - database
+    - cybersecurity
+    - serverless
+  desc: My attempt at making a fully custom made CTF event website, akin to CTFd, but modern, and serverless. Logic is handled purely by supabase and postgres (the goat).
+- name: KMap Solver
+  year: '2024'
+  langs:
+    - typescript
+  keys:
+    - kmap
+    - vue.js
+  desc: RPN logic expression parser + evaluator + truth table generation / custom truth table + kmap generation + kmap solver + DFS minimal cover pruning + shannon factorization + good UI
+  image: https://image.yun.ng/upload/v1743830774/llytz7xpqxizeqxnvr91.webp
+  link: https://yun.ng/projects/digital-logic
+- name: 2D Triangulator
+  year: '2024'
+  langs:
+    - typescript
+  keys:
+    - simulation
+    - vue.js
+  desc: N vector universal 2D triangulator, useful to finding minecraft bases
+  image: https://image.yun.ng/upload/v1743830833/nlvxtyr0zy2fwkfdpyex.webp
+  link: https://yun.ng/projects/triangulator
+- name: Finance Tools
+  year: '2024'
+  langs:
+    - typescript
+  keys:
+    - vue.js
+    - finance
+  desc: Time value, annuity, arithmetic gradient, perpetuity calculator. And some other stuff.
+  link: https://yun.ng/projects/finance
+- name: Yun's Website
+  desc: This website and its subrepositories.
+  langs:
+    - html
+    - css
+    - javascript
+    - typescript
+    - md
+    - less
+  keys:
+    - nuxt.js
+    - vue.js
+    - three.js
+    - github/ci
+    - git
+  github: octo-kumo/octo-kumo.github.io
+  year: 2023-now
+  link: https://yun.ng/
+- name: pixiv manager
+  desc: A pixiv downloader & manager & viewer.
+  langs:
+    - java
+  keys:
+    - scraping
+    - pixiv
+  github: octo-kumo/pixiv-manager
+  image: https://github.com/octo-kumo/pixiv-manager/raw/master/github/images/img.jpg
+  year: 2023-2024
+  link: https://github.com/octo-kumo/pixiv-manager/releases
+- name: air defence
+  desc: Web-based 3D turret shooting game (WIP).
+  langs:
+    - typescript
+    - javascript
+    - glsl
+  keys:
+    - three.js
+    - vue.js
+    - game
+    - simulation
+  github: octo-kumo/air-defence
+  image: https://image.yun.ng/upload/v1743829040/ebuggnx4tsxge4ypp1l3.webp
+  year: 2023-2024
+  link: https://yun.ng/projects/air-defence
+- name: discord-chat-chart
+  year: '2023'
+  langs:
+    - javascript
+    - rust
+    - html
+    - css
+    - jsx
+    - tsx
+    - typescript
+    - python
+  keys:
+    - tauri
+    - discord.js
+    - flask
+    - hono
+    - react.js
+    - sentimental analysis
+  desc: >-
+    Uses 20+ discord user bot to circumvent ratelimiting and pull discord messages fast. Draw nice looking charts that including stats like emoji usage, word cloud, sentimental analysis, usage by time
+    of day etc. You can share the charts with your friends~ Used Tauri to make a nice looking UI to interact with (not public).
+- name: Buzz Dungeon
+  desc: Hack&Roll 2022 Entry, 2D dungeon / maze game.
+  langs:
+    - java
+  keys:
+    - libgdx
+  github: octo-kumo/buzz-dungeon-gdx
+  image: https://github.com/octo-kumo/buzz-dungeon-gdx/raw/master/images/4.png
+  year: '2022'
+- name: HyperSketch
+  desc: I made the color picker function for my internship at STUCK Designs
+  langs:
+    - swift
+  keys:
+    - ios
+  year: '2022'
+- name: Evil ER
+  desc: Best tool to edit your entity relationship / schema diagrams + auto SQL generation. 300+ downloads!
+  langs:
+    - java
+    - sql
+  keys:
+    - desktop app
+    - database
+  github: octo-kumo/evil-er
+  image: https://github.com/octo-kumo/evil-er/raw/master/icons/img.png
+  year: '2022'
+- name: 'Evil ER: Web + Collab'
+  desc: Collaborative, realtime, web based editing of ER diagrams!
+  langs:
+    - html
+    - javascript
+    - css
+    - sql
+    - typescript
+  keys:
+    - socket
+    - socket.io
+    - nuxt
+    - tailwind
+    - express.js
+    - mysql
+    - vue.js
+    - database
+  github: octo-kumo/cs6131-project
+  image: https://github.com/octo-kumo/evil-er/raw/master/icons/img.png
+  year: '2022'
+- name: Network Contest
+  desc: Kahoot clone using sockets.
+  langs:
+    - java
+  keys:
+    - network
+    - socket
+  github: octo-kumo/network-contest
+  year: '2022'
+- name: video essay transcriber
+  desc: >-
+    Hackathon 3rd Place: Tired of watching long video essays? Needing to listen to lectures at 3 times speed just to listen normally? Our video essay transcription will end those problems once and for
+    all. Video Essay Transcription transcribes videos essays with relevant images so that you get the same experience watching the video and reading our transcribing, and even saving your time doing
+    so.
+  langs:
+    - python
+  keys:
+    - ai
+    - keras
+    - sklearn
+    - tensorflow
+    - pytorch
+    - selenium
+    - numpy
+    - pandas
+  github: octo-kumo/video-essay-transcriber
+  year: '2022'
+- name: Reentry Simulator
+  langs:
+    - python
+  keys:
+    - numerical
+    - simulation
+    - rk4
+  desc: Hypersonic re-entry vehicle simulated using realistic atmosphere and referenced research paper on drag at mach speeds.
+  year: '2022'
+  link: https://github.com/octo-kumo/docs/blob/master/reentry_simulation.pdf
+- name: 'Capstone: AI AMV Generator'
+  desc: Automated video editing tool that synchronizes video clips with music by analyzing mood and tempo through CNNs and facial recognition, streamlining assembly for creators.
+  year: '2022'
+  langs:
+    - python
+  keys:
+    - keras
+    - sklearn
+    - tensorflow
+    - ai
+    - resnet34
+    - mood analysis
+    - opencv
+    - video editing
+    - numpy
+    - pandas
+  link: https://github.com/octo-kumo/docs/blob/master/ARP___Revised.pdf
+- name: Physics Website
+  desc: A website that demostraits the properties and physics of superconductors. With fancy scroll animations.
+  langs:
+    - javascript
+    - css
+    - html
+    - typescript
+    - md
+  keys:
+    - vue.js
+  year: '2021'
+- name: Anime Character Extractor
+  desc: Analyzes anime videos, extract all character faces, and cluster them. Manually labeled and cleaned training data.
+  image: https://image.yun.ng/upload/v1743833563/c7yllsfevuiodciydhno.webp
+  langs:
+    - python
+  keys:
+    - maskrcnn
+    - ai
+    - tensorflow
+    - keras
+    - autoencoder
+    - numpy
+    - pandas
+  year: '2021'
+- name: CTF Writeups
+  desc: Writeups for CTFs I participated in.
+  langs:
+    - md
+    - python
+    - php
+    - javascript
+    - typescript
+    - go
+    - c/c++
+    - perl
+    - caml
+    - tex
+    - sql
+    - rust
+    - html
+    - css
+    - bash
+    - c#
+  keys:
+    - docker
+    - cybersecurity
+    - metasploit
+    - wireshark
+    - john
+    - binwalk
+    - pwntools
+    - z3
+    - kali
+    - pwn
+    - forensics
+    - web exploitation
+    - cryptography
+    - linux
+    - unity
+  github: octo-kumo/ctf-writeups
+  year: 2020-now
+  link: https://yun.ng/c/ctf
+- name: QuickMacro
+  desc: Quickly record and play macros with time sensative actions! (only works on Mac)
+  langs:
+    - java
+  github: octo-kumo/QuickMacro
+  year: 2020-2022
+- name: E-Notes
+  desc: >-
+    Note management system with role-based permissions, supporting Markdown, HTML, and Jupyter Notebook formats. Used by my highschool, with 420 total users. Led, managed and developed by me. Per
+    request of highschool computer science department.
+  langs:
+    - html
+    - css
+    - javascript
+    - typescript
+    - md
+    - scss
+  keys:
+    - git
+    - docker
+    - express.js
+    - fullstack
+    - firebase
+    - node.js
+    - firestore
+    - vue.js
+    - fevn
+  image: https://raw.githubusercontent.com/appventure-nush/e-notes/refs/heads/master/images/thumb.png
+  github: appventure-nush/e-notes
+  year: 2020-2022
+  link: https://enotes.nush.app/
+- name: exam clock
+  desc: Exam clock that will connect to a central control server. You can access a web control panel after logining to control clock instances connected. QR code could also be used to authenticate a user.
+  langs:
+    - java
+    - html
+    - css
+    - javascript
+  keys:
+    - multiplatform
+    - fullstack
+    - express.js
+    - handlebars
+  year: 2020-2021
+- name: Rating App
+  desc: Android application that allows the user to rate events, uses firebase for auth.
+  langs:
+    - java
+  keys:
+    - firebase
+    - android
+  year: '2020'
+- name: gomoku
+  desc: Multiplayer socket based web game, the game gomoku.
+  langs:
+    - html
+    - javascript
+    - css
+  keys:
+    - heroku
+    - socket.io
+    - express.js
+    - node.js
+    - mongodb
+  year: '2020'
+- name: kumo-mod
+  desc: A cool little *client-side* mod for minecraft
+  langs:
+    - java
+  keys:
+    - minecraft
+  year: '2020'
+- name: It-is-noisy
+  desc: Hackathon 3rd place, visualize noise levels in neighbourhood.
+  langs:
+    - javascript
+    - html
+  keys:
+    - electron
+  year: '2020'
+  github: octo-kumo/it-is-noisy
+  video: CPCLDOhJSQA
+- name: BookDownloader
+  desc: A base strategy and collection of specific strategies that will scrap webnovels from certain sites and pack them nicely into epub.
+  langs:
+    - javascript
+  keys:
+    - scraping
+  year: '2020'
+  github: octo-kumo/BookDownloader
+- name: kumo (discord bot)
+  desc: General purpose custom discord bot for my own use, and for my classmates.
+  langs:
+    - javascript
+  keys:
+    - discord.js
+    - heroku
+    - github/ci
+    - mongodb
+  year: 2019-2022
+- name: Azurlane API
+  desc: Scraps the azurlane wiki into JSON, automated. Part of 2020 GitHub Archive Program.
+  langs:
+    - javascript
+    - typescript
+  keys:
+    - scraping
+  year: 2019-2022
+  github: AzurAPI/azurapi-js-setup
+- name: Tank
+  desc: Tank Stars clone!
+  langs:
+    - java
+  keys:
+    - gradle
+    - libgdx
+    - game
+    - android
+  image: https://github.com/octo-kumo/Tank/raw/master/images/img.webp
+  github: octo-kumo/Tank
+  year: '2019'
+  link: https://yun.ng/Tank/
+- name: Palm
+  desc: (Unfinished) 2D Platformer game, with physics, shadows, swords and magic.
+  langs:
+    - java
+  keys:
+    - gradle
+    - libgdx
+    - game
+    - android
+    - box2d
+  video: 06f5jsTaa-8
+  year: '2019'
+- name: NanoGun
+  desc: 2D shooter game with no dependencies.
+  langs:
+    - java
+  keys:
+    - game
+  image: https://github.com/octo-kumo/java-app-archive/blob/master/nanogun.png?raw=true
+  year: '2019'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/NanoGun.jar
+- name: SGCC
+  desc: A game for Singapore Games Creation Competition, made in Unity.
+  langs:
+    - c#
+  keys:
+    - unity
+    - game
+  year: '2019'
+- name: Bus finder
+  desc: 'Hackathon 3rd place: An application to find buses and receive notification when bus is about to arrive.'
+  langs:
+    - javascript
+    - html
+  keys:
+    - node.js
+  year: '2019'
+- name: Space
+  desc: 4K HD 3D N-Body simulator, in JavaFX, with i18n and configurations.
+  langs:
+    - java
+    - javafx
+  keys:
+    - simulation
+    - game
+  video: Q_EIy8KmvHc
+  github: octo-kumo/Space
+  year: '2019'
+- name: Cats
+  desc: Battle cats clone.
+  langs:
+    - java
+  keys:
+    - game
+  image: https://github.com/octo-kumo/java-app-archive/blob/master/cats.big.png?raw=true
+  year: '2018'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Cats.jar
+- name: DarkLight
+  desc: Platformer where you can switch between light and dark worlds, both with different platforms!
+  langs:
+    - java
+  keys:
+    - game
+  image: https://github.com/octo-kumo/java-app-archive/blob/master/dark.png?raw=true
+  year: '2018'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/DarkLight.jar
+- name: Shield
+  desc: Win by reflecting triangles into other triangles with your shield.
+  langs:
+    - java
+  keys:
+    - game
+  year: '2018'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Shield.jar
+- name: Trade
+  desc: Trading game?
+  langs:
+    - java
+  keys:
+    - game
+  image: https://github.com/octo-kumo/java-app-archive/blob/master/trade-demo.png?raw=true
+  year: '2018'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Trade.jar
+- name: zhyu.tk
+  desc: My first website, made in PHP, it had a chatbox and a bunch of other stuff I made back then. It also used to host my Java projects as jars.
+  langs:
+    - php
+    - html
+    - javascript
+    - css
+  year: 2017-2019
+  link: https://web.archive.org/web/20190818144011/https://zhyu.tk/
+- name: Ball
+  desc: Stress killer! Destroy those pesky shapes with your almighty wracking ball of doom!
+  langs:
+    - java
+  keys:
+    - game
+  image: https://github.com/octo-kumo/java-app-archive/blob/master/ball-demo.png?raw=true
+  year: '2017'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Ball.jar
+- name: Battleship
+  desc: Play battleship with your friend!
+  langs:
+    - java
+  keys:
+    - game
+  year: '2017'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/BattleShip.jar
+- name: Bus Timing
+  desc: View bus status near my high school, only useful if you are studying at my high school!
+  langs:
+    - java
+  year: '2017'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Bus.jar
+- name: Car
+  desc: Hill climb racing clone.
+  langs:
+    - java
+  keys:
+    - game
+  image: https://github.com/octo-kumo/java-app-archive/blob/master/car.big.png?raw=true
+  year: '2017'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Car.jar
+- name: Gravity
+  desc: 2D N body gravity simulator with tidal disintegration and black holes.
+  langs:
+    - java
+  keys:
+    - game
+    - simulation
+  image: https://raw.githubusercontent.com/octo-kumo/java-app-archive/refs/heads/master/gravity-2.png
+  year: '2017'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Gravity.jar
+- name: Level maker
+  desc: Make your own 2D platformer levels! Supports importing any image and turning it into a platformer level!
+  langs:
+    - java
+  keys:
+    - game
+  year: '2017'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/LevelMaker.jar
+- name: Plane
+  desc: 2D plane shooter game.
+  langs:
+    - java
+  keys:
+    - game
+  year: '2017'
+  link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/plane.jar

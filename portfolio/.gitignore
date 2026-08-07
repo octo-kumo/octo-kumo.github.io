@@ -1,0 +1,8 @@
+node_modules/
+dist/
+public/search-index.json
+.DS_Store
+*.log
+
+# original vector-search data (1.6MB, useless)
+reference/landing/out.json

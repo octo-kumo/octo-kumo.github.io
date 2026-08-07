@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    container_name: yun-ng-web
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount the built site as document root
+      - ./dist:/www:ro
+      # Mount config (so changes don't require rebuild)
+      - ./lighttpd.conf:/etc/lighttpd/lighttpd.conf:ro
+    restart: unless-stopped

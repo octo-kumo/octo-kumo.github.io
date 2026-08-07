@@ -1,0 +1,42 @@
+include ./mixins.pug
+
+if breadcrumbs && breadcrumbs.length > 1
+  nav.breadcrumbs
+    each crumb, i in breadcrumbs
+      if i > 0
+        span.breadcrumb-sep /
+      if crumb.href
+        a.breadcrumb-link(href=crumb.href)= crumb.label
+      else
+        span.breadcrumb-current= crumb.label
+
+.article-header
+  h1.article-title= docTitle(doc)
+  .article-meta
+    if doc.tags
+      each t in doc.tags
+        +tag(t, "var(--tag-border)", "#888")
+    if doc.rank
+      +meta-tag(doc.rank, "#", "#c0a000", "#c0a000")
+    if doc.solves != null
+      +meta-tag(doc.solves+" solves", "\u2713", "#4a4", "#4a4")
+    if doc.points
+      +meta-tag(doc.points+"pts", "\u25A0", "var(--primary)", "var(--primary)")
+    if doc.team
+      +meta-tag(doc.team, "\u25CB", "#888", "#888")
+    button.copy-link-btn#copy-link-btn(onclick="copyPageLink(this)", title="Copy link to this page", aria-label="Copy link to this page") ⧉
+  - const readTime = doc.readingTime ? doc.readingTime.text : ""
+  - const dateStr = doc.created ? new Date(doc.created) : null
+  .article-date
+    if dateStr
+      span.date-default= dateStr.getFullYear() + ' / ' + String(dateStr.getMonth()+1).padStart(2,'0') + ' / ' + String(dateStr.getDate()).padStart(2,'0')
+      span.date-papery= dateStr.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+      span.date-terminal= dateStr.getFullYear() + '-' + String(dateStr.getMonth()+1).padStart(2,'0') + '-' + String(dateStr.getDate()).padStart(2,'0')
+    if readTime
+      = " · " + readTime
+    span#article-views.article-views
+
+article
+  section.content
+    != doc.body.html
+  +peer-nav(prev, next)

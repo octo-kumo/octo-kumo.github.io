@@ -1,0 +1,26 @@
+include ./mixins.pug
+
+#home-page
+  .home-content
+    h1.home-title Hi!
+    p Welcome to my personal website. Below is an index of my writeups for CTF challenges, and links to my projects.
+    hr.home-divider
+    .home-search
+      input#doc-search(type="text", placeholder='Search... (supports "exact phrase", -exclude, type:blog, tag:xss, ctf:tkbctf5, cat:web)')
+
+  .home-list#content-list
+    #pagination
+    #doc-list
+
+  hr.home-divider
+
+  .home-projects
+    h2.home-section-title Projects & Tools
+    .projects-grid
+      each p in externalLinks
+        a.project-card(href=p.url, target="_blank", rel= p.opener ? undefined : "noopener")
+          .project-card-inner
+            h3.project-title= p.name + " \u2197"
+            p.project-desc= p.desc
+
+script(type="application/json", id="all-docs-data", data-page-size=pageSize) !{allDocsJson}

@@ -1,0 +1,53 @@
+# Writeups — offline fallback list
+#
+# The Writeups section normally loads https://v2.yun.ng/search-index.json
+# (shape: { version, entries: [{ path, title, description, tags, created, dateStr, text }] })
+# and renders *its* entries live.
+#
+# This file is used ONLY when the remote index is unreachable (offline build,
+# v2 not deployed yet, CORS blocked, ...) so the section still has content.
+# Shape mirrors one search-index entry (text optional).
+#
+# To add: append an entry. path is used for the link (v2.yun.ng/c + path).
+
+- path: /ctf/2024-uiuctf/web/fare-evasion
+  title: Fare Evasion
+  description: SQL injection using raw MD5 hash in string concatenation to smuggle payload modifications.
+  tags: [web, sql, md5, uiuctf-2024]
+  created: 2024-06-28T20:52
+
+- path: /ctf/2024-uiuctf/crypto/naptime
+  title: Naptime
+  description: A sleepy RSA oracle challenge — recover the flag from side-channel-ish ciphertext arithmetic.
+  tags: [crypto, rsa, uiuctf-2024]
+  created: 2024-06-29T01:10
+
+- path: /ctf/2024-urmia-ctf/web/ascii
+  title: Ascii
+  description: Web challenge writeup from Urmia CTF 2024.
+  tags: [web, urmia-2024]
+  created: 2024-06-20T10:00
+
+- path: /ctf/2025-cyber-apocalypse-ctf/ai/reverse-prompt
+  title: Reverse Prompt
+  description: AI challenge — recover the hidden system prompt from the Cyber Apocalypse 2025 AI track.
+  tags: [ai, prompt-injection, cyber-apocalypse-2025]
+  created: 2025-04-02T12:00
+
+- path: /htb/Psymin
+  title: Psymin
+  description: HackTheBox machine writeup — enumeration, exploitation and privilege escalation notes.
+  tags: [htb, linux, pwn]
+  created: 2024-01-10T08:30
+
+- path: /htb/hackthebox
+  title: HackTheBox
+  description: General HackTheBox notes and tooling reminders.
+  tags: [htb, notes]
+  created: 2024-01-01T00:00
+
+- path: /blog/2025-05-22
+  title: Blog · 2025-05-22
+  description: Short blog entry from May 2025.
+  tags: [blog]
+  created: 2025-05-22T00:00

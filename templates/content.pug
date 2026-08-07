@@ -1,0 +1,53 @@
+include ./tree.pug
+include ./stats.pug
+
+// Determine page type:
+// - Content page: leaf node with doc body — tree left, content center, TOC right
+// - Directory page: has nav children — content left (if any), tree center/right
+- var hasDoc = !!(docHtml && docHtml.trim())
+- var hasChildren = !!(children && children.length > 0)
+- var isContentPage = !!isLeafContent
+
+if isContentPage
+  // ═══ Content page: tree+stats on left, article center, TOC right ═══
+  .content-page-layout
+    aside.content-page-tree
+      if statsData && statsData.categories && statsData.categories.length > 0
+        - var statsCats = statsData.categories
+        - var statsTotal = { writeups: statsData.totalWriteups, points: statsData.totalPoints }
+        +stat-section(statsCats, statsTotal)
+      if hasChildren
+        .content-tree#content-tree
+          each item in children
+            +tree-node(item, 0, expandAll, currentPath, isCatalogPage)
+    .content-page-main
+      != docHtml
+      if showComments
+        .comments-container.comments-wide
+          #giscus-container-wide
+    if tocLinks && tocLinks.length >= 2
+      aside.content-page-toc#toc-sidebar
+        .toc-title Contents
+        each l in tocLinks
+          a.toc-link(href="#"+l.id, data-toc-id=l.id, style="padding-left:"+((l.depth||1)*8)+"px;")= l.text
+else
+  // ═══ Directory page: content left (if any), stats+tree right ═══
+  .dir-page-layout(class=isCatalogPage ? "catalog-page" : "")
+    if hasDoc
+      .dir-page-content
+        != docHtml
+        if showComments
+          .comments-container.comments-wide
+            #giscus-container-wide
+    .dir-page-sidebar
+      if statsData && statsData.categories && statsData.categories.length > 0
+        - var statsCats = statsData.categories
+        - var statsTotal = { writeups: statsData.totalWriteups, points: statsData.totalPoints }
+        +stat-section(statsCats, statsTotal)
+      if hasChildren
+        .content-tree#content-tree
+          each item in children
+            +tree-node(item, 0, expandAll, currentPath, isCatalogPage)
+
+if statsData
+  // stats.js loaded from shell.pug (outside <main>) for view transition persistence

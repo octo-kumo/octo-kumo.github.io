@@ -1,0 +1,168 @@
+/*! Giscus theme: papery-dark (warm dark, serif)
+ * Based on GitHub theme. MIT License
+ * Copyright (c) 2018 GitHub Inc.
+ * https://github.com/primer/primitives/blob/main/LICENSE
+ */
+
+main {
+  --color-prettylights-syntax-comment: #8b949e;
+  --color-prettylights-syntax-constant: #79c0ff;
+  --color-prettylights-syntax-entity: #d2a8ff;
+  --color-prettylights-syntax-storage-modifier-import: #c9d1d9;
+  --color-prettylights-syntax-entity-tag: #7ee787;
+  --color-prettylights-syntax-keyword: #ff7b72;
+  --color-prettylights-syntax-string: #a5d6ff;
+  --color-prettylights-syntax-variable: #ffa657;
+  --color-prettylights-syntax-brackethighlighter-unmatched: #f85149;
+  --color-prettylights-syntax-invalid-illegal-text: #f0f6fc;
+  --color-prettylights-syntax-invalid-illegal-bg: #8e1519;
+  --color-prettylights-syntax-carriage-return-text: #f0f6fc;
+  --color-prettylights-syntax-carriage-return-bg: #b62324;
+  --color-prettylights-syntax-string-regexp: #7ee787;
+  --color-prettylights-syntax-markup-list: #f2cc60;
+  --color-prettylights-syntax-markup-heading: #1f6feb;
+  --color-prettylights-syntax-markup-italic: #c9d1d9;
+  --color-prettylights-syntax-markup-bold: #c9d1d9;
+  --color-prettylights-syntax-markup-deleted-text: #ffdcd7;
+  --color-prettylights-syntax-markup-deleted-bg: #67060c;
+  --color-prettylights-syntax-markup-inserted-text: #aff5b4;
+  --color-prettylights-syntax-markup-inserted-bg: #033a16;
+  --color-prettylights-syntax-markup-changed-text: #ffdfb6;
+  --color-prettylights-syntax-markup-changed-bg: #5a1e02;
+  --color-prettylights-syntax-markup-ignored-text: #c9d1d9;
+  --color-prettylights-syntax-markup-ignored-bg: #1158c7;
+  --color-prettylights-syntax-meta-diff-range: #d2a8ff;
+  --color-prettylights-syntax-brackethighlighter-angle: #8b949e;
+  --color-prettylights-syntax-sublimelinter-gutter-mark: #484f58;
+  --color-prettylights-syntax-constant-other-reference-link: #a5d6ff;
+  --color-btn-text: #c9d1d9;
+  --color-btn-bg: #21262d;
+  --color-btn-border: rgb(240 246 252 / 10%);
+  --color-btn-shadow: 0 0 transparent;
+  --color-btn-inset-shadow: 0 0 transparent;
+  --color-btn-hover-bg: #30363d;
+  --color-btn-hover-border: #8b949e;
+  --color-btn-active-bg: hsl(212deg 12% 18% / 100%);
+  --color-btn-active-border: #6e7681;
+  --color-btn-selected-bg: #161b22;
+  --color-btn-primary-text: #fff;
+  --color-btn-primary-bg: #238636;
+  --color-btn-primary-border: rgb(240 246 252 / 10%);
+  --color-btn-primary-shadow: 0 0 transparent;
+  --color-btn-primary-inset-shadow: 0 0 transparent;
+  --color-btn-primary-hover-bg: #2ea043;
+  --color-btn-primary-hover-border: rgb(240 246 252 / 10%);
+  --color-btn-primary-selected-bg: #238636;
+  --color-btn-primary-selected-shadow: 0 0 transparent;
+  --color-btn-primary-disabled-text: rgb(255 255 255 / 50%);
+  --color-btn-primary-disabled-bg: rgb(35 134 54 / 60%);
+  --color-btn-primary-disabled-border: rgb(240 246 252 / 10%);
+  --color-action-list-item-default-hover-bg: rgb(177 186 196 / 12%);
+  --color-segmented-control-bg: rgb(110 118 129 / 10%);
+  --color-segmented-control-button-bg: #0d1117;
+  --color-segmented-control-button-selected-border: #6e7681;
+  --color-fg-default: #e6edf3;
+  --color-fg-muted: #7d8590;
+  --color-fg-subtle: #6e7681;
+  --color-canvas-default: transparent;
+  --color-canvas-overlay: rgb(22 27 34 / 90%);
+  --color-canvas-inset: transparent;
+  --color-canvas-subtle: transparent;
+  --color-border-default: #30363d;
+  --color-border-muted: #21262d;
+  --color-neutral-muted: rgb(110 118 129 / 5%);
+  --color-neutral-subtle: rgb(110 118 129 / 10%);
+  --color-accent-fg: #2f81f7;
+  --color-accent-emphasis: #1f6feb;
+  --color-accent-muted: rgb(56 139 253 / 40%);
+  --color-accent-subtle: rgb(56 139 253 / 10%);
+  --color-success-fg: #3fb950;
+  --color-attention-fg: #d29922;
+  --color-attention-muted: rgb(187 128 9 / 40%);
+  --color-attention-subtle: rgb(187 128 9 / 15%);
+  --color-danger-fg: #f85149;
+  --color-danger-muted: rgb(248 81 73 / 40%);
+  --color-danger-subtle: rgb(248 81 73 / 10%);
+  --color-primer-shadow-inset: 0 0 transparent;
+  --color-scale-gray-7: #21262d;
+  --color-scale-blue-8: #0c2d6b;
+/* Papery color overrides — warm dark tones */
+  --color-canvas-default: transparent;
+  --color-canvas-overlay: rgb(30 25 18 / 90%);
+  --color-canvas-inset: transparent;
+  --color-canvas-subtle: transparent;
+  --color-fg-default: #d4c8b8;
+  --color-fg-muted: #a89880;
+  --color-fg-subtle: #807060;
+  --color-border-default: #4a3d2e;
+  --color-border-muted: #3a3020;
+  --color-accent-fg: #c49a6c;
+  --color-accent-emphasis: #8b6914;
+  --color-accent-muted: rgb(196 154 108 / 40%);
+  --color-accent-subtle: rgb(139 105 20 / 10%);
+  --color-btn-bg: rgb(45 38 28 / 80%);
+  --color-btn-border: rgb(200 180 150 / 15%);
+  --color-btn-hover-bg: rgb(45 38 28 / 50%);
+  --color-btn-hover-border: #8a7a60;
+  --color-btn-text: #d4c8b8;
+  --color-social-reaction-bg-hover: var(--color-scale-gray-7);
+  --color-social-reaction-bg-reacted-hover: var(--color-scale-blue-8);
+}
+
+main .pagination-loader-container {
+  background-image: url("https://github.com/images/modules/pulls/progressive-disclosure-line-dark.svg");
+}
+
+main .gsc-loading-image {
+  background-image: url("https://github.githubassets.com/images/mona-loading-dark.gif");
+}
+
+/* Font: papery (serif) */
+
+/* ─── gsc- class overrides: papery ─── */
+/* Comment button: brown accent */
+main .btn-primary {
+  --color-btn-primary-text: #fff;
+  --color-btn-primary-bg: #8b4513;
+  --color-btn-primary-border: rgba(139, 69, 19, 0.2);
+  --color-btn-primary-hover-bg: #9a5520;
+  --color-btn-primary-hover-border: rgba(139, 69, 19, 0.3);
+  --color-btn-primary-selected-bg: #8b4513;
+  --color-btn-primary-disabled-text: rgba(255, 255, 255, 0.5);
+  --color-btn-primary-disabled-bg: rgba(139, 69, 19, 0.6);
+}
+/* Reaction pills: rounded */
+main .gsc-social-reaction-summary-item {
+  border-radius: 4px;
+}
+/* Serif font on comment content */
+main .gsc-comment-content,
+main .gsc-reply-content,
+main .gsc-comment-header,
+main .gsc-comment-author {
+  font-family: "Source Serif Pro", Georgia, "Times New Roman", serif;
+}
+/* Warm comment box */
+main .gsc-comment-box {
+  border-radius: 8px;
+}
+main .gsc-comment-box-tabs {
+  border-radius: 8px 8px 0 0;
+}
+
+/* giscus theme — __SITE_URL__ is replaced at build time with the real site URL */
+   not the site origin. Cloudflare serves /fonts/*.woff2 with ACAO: * so cross-origin
+   @font-face loading works. font-display: swap prevents FOIT in the iframe. */
+@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 400; font-display: swap; src: url(__SITE_URL__/fonts/space-grotesk.woff2) format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 700; font-display: swap; src: url(__SITE_URL__/fonts/space-grotesk.woff2) format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(__SITE_URL__/fonts/jetbrains-mono-400.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif Pro'; font-style: normal; font-weight: 400; font-display: swap; src: url(__SITE_URL__/fonts/source-serif-pro-400.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif Pro'; font-style: normal; font-weight: 700; font-display: swap; src: url(__SITE_URL__/fonts/source-serif-pro-700.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif Pro'; font-style: italic; font-weight: 400; font-display: swap; src: url(__SITE_URL__/fonts/source-serif-pro-400i.woff2) format('woff2'); }
+
+:host, html {
+  --font-family-sans: "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --font-family-monospace: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --font-family-default: var(--font-family-sans);
+  font-family: var(--font-family-default);
+}

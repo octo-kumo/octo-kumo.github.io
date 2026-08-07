@@ -1,0 +1,48 @@
+//- Stacked horizontal bar chart for CTF statistics
+//- Two charts: writeup count + total points
+//- Clicking a category filters the tree below
+//- Hovering points chart switches legend to show points
+//- Collapsible: collapsed shows only title + subtitle
+
+mixin bar-chart(stats, unit, chartId)
+  .stat-chart(id=chartId)
+    each stat, idx in stats
+      - var pct = unit === 'wp' ? stat.countPercent : stat.pointsPercent
+      - var val = unit === 'wp' ? stat.count : stat.points
+      - var label = unit === 'wp' ? stat.count : (stat.points >= 1000 ? (stat.points/1000).toFixed(1)+'k' : stat.points)
+      if pct > 0
+        .stat-bar(
+          data-category=stat.category,
+          data-value=val,
+          data-unit=unit,
+          data-pct=pct.toFixed(1),
+          style="width:"+pct+"%;background:var(--cat-"+idx+");",
+          onclick="selectCategory('"+stat.category+"')"
+        )
+          if pct > 8
+            span.stat-bar-label= label
+
+mixin stat-section(stats, total)
+  - var catVars = ''
+  - stats.forEach(function(s, i) { catVars += '--cat-' + i + ':' + s.color + ';'; })
+  .stat-section(style=catVars)
+    .stat-header(onclick="toggleStats()")
+      span.stat-toggle.expanded ▶
+      h3 Statistics
+    .stat-subtitle
+      = stats.length + " categories · " + total.writeups + " writeups · " + total.points + " points"
+    .stat-body
+      .stat-label By Writeup Count
+      +bar-chart(stats, 'wp', 'count-chart')
+      .stat-label By Total Points
+      +bar-chart(stats, 'pt', 'points-chart')
+      .stat-legend
+        each stat, idx in stats
+          span.legend-item(
+            data-category=stat.category,
+            data-count=stat.count,
+            data-points=stat.points,
+            onclick="selectCategory('"+stat.category+"')"
+          )
+            span.legend-color(style="background:var(--cat-"+idx+");")
+            span.legend-label= stat.category + " (" + stat.count + ")"

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "noEmitOnError": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["bun-types", "@types/fontkit"],
+    "esModuleInterop": true,
+    "allowJs": true
+  },
+  "include": ["*.ts", "framework/*.ts", "pages/*.ts", "types/*.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}
