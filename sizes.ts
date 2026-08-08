@@ -37,7 +37,7 @@ async function testComb(num: number, steps: Step[]) {
             const tmp = tempFile();
 
             if (step === 'css-dedup') {
-                await Bun.$`bun x css-dedup -a -s -z --fix ${f} && mv ${f} ${tmp}`;
+                await Bun.$`bun x css-dedup -i '.dir-page' -i 'blockquote' -i 'html.light' -a -s -z --fix ${f} && mv ${f} ${tmp}`;
             } else {
                 await Bun.$`bun x @nycss/cli ${f} --dedupe true -o ${tmp}`;
             }
