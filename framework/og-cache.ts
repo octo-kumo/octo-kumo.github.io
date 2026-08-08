@@ -201,7 +201,7 @@ export async function processOGImage(
 
   const pngBuffer = await generateFn();
   await Bun.write(`${OG_OUTPUT_DIR}/${imageFile}`, pngBuffer);
-  await Bun.$`${getTool('oxipng')} --scale16 -o 4 --fast --strip all ${OG_OUTPUT_DIR}/${imageFile}`.quiet().catch(() => { /* ignore errors */ });
+  await Bun.$`${getTool('oxipng')} --scale16 -o 4 --fast --strip all ${OG_OUTPUT_DIR}/${imageFile}`.catch(() => { /* ignore errors */ });
   await saveToCache(imageFile, pngBuffer);
   updateManifest(manifest, pagePath, contentHash, rendererHash, imageFile);
   return { generated: true, imageFile };
