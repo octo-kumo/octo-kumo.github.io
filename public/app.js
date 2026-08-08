@@ -73,9 +73,9 @@ function createGiscusScript() {
   var s = document.createElement('script');
   s.src = 'https://giscus.app/client.js';
   s.setAttribute('data-repo', 'octo-kumo/octo-kumo.github.io');
-  s.setAttribute('data-repo-id', 'R_kgDOJ8o0uA');
-  s.setAttribute('data-category', 'Comments');
-  s.setAttribute('data-category-id', 'DIC_kwDOJ8o0uM4CfSHm');
+  s.setAttribute('data-repo-id', 'R_kgDOIzFvHg');
+  s.setAttribute('data-category', 'General');
+  s.setAttribute('data-category-id', 'DIC_kwDOIzFvHs4Cgo6u');
   s.setAttribute('data-mapping', 'pathname');
   s.setAttribute('data-reactions-enabled', '1');
   // Determine Giscus theme based on color + style (6 files: style-color.css)
@@ -84,6 +84,7 @@ function createGiscusScript() {
   var theme = siteOrigin + '/giscus/' + style + '-' + color + '.css';
   s.setAttribute('data-theme', theme);
   s.setAttribute('data-lang', 'en');
+  s.setAttribute('data-loading', 'lazy');
   s.setAttribute('crossorigin', 'anonymous');
   return s;
 }
