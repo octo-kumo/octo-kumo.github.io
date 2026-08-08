@@ -186,6 +186,7 @@ html.papery body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
   background-size: 140px 140px;
 }
+
 html.light.papery body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   background-size: 140px 140px;
@@ -209,16 +210,26 @@ html.terminal {
    Overrides the color theme's --tok-* so terminal looks different from default.
    Solarized accents are designed to work on both light and dark backgrounds. */
 html.terminal {
-  --tok-k: #268bd2;  /* keyword — blue */
-  --tok-t: #b58900;  /* type — yellow */
-  --tok-o: #cb4b16;  /* operator — orange */
-  --tok-n: #2aa198;  /* number — cyan */
-  --tok-p: var(--cb-text); /* plain — code text */
-  --tok-f: #6c71c4;  /* function — violet */
-  --tok-s: #859900;  /* string — green */
-  --tok-c: #586e75;  /* comment — dim */
-  --tok-v: #dc322f;  /* variable — red */
-  --tok-e: #dc322f;  /* error — red */
+  --tok-k: #268bd2;
+  /* keyword — blue */
+  --tok-t: #b58900;
+  /* type — yellow */
+  --tok-o: #cb4b16;
+  /* operator — orange */
+  --tok-n: #2aa198;
+  /* number — cyan */
+  --tok-p: var(--cb-text);
+  /* plain — code text */
+  --tok-f: #6c71c4;
+  /* function — violet */
+  --tok-s: #859900;
+  /* string — green */
+  --tok-c: #586e75;
+  /* comment — dim */
+  --tok-v: #dc322f;
+  /* variable — red */
+  --tok-e: #dc322f;
+  /* error — red */
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -334,26 +345,33 @@ pre {
   scrollbar-width: thin;
   scrollbar-color: var(--cb-muted) var(--cb-bg2);
 }
+
 pre::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 pre::-webkit-scrollbar-track {
   background: var(--cb-bg2);
 }
+
 pre::-webkit-scrollbar-thumb {
   background: var(--cb-muted);
   border-radius: 3px;
 }
+
 pre::-webkit-scrollbar-thumb:hover {
   background: var(--cb-accent);
 }
+
 html.terminal pre {
   scrollbar-color: var(--fg) transparent;
 }
+
 html.terminal pre::-webkit-scrollbar-track {
   background: transparent;
 }
+
 html.terminal pre::-webkit-scrollbar-thumb {
   background: var(--fg);
   border-radius: 0;
@@ -365,23 +383,28 @@ html.terminal pre::-webkit-scrollbar-thumb {
   scrollbar-width: thin;
   scrollbar-color: var(--cb-muted) transparent;
 }
+
 .content-page-tree::-webkit-scrollbar,
 .content-page-toc::-webkit-scrollbar {
   width: 4px;
 }
+
 .content-page-tree::-webkit-scrollbar-track,
 .content-page-toc::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .content-page-tree::-webkit-scrollbar-thumb,
 .content-page-toc::-webkit-scrollbar-thumb {
   background: var(--cb-muted);
   border-radius: 2px;
 }
+
 html.terminal .content-page-tree,
 html.terminal .content-page-toc {
   scrollbar-color: var(--fg) transparent;
 }
+
 html.terminal .content-page-tree::-webkit-scrollbar-thumb,
 html.terminal .content-page-toc::-webkit-scrollbar-thumb {
   background: var(--fg);
@@ -767,11 +790,13 @@ article {
   font-family: var(--font-body);
   transition: all 0.15s;
 }
+
 .copy-link-btn:hover {
   color: var(--primary);
   border-color: var(--primary);
   background: var(--hover-bg);
 }
+
 .copy-link-btn.copied {
   color: #98c379;
   border-color: #98c379;
@@ -785,6 +810,7 @@ html.papery .copy-link-btn {
   color: var(--heading-accent);
   padding: 2px 6px;
 }
+
 html.papery .copy-link-btn:hover {
   background: transparent;
   color: var(--heading-accent);
@@ -796,11 +822,20 @@ html.papery .copy-link-btn:hover {
 html.terminal .copy-link-btn {
   font-family: var(--font-mono);
   border-radius: 0;
-  border-color: var(--fg);
+  border: none;
   color: var(--fg);
 }
-html.terminal .copy-link-btn::before { content: "["; margin-right: 4px; }
-html.terminal .copy-link-btn::after { content: "]"; margin-left: 4px; }
+
+html.terminal .copy-link-btn::before {
+  content: "[";
+  margin-right: 4px;
+}
+
+html.terminal .copy-link-btn::after {
+  content: "]";
+  margin-left: 4px;
+}
+
 html.terminal .copy-link-btn:hover {
   background: var(--primary);
   color: var(--bg);
@@ -882,23 +917,33 @@ article ol {
   padding-left: 1.5rem;
   margin: 0.5rem 0;
 }
+
 article li {
   margin: 0.15rem 0;
 }
+
 article li::marker {
   color: var(--primary);
 }
+
 /* Default: standard disc/decimal */
-article ul { list-style: disc; }
-article ol { list-style: decimal; }
+article ul {
+  list-style: disc;
+}
+
+article ol {
+  list-style: decimal;
+}
 
 /* Papery: serif-elegant — square bullets, roman numerals, accent markers */
 html.papery article ul {
   list-style: square;
 }
+
 html.papery article ol {
   list-style: lower-roman;
 }
+
 html.papery article li::marker {
   color: var(--heading-accent);
   font-weight: bold;
@@ -909,25 +954,30 @@ html.terminal article ul {
   list-style: none;
   padding-left: 1.25rem;
 }
+
 html.terminal article ul li::before {
   content: "- ";
   color: var(--primary);
   font-weight: bold;
 }
+
 html.terminal article ol {
   list-style: none;
   counter-reset: term-list;
   padding-left: 2rem;
 }
+
 html.terminal article ol li {
   counter-increment: term-list;
   position: relative;
 }
+
 html.terminal article ol li::before {
   content: counter(term-list) ". ";
   color: var(--primary);
   font-weight: bold;
 }
+
 html.terminal article li::marker {
   color: var(--primary);
 }
@@ -1191,26 +1241,33 @@ html.papery article h3 {
   scrollbar-width: thin;
   scrollbar-color: var(--cb-muted) var(--cb-bg2);
 }
+
 .code-block pre::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 .code-block pre::-webkit-scrollbar-track {
   background: var(--cb-bg2);
 }
+
 .code-block pre::-webkit-scrollbar-thumb {
   background: var(--cb-muted);
   border-radius: 3px;
 }
+
 .code-block pre::-webkit-scrollbar-thumb:hover {
   background: var(--cb-accent);
 }
+
 html.terminal .code-block pre {
   scrollbar-color: var(--fg) transparent;
 }
+
 html.terminal .code-block pre::-webkit-scrollbar-track {
   background: transparent;
 }
+
 html.terminal .code-block pre::-webkit-scrollbar-thumb {
   background: var(--fg);
   border-radius: 0;
@@ -1315,19 +1372,24 @@ code:not(pre code):not(.flag-text).copied {
   scrollbar-width: thin;
   scrollbar-color: var(--cb-muted) transparent;
 }
+
 .flag-text::-webkit-scrollbar {
   height: 4px;
 }
+
 .flag-text::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .flag-text::-webkit-scrollbar-thumb {
   background: var(--cb-muted);
   border-radius: 2px;
 }
+
 html.terminal .flag-text {
   scrollbar-color: var(--fg) transparent;
 }
+
 html.terminal .flag-text::-webkit-scrollbar-thumb {
   background: var(--fg);
   border-radius: 0;
@@ -1555,6 +1617,7 @@ html.papery .tree-toggle::before {
   margin-left: 0.3rem;
   white-space: nowrap;
 }
+
 .tree-count::before {
   content: "· ";
   color: var(--footer-text);
@@ -1624,12 +1687,14 @@ html.papery .tree-toggle::before {
   background: var(--code-bg);
   border-radius: 8px;
 }
+
 .stat-header {
   display: flex;
   align-items: center;
   cursor: pointer;
   user-select: none;
 }
+
 .stat-toggle {
   color: #888;
   font-size: 0.7rem;
@@ -1637,25 +1702,30 @@ html.papery .tree-toggle::before {
   transition: transform 0.2s;
   display: inline-block;
 }
+
 .stat-header h3 {
   margin: 0;
   font-size: 0.9rem;
   color: var(--fg);
 }
+
 .stat-subtitle {
   font-size: 0.8rem;
   color: #888;
   margin-top: 0.25rem;
 }
+
 .stat-body {
   display: block;
   margin-top: 0.5rem;
 }
+
 .stat-body .stat-label {
   font-size: 0.75rem;
   color: #888;
   margin-bottom: 0.25rem;
 }
+
 .stat-chart {
   display: flex;
   width: 100%;
@@ -1664,6 +1734,7 @@ html.papery .tree-toggle::before {
   overflow: hidden;
   margin: 0.25rem 0 0.5rem;
 }
+
 .stat-bar {
   display: flex;
   align-items: center;
@@ -1675,6 +1746,7 @@ html.papery .tree-toggle::before {
   overflow: hidden;
   filter: var(--cat-filter, none);
 }
+
 .stat-bar-label {
   font-size: 0.7rem;
   font-weight: bold;
@@ -1683,6 +1755,7 @@ html.papery .tree-toggle::before {
   text-overflow: ellipsis;
   pointer-events: none;
 }
+
 .stat-bar.dimmed {
   opacity: 0.25;
   filter: grayscale(0.5);
@@ -1694,6 +1767,7 @@ html.papery .tree-toggle::before {
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
+
 .legend-item {
   display: inline-flex;
   align-items: center;
@@ -1703,12 +1777,14 @@ html.papery .tree-toggle::before {
   cursor: pointer;
   transition: opacity 0.2s;
 }
+
 .legend-item .legend-color {
   display: inline-block;
   width: 10px;
   height: 10px;
   border-radius: 2px;
 }
+
 .legend-item.dimmed {
   opacity: 0.25;
 }
@@ -2095,15 +2171,19 @@ textarea:focus {
   background: rgba(64, 158, 255, 0.28);
   color: inherit;
 }
+
 html.dark ::selection {
   background: rgba(64, 158, 255, 0.45);
 }
+
 html.papery ::selection {
   background: rgba(139, 69, 19, 0.22);
 }
+
 html.dark.papery ::selection {
   background: rgba(212, 151, 95, 0.38);
 }
+
 html.terminal ::selection,
 html.dark.terminal ::selection {
   background: var(--primary);

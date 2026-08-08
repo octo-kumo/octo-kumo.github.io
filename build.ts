@@ -382,7 +382,7 @@ ${sitemapUrls.map(u => `  <url><loc>https://yun.ng${u}</loc></url>`).join("\n")}
     console.log("🗜️  Minifying JS, CSS, HTML...");
     beforeSize = (await dirSize("dist")).size;
     await Bun.$`bun x @nycss/cli dist/style.css --dedupe true -o dist/style.css`;
-    await Bun.$`bun x css-dedup -a -s -z --fix dist/style.css`;
+    await Bun.$`bun x css-dedup -i '\.dir-page' -a -s -z --fix dist/style.css`;
     await Bun.$`${getTool('minify')} -r -o dist/ dist/`;
     afterSize = (await dirSize("dist")).size;
     minifyMs = performance.now() - minifyStart;
