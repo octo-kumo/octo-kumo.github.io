@@ -8,6 +8,7 @@
  */
 
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import getTool from "../tools";
 
 const MANIFEST_PATH = ".og-cache/manifest.json";
 const OG_OUTPUT_DIR = "dist/og";
@@ -200,6 +201,7 @@ export async function processOGImage(
 
   const pngBuffer = await generateFn();
   await Bun.write(`${OG_OUTPUT_DIR}/${imageFile}`, pngBuffer);
+  await Bun.$`${getTool('oxipng')} --scale16 -o 4 --fast --strip all ${OG_OUTPUT_DIR}/${imageFile}`.quiet().catch(() => { /* ignore errors */ });
   await saveToCache(imageFile, pngBuffer);
   updateManifest(manifest, pagePath, contentHash, rendererHash, imageFile);
   return { generated: true, imageFile };

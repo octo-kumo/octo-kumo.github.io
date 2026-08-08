@@ -30,6 +30,7 @@ const DEBUG = process.env.DEBUG === "1" || process.env.DEBUG_OG === "1";
 // ─── Page Templates ───
 import { render as renderHome } from "./pages/home";
 import { render as renderContent } from "./pages/content";
+import getTool from "./tools";
 
 async function preRenderDocs(docs: any) {
   console.log("Rendering markdown bodies...");
@@ -377,24 +378,10 @@ ${sitemapUrls.map(u => `  <url><loc>https://yun.ng${u}</loc></url>`).join("\n")}
     beforeSize = (await dirSize("dist")).size;
     afterSize = beforeSize;
   } else {
-    // download minify tool if not present
-    let minifyPath = "minify";
-
-    try {
-      await Bun.$`which minify`.quiet();
-      console.log("minify already available");
-    } catch {
-      const arch = (await Bun.$`uname -m`.text()).trim() === "x86_64" ? "amd64" : "arm64";
-      const url = `https://github.com/tdewolff/minify/releases/latest/download/minify_linux_${arch}.tar.gz`;
-      await Bun.$`curl -sL ${url} | tar xz`;
-      minifyPath = `${process.cwd()}/minify`;
-      console.log("minify downloaded");
-    }
-
     const minifyStart = performance.now();
     console.log("🗜️  Minifying JS, CSS, HTML...");
     beforeSize = (await dirSize("dist")).size;
-    await Bun.$`${minifyPath} -r -o dist/ dist/`;
+    await Bun.$`${getTool('minify')} -r -o dist/ dist/`;
     afterSize = (await dirSize("dist")).size;
     minifyMs = performance.now() - minifyStart;
     const { imageSize } = await import("./framework/build-report");
@@ -403,7 +390,7 @@ ${sitemapUrls.map(u => `  <url><loc>https://yun.ng${u}</loc></url>`).join("\n")}
     const minifiableAfter = afterSize - imgSize;
     const savedBytes = minifiableBefore - minifiableAfter;
     const savedPct = minifiableBefore > 0 ? ((savedBytes / minifiableBefore) * 100).toFixed(1) : "0";
-    console.log(`   ✓ Minified in ${minifyMs.toFixed(0)}ms — ${fmtSize(minifiableBefore)} → ${fmtSize(minifiableAfter)} (saved ${fmtSize(savedBytes)}, ${savedPct}% of minifiable; images ${fmtSize(imgSize)} excluded)`);
+    console.log(`   ✓ Minified in ${minifyMs.toFixed(0)}ms — ${fmtSize(minifiableBefore)} → ${fmtSize(minifiableAfter)} (saved ${fmtSize(savedBytes)}, ${savedPct}% of minifiable; images ${fmtSize(imgSize)})`);
   }
 
   // ─── Generate build report ───
