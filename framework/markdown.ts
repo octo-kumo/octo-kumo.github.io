@@ -296,27 +296,14 @@ export async function renderMarkdown(raw: string): Promise<RenderedDoc> {
   finalHtml = finalHtml.replace(/<p>:::([a-z-]+)\s*:::<\/p>/gi, "<!-- mdc: $1 -->");
   finalHtml = finalHtml.replace(/<p>::([a-z-]+)\s*::<\/p>/gi, "<!-- mdc: $1 -->");
   finalHtml = finalHtml.replace(/<p>:::([a-z-]+)<\/p>/gi, "<!-- mdc: $1 -->");
-
-  // YouTube embeds: :youtube{vid=...} in markdown → lite-youtube
   finalHtml = finalHtml.replace(/<p>:youtube\{vid=([^}]+)\}<\/p>/gi, (_, vid) => {
     const safeVid = vid.replace(/[^a-zA-Z0-9_-]/g, "");
     return `<div class="youtube-embed" style="aspect-ratio:16/9;margin:1rem 0;"><lite-youtube videoid="${safeVid}" style="width:100%;height:100%;"></lite-youtube></div><script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.js"></script>`;
   });
-
-  // Vimeo embeds
   finalHtml = finalHtml.replace(/<p>:vimeo\{vid=([^}]+)\}<\/p>/gi, (_, vid) => {
     const safeVid = vid.replace(/[^a-zA-Z0-9_-]/g, "");
     return `<div style="aspect-ratio:16/9;margin:1rem 0;"><iframe src="https://player.vimeo.com/video/${safeVid}" style="width:100%;height:100%;" frameborder="0" allowfullscreen></iframe></div>`;
   });
-
-  // Mermaid: handled in code renderer (lang === "mermaid")
-
-  // Math is now handled by the marked extension at parse time (no post-HTML regex needed)
-  // Mermaid is now handled in the code renderer (no post-HTML regex needed)
-
-  // Restore code blocks (no longer needed — math extension handles code blocks as separate tokens)
-  // But we still need to protect inline code from math parsing — marked handles this natively
-
   return { html: finalHtml, toc };
 }
 
