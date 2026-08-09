@@ -23,6 +23,7 @@ export interface ContentDoc {
     toc: TocLink[];
   };
   _bodyRaw?: string; // raw markdown body (without frontmatter), stored during scan to avoid re-reading
+  _fileName?: string; // original filename (no .md, no slugify) — e.g. "Intergalactic Bounty"
 }
 
 export interface ContentNavigationItem {
@@ -93,6 +94,13 @@ function parseDoc(filepath: string, raw: string): ContentDoc | null {
   if (segments[segments.length - 1] === "index") segments.pop();
   const path = "/" + segments.join("/");
 
+  // Original filename before slugification — title fallback source.
+  // For "…/Intergalactic Bounty/index.md" the meaningful name is the
+  // parent dir ("Intergalactic Bounty"); for "Psymin.md" it's "Psymin".
+  let relSegs = rel.split("/");
+  if (relSegs[relSegs.length - 1] === "index") relSegs.pop();
+  const fileName = relSegs[relSegs.length - 1] || "";
+
   // Compute word count
   const words = body.trim().split(/\s+/).length;
   const readingTime = {
@@ -113,6 +121,7 @@ function parseDoc(filepath: string, raw: string): ContentDoc | null {
     team: attributes.team,
     readingTime,
     _bodyRaw: body,
+    _fileName: fileName,
   };
 
   return doc;
@@ -278,7 +287,7 @@ function flatten(items: ContentNavigationItem[]): ContentNavigationItem[] {
 }
 
 // Title guessing — mirrors the original logic
-export function guessTitle(item: { title?: string | Date; path?: string; tags?: string[] }): string {
+export function guessTitle(item: { title?: string | Date; path?: string; tags?: string[]; _fileName?: string }): string {
   if (item.title) {
     const titleStr = item.title instanceof Date ? item.title.toISOString().slice(0, 10) : String(item.title);
     if (item.tags?.includes("blog") && /^\d{4}-\d{2}-\d{2}$/.test(titleStr)) {
@@ -292,12 +301,15 @@ export function guessTitle(item: { title?: string | Date; path?: string; tags?: 
     }
     return titleStr;
   }
+  // Prefer the original filename (e.g. "Intergalactic Bounty") over the
+  // slugified path segment (e.g. "intergalactic-bounty")
+  if (item._fileName) return item._fileName;
   return item.path?.split("/").pop() || "Unknown";
 }
 
 // Display title for a doc: string frontmatter title, else Date formatted via
 // guessTitle, else path-derived guess. Never the raw JS Date string.
-export function docTitle(item: { title?: string | Date; path?: string; tags?: string[] }): string {
+export function docTitle(item: { title?: string | Date; path?: string; tags?: string[]; _fileName?: string }): string {
   if (item.title && typeof item.title === "string") return item.title;
   return guessTitle(item);
 }
