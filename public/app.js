@@ -374,6 +374,15 @@ window.addEventListener('resize', function () {
   // navigation with the same tree content counts as "same tree".
   function treeSignature(el) {
     var clone = el.cloneNode(true);
+    // Cloudflare rewrites inline onclick handlers, stamping each element with
+    // a per-page random data-cf-modified-* attribute. Strip them, otherwise
+    // two fetches of the same tree never match and the tree re-renders (flashes)
+    // on every navigation.
+    clone.querySelectorAll('*').forEach(function (n) {
+      Array.from(n.attributes).forEach(function (a) {
+        if (a.name.indexOf('data-cf-modified') === 0) n.removeAttribute(a.name);
+      });
+    });
     clone.querySelectorAll('.tree-current').forEach(function (n) { n.classList.remove('tree-current'); });
     clone.querySelectorAll('.collapsed').forEach(function (n) { n.classList.remove('collapsed'); });
     clone.querySelectorAll('[data-state-wired]').forEach(function (n) { n.removeAttribute('data-state-wired'); });

@@ -4,9 +4,10 @@ include ./stats.pug
 // Determine page type:
 // - Content page: leaf node with doc body — tree left, content center, TOC right
 // - Directory page: has nav children — content left (if any), tree center/right
+// Blog/HTB section roots also use the content-page layout (tree LEFT)
 - var hasDoc = !!(docHtml && docHtml.trim())
 - var hasChildren = !!(children && children.length > 0)
-- var isContentPage = !!isLeafContent
+- var isContentPage = !!treeLeft
 
 if isContentPage
   // ═══ Content page: tree+stats on left, article center, TOC right ═══

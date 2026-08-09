@@ -116,6 +116,9 @@ export async function render(data: PageData): Promise<string> {
   // Determine if this is a leaf content page (writeup) vs directory page
   // A leaf page has a doc body AND no nav children of its own
   const isLeafContent = !!(renderedDoc?.body?.html && (!navChildren || navChildren.length === 0));
+  // Blog & HTB section roots keep the tree on the LEFT (content-page layout)
+  // so SPA nav from /c/blog → post doesn't flip the tree to the right
+  const treeLeft = isLeafContent || contentPath === "/blog" || contentPath === "/htb";
   // SEO: leaf writeups are "article" pages, everything else is "website"
   (data as any).ogType = isLeafContent ? "article" : "website";
 
@@ -126,7 +129,7 @@ export async function render(data: PageData): Promise<string> {
     displayDatetime,
     statsData,
     expandAll,
-    isLeafContent,
+    treeLeft,
     isCatalogPage: contentPath === "/ctf",
     tocLinks: renderedDoc?.body?.toc || [],
     showComments: data.url?.startsWith("/c/") && !!renderedDoc?.body?.html,
