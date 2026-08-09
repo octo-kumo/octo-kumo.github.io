@@ -2327,6 +2327,13 @@ html.papery .home-search input {
   padding: 0 1rem 2rem;
 }
 
+/* Home page: comments sit in the full-width grid, constrain to the article column */
+#home-page .comments-wide {
+  max-width: var(--article-max);
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+}
+
 /* On wide screens: show comments inside the content column, hide the narrow one */
 @media (min-width: 1280px) {
   .comments-wide {

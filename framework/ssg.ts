@@ -41,7 +41,7 @@ const articleTpl = pug.compileFile("templates/article.pug");
 
 async function defaultShell(content: string, data: PageData): Promise<string> {
   const doc = (data as any).doc;
-  const showComments = data.url?.startsWith("/c/") && doc?.body?.html && !doc?.body?.html?.includes(":::ctf-overview");
+  const showComments = data.url === "/" || (data.url?.startsWith("/c/") && doc?.body?.html && !doc?.body?.html?.includes(":::ctf-overview"));
 
   // Guess title (path-derived when no frontmatter title), truncate og:title
   const guessed = doc ? docTitle(doc) : "";

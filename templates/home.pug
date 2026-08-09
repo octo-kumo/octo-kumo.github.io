@@ -23,4 +23,7 @@ include ./mixins.pug
             h3.project-title= p.name + " \u2197"
             p.project-desc= p.desc
 
+  hr.home-divider
+  .comments-container.comments-wide
+    #giscus-container-wide
 script(type="application/json", id="all-docs-data", data-page-size=pageSize) !{allDocsJson}
