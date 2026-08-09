@@ -75,6 +75,7 @@ function createGiscusScript() {
   s.setAttribute('data-repo', 'octo-kumo/octo-kumo.github.io');
   s.setAttribute('data-repo-id', 'R_kgDOIzFvHg');
   s.setAttribute('data-category', 'General');
+  s.setAttribute('data-strict', '1');
   s.setAttribute('data-category-id', 'DIC_kwDOIzFvHs4Cgo6u');
   s.setAttribute('data-mapping', 'pathname');
   s.setAttribute('data-reactions-enabled', '1');
