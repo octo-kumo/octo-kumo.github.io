@@ -3,7 +3,16 @@
 
 // Site origin for Giscus CSS URLs (served from same origin)
 var siteOrigin = window.location.origin;
-
+// GitHub Pages 301s directory URLs to add a trailing slash (/c/blog → /c/blog/)
+// on hard reload, while SPA link navigation stays slashless via pushState.
+// Normalize to the canonical slashless path so giscus strict pathname matching,
+// the view counter, and copied page links all agree on the same path.
+(function normalizeTrailingSlash() {
+  var p = location.pathname;
+  if (p.length > 1 && p.endsWith('/')) {
+    history.replaceState(null, '', p.replace(/\/+$/, '') + location.search + location.hash);
+  }
+})();
 // ─── Copy code/flag to clipboard ───
 function copyToClipboard(text, onSuccess) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
