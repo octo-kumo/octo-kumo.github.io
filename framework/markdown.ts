@@ -109,7 +109,9 @@ function mathExtension(): MarkedExtension {
         renderer(token: Tokens.Generic) {
           const t = token as MathToken;
           try {
-            return temml.renderToString(t.text, { displayMode: true, throwOnError: true }) + "\n";
+            return temml.renderToString(t.text, { displayMode: true, throwOnError: true })
+              .replace(/<span class="tml-eqn"><\/span>/g, '') // dumb temml adding span in mathml, also dumb minify collapsing the span and breaking entire page
+              + "\n";
           } catch (e) {
             console.warn("temml block math failed:", e);
             console.log(t);
@@ -151,7 +153,9 @@ function mathExtension(): MarkedExtension {
         renderer(token: Tokens.Generic) {
           const t = token as MathToken;
           try {
-            return temml.renderToString(t.text, { displayMode: t.displayMode, throwOnError: true });
+            return temml.renderToString(t.text, { displayMode: t.displayMode, throwOnError: true })
+              .replace(/<span class="tml-eqn"><\/span>/g, '') // dumb temml adding span in mathml, also dumb minify collapsing the span and breaking entire page
+              ;
           } catch (e) {
             console.log(t);
             console.warn("temml inline math failed:", e);
@@ -174,6 +178,25 @@ async function getMarked() {
   markedInstance.use(mathExtension());
   markedInstance.use({
     renderer: {
+      heading({ tokens, depth }: Tokens.Heading) {
+        const html = this.parser.parseInline(tokens);
+        if (depth <= 4) {
+          const text = tokens.map((t) => t.raw).join("");
+          const id = text.toLowerCase()
+            .replace(/[^\w]+/g, '-').replace(/(^-|-$)/g, '');
+          return `<h${depth} id="${id}">${html}</h${depth}>\n`;
+        }
+        return `<h${depth}>${html}</h${depth}>\n`;
+      },
+      image({ href, title, text, tokens }: Tokens.Image): string {
+        if (tokens) {
+          text = this.parser.parseInline(tokens, this.parser.textRenderer);
+        }
+        if (href && href.startsWith("https://res.cloudinary.com/kumonochisanaka/image/upload")) {
+          href = href.replace("https://res.cloudinary.com/kumonochisanaka/image/upload", "https://image.yun.ng/upload");
+        }
+        return `<img src="${href}" alt="${text}" title="${title}" />`;
+      },
       code({ text, lang }: { text: string; lang?: string }) {
         // Parse lang field: "js [main.js]" → lang="js", filename="main.js"
         let actualLang = lang || "";
@@ -268,31 +291,8 @@ export async function renderMarkdown(raw: string): Promise<RenderedDoc> {
     const id = "content_" + hash(text).toString(16).padStart(8, "0");
     toc.push({ id, text, depth });
   }
-
-  // Let marked parse the full markdown first (images, links, code, etc.)
-  // Then post-process to add IDs to headings
   const html = await marked.parse(raw);
-
-  // Post-process: add IDs to headings (h2-h4)
-  let finalHtml = html.replace(/<(h[234])>(.*?)<\/\1>/gi, (_match, tag, text) => {
-    const id = "content_" + hash(text).toString(16).padStart(8, "0");
-    return `<${tag} id="${id}">${text}</${tag}>`;
-  });
-
-  // Post-process: rewrite cloudinary URLs, strip MDC containers, transform embeds
-  finalHtml = finalHtml.replace(
-    /https:\/\/res\.cloudinary\.com\/kumonochisanaka\/image\/upload/g,
-    "https://image.yun.ng/upload"
-  );
-
-  // Lazy-load images: native loading="lazy" + decoding="async" on all but the
-  // first image (which is likely above the fold / LCP — keep it eager+high priority)
-  let imgCount = 0;
-  finalHtml = finalHtml.replace(/<img(?![^>]*\bloading=)/gi, (m) => {
-    imgCount++;
-    if (imgCount === 1) return m + ' loading="eager" fetchpriority="high"';
-    return m + ' loading="lazy" decoding="async"';
-  });
+  let finalHtml = html;
   finalHtml = finalHtml.replace(/<p>:::([a-z-]+)\s*:::<\/p>/gi, "<!-- mdc: $1 -->");
   finalHtml = finalHtml.replace(/<p>::([a-z-]+)\s*::<\/p>/gi, "<!-- mdc: $1 -->");
   finalHtml = finalHtml.replace(/<p>:::([a-z-]+)<\/p>/gi, "<!-- mdc: $1 -->");
