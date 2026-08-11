@@ -30,7 +30,7 @@ if isContentPage
       aside.content-page-toc#toc-sidebar
         .toc-title Contents
         each l in tocLinks
-          a.toc-link(href="#"+l.id, data-toc-id=l.id, style="padding-left:"+((l.depth||1)*8)+"px;")= l.text
+          a.toc-link(href="#"+l.id, data-toc-id=l.id, style="padding-left:"+((l.depth-1)*8)+"px;")= l.text
 else
   // ═══ Directory page: content left (if any), stats+tree right ═══
   .dir-page-layout(class=isCatalogPage ? "catalog-page" : "")

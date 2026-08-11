@@ -1,10 +1,10 @@
 import { build as buildSSG, siteUrl } from "./framework/ssg";
 import type { RouteDefinition } from "./framework/types";
-import { queryAllDocs } from "./framework/content";
+import { queryAllDocs, docTitle } from "./framework/content";
 import { renderMarkdown } from "./framework/markdown";
 import { buildSearchIndex } from "./framework/search-index";
 import { generateOGImage, inferPageType, type OGDoc } from "./framework/og-image";
-import { docTitle } from "./framework/content";
+import { collectFeedDocs, renderRSS, renderAtom } from "./framework/feed";
 import {
   loadManifest,
   getRendererHash,
@@ -38,7 +38,6 @@ async function preRenderDocs(docs: any) {
   // Eagerly initialize shiki + marked BEFORE parallel work
   await renderMarkdown("# init\n```js\n1\n```");
   console.log("   Shiki initialized");
-
   // Use _bodyRaw stored during scanDir (no re-reading files)
   const entries = Array.from(docs.docs.values()).filter((d: any) => d._bodyRaw);
 
@@ -333,14 +332,44 @@ async function main() {
   ogSkipped = ogResult.skipped;
   phases.push({ name: "OG image generation", ms: performance.now() - t2 });
 
-  // Generate sitemap.xml (reuse the same URL set as the HTML sitemap)
-  const sitemapUrls = ["/", "/c", ...Array.from(seen)];
+  // Generate sitemap.xml (reuse the same URL set as the HTML sitemap),
+  // with lastmod/changefreq/priority from doc dates, styled via /sitemap.xsl
+  const SITE_BASE = siteUrl();
+  const flatByPath = new Map((docs.flat as any[]).map((d) => [d.path, d]));
+  const sitemapUrls = [["/", 1.0, "daily"], ["/c", 0.8, "weekly"], ...Array.from(seen).map((u: string) => {
+    const contentPath = u.startsWith("/c") ? u.slice(2) : u;
+    const d = flatByPath.get(contentPath) || flatByPath.get(u);
+    const isLeaf = !!d?.hasContent;
+    // Leaves (writeups/blog posts) change rarely; dirs are stable
+    const priority = isLeaf ? 0.6 : 0.4;
+    const changefreq = contentPath.startsWith("/blog") ? "weekly" : (isLeaf ? "yearly" : "monthly");
+    return [u, priority, changefreq];
+  })] as [string, number, string][];
+  const w3cDate = (d: any) => {
+    const t = d?.updated || d?.created;
+    if (!t) return "";
+    const date = new Date(t);
+    return Number.isNaN(date.getTime()) ? "" : date.toISOString().replace(/\.\d{3}Z$/, "Z");
+  };
+  const escXml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapUrls.map(u => `  <url><loc>https://yun.ng${u}</loc></url>`).join("\n")}
+${sitemapUrls.map(([u, priority, changefreq]: [string, number, string]) => {
+    const contentPath = u.startsWith("/c") ? u.slice(2) : u;
+    const d = flatByPath.get(contentPath) || flatByPath.get(u);
+    const lastmod = w3cDate(d);
+    return `  <url><loc>${SITE_BASE}${escXml(u)}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ""}\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority.toFixed(1)}</priority></url>`;
+  }).join("\n")}
 </urlset>`;
   await Bun.write("dist/sitemap.xml", sitemap);
-  console.log("   ✓ sitemap.xml");
+  console.log("   ✓ sitemap.xml (+ xsl)");
+
+  // Generate RSS + Atom feeds (share entry collection with the homepage)
+  const feedEntries = collectFeedDocs(docs.flat as any[]);
+  await Bun.write("dist/rss.xml", renderRSS(feedEntries, SITE_BASE));
+  await Bun.write("dist/atom.xml", renderAtom(feedEntries, SITE_BASE));
+  console.log(`   ✓ rss.xml + atom.xml (${feedEntries.length} entries)`);
 
   // Generate robots.txt
   await Bun.write("dist/robots.txt", "User-agent: *\nAllow: /\nSitemap: https://yun.ng/sitemap.xml\n");

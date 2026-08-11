@@ -179,13 +179,9 @@ async function getMarked() {
   markedInstance.use({
     renderer: {
       heading({ tokens, depth }: Tokens.Heading) {
+        // IDs are assigned in finalizeHeadingIds() (post-parse pass) so TOC
+        // and anchor ids always agree; emitting them here would duplicate.
         const html = this.parser.parseInline(tokens);
-        if (depth <= 4) {
-          const text = tokens.map((t) => t.raw).join("");
-          const id = text.toLowerCase()
-            .replace(/[^\w]+/g, '-').replace(/(^-|-$)/g, '');
-          return `<h${depth} id="${id}">${html}</h${depth}>\n`;
-        }
         return `<h${depth}>${html}</h${depth}>\n`;
       },
       image({ href, title, text, tokens }: Tokens.Image): string {
@@ -280,17 +276,6 @@ export interface TocLink {
 // ─── Render ───
 export async function renderMarkdown(raw: string): Promise<RenderedDoc> {
   const marked = await getMarked();
-
-  // Extract TOC
-  const toc: TocLink[] = [];
-  const headingRegex = /^(#{2,4})\s+(.+)$/gm;
-  let match;
-  while ((match = headingRegex.exec(raw)) !== null) {
-    const depth = match[1].length - 1;
-    const text = match[2];
-    const id = "content_" + hash(text).toString(16).padStart(8, "0");
-    toc.push({ id, text, depth });
-  }
   const html = await marked.parse(raw);
   let finalHtml = html;
   finalHtml = finalHtml.replace(/<p>:::([a-z-]+)\s*:::<\/p>/gi, "<!-- mdc: $1 -->");
@@ -304,16 +289,34 @@ export async function renderMarkdown(raw: string): Promise<RenderedDoc> {
     const safeVid = vid.replace(/[^a-zA-Z0-9_-]/g, "");
     return `<div style="aspect-ratio:16/9;margin:1rem 0;"><iframe src="https://player.vimeo.com/video/${safeVid}" style="width:100%;height:100%;" frameborder="0" allowfullscreen></iframe></div>`;
   });
-  return { html: finalHtml, toc };
+  // Assign heading ids + build TOC from the FINAL html so anchors and TOC
+  // always agree. Repeated headings get a numeric suffix (foo, foo-1, foo-2).
+  return finalizeHeadingIds(finalHtml);
 }
 
-function hash(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return hash >>> 0;
+// Sluggify a heading's plain text: "Hello, World!" → "hello-world"
+function slugifyHeading(text: string): string {
+  return text.toLowerCase()
+    .replace(/[^\w]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+// Post-parse pass: give every h1-h6 a slug id (deduped with -N suffix) and
+// collect h2-h4 into the TOC, reading text straight from the rendered HTML.
+function finalizeHeadingIds(html: string): RenderedDoc {
+  const seen = new Map<string, number>();
+  const toc: TocLink[] = [];
+  const out = html.replace(/<h([1-6])>([\s\S]*?)<\/h\1>/g, (m, level, inner) => {
+    const depth = parseInt(level, 10);
+    const text = inner.replace(/<[^>]*>/g, "").replace(/&amp;/g, "&").trim();
+    const base = slugifyHeading(text) || "section";
+    const n = seen.get(base) ?? 0;
+    seen.set(base, n + 1);
+    const id = n === 0 ? base : `${base}-${n}`;
+    if (depth >= 2 && depth <= 4) toc.push({ id, text, depth });
+    return `<h${level} id="${id}">${inner}</h${level}>`;
+  });
+  return { html: out, toc };
 }
 
 // ─── Display ───

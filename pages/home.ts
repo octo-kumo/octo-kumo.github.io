@@ -1,5 +1,6 @@
 import type { PageData } from "../framework/types";
 import { docTitle, displayDocDates } from "../framework/content";
+import { collectFeedDocs } from "../framework/feed";
 import { cacheVer } from "../framework/ssg";
 import pug from "pug";
 
@@ -14,16 +15,10 @@ const PAGE_SIZE = 5;
 
 export async function render(data: PageData): Promise<string> {
   const docs = data.docs || [];
-  // Only include docs with actual content (hasContent === true)
-  // Exclude category-only pages and directory nodes
-  const contentDocs = docs.filter((d: any) => d.hasContent === true).map((d: any) => ({
-    path: d.path,
-    title: docTitle(d),
-    snippet: d.snippet || d.description || "",
-    created: d.created,
-    updated: d.updated,
+  // Shared with RSS/Atom feeds: filter hasContent, map to entry shape
+  const contentDocs = collectFeedDocs(docs).map((d) => ({
+    ...d,
     dateStr: displayDocDates(d),
-    tags: d.tags || [],
   }));
 
   return tpl({
