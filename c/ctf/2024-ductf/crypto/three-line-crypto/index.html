@@ -1,0 +1,340 @@
+<!doctype html><html class=dark lang=en><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Three Line Crypto — 云</title><meta name=description content="A cipher with only three lines? Analysis After playing around with the cipher I realized that Any word after a space would have the same cipher text ( SPACE %…"><link rel=canonical href=https://yun.ng/c/ctf/2024-ductf/crypto/three-line-crypto><meta property="og:site_name" content="云 · yun.ng"><meta property="og:title" content="Three Line Crypto"><meta property="og:description" content="A cipher with only three lines? Analysis After playing around with the cipher I realized that Any word after a space would have the same cipher text ( SPACE %…"><meta property="og:url" content="https://yun.ng/c/ctf/2024-ductf/crypto/three-line-crypto"><meta property="og:type" content="article"><meta property="og:image" content="https://yun.ng/og/3c6477786b445e98.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Three Line Crypto"><meta property="article:published_time" content="2024-07-05T23:26"><meta property="article:modified_time" content="2025-07-14T09:46"><meta property="article:tag" content="fav"><meta property="article:tag" content="freq-analysis"><meta property="article:author" content="https://yun.ng/"><meta name=twitter:card content="summary_large_image"><meta name=twitter:title content="Three Line Crypto"><meta name=twitter:description content="A cipher with only three lines? Analysis After playing around with the cipher I realized that Any word after a space would have the same cipher text ( SPACE %…"><meta name=twitter:image content="https://yun.ng/og/3c6477786b445e98.png"><meta name=twitter:image:alt content="Three Line Crypto"><link rel=icon type=image/x-icon href="/favicon.ico?v=mspbo080"><link rel=alternate type=application/rss+xml title=RSS href=https://yun.ng/rss.xml><link rel=alternate type=application/atom+xml title=Atom href=https://yun.ng/atom.xml><link rel=preload href=/fonts/space-grotesk.woff2 as=font type=font/woff2 crossorigin><link rel=preload href=/fonts/jetbrains-mono-400.woff2 as=font type=font/woff2 crossorigin><script>(function(){var e=document;function t(){var t=e.createElement("link");t.rel="stylesheet",t.href="/fonts.css?v=mspbo080",e.head.appendChild(t)}e.readyState==="loading"?e.addEventListener("DOMContentLoaded",t):setTimeout(t,50)})()</script><link rel=stylesheet href="/style.css?v=mspbo080"><script>(function(){var n,t=localStorage.getItem("color")||"dark",e=localStorage.getItem("style")||"default",s=localStorage.getItem("theme");s&&!localStorage.getItem("color")&&!localStorage.getItem("style")&&(s==="dark"?(t="dark",e="default"):s==="papery"?(t="light",e="papery"):s==="terminal"&&(t="dark",e="terminal"),localStorage.setItem("color",t),localStorage.setItem("style",e),localStorage.removeItem("theme")),n=document.documentElement,n.classList.remove("dark","light","papery","terminal","style-default","style-papery","style-terminal"),n.classList.add(t,"style-"+e),e==="terminal"&&n.classList.add("terminal"),e==="papery"&&n.classList.add("papery")})()</script><script defer src="/theme.js?v=mspbo080"></script><script>(function(){var e="fd089b30-9952-41b0-a817-fce38fefae17";if(!e)return;function t(){var t=document.createElement("script");t.defer=!0,t.src="https://anal.yun.ng/script.js",t.setAttribute("data-website-id",e),t.setAttribute("data-performance","true"),document.head.appendChild(t)}"requestIdleCallback"in window?window.requestIdleCallback(t,{timeout:2500}):window.addEventListener("load",t)})()</script><nav class=topnav><div class=topnav-inner><a class=topnav-logo href=/>云</a><div class=topnav-links><a class=nav-link href=/c/ctf>CTFs</a><a class=nav-link href=/c/htb>HTB</a><a class=nav-link href=/c/blog>Blog</a><a class=nav-link href=/portfolio/ target=_blank>Portfolio ↗</a><a class=nav-link href=https://utilbox.yun.ng/ target=_blank rel=noopener>Tools ↗</a></div><div class=topnav-spacer></div><div class=theme-group><button class=theme-btn-mini data-style=default onclick='setStyle("default")' title="Default sans-serif">Aa</button><button class=theme-btn-mini data-style=papery onclick='setStyle("papery")' title="Papery serif">✎</button><button class=theme-btn-mini data-style=terminal onclick='setStyle("terminal")' title="Terminal monospace">>_</button></div><button class=theme-btn id=color-btn onclick=cycleColor() title="Switch color">◐</button><button class=hamburger id=hamburger onclick=toggleHamburger() title=Menu>☰</button></div><div class=topnav-mobile id=topnav-mobile><a class=nav-link href=/c/ctf>CTFs</a><a class=nav-link href=/c/htb>HTB</a><a class=nav-link href=/c/blog>Blog</a><a class=nav-link href=/portfolio/ target=_blank>Portfolio ↗</a><a class=nav-link href=https://utilbox.yun.ng/>Tools ↗</a></div></nav><main><div class=main-grid><div class=main-content><div class=content-page-layout><aside class=content-page-tree><div class=content-tree id=content-tree><div class=tree-item style=padding-left:0 data-path=/ctf/2024-ductf/crypto><div class="tree-row tree-dir" onclick='event.target.closest("a")||this.closest(".tree-item").classList.toggle("collapsed")'><span class=tree-toggle></span><a class=tree-link href=/c/ctf/2024-ductf/crypto><span class=tree-title>crypto</span></a><span class=tree-count>3 writeups</span><span class=tree-date>July 2024</span></div><div class=tree-children><div class="tree-item tree-current" style=padding-left:16px data-path=/ctf/2024-ductf/crypto/three-line-crypto><div class="tree-row tree-leaf"><span class=tree-dot>·</span><a class=tree-link href=/c/ctf/2024-ductf/crypto/three-line-crypto><span class=tree-title>Three Line Crypto</span><span class=tree-tags><span class=tree-tag>#fav</span><span class=tree-tag>#freq-analysis</span></span></a><span class=tree-date>July 2024</span></div><div class=tree-meta style=padding-left:36px><span class=tree-meta-info>247pts · 44 solves</span></div><div class=tree-snippet-row style=padding-left:36px><span class=tree-snippet>A cipher with only three lines? Analysis After playing around with the cipher I realized that Any word after a space wou</span></div></div><div class=tree-item style=padding-left:16px data-path=/ctf/2024-ductf/crypto/decrypt-then-eval><div class="tree-row tree-leaf"><span class=tree-dot>·</span><a class=tree-link href=/c/ctf/2024-ductf/crypto/decrypt-then-eval><span class=tree-title>decrypt then eval</span><span class=tree-tags><span class=tree-tag>#aes</span></span></a><span class=tree-date>July 2024</span></div><div class=tree-meta style=padding-left:36px><span class=tree-meta-info>118pts · 197 solves</span></div><div class=tree-snippet-row style=padding-left:36px><span class=tree-snippet>1111</span></div></div></div></div><div class="tree-item collapsed" style=padding-left:0 data-path=/ctf/2024-ductf/pwn><div class="tree-row tree-dir" onclick='event.target.closest("a")||this.closest(".tree-item").classList.toggle("collapsed")'><span class=tree-toggle></span><span class="tree-title no-link">pwn</span><span class=tree-count>1 writeups</span><span class=tree-date></span></div><div class=tree-children><div class=tree-item style=padding-left:16px data-path=/ctf/2024-ductf/pwn/vector-overflow><div class="tree-row tree-leaf"><span class=tree-dot>·</span><a class=tree-link href=/c/ctf/2024-ductf/pwn/vector-overflow><span class=tree-title>vector-overflow</span></a><span class=tree-date>July 2024</span></div><div class=tree-meta style=padding-left:36px><span class=tree-meta-info>100pts · 239 solves</span></div><div class=tree-snippet-row style=padding-left:36px><span class=tree-snippet>Where do vectors point to?</span></div></div></div></div><div class="tree-item collapsed" style=padding-left:0 data-path=/ctf/2024-ductf/web><div class="tree-row tree-dir" onclick='event.target.closest("a")||this.closest(".tree-item").classList.toggle("collapsed")'><span class=tree-toggle></span><span class="tree-title no-link">web</span><span class=tree-count>5 writeups</span><span class=tree-date></span></div><div class=tree-children><div class=tree-item style=padding-left:16px data-path=/ctf/2024-ductf/web/prisoner-processor><div class="tree-row tree-leaf"><span class=tree-dot>·</span><a class=tree-link href=/c/ctf/2024-ductf/web/prisoner-processor><span class=tree-title>Prisoner Processor</span></a><span class=tree-date>July 2024</span></div><div class=tree-meta style=padding-left:36px><span class=tree-meta-info>325pts · 17 solves</span></div><div class=tree-snippet-row style=padding-left:36px><span class=tree-snippet>Hijacking the main application</span></div></div><div class=tree-item style=padding-left:16px data-path=/ctf/2024-ductf/web/parrot-emu><div class="tree-row tree-leaf"><span class=tree-dot>·</span><a class=tree-link href=/c/ctf/2024-ductf/web/parrot-emu><span class=tree-title>Parrot EMU</span></a><span class=tree-date>July 2024</span></div><div class=tree-meta style=padding-left:36px><span class=tree-meta-info>100pts · 993 solves</span></div><div class=tree-snippet-row style=padding-left:36px><span class=tree-snippet>A template injection chat bot</span></div></div><div class=tree-item style=padding-left:16px data-path=/ctf/2024-ductf/web/sniffy><div class="tree-row tree-leaf"><span class=tree-dot>·</span><a class=tree-link href=/c/ctf/2024-ductf/web/sniffy><span class=tree-title>Sniffy</span></a><span class=tree-date>July 2024</span></div><div class=tree-meta style=padding-left:36px><span class=tree-meta-info>223pts · 58 solves</span></div><div class=tree-snippet-row style=padding-left:36px><span class=tree-snippet>"Erh, I think this is an audio file?"</span></div></div><div class=tree-item style=padding-left:16px data-path=/ctf/2024-ductf/web/co2v2><div class="tree-row tree-leaf"><span class=tree-dot>·</span><a class=tree-link href=/c/ctf/2024-ductf/web/co2v2><span class=tree-title>co2v2</span><span class=tree-tags><span class=tree-tag>#csp-bypass</span></span></a><span class=tree-date>July 2024</span></div><div class=tree-meta style=padding-left:36px><span class=tree-meta-info>222pts · 59 solves</span></div><div class=tree-snippet-row style=padding-left:36px><span class=tree-snippet>"Payload primed, initiate deployment."</span></div></div><div class=tree-item style=padding-left:16px data-path=/ctf/2024-ductf/web/hah-got-em><div class="tree-row tree-leaf"><span class=tree-dot>·</span><a class=tree-link href=/c/ctf/2024-ductf/web/hah-got-em><span class=tree-title>hah_got_em</span></a><span class=tree-date>July 2024</span></div><div class=tree-meta style=padding-left:36px><span class=tree-meta-info>129pts · 173 solves</span></div><div class=tree-snippet-row style=padding-left:36px><span class=tree-snippet>smh bad regex</span></div></div></div></div></div></aside><div class=content-page-main><nav class=breadcrumbs><a class=breadcrumb-link href=/>Home</a><span class=breadcrumb-sep>/</span><a class=breadcrumb-link href=/c/ctf>CTF Writeups</a><span class=breadcrumb-sep>/</span><a class=breadcrumb-link href=/c/ctf/2024-ductf>DownUnderCTF 2024</a><span class=breadcrumb-sep>/</span><a class=breadcrumb-link href=/c/ctf/2024-ductf/crypto>crypto</a><span class=breadcrumb-sep>/</span><span class=breadcrumb-current>Three Line Crypto</span></nav><div class=article-header><h1 class=article-title>Three Line Crypto</h1><div class=article-meta><span class=tag>fav</span><span class=tag>freq-analysis</span><span class=meta-tag>✓ 44 solves</span><span class=meta-tag>■ 247pts</span><button class=copy-link-btn id=copy-link-btn onclick=copyPageLink(this) title="Copy link to this page" aria-label="Copy link to this page">⧉</button></div><div class=article-date><span class=date-default>2024 / 07 / 05</span><span class=date-papery>July 5, 2024</span><span class=date-terminal>2024-07-05</span> · 13 min read<span class=article-views id=article-views></span></div></div><article><section class=content><p>A cipher with only three lines?<h2 id=analysis>Analysis</h2><p>After playing around with the cipher I realized that<ul><li>Any word after a space would have the same cipher-text (<code>SPACE % 16 == 0</code>), no matter where they are.<li>No matter what came before the given word, when the encryption encounters a given word, the next stream of keys would be fixed, resulting in identical cipher text.<li>I only have to determine 16 unknown bytes.<li>The passage is in english.</ul><p><img src=https://image.yun.ng/upload/v1720250627/2024/07/90220e825c3508d1fc0f611d0485a8f0.png alt=image.png title=null>
+<small>small attempt at key guessing</small><h2 id=counting-the-bytes>Counting the bytes</h2><p>One idea quickly came to mind, to count the frequency of binary bytes and pair them to words.<div class=code-block><div class=code-header><span class=code-header-info><span class=code-lang>python</span></span><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code><span class=line><span class=tok-k>def</span><span class=tok-f> find_most_common_sequences</span><span class=tok-p>(</span><span class="tok-n tok-i">raw</span><span class=tok-p>, </span><span class="tok-n tok-i">sequence_length</span><span class=tok-p>=</span><span class=tok-n>3</span><span class=tok-p>):</span></span>
+<span class=line><span class=tok-p>	counter </span><span class=tok-o>=</span><span class=tok-f> Counter</span><span class=tok-p>([raw[i:i</span><span class=tok-o>+</span><span class=tok-p>sequence_length] </span><span class=tok-k>for</span><span class=tok-p> i </span><span class=tok-k>in</span><span class=tok-o> range</span><span class=tok-p>(</span><span class=tok-o>len</span><span class=tok-p>(raw) </span><span class=tok-o>-</span><span class=tok-p> sequence_length </span><span class=tok-o>+</span><span class=tok-n> 1</span><span class=tok-p>)])</span></span>
+<span class=line><span class=tok-p>	most_common </span><span class=tok-o>=</span><span class=tok-p> counter.</span><span class=tok-f>most_common</span><span class=tok-p>(top_n)</span></span></code></pre></div><p>For each sequence, we will let it propose a set of key values for us. The set of key values may not cover the entire 16 slots, but it's ok. Only the proposed values are needed for this word to be successfully encrypted into the sequence chosen.<div class=code-block><div class=code-header><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code>plain  t  h  e ' '
+key i  0  4  8  5
+ciphr  A  B  C  D</code></pre></div><p>For example, we can start with <code>the</code>, the most common word, and a possible sequence <code>ABCD</code> (binary). At each position we propose a key value for the slot specified by the last plain text character.<ol><li><code>k[0] &lt;= 't' ^ A</code><li><code>k[4] &lt;= 'h' ^ B</code><li><code>k[8] &lt;= 'e' ^ C</code><li><code>k[5] &lt;= ' ' ^ D</code></ol><p>However, if in the middle of a sequence, a different key is proposed for the same key slot, and there is a conflict, the sequence is invalid and discarded.<div class=code-block><div class=code-header><span class=code-header-info><span class=code-filename>counter.py</span> <span class=code-lang>python</span></span><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code><span class=line><span class=tok-k>def</span><span class=tok-f> do_for_word</span><span class=tok-p>(</span><span class="tok-n tok-i">encrypted</span><span class=tok-p>, </span><span class="tok-n tok-i">word</span><span class=tok-p>, </span><span class="tok-n tok-i">top_n</span><span class=tok-p>=</span><span class=tok-n>None</span><span class=tok-p>):</span></span>
+<span class=line><span class=tok-n>    ...</span></span>
+<span class=line></span>
+<span class=line><span class=tok-k>with</span><span class=tok-o> open</span><span class=tok-p>(</span><span class=tok-s>"passage.enc.txt"</span><span class=tok-p>, </span><span class=tok-s>"rb"</span><span class=tok-p>) </span><span class=tok-k>as</span><span class=tok-p> r:</span></span>
+<span class=line><span class=tok-p>    raw </span><span class=tok-o>=</span><span class=tok-p> r.</span><span class=tok-f>read</span><span class=tok-p>()</span></span>
+<span class=line><span class=tok-f>do_for_word</span><span class=tok-p>(raw, </span><span class=tok-k>b</span><span class=tok-s>'the '</span><span class=tok-p>)</span></span>
+<span class=line><span class=tok-f>do_for_word</span><span class=tok-p>(raw, </span><span class=tok-k>b</span><span class=tok-s>'there'</span><span class=tok-p>)</span></span>
+<span class=line><span class=tok-f>do_for_word</span><span class=tok-p>(raw, </span><span class=tok-k>b</span><span class=tok-s>'DUCTF{'</span><span class=tok-p>)</span></span></code></pre></div><p>The left most column is the number of occurrences found for that specific sequence, higher the better. The 16 columns that follows are the proposed keys.<div class=code-block><div class=code-header><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code>         0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
+         word b'the '
+   66  -103-------------168--78---------110----------------------------
+   28  -114-------------151-168---------106----------------------------
+   16  -252-------------123--43---------165----------------------------
+   16  --25-------------151-168---------106----------------------------
+         word b'there'
+   16  -197-----237-----110-125---------154----------------------------
+   14  -252------11-----123-121---------165----------------------------
+   10  -103-----113-----168--28---------110----------------------------
+   10  -118-----165------71-238---------134----------------------------
+         word b'DUCTF{'
+    7  --70---------200-122-160----------------------------------------
+    6  -128---------148-248--80----------------------------------------
+    6  --69---------118-177-131----------------------------------------
+    5  --75---------148-221--80----------------------------------------
+pos 0 Counter({103: 2, 252: 2, 114: 1, 25: 1, 197: 1, 118: 1, 70: 1, 128: 1, 69: 1, 75: 1})</code></pre></div><p>At the end I print out the detailed statistics for a specific key slot.<p>Since the jump between <code>#1</code> and <code>#2</code> for <code>'the '</code> is huge, we can safely assume those keys are correct. i.e. <code>key[0]=103</code> etc.<p>I will update the code to set those keys on initialization, so sequences that do not follow the initial key sequence will be automatically rejected.<div class=code-block><div class=code-header><span class=code-header-info><span class=code-lang>python</span></span><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code><span class=line><span class=tok-k>def</span><span class=tok-f> init_key</span><span class=tok-p>(</span><span class="tok-n tok-i">keys</span><span class=tok-p>=</span><span class=tok-n>None</span><span class=tok-p>):</span></span>
+<span class=line><span class=tok-k>    if</span><span class=tok-p> keys </span><span class=tok-o>==</span><span class=tok-n> None</span><span class=tok-p>:</span></span>
+<span class=line><span class=tok-p>        keys </span><span class=tok-o>=</span><span class=tok-p> [</span><span class=tok-o>-</span><span class=tok-n>1</span><span class=tok-p>]</span><span class=tok-o>*</span><span class=tok-n>16</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>0</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 103</span></span>
+<span class=line><span class=tok-k>    return</span><span class=tok-p> keys</span></span></code></pre></div><h2 id=cracking-the-key>Cracking the key</h2><p>With the function to count and guess keys in place, I will feed it the most common words.<div class=code-block><div class=code-header><span class=code-header-info><span class=code-filename>counter.py</span> <span class=code-lang>python</span></span><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code><span class=line><span class=tok-k>with</span><span class=tok-o> open</span><span class=tok-p>(</span><span class=tok-s>"words.txt"</span><span class=tok-p>, </span><span class=tok-s>"r"</span><span class=tok-p>) </span><span class=tok-k>as</span><span class=tok-p> r:</span></span>
+<span class=line><span class=tok-p>    words_all </span><span class=tok-o>=</span><span class=tok-p> r.</span><span class=tok-f>read</span><span class=tok-p>()</span></span>
+<span class=line><span class=tok-p>    words </span><span class=tok-o>=</span><span class=tok-p> words_all.</span><span class=tok-f>splitlines</span><span class=tok-p>()[:</span><span class=tok-n>1000</span><span class=tok-p>]</span></span>
+<span class=line></span>
+<span class=line><span class=tok-k>for</span><span class=tok-p> word </span><span class=tok-k>in</span><span class=tok-p> words:</span></span>
+<span class=line><span class=tok-f>    do_for_word</span><span class=tok-p>(raw, word.</span><span class=tok-f>encode</span><span class=tok-p>())</span></span></code></pre></div><p>Parts of the proposed keys that are identical to the default key are hidden for convenience.<div class=code-block><div class=code-header><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code>...
+   66  ----------------------------------------------------------------
+    1  -------------------------------------175------------------------
+         word b'been'
+   66  ----------------------------------------------------------------
+         word b'now'
+   82  ----------------------------------------------------------------
+    4  ---------------------------------------------------------107-161
+    2  ----------------------------------------------------------97--78
+    2  ---------------------------------------------------------101-141
+         word b'find'
+   66  ----------------------------------------------------------------
+    7  -------------------------------------174------------------70----
+    2  -------------------------------------185-----------------255----
+    2  -------------------------------------185-----------------233----
+         word b'any'
+   82  ----------------------------------------------------------------
+   28  -----145-------------------------------------------------118----
+    4  -----140--------------------------------------------------99----
+    3  -----141-------------------------------------------------242----
+         word b'new'
+   82  ----------------------------------------------------------------
+    4  ----------------------------------------------------------97----
+    2  ---------------------------------------------------------107----
+    2  ---------------------------------------------------------111----
+pos 1 Counter({145: 12, 140: 5, 141: 5, 139: 4, 144: 3, 114: 2, 120: 2, 150: 2, 137: 2, 134: 2, 147: 2, 143: 2, 128: 2, 131: 2, 162: 1, 151: 1, 149: 1, 146: 1, 135: 1, 155: 1, 142: 1, 158: 1, 168: 1, 157: 1, 129: 1, 148: 1, 190: 1, 187: 1, 159: 1, 165: 1, 123: 1, 117: 1, 169: 1})</code></pre></div><p>For example, <code>145</code> seems to be the best key for position 1, I will update the fixed key in code and run it for the next position.<h2 id=verifying-the-key>Verifying the key</h2><p><em>After about half an hour of perfecting my script and trying keys.</em><p>Let's say we have a full set of proposed keys, how good is it?
+We can grade it by looking for unprintable characters.<div class=code-block><div class=code-header><span class=code-header-info><span class=code-filename>verifier.py</span> <span class=code-lang>python</span></span><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code><span class=line><span class=tok-p>l </span><span class=tok-o>=</span><span class=tok-p> []</span></span>
+<span class=line><span class=tok-k>for</span><span class=tok-p> i, c </span><span class=tok-k>in</span><span class=tok-o> enumerate</span><span class=tok-p>(p):</span></span>
+<span class=line><span class=tok-k>    if</span><span class=tok-p> c </span><span class=tok-k>not</span><span class=tok-k> in</span><span class=tok-p> string.printable.</span><span class=tok-f>encode</span><span class=tok-p>() </span><span class=tok-k>and</span><span class=tok-o> chr</span><span class=tok-p>(p[i</span><span class=tok-o>-</span><span class=tok-n>1</span><span class=tok-p>]) </span><span class=tok-k>in</span><span class=tok-p> string.printable </span><span class=tok-k>and</span><span class=tok-o> chr</span><span class=tok-p>(p[i</span><span class=tok-o>-</span><span class=tok-n>2</span><span class=tok-p>]) </span><span class=tok-k>in</span><span class=tok-p> string.printable:</span></span>
+<span class=line><span class=tok-p>        l.</span><span class=tok-f>append</span><span class=tok-p>(p[i</span><span class=tok-o>-</span><span class=tok-n>1</span><span class=tok-p>] </span><span class=tok-o>%</span><span class=tok-n> 16</span><span class=tok-p>)</span></span>
+<span class=line></span>
+<span class=line><span class=tok-o>print</span><span class=tok-p>(</span><span class=tok-f>Counter</span><span class=tok-p>(l).</span><span class=tok-f>most_common</span><span class=tok-p>(</span><span class=tok-n>5</span><span class=tok-p>))</span></span>
+<span class=line><span class="tok-c tok-i"># [(13, 57), (8, 35), (9, 34), (14, 31), (5, 25)]</span></span>
+<span class=line></span>
+<span class=line><span class=tok-k>with</span><span class=tok-o> open</span><span class=tok-p>(</span><span class=tok-s>"passage.dec.txt"</span><span class=tok-p>, </span><span class=tok-s>"wb"</span><span class=tok-p>) </span><span class=tok-k>as</span><span class=tok-p> w:</span></span>
+<span class=line><span class=tok-p>    w.</span><span class=tok-f>write</span><span class=tok-p>(p)</span></span></code></pre></div><p>Now we check the file for incorrect decryption.<div class=code-block><div class=code-header><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code>What makes the cornfield smile; beneath what star
+W†yˆ1±›-ÿ¬@ï¬Gîaçß˜æž¬)xRn the sod
+Už£0­‰4-³Æ¾{R9e vine; how tend the steer;
+M­öY£Â#"òéG$`cattle-keeping, or what proof
+UŠ›Øh‹«ï½›ÜKN¯_”6es for thrifty bees;</code></pre></div><p>We can see that most of the text has been decrypted, but every character after a newline is wrong.
+Well <code>'\n' % 16 == 10</code>, so we can determine that the 10th key is incorrect, we can mark the current value as wrong and run <code>counter.py</code> again.<h2 id=securing-the-key>Securing the key</h2><p>For my own convenience, I have also made a small script that I can paste in chunks of plaintext I believe to be 100% correct, it will give me the key indexes that are correct and no longer have to be tried.<div class=code-block><div class=code-header><span class=code-header-info><span class=code-filename>safe_index.py</span> <span class=code-lang>python</span></span><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code><span class=line><span class=tok-p>st </span><span class=tok-o>=</span><span class=tok-s> "..."</span></span>
+<span class=line><span class=tok-p>i </span><span class=tok-o>=</span><span class=tok-p> []</span></span>
+<span class=line><span class=tok-k>for</span><span class=tok-p> c </span><span class=tok-k>in</span><span class=tok-p> st:</span></span>
+<span class=line><span class=tok-p>    i.</span><span class=tok-f>append</span><span class=tok-p>(</span><span class=tok-o>ord</span><span class=tok-p>(c) </span><span class=tok-o>%</span><span class=tok-n> 16</span><span class=tok-p>)</span></span>
+<span class=line><span class=tok-p>i </span><span class=tok-o>=</span><span class=tok-o> list</span><span class=tok-p>(</span><span class=tok-o>set</span><span class=tok-p>(i))</span></span>
+<span class=line><span class=tok-p>i.</span><span class=tok-f>sort</span><span class=tok-p>()</span></span>
+<span class=line><span class=tok-o>print</span><span class=tok-p>(i)</span></span></code></pre></div><h2 id=what-is-the-flag>What is the flag</h2><p>I determined the key to be <code>[103, 145, 232, 58, 168, 78, 141, 244, 110, 165, 44, 207, 145, 19, 107, 162]</code> or <code>b'g\x91\xe8:\xa8N\x8d\xf4n\xa5,\xcf\x91\x13k\xa2'</code>.<div class=code-block><div class=code-header><span class=code-header-info><span class=code-filename>passage.dec.txt</span> <span class=code-lang>txt</span></span><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code>What makes the cornfield smile; beneath what star
+Maecenas, it is meet to turn the sod
+Or marry elm with vine; how tend the steer;
+What pains for cattle-keeping, or what proof
+Of patient trial serves for thrifty bees;
+Such are my themes.
+
+O universal lights
+Most glorious! ye that lead the gliding year
+Along the sky, Liber and Ceres mild,
+If by your bounty holpen earth once changed
+Chaonian acorn for the plump wheat-ear,
+And mingled with the grape, your new-found gift,
+The draughts of Achelous; and ye Fauns
+To rustics ever kind, come foot it, Fauns
+And Dryad-maids together; your gifts I sing.
+And thou, for whose delight the war-horse first
+Sprang from earth's womb at thy great trident's stroke,
+Neptune; and haunter of the groves, for whom
+Three hundred snow-white heifers browse the brakes,
+The fertile brakes of Ceos; and clothed in power,
+Thy native forest and Lycean lawns,
+Pan, shepherd-god, forsaking, as the love
+Of thine own Maenalus constrains thee, hear
+And help, O lord of Tegea! And thou, too,
+Minerva, from whose hand the olive sprung;
+And boy-discoverer of the curved plough;
+And, bearing a young cypress root-uptorn,
+Silvanus, and Gods all and Goddesses,
+Who make the fields your care, both ye who nurse
+The tender unsown increase, and from heaven
+Shed on man's sowing the riches of your rain:
+Of which one is DUCTF{when_in_doubt_xort_it_out};
+And thou, even thou, of whom we know not yet
+What mansion of the skies shall hold thee soon,
+Whether to watch o'er cities be thy will,
+Great Caesar, and to take the earth in charge,
+That so the mighty world may welcome thee
+Lord of her increase, master of her times,
+Binding thy mother's myrtle round thy brow,
+Or as the boundless ocean's God thou come,
+Sole dread of seamen, till far Thule bow
+Before thee, and Tethys win thee to her son
+With all her waves for dower; or as a star
+Lend thy fresh beams our lagging months to cheer,
+Where 'twixt the Maid and those pursuing Claws
+A space is opening; see! red Scorpio's self
+His arms draws in, yea, and hath left thee more
+Than thy full meed of heaven: be what thou wilt-
+For neither Tartarus hopes to call thee king,
+Nor may so dire a lust of sovereignty
+E'er light upon thee, howso Greece admire
+Elysium's fields, and Proserpine not heed
+Her mother's voice entreating to return-
+Vouchsafe a prosperous voyage, and smile on this
+My bold endeavour, and pitying, even as I,
+These poor way-wildered swains, at once begin,
+Grow timely used unto the voice of prayer.
+In early spring-tide, when the icy drip
+Melts from the mountains hoar, and Zephyr's breath
+Unbinds the crumbling clod, even then 'tis time;
+Press deep your plough behind the groaning ox,
+And teach the furrow-burnished share to shine.
+That land the craving farmer's prayer fulfils,
+Which twice the sunshine, twice the frost has felt;
+Ay, that's the land whose boundless harvest-crops
+Burst, see! the barns.
+
+But ere our metal cleave
+An unknown surface, heed we to forelearn
+The winds and varying temper of the sky,
+The lineal tilth and habits of the spot,
+What every region yields, and what denies.
+Here blithelier springs the corn, and here the grape,
+There earth is green with tender growth of trees
+And grass unbidden. See how from Tmolus comes
+The saffron's fragrance, ivory from Ind,
+From Saba's weakling sons their frankincense,
+Iron from the naked Chalybs, castor rank
+From Pontus, from Epirus the prize-palms
+O' the mares of Elis.
+Such the eternal bond
+And such the laws by Nature's hand imposed
+On clime and clime, e'er since the primal dawn
+When old Deucalion on the unpeopled earth
+Cast stones, whence men, a flinty race, were reared.
+Up then! if fat the soil, let sturdy bulls
+Upturn it from the year's first opening months,
+And let the clods lie bare till baked to dust
+By the ripe suns of summer; but if the earth
+Less fruitful just ere Arcturus rise
+With shallower trench uptilt it- 'twill suffice;
+There, lest weeds choke the crop's luxuriance, here,
+Lest the scant moisture fail the barren sand.
+Then thou shalt suffer in alternate years
+The new-reaped fields to rest, and on the plain
+A crust of sloth to harden; or, when stars
+Are changed in heaven, there sow the golden grain
+Where erst, luxuriant with its quivering pod,
+Pulse, or the slender vetch-crop, thou hast cleared,
+And lupin sour, whose brittle stalks arise,
+A hurtling forest. For the plain is parched
+By flax-crop, parched by oats, by poppies parched
+In Lethe-slumber drenched. Nathless by change
+The travailing earth is lightened, but stint not
+With refuse rich to soak the thirsty soil,
+And shower foul ashes o'er the exhausted fields.
+Thus by rotation like repose is gained,
+Nor earth meanwhile uneared and thankless left.
+Oft, too, 'twill boot to fire the naked fields,
+And the light stubble burn with crackling flames;
+Whether that earth therefrom some hidden strength
+And fattening food derives, or that the fire
+Bakes every blemish out, and sweats away
+Each useless humour, or that the heat unlocks
+New passages and secret pores, whereby
+Their life-juice to the tender blades may win;
+Or that it hardens more and helps to bind
+The gaping veins, lest penetrating showers,
+Or fierce sun's ravening might, or searching blast
+Of the keen north should sear them. Well, I wot,
+He serves the fields who with his harrow breaks
+The sluggish clods, and hurdles osier-twined
+Hales o'er them; from the far Olympian height
+Him golden Ceres not in vain regards;
+And he, who having ploughed the fallow plain
+And heaved its furrowy ridges, turns once more
+Cross-wise his shattering share, with stroke on stroke
+The earth assails, and makes the field his thrall.</code></pre></div><p>And we have our flag <code>DUCTF{when_in_doubt_xort_it_out}</code>.<h2 id=solve-script>Solve Script</h2><div class=code-block><div class=code-header><span class=code-header-info><span class=code-filename>verifier.py</span> <span class=code-lang>python</span></span><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code><span class=line><span class=tok-k>import</span><span class=tok-p> string</span></span>
+<span class=line><span class=tok-k>from</span><span class=tok-p> typing </span><span class=tok-k>import</span><span class=tok-p> Counter</span></span>
+<span class=line></span>
+<span class=line></span>
+<span class=line><span class=tok-k>with</span><span class=tok-o> open</span><span class=tok-p>(</span><span class=tok-s>"passage.enc.txt"</span><span class=tok-p>, </span><span class=tok-s>"rb"</span><span class=tok-p>) </span><span class=tok-k>as</span><span class=tok-p> r:</span></span>
+<span class=line><span class=tok-p>    raw </span><span class=tok-o>=</span><span class=tok-p> r.</span><span class=tok-f>read</span><span class=tok-p>()</span></span>
+<span class=line></span>
+<span class=line></span>
+<span class=line><span class=tok-k>def</span><span class=tok-f> dec</span><span class=tok-p>(</span><span class="tok-n tok-i">i</span><span class=tok-p>, </span><span class="tok-n tok-i">plain</span><span class=tok-p>, </span><span class="tok-n tok-i">cipher</span><span class=tok-p>, </span><span class="tok-n tok-i">key</span><span class=tok-p>):</span></span>
+<span class=line><span class=tok-p>    ki </span><span class=tok-o>=</span><span class=tok-p> (plain[i</span><span class=tok-o>-</span><span class=tok-n>1</span><span class=tok-p>] </span><span class=tok-k>if</span><span class=tok-p> i </span><span class=tok-o>></span><span class=tok-n> 0</span><span class=tok-k> else</span><span class=tok-n> 0</span><span class=tok-p>) </span><span class=tok-o>%</span><span class=tok-n> 16</span></span>
+<span class=line><span class=tok-k>    return</span><span class=tok-o> bytes</span><span class=tok-p>([key[ki] </span><span class=tok-o>^</span><span class=tok-p> cipher[i]])</span></span>
+<span class=line></span>
+<span class=line></span>
+<span class=line><span class=tok-k>def</span><span class=tok-f> init_key</span><span class=tok-p>(</span><span class="tok-n tok-i">keys</span><span class=tok-p>):</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>0</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 103</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>1</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 145</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>2</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 232</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>3</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 58</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>4</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 168</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>5</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 78</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>6</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 141</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>7</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 244</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>8</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 110</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>9</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 165</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>10</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 44</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>11</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 207</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>12</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 145</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>13</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 19</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>14</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 107</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>15</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 162</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-k>    return</span><span class=tok-p> keys</span></span>
+<span class=line></span>
+<span class=line></span>
+<span class=line><span class=tok-p>keys </span><span class=tok-o>=</span><span class=tok-f> init_key</span><span class=tok-p>([</span><span class=tok-n>0</span><span class=tok-p>]</span><span class=tok-o>*</span><span class=tok-n>16</span><span class=tok-p>)</span></span>
+<span class=line></span>
+<span class=line><span class=tok-p>p </span><span class=tok-o>=</span><span class=tok-k> b</span><span class=tok-s>''</span></span>
+<span class=line><span class=tok-k>for</span><span class=tok-p> i </span><span class=tok-k>in</span><span class=tok-o> range</span><span class=tok-p>(</span><span class=tok-o>len</span><span class=tok-p>(raw)):</span></span>
+<span class=line><span class=tok-p>    p </span><span class=tok-o>+=</span><span class=tok-f> dec</span><span class=tok-p>(i, p, raw, keys)</span></span>
+<span class=line></span>
+<span class=line><span class=tok-p>l </span><span class=tok-o>=</span><span class=tok-p> []</span></span>
+<span class=line><span class=tok-k>for</span><span class=tok-p> i, c </span><span class=tok-k>in</span><span class=tok-o> enumerate</span><span class=tok-p>(p):</span></span>
+<span class=line><span class=tok-k>    if</span><span class=tok-p> c </span><span class=tok-k>not</span><span class=tok-k> in</span><span class=tok-p> string.printable.</span><span class=tok-f>encode</span><span class=tok-p>() </span><span class=tok-k>and</span><span class=tok-o> chr</span><span class=tok-p>(p[i</span><span class=tok-o>-</span><span class=tok-n>1</span><span class=tok-p>]) </span><span class=tok-k>in</span><span class=tok-p> string.printable </span><span class=tok-k>and</span><span class=tok-o> chr</span><span class=tok-p>(p[i</span><span class=tok-o>-</span><span class=tok-n>2</span><span class=tok-p>]) </span><span class=tok-k>in</span><span class=tok-p> string.printable:</span></span>
+<span class=line><span class=tok-p>        l.</span><span class=tok-f>append</span><span class=tok-p>(p[i</span><span class=tok-o>-</span><span class=tok-n>1</span><span class=tok-p>] </span><span class=tok-o>%</span><span class=tok-n> 16</span><span class=tok-p>)</span></span>
+<span class=line></span>
+<span class=line><span class=tok-o>print</span><span class=tok-p>(</span><span class=tok-f>Counter</span><span class=tok-p>(l).</span><span class=tok-f>most_common</span><span class=tok-p>(</span><span class=tok-n>5</span><span class=tok-p>))</span></span>
+<span class=line></span>
+<span class=line><span class=tok-k>with</span><span class=tok-o> open</span><span class=tok-p>(</span><span class=tok-s>"passage.dec.txt"</span><span class=tok-p>, </span><span class=tok-s>"wb"</span><span class=tok-p>) </span><span class=tok-k>as</span><span class=tok-p> w:</span></span>
+<span class=line><span class=tok-p>    w.</span><span class=tok-f>write</span><span class=tok-p>(p)</span></span></code></pre></div><div class=code-block><div class=code-header><span class=code-header-info><span class=code-filename>counter.py</span> <span class=code-lang>python</span></span><span class=code-header-spacer></span><button class=copy-btn data-copy onclick=copyCode(this) title=Copy>Copy</button></div><pre><code><span class=line><span class=tok-k>from</span><span class=tok-p> typing </span><span class=tok-k>import</span><span class=tok-p> Counter</span></span>
+<span class=line></span>
+<span class=line></span>
+<span class=line><span class=tok-k>def</span><span class=tok-f> key_to_str</span><span class=tok-p>(</span><span class="tok-n tok-i">key</span><span class=tok-p>):</span></span>
+<span class=line><span class=tok-k>    return</span><span class=tok-s> ''</span><span class=tok-p>.</span><span class=tok-f>join</span><span class=tok-p>([</span><span class=tok-k>f</span><span class=tok-s>'</span><span class=tok-n>{</span><span class=tok-p>i</span><span class=tok-k>:4</span><span class=tok-n>}</span><span class=tok-s>'</span><span class=tok-k> if</span><span class=tok-p> i </span><span class=tok-o>!=</span><span class=tok-o> -</span><span class=tok-n>1</span><span class=tok-k> else</span><span class=tok-s> ' '</span><span class=tok-o>*</span><span class=tok-n>4</span><span class=tok-k> for</span><span class=tok-p> i </span><span class=tok-k>in</span><span class=tok-p> key])</span></span>
+<span class=line></span>
+<span class=line></span>
+<span class=line><span class=tok-k>def</span><span class=tok-f> init_key</span><span class=tok-p>(</span><span class="tok-n tok-i">keys</span><span class=tok-p>=</span><span class=tok-n>None</span><span class=tok-p>):</span></span>
+<span class=line><span class=tok-k>    if</span><span class=tok-p> keys </span><span class=tok-o>==</span><span class=tok-n> None</span><span class=tok-p>:</span></span>
+<span class=line><span class=tok-p>        keys </span><span class=tok-o>=</span><span class=tok-p> [</span><span class=tok-o>-</span><span class=tok-n>1</span><span class=tok-p>]</span><span class=tok-o>*</span><span class=tok-n>16</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>0</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 103</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>1</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 145</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>2</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 232</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>3</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 58</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>4</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 168</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>5</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 78</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>6</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 141</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>7</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 244</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>8</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 110</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class=tok-p>    keys[</span><span class=tok-n>9</span><span class=tok-p>] </span><span class=tok-o>=</span><span class=tok-n> 165</span><span class="tok-c tok-i">  # CORRECT</span></span>
+<span class=line><span class="tok-c tok-i">    # keys[10] = 44  # 145</span></span>
+<span class=line><span class="tok-c tok-i">    # keys[11] = 207  # CORRECT</span></span>
+<span class=line><span class="tok-c tok-i">    # keys[12] = 145  # CORRECT</span></span>
+<span class=line><span class="tok-c tok-i">    # keys[13] = 19  # CORRECT</span></span>
+<span class=line><span class="tok-c tok-i">    # keys[14] = 107  # CORRECT</span></span>
+<span class=line><span class="tok-c tok-i">    # keys[15] = 162  # CORRECT</span></span>
+<span class=line><span class=tok-k>    return</span><span class=tok-p> keys</span></span>
+<span class=line></span>
+<span class=line></span>
+<span class=line><span class=tok-p>pos_i </span><span class=tok-o>=</span><span class=tok-n> 10</span><span class="tok-c tok-i">  # position of the key to focus on</span></span>
+<span class=line><span class=tok-p>pos_mis </span><span class=tok-o>=</span><span class=tok-p> []  </span><span class="tok-c tok-i"># counter</span></span>
+<span class=line></span>
+<span class=line><span class=tok-o>print</span><span class=tok-p>(</span><span class=tok-s>' '</span><span class=tok-o>*</span><span class=tok-n>5</span><span class=tok-p>, </span><span class=tok-s>''</span><span class=tok-p>.</span><span class=tok-f>join</span><span class=tok-p>([</span><span class=tok-k>f</span><span class=tok-s>'</span><span class=tok-n>{</span><span class=tok-p>i</span><span class=tok-k>:4</span><span class=tok-n>}</span><span class=tok-s>'</span><span class=tok-k> if</span><span class=tok-p> i </span><span class=tok-o>!=</span><span class=tok-o> -</span><span class=tok-n>1</span><span class=tok-k> else</span><span class=tok-s> ' '</span><span class=tok-o>*</span><span class=tok-n>4</span><span class=tok-k> for</span><span class=tok-p> i </span><span class=tok-k>in</span><span class=tok-o> range</span><span class=tok-p>(</span><span class=tok-n>16</span><span class=tok-p>)]))</span></span>
+<span class=line></span>
+<span class=line></span>
+<span class=line><span class=tok-k>def</span><span class=tok-f> do_for_word</span><span class=tok-p>(</span><span class="tok-n tok-i">encrypted</span><span class=tok-p>, </span><span class="tok-n tok-i">word</span><span class=tok-p>, </span><span class="tok-n tok-i">top_n</span><span class=tok-p>=</span><span class=tok-n>None</span><span class=tok-p>):</span></span>
+<span class=line><span class=tok-o>    print</span><span class=tok-p>(</span><span class=tok-s>'</span><span class=tok-o>\t</span><span class=tok-s>'</span><span class=tok-p>, </span><span class=tok-s>"word"</span><span class=tok-p>, word)</span></span>
+<span class=line><span class=tok-p>    curr_key </span><span class=tok-o>=</span><span class=tok-f> key_to_str</span><span class=tok-p>(</span><span class=tok-f>init_key</span><span class=tok-p>())</span></span>
+<span class=line></span>
+<span class=line><span class=tok-k>    def</span><span class=tok-f> find_most_common_sequences</span><span class=tok-p>(</span><span class="tok-n tok-i">raw</span><span class=tok-p>, </span><span class="tok-n tok-i">sequence_length</span><span class=tok-p>=</span><span class=tok-n>3</span><span class=tok-p>):</span></span>
+<span class=line><span class=tok-p>        counter </span><span class=tok-o>=</span><span class=tok-f> Counter</span><span class=tok-p>([raw[i:i</span><span class=tok-o>+</span><span class=tok-p>sequence_length] </span><span class=tok-k>for</span><span class=tok-p> i </span><span class=tok-k>in</span><span class=tok-o> range</span><span class=tok-p>(</span><span class=tok-o>len</span><span class=tok-p>(raw) </span><span class=tok-o>-</span><span class=tok-p> sequence_length </span><span class=tok-o>+</span><span class=tok-n> 1</span><span class=tok-p>)])</span></span>
+<span class=line><span class=tok-p>        most_common </span><span class=tok-o>=</span><span class=tok-p> counter.</span><span class=tok-f>most_common</span><span class=tok-p>(top_n)</span></span>
+<span class=line><span class=tok-p>        lim </span><span class=tok-o>=</span><span class=tok-n> 4</span><span class="tok-c tok-i">  # max number of sequences to print</span></span>
+<span class=line><span class=tok-p>        keys </span><span class=tok-o>=</span><span class=tok-p> []  </span><span class="tok-c tok-i"># to avoid duplicates</span></span>
+<span class=line><span class=tok-k>        for</span><span class=tok-p> seq, count </span><span class=tok-k>in</span><span class=tok-p> most_common:</span></span>
+<span class=line><span class=tok-p>            key </span><span class=tok-o>=</span><span class=tok-f> init_key</span><span class=tok-p>()</span></span>
+<span class=line><span class=tok-p>            last_plain </span><span class=tok-o>=</span><span class=tok-n> 0</span><span class="tok-c tok-i">  # starting from space</span></span>
+<span class=line><span class=tok-k>            for</span><span class=tok-p> i, c </span><span class=tok-k>in</span><span class=tok-o> enumerate</span><span class=tok-p>(word):</span></span>
+<span class=line><span class=tok-p>                ki </span><span class=tok-o>=</span><span class=tok-p> last_plain </span><span class=tok-o>%</span><span class=tok-n> 16</span><span class="tok-c tok-i">  # key index</span></span>
+<span class=line><span class=tok-p>                propose </span><span class=tok-o>=</span><span class=tok-p> c </span><span class=tok-o>^</span><span class=tok-p> seq[i]  </span><span class="tok-c tok-i"># propose key for key index</span></span>
+<span class=line><span class="tok-c tok-i">                # if key is already set and it's different reject</span></span>
+<span class=line><span class="tok-c tok-i">                # (since we are counting most common sequences, it's likely to be correct)</span></span>
+<span class=line><span class=tok-k>                if</span><span class=tok-p> key[ki] </span><span class=tok-o>!=</span><span class=tok-o> -</span><span class=tok-n>1</span><span class=tok-k> and</span><span class=tok-p> key[ki] </span><span class=tok-o>!=</span><span class=tok-p> propose:</span></span>
+<span class=line><span class=tok-k>                    break</span></span>
+<span class=line><span class=tok-p>                key[ki] </span><span class=tok-o>=</span><span class=tok-p> propose  </span><span class="tok-c tok-i"># set key</span></span>
+<span class=line><span class=tok-p>                last_plain </span><span class=tok-o>=</span><span class=tok-p> c</span></span>
+<span class=line><span class=tok-p>            _key </span><span class=tok-o>=</span><span class=tok-f> key_to_str</span><span class=tok-p>(key)  </span><span class="tok-c tok-i"># key as string</span></span>
+<span class=line><span class=tok-k>            if</span><span class=tok-p> _key </span><span class=tok-k>not</span><span class=tok-k> in</span><span class=tok-p> keys </span><span class=tok-k>and</span><span class=tok-p> (_key </span><span class=tok-o>!=</span><span class=tok-p> curr_key </span><span class=tok-k>or</span><span class=tok-p> lim </span><span class=tok-o>==</span><span class=tok-n> 4</span><span class=tok-p>):  </span><span class="tok-c tok-i"># avoid duplicates</span></span>
+<span class=line><span class=tok-o>                print</span><span class=tok-p>(</span><span class=tok-k>f</span><span class=tok-s>"</span><span class=tok-n>{</span><span class=tok-p>count</span><span class=tok-k>:5</span><span class=tok-n>}</span><span class=tok-s> "</span><span class=tok-p>, </span><span class=tok-s>''</span><span class=tok-p>.</span><span class=tok-f>join</span><span class=tok-p>([c </span><span class=tok-k>if</span><span class=tok-p> d </span><span class=tok-o>!=</span><span class=tok-p> c </span><span class=tok-k>else</span><span class=tok-s> '-'</span><span class=tok-k> for</span><span class=tok-p> d, c </span><span class=tok-k>in</span><span class=tok-o> zip</span><span class=tok-p>(curr_key, _key)]))</span></span>
+<span class=line><span class=tok-k>                if</span><span class=tok-p> key[pos_i] </span><span class=tok-o>!=</span><span class=tok-o> -</span><span class=tok-n>1</span><span class=tok-p>:  </span><span class="tok-c tok-i"># counter for focus key</span></span>
+<span class=line><span class=tok-p>                    pos_mis.</span><span class=tok-f>append</span><span class=tok-p>(key[pos_i])</span></span>
+<span class=line><span class=tok-p>                lim </span><span class=tok-o>-=</span><span class=tok-n> 1</span></span>
+<span class=line><span class=tok-k>                if</span><span class=tok-p> lim </span><span class=tok-o>==</span><span class=tok-n> 0</span><span class=tok-p>:</span></span>
+<span class=line><span class=tok-k>                    break</span></span>
+<span class=line><span class=tok-p>                keys.</span><span class=tok-f>append</span><span class=tok-p>(_key)</span></span>
+<span class=line><span class=tok-f>    find_most_common_sequences</span><span class=tok-p>(encrypted, </span><span class=tok-o>len</span><span class=tok-p>(word))</span></span>
+<span class=line></span>
+<span class=line></span>
+<span class=line><span class=tok-k>with</span><span class=tok-o> open</span><span class=tok-p>(</span><span class=tok-s>"passage.enc.txt"</span><span class=tok-p>, </span><span class=tok-s>"rb"</span><span class=tok-p>) </span><span class=tok-k>as</span><span class=tok-p> r:</span></span>
+<span class=line><span class=tok-p>    raw </span><span class=tok-o>=</span><span class=tok-p> r.</span><span class=tok-f>read</span><span class=tok-p>()</span></span>
+<span class=line><span class=tok-f>do_for_word</span><span class=tok-p>(raw, </span><span class=tok-k>b</span><span class=tok-s>'the '</span><span class=tok-p>)</span></span>
+<span class=line><span class=tok-f>do_for_word</span><span class=tok-p>(raw, </span><span class=tok-k>b</span><span class=tok-s>'there'</span><span class=tok-p>)</span></span>
+<span class=line><span class=tok-f>do_for_word</span><span class=tok-p>(raw, </span><span class=tok-k>b</span><span class=tok-s>'DUCTF{'</span><span class=tok-p>)</span></span>
+<span class=line></span>
+<span class=line><span class=tok-k>with</span><span class=tok-o> open</span><span class=tok-p>(</span><span class=tok-s>"words.txt"</span><span class=tok-p>, </span><span class=tok-s>"r"</span><span class=tok-p>) </span><span class=tok-k>as</span><span class=tok-p> r:</span></span>
+<span class=line><span class=tok-p>    words_all </span><span class=tok-o>=</span><span class=tok-p> r.</span><span class=tok-f>read</span><span class=tok-p>()</span></span>
+<span class=line><span class=tok-p>    words </span><span class=tok-o>=</span><span class=tok-p> words_all.</span><span class=tok-f>splitlines</span><span class=tok-p>()[:</span><span class=tok-n>1000</span><span class=tok-p>]</span></span>
+<span class=line></span>
+<span class=line><span class=tok-k>for</span><span class=tok-p> word </span><span class=tok-k>in</span><span class=tok-p> words:</span></span>
+<span class=line><span class=tok-f>    do_for_word</span><span class=tok-p>(raw, word.</span><span class=tok-f>encode</span><span class=tok-p>())</span></span>
+<span class=line></span>
+<span class=line><span class=tok-o>print</span><span class=tok-p>(</span><span class=tok-s>"pos"</span><span class=tok-p>, pos_i, </span><span class=tok-f>Counter</span><span class=tok-p>(pos_mis))</span></span></code></pre></div><h2 id=comments>Comments</h2><p><img src=https://image.yun.ng/upload/v1720250682/2024/07/2d4c46a5522d7bbe96e922503cf0e552.png alt=image.png title=null><p>It was one hell of a ride, from thinking its just a simple XOR cycling key cipher to frequency analysis to almost giving up to finally seeing light (image above).<p><img src=https://image.yun.ng/upload/v1720250891/2024/07/f76101b4a7a2042fdec17699967cc56d.png alt=image.png title=null><p>My favourite challenge this CTF definitely.<p>Very fun, would do again.</section><div class=peer-nav><a href=/c/ctf/2024-ductf/crypto/decrypt-then-eval>← decrypt then eval</a><a href=/c/ctf/2024-ductf/crypto/decrypt-then-eval>decrypt then eval →</a></div></article><div class="comments-container comments-wide"><div id=giscus-container-wide></div></div></div><aside class=content-page-toc id=toc-sidebar><div class=toc-title>Contents</div><a class=toc-link href=#analysis data-toc-id=analysis style=padding-left:8px>Analysis</a><a class=toc-link href=#counting-the-bytes data-toc-id=counting-the-bytes style=padding-left:8px>Counting the bytes</a><a class=toc-link href=#cracking-the-key data-toc-id=cracking-the-key style=padding-left:8px>Cracking the key</a><a class=toc-link href=#verifying-the-key data-toc-id=verifying-the-key style=padding-left:8px>Verifying the key</a><a class=toc-link href=#securing-the-key data-toc-id=securing-the-key style=padding-left:8px>Securing the key</a><a class=toc-link href=#what-is-the-flag data-toc-id=what-is-the-flag style=padding-left:8px>What is the flag</a><a class=toc-link href=#solve-script data-toc-id=solve-script style=padding-left:8px>Solve Script</a><a class=toc-link href=#comments data-toc-id=comments style=padding-left:8px>Comments</a></aside></div></div></div></main><div class="comments-container comments-narrow"><div id=giscus-container-narrow></div></div><footer><p>© 2026 Yun</footer><script defer src="/app.js?v=mspbo080"></script><script defer src="/stats.js?v=mspbo080"></script><script defer src="/search.js?v=mspbo080"></script><script defer src="/pagination.js?v=mspbo080"></script><script defer src="/views.js?v=mspbo080"></script>

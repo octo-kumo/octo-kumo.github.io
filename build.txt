@@ -1,0 +1,80 @@
+════════════════════════════════════════════════════════════════
+  BUILD REPORT — yun.ng v2
+  Generated: 2026-08-12T00:02:40.006Z
+════════════════════════════════════════════════════════════════
+
+── OVERVIEW ──────────────────────────────────────────────────
+  Total build time ...... 194.28 s
+  Routes generated ..... 419
+  Content documents .... 557
+  Output directory ..... dist/ (880 files, 32.14 MB)
+
+── BUILD PHASES ──────────────────────────────────────────────
+  Load & parse content       4.97 s  █░░░░░░░░░░░░░░░░░░░░░░░ 2.6%
+  SSG build (HTML)           937 ms  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.5%
+  Font subsetting            1.37 s  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.7%
+  OG image generation      183.08 s  ███████████████████████░ 96.0%
+  Search index                36 ms  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.0%
+  Portfolio                  283 ms  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.1%
+  ────────────────────── ──────────  ──────────────────────────
+  Total                    190.67 s
+
+── SEARCH INDEX ─────────────────────────────────────────────
+  Entries .............. 429
+  Index size ........... 283.8 KB
+
+── OG IMAGES ────────────────────────────────────────────────
+  Total images ......... 203
+  Cache hits ............ 216
+  Cache misses .......... 203
+  Total size ............ 19.36 MB
+  Avg per image ........ 97.7 KB
+
+── MINIFICATION ──────────────────────────────────────────────
+  Before ............... 34.52 MB (total)
+    - Images (excluded) . 19.57 MB
+    - Minifiable ....... 14.95 MB
+  After ................ 32.14 MB (total)
+    - Images (excluded) . 19.57 MB
+    - Minifiable ....... 12.56 MB
+  Saved ................ 2.39 MB (16.0% of minifiable)
+
+── OUTPUT FILE BREAKDOWN ────────────────────────────────────
+  .png       420 files      19.57 MB  ███████████████░░░░░░░░░ 60.9%
+  .html      420 files      10.62 MB  ████████░░░░░░░░░░░░░░░░ 33.0%
+  .js          7 files      707.9 KB  █░░░░░░░░░░░░░░░░░░░░░░░ 2.2%
+  .json        2 files      605.7 KB  ░░░░░░░░░░░░░░░░░░░░░░░░ 1.8%
+  .xml         3 files      376.0 KB  ░░░░░░░░░░░░░░░░░░░░░░░░ 1.1%
+  .woff2      11 files      211.4 KB  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.6%
+  .css         9 files       85.1 KB  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.3%
+  .jpg         1 files        4.9 KB  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.0%
+  .xsl         1 files        3.5 KB  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.0%
+  .ico         1 files        1.1 KB  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.0%
+  .svg         1 files         773 B  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.0%
+  .txt         2 files         322 B  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.0%
+  (no ext)     2 files           6 B  ░░░░░░░░░░░░░░░░░░░░░░░░ 0.0%
+
+── LARGEST 20 FILES ──────────────────────────────────────────
+  dist/portfolio/assets/app-85b74551d4c6.js              680.8 KB
+  dist/fonts/space_font.json                             321.9 KB
+  dist/c/ctf/index.html                                  297.3 KB
+  dist/c/index.html                                      297.1 KB
+  dist/search-index.json                                 283.8 KB
+  dist/logo.png                                          180.0 KB
+  dist/atom.xml                                          157.4 KB
+  dist/rss.xml                                           151.6 KB
+  dist/c/ctf/2024-wanictf/rev/promises/index.html        147.3 KB
+  dist/c/ctf/2025-wwctf/rev/flagchecker/index.html       134.8 KB
+  dist/index.html                                        126.9 KB
+  dist/c/ctf/2025-hitcon-ctf/misc/vibe2/index.html       108.1 KB
+  dist/c/ctf/2025-wwctf/misc/world-wide-flags-2/index.html      90.7 KB
+  dist/c/ctf/2025-sekai-ctf/rev/sekai-craft/index.html      86.3 KB
+  dist/og/f0dca64228ac27c4.png                            84.9 KB
+  dist/og/221368b1ff6b5746.png                            81.0 KB
+  dist/og/f07e838603bfb92f.png                            79.0 KB
+  dist/og/c2447652c0197df4.png                            78.8 KB
+  dist/og/a222618e1421c599.png                            78.7 KB
+  dist/og/271812f0c833f3cb.png                            78.6 KB
+════════════════════════════════════════════════════════════════
+  Build completed in 194.28 s
+════════════════════════════════════════════════════════════════

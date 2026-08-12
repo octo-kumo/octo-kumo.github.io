@@ -1,0 +1,10 @@
+built 2026-08-12T00:02:36.405Z
+basePath: /portfolio
+siteUrl: https://yun.ng
+writeupsUrl: https://yun.ng/search-index.json
+viewsUrl: https://views.yun.ng
+projects: 65
+fallback writeups: 7
+cacheVer: mspbs38g
+bundle: app-85b74551d4c6.js (1062KB)
+portfolio.css: 15KB

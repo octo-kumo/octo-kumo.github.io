@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://yun.ng/sitemap.xml
