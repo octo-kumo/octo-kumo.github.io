@@ -22,6 +22,7 @@ type Project = {
   langs: string[];
   keys?: string[];
   hidden?: boolean; // in yaml: show in the 3D scene but skip the skills gallery
+  home?: boolean; // in yaml: false keeps it off the main-site homepage carousel (ignored here)
   github?: string;
   link?: string | { win: string; linux: string };
   year: string;

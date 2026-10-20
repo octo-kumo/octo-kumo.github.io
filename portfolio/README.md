@@ -37,7 +37,10 @@ Build-time config (optional):
 
 ## Content
 
-- **Projects** — `src/data/projects.yaml` (add entries there)
+- **Projects** — `src/data/projects.yaml` (add entries there). The main
+  site's homepage carousel reads the same file; per-entry flags:
+  `hidden: true` (3D scene only, skipped everywhere else) and
+  `home: false` (portfolio only, kept off the homepage carousel)
 - **Writeups fallback** — `src/data/writeups.yaml` (used when the live search
   index is unreachable)
 
