@@ -1738,22 +1738,47 @@ code:not(pre code):not(.flag-text).copied {
   border-color: #98c379;
 }
 
-/* Flag box */
+/* Flag box: label, highlighted flag, copy button (flags are always mono) */
 .flag-box {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 0;
-  padding: 0.5rem 0.75rem;
+  gap: 0.65rem;
+  margin: 1.25rem 0;
+  padding: 0.5rem 0.6rem 0.5rem 0.6rem;
   background: var(--code-block-bg);
-  border: 1px solid var(--bd);
-  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--primary) 35%, var(--bd));
+  border-radius: 8px;
   font-family: var(--font-mono);
+  font-style: normal;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.flag-box:has(.flag-copy.copied) {
+  border-color: #98c379;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #98c379 20%, transparent);
+}
+
+.flag-label {
+  flex-shrink: 0;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.flag-label::before {
+  content: "flag";
 }
 
 .flag-text {
   flex: 1;
-  font-size: 0.85rem;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
   white-space: nowrap;
   overflow-x: auto;
   scrollbar-width: thin;
@@ -1782,14 +1807,92 @@ html.terminal .flag-text::-webkit-scrollbar-thumb {
   border-radius: 0;
 }
 
-.flag-prefix {
+/* Flag syntax highlighting (flag boxes and inline-code flags) */
+.flag-inline {
+  font-family: var(--font-mono);
+  font-style: normal;
+}
+
+.fl-pre {
   color: var(--footer-text);
+}
+
+.fl-brace {
+  color: var(--tok-k);
+  font-weight: 700;
+}
+
+.fl-w {
+  color: var(--tok-s);
+}
+
+.fl-n {
+  color: var(--tok-n);
+}
+
+.fl-sep {
+  color: var(--cb-muted);
+}
+
+.fl-sym {
+  color: var(--tok-o);
+}
+
+.fl-hash {
+  color: var(--cb-muted);
   opacity: 0.85;
 }
 
-.flag-content {
-  color: var(--primary);
-  font-weight: 500;
+/* Papery: ledger-like box with an ink rule, italic serif label */
+html.papery .flag-box {
+  border-radius: 0;
+  border: 1px solid var(--bd);
+  border-left: 3px solid var(--heading-accent);
+  background: var(--card-bg);
+}
+
+html.papery .flag-label {
+  padding: 0;
+  background: none;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--heading-accent);
+}
+
+html.papery .flag-label::before {
+  content: "Flag:";
+}
+
+/* Terminal: [FLAG] tag, no pill */
+html.terminal .flag-label {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+html.terminal .flag-label::before {
+  content: "[FLAG]";
+}
+
+/* Inside a terminal quote the box is one plain line, keeping the > column aligned */
+html.terminal blockquote .flag-box {
+  margin: 0;
+  padding: 0;
+  border: 0 !important;
+  background: none;
+  box-shadow: none;
+}
+
+html.terminal blockquote .flag-box .copy-btn {
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1.4;
 }
 
 .flag-copy {
