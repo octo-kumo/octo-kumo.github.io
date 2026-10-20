@@ -323,13 +323,12 @@ export async function renderMarkdown(raw: string): Promise<RenderedDoc> {
     const safeVid = vid.replace(/[^a-zA-Z0-9_-]/g, "");
     return `<div style="aspect-ratio:16/9;margin:1rem 0;"><iframe src="https://player.vimeo.com/video/${safeVid}" style="width:100%;height:100%;" frameborder="0" allowfullscreen></iframe></div>`;
   });
-  // A paragraph that is just a flag (bare or in inline code) becomes a flag box
+  // A paragraph that is just an inline-code flag becomes a flag box
   const toFlagBox = (m: string, inner: string) => {
     const raw = unescapeHtml(inner.replace(/<[^>]*>/g, ""));
     return FLAG_RE.test(raw) ? renderFlagBox(raw) : m;
   };
   finalHtml = finalHtml.replace(/<p><code class="flag-inline">((?:(?!<\/code>)[\s\S]){1,4000})<\/code><\/p>/g, toFlagBox);
-  finalHtml = finalHtml.replace(/<p>([^<>\s]{3,240})<\/p>/g, toFlagBox);
   // Assign heading ids + build TOC from the FINAL html so anchors and TOC
   // always agree. Repeated headings get a numeric suffix (foo, foo-1, foo-2).
   return finalizeHeadingIds(finalHtml);
