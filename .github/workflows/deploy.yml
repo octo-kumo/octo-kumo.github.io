@@ -19,7 +19,7 @@ jobs:
           submodules: "true"
       - name: Git Submodule Update
         run: |
-          git submodule update --init --recursive
+          git submodule update --init --recursive --remote
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
