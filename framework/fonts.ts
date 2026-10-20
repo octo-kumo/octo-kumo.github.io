@@ -24,6 +24,8 @@ interface FontSpec {
 }
 
 const FONTS: FontSpec[] = [
+  { src: "roboto-var.woff2",            out: "roboto.woff2",             family: "Roboto",           weight: "100 900", style: "normal" },
+  // Space Grotesk: still used by the portfolio (and the OG image renderer)
   { src: "space-grotesk-400.woff2",     out: "space-grotesk.woff2",      family: "Space Grotesk",    weight: "400 700", style: "normal" },
   { src: "jetbrains-mono-400.woff2",    out: "jetbrains-mono-400.woff2", family: "JetBrains Mono",   weight: "400",     style: "normal" },
   { src: "source-serif-pro-400.woff2",  out: "source-serif-pro-400.woff2",  family: "Source Serif Pro", weight: "400", style: "normal" },

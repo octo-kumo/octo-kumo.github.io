@@ -37,7 +37,7 @@ html(lang="en", class="dark")
     link(rel="icon", type="image/x-icon", href="/favicon.ico?v=" + cacheVer)
     link(rel="alternate", type="application/rss+xml", title="RSS", href=siteBase + "/rss.xml")
     link(rel="alternate", type="application/atom+xml", title="Atom", href=siteBase + "/atom.xml")
-    link(rel="preload", href="/fonts/space-grotesk.woff2", as="font", type="font/woff2", crossorigin)
+    link(rel="preload", href="/fonts/roboto.woff2", as="font", type="font/woff2", crossorigin)
     link(rel="preload", href="/fonts/jetbrains-mono-400.woff2", as="font", type="font/woff2", crossorigin)
     // Self-hosted fonts, loaded non-blocking via JS swap (font-display: swap prevents FOIT)
     script.
@@ -103,26 +103,67 @@ html(lang="en", class="dark")
   body
     nav.topnav
       .topnav-inner
-        a.topnav-logo(href="/") 云
+        a.topnav-logo(href="/", aria-label="yun.ng home")
+          span.topnav-logo-mark 云
+          span.topnav-logo-text yun.ng
         .topnav-links
           +nav-link("/c/ctf", "CTFs")
           +nav-link("/c/htb", "HTB")
           +nav-link("/c/blog", "Blog")
-          +nav-link("/portfolio/", "Portfolio ↗", { opener: true, newTab: true })
-          +nav-link("https://utilbox.yun.ng/", "Tools ↗")
+          span.topnav-sep(aria-hidden="true")
+          +nav-link("/portfolio/", "Portfolio", { opener: true, newTab: true })
+          +nav-link("https://utilbox.yun.ng/", "Tools")
         .topnav-spacer
-        .theme-group
-          button.theme-btn-mini(data-style="default", onclick="setStyle('default')", title="Default sans-serif") Aa
-          button.theme-btn-mini(data-style="papery", onclick="setStyle('papery')", title="Papery serif") ✎
-          button.theme-btn-mini(data-style="terminal", onclick="setStyle('terminal')", title="Terminal monospace") >_
-        button.theme-btn#color-btn(onclick="cycleColor()", title="Switch color") ◐
-        button.hamburger#hamburger(onclick="toggleHamburger()", title="Menu") ☰
+        button.nav-search-btn#nav-search-btn(type="button", aria-haspopup="dialog", aria-controls="search-palette", aria-keyshortcuts="Control+K Meta+K /", title="Search writeups and posts")
+          svg.nav-search-icon(viewBox="0 0 24 24", width="15", height="15", aria-hidden="true")
+            circle(cx="11", cy="11", r="7", fill="none", stroke="currentColor", stroke-width="2")
+            path(d="M20 20l-3.5-3.5", fill="none", stroke="currentColor", stroke-width="2", stroke-linecap="round")
+          span.nav-search-label Search
+          kbd.nav-search-kbd Ctrl K
+        .topnav-tools
+          .theme-group(role="group", aria-label="Typeface style")
+            button.theme-btn-mini(data-style="default", onclick="setStyle('default')", title="Default sans-serif") Aa
+            button.theme-btn-mini(data-style="papery", onclick="setStyle('papery')", title="Papery serif") ✎
+            button.theme-btn-mini(data-style="terminal", onclick="setStyle('terminal')", title="Terminal monospace") >_
+          button.theme-btn#color-btn(onclick="cycleColor()", title="Switch color") ◐
+          button.hamburger#hamburger(onclick="toggleHamburger()", title="Menu", aria-label="Menu", aria-expanded="false", aria-controls="topnav-mobile") ☰
       .topnav-mobile#topnav-mobile
-        a.nav-link(href="/c/ctf") CTFs
-        a.nav-link(href="/c/htb") HTB
-        a.nav-link(href="/c/blog") Blog
-        a.nav-link(href="/portfolio/", target="_blank") Portfolio ↗
-        a.nav-link(href="https://utilbox.yun.ng/") Tools ↗
+        +nav-link("/c/ctf", "CTFs")
+        +nav-link("/c/htb", "HTB")
+        +nav-link("/c/blog", "Blog")
+        +nav-link("/portfolio/", "Portfolio", { opener: true, newTab: true })
+        +nav-link("https://utilbox.yun.ng/", "Tools")
+    //- Search palette (nav.js) — outside <main> so it survives view transitions
+    dialog.search-palette#search-palette(aria-label="Search writeups and posts")
+      .sp-panel
+        .sp-head
+          svg.sp-icon(viewBox="0 0 24 24", width="18", height="18", aria-hidden="true")
+            circle(cx="11", cy="11", r="7", fill="none", stroke="currentColor", stroke-width="2")
+            path(d="M20 20l-3.5-3.5", fill="none", stroke="currentColor", stroke-width="2", stroke-linecap="round")
+          input#sp-input(type="text", placeholder="Search writeups and posts…", autocomplete="off", spellcheck="false", role="combobox", aria-expanded="true", aria-controls="sp-list", aria-autocomplete="list", aria-label="Search writeups and posts")
+          button.sp-close(type="button", aria-label="Close search") esc
+        .sp-filters#sp-filters(aria-label="Quick filters")
+        .sp-syntax
+          span.sp-syntax-label syntax
+          button(type="button", data-insert='""') "phrase"
+          button(type="button", data-insert="-") -exclude
+          button(type="button", data-insert="tag:") tag:
+          button(type="button", data-insert="ctf:") ctf:
+          button(type="button", data-insert="cat:") cat:
+        ul.sp-list#sp-list(role="listbox", aria-label="Results")
+        .sp-foot
+          span.sp-count#sp-count(aria-live="polite")
+          span.sp-keys
+            span
+              kbd ↑
+              kbd ↓
+              |  move
+            span
+              kbd ↵
+              |  open
+            span
+              kbd esc
+              |  close
     main
       .main-grid
         .main-content
@@ -137,5 +178,7 @@ html(lang="en", class="dark")
     // Homepage search/pagination — loaded globally (not inside <main>) so
     // view transitions from any page can render the home doc list
     script(defer, src="/search.js?v=" + cacheVer)
+    script(defer, src="/nav.js?v=" + cacheVer)
     script(defer, src="/pagination.js?v=" + cacheVer)
     script(defer, src="/views.js?v=" + cacheVer)
+    script(defer, src="/home.js?v=" + cacheVer)

@@ -28,9 +28,13 @@ if isContentPage
           #giscus-container-wide
     if tocLinks && tocLinks.length >= 2
       aside.content-page-toc#toc-sidebar
-        .toc-title Contents
-        each l in tocLinks
-          a.toc-link(href="#"+l.id, data-toc-id=l.id, style="padding-left:"+((l.depth-1)*8)+"px;")= l.text
+        .toc-title
+          span Contents
+          span.toc-progress(aria-hidden="true")
+        nav.toc-list(aria-label="Table of contents")
+          span.toc-indicator(aria-hidden="true")
+          each l in tocLinks
+            a.toc-link(href="#"+l.id, data-toc-id=l.id, data-depth=l.depth)= l.text
 else
   // ═══ Directory page: content left (if any), stats+tree right ═══
   .dir-page-layout(class=isCatalogPage ? "catalog-page" : "")

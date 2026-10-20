@@ -150,7 +150,7 @@ function parseQuery(query) {
   return { tokens, filters };
 }
 
-function searchDocs(docs, query) {
+function searchDocs(docs, query, limit) {
   const parsed = parseQuery(query);
   const tokens = parsed.tokens;
   const filters = parsed.filters;
@@ -241,7 +241,7 @@ function searchDocs(docs, query) {
   } else {
     results.sort((a, b) => b.score - a.score);
   }
-  return results.slice(0, 50);
+  return results.slice(0, limit || 50);
 }
 
 function escapeHtml(s) {
@@ -262,6 +262,9 @@ function highlightTerm(text, query) {
   }
   return result;
 }
+
+// Shared with the nav search palette (nav.js)
+window.YunSearch = { loadDocs: loadDocs, searchDocs: searchDocs, parseQuery: parseQuery, highlightTerm: highlightTerm };
 
 // Initialize search UI — called after page load
 async function initSearch() {

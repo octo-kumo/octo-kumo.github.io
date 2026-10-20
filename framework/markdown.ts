@@ -167,6 +167,41 @@ function mathExtension(): MarkedExtension {
   };
 }
 
+// ─── Flags ───
+// A CTF flag: prefix{content} with no whitespace, e.g. bcactf{b33p_B0oP}
+const FLAG_RE = /^[A-Za-z][A-Za-z0-9_-]{0,24}\{[^{}\s]{1,200}\}$/;
+
+function escapeHtml(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function unescapeHtml(html: string): string {
+  return html.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+}
+
+// Flag syntax highlighting: prefix, braces, words, digits (leetspeak stands
+// out), separators, symbols, and a trailing random hex suffix
+function highlightFlag(flag: string): string {
+  const span = (cls: string, t: string) => `<span class="${cls}">${escapeHtml(t)}</span>`;
+  // Closing brace optional: some recorded flags are truncated
+  const m = flag.match(/^([^{]*)\{([\s\S]*?)(\}?)$/);
+  let inner = m ? m[2] : flag;
+  let hash = "";
+  const hm = inner.match(/^(.*[_-])([0-9a-f]{6,})$/i);
+  if (hm && /\d/.test(hm[2])) { inner = hm[1]; hash = hm[2]; }
+  let body = "";
+  for (const t of inner.match(/[A-Za-z]+|[0-9]+|[_-]|[^A-Za-z0-9_-]+/g) || []) {
+    const cls = /^[A-Za-z]/.test(t) ? "fl-w" : /^[0-9]/.test(t) ? "fl-n" : /^[_-]$/.test(t) ? "fl-sep" : "fl-sym";
+    body += span(cls, t);
+  }
+  if (hash) body += span("fl-hash", hash);
+  return m ? span("fl-pre", m[1]) + span("fl-brace", "{") + body + (m[3] ? span("fl-brace", "}") : "") : body;
+}
+
+function renderFlagBox(flag: string): string {
+  return `<div class="flag-box"><span class="flag-label" aria-hidden="true"></span><code class="flag-text">${highlightFlag(flag)}</code><button class="copy-btn flag-copy" data-copy="${escapeHtml(flag)}" onclick="copyCode(this)" title="Copy flag">Copy</button></div>\n`;
+}
+
 // ─── Marked (lazy) ───
 let markedInstance: Marked | null = null;
 
@@ -183,6 +218,12 @@ async function getMarked() {
         // and anchor ids always agree; emitting them here would duplicate.
         const html = this.parser.parseInline(tokens);
         return `<h${depth}>${html}</h${depth}>\n`;
+      },
+      // Inline-code flags get flag highlighting (still click-to-copy)
+      codespan({ text }: Tokens.Codespan): string {
+        // marked v15 hands the raw text over (escaping is the renderer's job)
+        if (FLAG_RE.test(text)) return `<code class="flag-inline">${highlightFlag(text)}</code>`;
+        return `<code>${escapeHtml(text).replace(/'/g, "&#39;")}</code>`;
       },
       image({ href, title, text, tokens }: Tokens.Image): string {
         if (tokens) {
@@ -205,14 +246,7 @@ async function getMarked() {
 
         // Flag blocks: special 1-line box with copy button
         if (actualLang === "flag") {
-          const flagText = text.trim();
-          const escaped = flagText.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-          // Split prefix{content} for coloring
-          const flagMatch = escaped.match(/^([^{]*)(\{[^}]*\})$/);
-          const flagHtml = flagMatch
-            ? `<span class="flag-prefix">${flagMatch[1]}</span><span class="flag-content">${flagMatch[2]}</span>`
-            : `<span class="flag-content">${escaped}</span>`;
-          return `<div class="flag-box"><code class="flag-text">${flagHtml}</code><button class="copy-btn flag-copy" data-copy="${escaped}" onclick="copyCode(this)" title="Copy">Copy</button></div>\n`;
+          return renderFlagBox(text.trim());
         }
 
         // Mermaid: render as <pre class="mermaid"> for client-side rendering
@@ -289,6 +323,12 @@ export async function renderMarkdown(raw: string): Promise<RenderedDoc> {
     const safeVid = vid.replace(/[^a-zA-Z0-9_-]/g, "");
     return `<div style="aspect-ratio:16/9;margin:1rem 0;"><iframe src="https://player.vimeo.com/video/${safeVid}" style="width:100%;height:100%;" frameborder="0" allowfullscreen></iframe></div>`;
   });
+  // A paragraph that is just an inline-code flag becomes a flag box
+  const toFlagBox = (m: string, inner: string) => {
+    const raw = unescapeHtml(inner.replace(/<[^>]*>/g, ""));
+    return FLAG_RE.test(raw) ? renderFlagBox(raw) : m;
+  };
+  finalHtml = finalHtml.replace(/<p><code class="flag-inline">((?:(?!<\/code>)[\s\S]){1,4000})<\/code><\/p>/g, toFlagBox);
   // Assign heading ids + build TOC from the FINAL html so anchors and TOC
   // always agree. Repeated headings get a numeric suffix (foo, foo-1, foo-2).
   return finalizeHeadingIds(finalHtml);

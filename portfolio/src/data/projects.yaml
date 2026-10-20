@@ -1,3 +1,6 @@
+# Per-project flags:
+#   hidden: true  — 3D logo planet only; skipped by the portfolio gallery and the homepage
+#   home: false   — listed in the portfolio, but kept off the homepage project carousel
 - name: BDC
   hidden: true # 3D logo planet only — not shown in the skills gallery
   year: '2026-now'
@@ -140,6 +143,7 @@
     - data analysis
     - discord.js
 - name: Minecraft Server
+  home: false
   year: '2025'
   langs:
     - java
@@ -209,6 +213,7 @@
   year: '2024'
   link: https://yun.ng/projects/simulated-universe
 - name: htb-writeups
+  home: false
   year: '2024'
   langs:
     - md
@@ -363,6 +368,7 @@
   image: https://github.com/octo-kumo/buzz-dungeon-gdx/raw/master/images/4.png
   year: '2022'
 - name: HyperSketch
+  home: false
   desc: I made the color picker function for my internship at STUCK Designs
   langs:
     - swift
@@ -401,6 +407,7 @@
   image: https://github.com/octo-kumo/evil-er/raw/master/icons/img.png
   year: '2022'
 - name: Network Contest
+  home: false
   desc: Kahoot clone using sockets.
   langs:
     - java
@@ -455,6 +462,7 @@
     - pandas
   link: https://github.com/octo-kumo/docs/blob/master/ARP___Revised.pdf
 - name: Physics Website
+  home: false
   desc: A website that demostraits the properties and physics of superconductors. With fancy scroll animations.
   langs:
     - javascript
@@ -562,6 +570,7 @@
     - handlebars
   year: 2020-2021
 - name: Rating App
+  home: false
   desc: Android application that allows the user to rate events, uses firebase for auth.
   langs:
     - java
@@ -583,6 +592,7 @@
     - mongodb
   year: '2020'
 - name: kumo-mod
+  home: false
   desc: A cool little *client-side* mod for minecraft
   langs:
     - java
@@ -661,6 +671,7 @@
   year: '2019'
   link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/NanoGun.jar
 - name: SGCC
+  home: false
   desc: A game for Singapore Games Creation Competition, made in Unity.
   langs:
     - c#
@@ -669,6 +680,7 @@
     - game
   year: '2019'
 - name: Bus finder
+  home: false
   desc: 'Hackathon 3rd place: An application to find buses and receive notification when bus is about to arrive.'
   langs:
     - javascript
@@ -706,6 +718,7 @@
   year: '2018'
   link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/DarkLight.jar
 - name: Shield
+  home: false
   desc: Win by reflecting triangles into other triangles with your shield.
   langs:
     - java
@@ -714,6 +727,7 @@
   year: '2018'
   link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Shield.jar
 - name: Trade
+  home: false
   desc: Trading game?
   langs:
     - java
@@ -741,6 +755,7 @@
   year: '2017'
   link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Ball.jar
 - name: Battleship
+  home: false
   desc: Play battleship with your friend!
   langs:
     - java
@@ -749,6 +764,7 @@
   year: '2017'
   link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/BattleShip.jar
 - name: Bus Timing
+  home: false
   desc: View bus status near my high school, only useful if you are studying at my high school!
   langs:
     - java
@@ -774,6 +790,7 @@
   year: '2017'
   link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/Gravity.jar
 - name: Level maker
+  home: false
   desc: Make your own 2D platformer levels! Supports importing any image and turning it into a platformer level!
   langs:
     - java
@@ -782,6 +799,7 @@
   year: '2017'
   link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/LevelMaker.jar
 - name: Plane
+  home: false
   desc: 2D plane shooter game.
   langs:
     - java

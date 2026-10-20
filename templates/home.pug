@@ -2,25 +2,79 @@ include ./mixins.pug
 
 #home-page
   .home-content
-    h1.home-title Hi!
-    p Welcome to my personal website. Below is an index of my writeups for CTF challenges, and links to my projects.
+    h1.home-title.article-title Hi, I'm Yun
+    p.home-welcome welcome to my site~
+    p.home-intro
+      | I mostly write up CTF challenges I've played (and sometimes failed), with the occasional blog post.
+      | There are also some small projects I've made over the years, nothing too serious.
     hr.home-divider
     .home-search
-      input#doc-search(type="text", placeholder='Search... (supports "exact phrase", -exclude, type:blog, tag:xss, ctf:tkbctf5, cat:web)')
+      input#doc-search(type="text", placeholder='Search... (supports "exact phrase", -exclude, type:blog, tag:xss, ctf:tkbctf5, cat:web)', aria-label="Search writeups and posts")
+    .quick-filters(aria-label="Quick filters")
+      button.quick-filter(type="button", data-q="") all
+      button.quick-filter(type="button", data-q="type:writeup") writeups
+      button.quick-filter(type="button", data-q="type:blog") blog
+      each t in quickTags
+        button.quick-filter(type="button", data-q="tag:" + t)= "#" + t
 
   .home-list#content-list
     #pagination
     #doc-list
 
-  hr.home-divider
+  //- ─── Projects: 3D card stack (pure CSS layout, see style.css) ───
+  if projects.length
+    .home-content.showcase#projects
+      hr.home-divider
+      h2.home-section-title
+        | Projects
+        a.showcase-all(href="/portfolio/", target="_blank") all ↗
+      .carousel(data-carousel, tabindex="0", role="region", aria-roledescription="carousel", aria-label="Projects", style="--n:" + projects.length)
+        .carousel-stage
+          each p, i in projects
+            .pcard(class="pcard-" + p.kind, style="--i:" + i, data-index=i, role="group", aria-roledescription="slide", aria-label=(i + 1) + " of " + projects.length + ": " + p.name)
+              if p.image
+                .pcard-media
+                  //- First few load lazily; the rest are hydrated by home.js as they come up
+                  if i < 3 || i >= projects.length - 1
+                    img.pcard-img(src=p.image, alt=p.name, loading="lazy", decoding="async", referrerpolicy="no-referrer")
+                  else
+                    img.pcard-img(data-src=p.image, alt=p.name, decoding="async", referrerpolicy="no-referrer")
+                  if p.kind === "video"
+                    span.pcard-play(aria-hidden="true")
+              .pcard-body
+                .pcard-head
+                  h3.pcard-title
+                    a.pcard-link(href=p.href, target="_blank", rel="noopener", tabindex="-1")= p.name
+                  span.pcard-year= p.year
+                .pcard-desc
+                  p.pcard-desc-text= p.desc
+                .pcard-foot
+                  if p.tags.length
+                    .pcard-tags
+                      each t in p.tags
+                        span.pcard-tag= t
+                  if p.links.length
+                    .pcard-links
+                      each l in p.links
+                        a.pcard-action(href=l.url, target="_blank", rel="noopener", tabindex="-1")= l.label + " ↗"
+              .pcard-shade(aria-hidden="true")
+        .carousel-ui
+          button.carousel-btn(type="button", data-dir="-1", aria-label="Previous project") ‹
+          span.carousel-count(aria-live="polite")
+            span.carousel-current 01
+            |  / #{String(projects.length).padStart(2, "0")}
+          button.carousel-btn(type="button", data-dir="1", aria-label="Next project") ›
+        .carousel-progress(aria-hidden="true")
+          .carousel-progress-bar
 
-  .home-projects
-    h2.home-section-title Projects & Tools
+  .home-content.home-links
+    hr.home-divider
+    h2.home-section-title Links
     .projects-grid
       each p in externalLinks
         a.project-card(href=p.url, target="_blank", rel= p.opener ? undefined : "noopener")
           .project-card-inner
-            h3.project-title= p.name + " \u2197"
+            h3.project-title= p.name + " ↗"
             p.project-desc= p.desc
 
   hr.home-divider

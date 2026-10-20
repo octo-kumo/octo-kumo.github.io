@@ -11,6 +11,7 @@ import {
   getContentHash,
   getImageFilename,
   processOGImage,
+  optimizeOGImages,
   saveManifestIfChanged,
 } from "./framework/og-cache";
 import { benchmarkOGGeneration } from "./framework/og-debug";
@@ -140,6 +141,7 @@ async function generateOGImages(docs: {
   let generated = 0;
   let skipped = 0;
   const manifest = loadManifest();
+  const toOptimize: string[] = [];
 
   for (const page of ogPages) {
     const contentHash = getContentHash(page.doc);
@@ -152,6 +154,7 @@ async function generateOGImages(docs: {
         rendererHash,
         () => generateOGImage(page.doc, page.pageType),
       );
+      if (result.needsOptimize) toOptimize.push(page.contentPath);
       if (result.generated) {
         generated++;
       } else {
@@ -160,6 +163,13 @@ async function generateOGImages(docs: {
     } catch (e) {
       console.warn(`   ⚠ OG image failed for ${page.contentPath}: ${e}`);
     }
+  }
+
+  // Batch PNG optimization (parallel oxipng), results go back into the cache
+  if (toOptimize.length > 0) {
+    const tOpt = performance.now();
+    await optimizeOGImages(manifest, toOptimize);
+    console.log(`   ✓ optimized ${toOptimize.length} images in ${((performance.now() - tOpt) / 1000).toFixed(1)}s`);
   }
 
   // Prune + save manifest once at the end

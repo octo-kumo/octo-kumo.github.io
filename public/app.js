@@ -100,11 +100,39 @@ function createGiscusScript() {
 }
 
 // ─── Foldable headings (code-editor style fold markers) ───
+// Adds an anchor (copies the section link) and a fold marker to each heading
+function decorateHeading(h) {
+  if (h.querySelector(':scope > .heading-anchor') || !h.id) return;
+  var a = document.createElement('a');
+  a.className = 'heading-anchor';
+  a.href = '#' + h.id;
+  a.setAttribute('aria-label', 'Link to this section');
+  h.insertBefore(a, h.firstChild);
+  if (/^H[1-3]$/.test(h.tagName)) {
+    var f = document.createElement('span');
+    f.className = 'heading-fold';
+    f.setAttribute('aria-hidden', 'true');
+    h.appendChild(f);
+  }
+}
+document.addEventListener('click', function (e) {
+  var a = e.target.closest && e.target.closest('.heading-anchor');
+  if (!a) return;
+  copyToClipboard(location.origin + location.pathname + a.getAttribute('href'), function () {
+    a.classList.add('copied');
+    clearTimeout(a._copiedTimer);
+    a._copiedTimer = setTimeout(function () { a.classList.remove('copied'); }, 1200);
+  });
+});
 function initFoldableHeadings() {
+  document.querySelectorAll('article h4[id]').forEach(decorateHeading);
   var headings = document.querySelectorAll('article h1, article h2, article h3');
   headings.forEach(function (h) {
     // Only add fold handler to h2 and h3 (h1 is the article title, not foldable)
     if (h.tagName === 'H1' && h.classList.contains('article-title')) return;
+    decorateHeading(h);
+    if (h.dataset.foldWired) return;
+    h.dataset.foldWired = '1';
 
     h.addEventListener('click', function (e) {
       // Don't fold if clicking a link inside the heading
@@ -126,63 +154,238 @@ function initFoldableHeadings() {
         }
         sibling = sibling.nextElementSibling;
       }
+      scheduleTocUpdate();
     });
   });
 }
 
-// ─── TOC active section tracking with IntersectionObserver ───
+// ─── TOC: highlight every section in the viewport ───
+// A section spans from its heading to the next listed heading. Every section
+// intersecting the viewport gets .active (the indicator bar covers them all);
+// the one at the reading line gets .current.
+var _toc = null;
+var _tocRaf = 0;
 function initTocTracking() {
-  var tocLinks = document.querySelectorAll('.toc-link');
-  if (tocLinks.length === 0) return;
-
-  var headings = [];
-  tocLinks.forEach(function (link) {
-    var id = link.getAttribute('data-toc-id');
-    var el = document.getElementById(id);
-    if (el) headings.push({ el: el, link: link });
+  _toc = null;
+  var list = document.querySelector('.toc-list');
+  if (!list) return;
+  var items = [];
+  list.querySelectorAll('.toc-link').forEach(function (link) {
+    var el = document.getElementById(link.getAttribute('data-toc-id'));
+    if (el) items.push({ el: el, link: link });
   });
-  if (headings.length === 0) return;
+  if (items.length === 0) return;
+  _toc = {
+    list: list,
+    box: list.closest('.content-page-toc'),
+    items: items,
+    indicator: list.querySelector('.toc-indicator'),
+    progress: document.querySelector('.toc-progress'),
+    article: document.querySelector('.content-page-main article'),
+    lastCurrent: null
+  };
+  updateToc();
+}
+function scheduleTocUpdate() {
+  if (!_tocRaf) _tocRaf = requestAnimationFrame(updateToc);
+}
+function updateToc() {
+  _tocRaf = 0;
+  var t = _toc;
+  if (!t || !t.list.isConnected) return;
+  var nav = document.querySelector('.topnav');
+  var viewTop = nav ? nav.getBoundingClientRect().bottom : 48;
+  var viewBottom = window.innerHeight;
+  var readLine = viewTop + Math.min(120, (viewBottom - viewTop) * 0.25);
+  var articleRect = t.article ? t.article.getBoundingClientRect() : null;
+  var endY = articleRect ? articleRect.bottom : document.documentElement.scrollHeight - window.pageYOffset;
+  var atBottom = window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 2;
 
-  // Remove old active classes
-  function setActive(id) {
-    tocLinks.forEach(function (l) { l.classList.remove('active'); });
-    var activeLink = document.querySelector('.toc-link[data-toc-id="' + id + '"]');
-    if (activeLink) activeLink.classList.add('active');
+  // Headings inside folded sections have no boxes — skip them
+  var tops = t.items.map(function (it) {
+    return it.el.getClientRects().length ? it.el.getBoundingClientRect().top : null;
+  });
+  var current = -1, first = -1, last = -1;
+  for (var i = 0; i < t.items.length; i++) {
+    var link = t.items[i].link;
+    var top = tops[i];
+    link.classList.toggle('folded', top === null);
+    if (top === null) { link.classList.remove('active'); continue; }
+    var bottom = endY;
+    for (var j = i + 1; j < t.items.length; j++) {
+      if (tops[j] !== null) { bottom = tops[j]; break; }
+    }
+    var visible = bottom > viewTop + 1 && top < viewBottom;
+    link.classList.toggle('active', visible);
+    if (visible) { if (first < 0) first = i; last = i; }
+    if (top <= readLine) current = i;
+  }
+  // Short last sections can never reach the reading line
+  if (atBottom && last >= 0) current = last;
+  t.items.forEach(function (it, i) { it.link.classList.toggle('current', i === current); });
+
+  // Indicator spans the visible range
+  t.list.classList.toggle('has-active', first >= 0);
+  if (t.indicator && first >= 0) {
+    var a = t.items[first].link, b = t.items[last].link;
+    t.indicator.style.top = a.offsetTop + 'px';
+    t.indicator.style.height = (b.offsetTop + b.offsetHeight - a.offsetTop) + 'px';
   }
 
-  // IntersectionObserver for scroll-based active tracking
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        setActive(entry.target.id);
-      }
-    });
-  }, {
-    rootMargin: '-80px 0px -70% 0px',
-    threshold: 0
-  });
+  if (t.progress && articleRect) {
+    var span = articleRect.height - (viewBottom - viewTop);
+    var pct = span > 0 ? (viewTop - articleRect.top) / span : 1;
+    t.progress.textContent = Math.round(Math.max(0, Math.min(1, pct)) * 100) + '%';
+  }
 
-  headings.forEach(function (h) {
-    observer.observe(h.el);
-  });
+  // Keep the current link visible inside a scrollable TOC (without moving the page)
+  var cur = current >= 0 ? t.items[current].link : null;
+  if (cur && cur !== t.lastCurrent && t.box && t.box.scrollHeight > t.box.clientHeight + 1) {
+    var boxRect = t.box.getBoundingClientRect(), r = cur.getBoundingClientRect();
+    if (r.top < boxRect.top + 24 || r.bottom > boxRect.bottom - 24) {
+      t.box.scrollTo({ top: t.box.scrollTop + (r.top - boxRect.top) - boxRect.height / 3, behavior: 'smooth' });
+    }
+  }
+  t.lastCurrent = cur;
+}
+window.addEventListener('scroll', scheduleTocUpdate, { passive: true });
+window.addEventListener('resize', scheduleTocUpdate);
 
-  // Smooth scroll on TOC click
-  tocLinks.forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      var id = link.getAttribute('data-toc-id');
-      var el = document.getElementById(id);
-      if (el) {
-        var navHeight = 3; // rem
-        var offset = navHeight * 16 + 10;
-        var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top: top, behavior: 'smooth' });
-        // Update URL hash without triggering jump
-        history.replaceState(null, '', '#' + id);
-      }
+// Unfold any collapsed headings hiding el, so anchor jumps land on it
+function revealFolded(el) {
+  if (!el || el.getClientRects().length) return;
+  var level = /^H[1-6]$/.test(el.tagName) ? +el.tagName[1] : 7;
+  for (var s = el.previousElementSibling; s && level > 1; s = s.previousElementSibling) {
+    if (!/^H[1-6]$/.test(s.tagName)) continue;
+    var l = +s.tagName[1];
+    if (l < level) {
+      if (s.classList.contains('collapsed')) s.click();
+      level = l;
+    }
+  }
+}
+function scrollToAnchor(el, smooth) {
+  revealFolded(el);
+  var offset = 3 * 16 + 10; // nav height + padding
+  var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+  window.scrollTo({ top: top, behavior: smooth === false ? 'auto' : 'smooth' });
+}
+
+// ─── Content tree: expand/collapse, keyboard nav, current item ───
+var TREE_STATE_KEY = 'tree-expanded';
+function readTreeState() {
+  try { return JSON.parse(localStorage.getItem(TREE_STATE_KEY) || '[]'); } catch (e) { return []; }
+}
+// Per-path update, so expanding nodes in one tree never forgets another tree's
+function writeTreeState(path, expanded) {
+  var paths = readTreeState();
+  var i = paths.indexOf(path);
+  if (expanded && i < 0) paths.push(path);
+  if (!expanded && i >= 0) paths.splice(i, 1);
+  try { localStorage.setItem(TREE_STATE_KEY, JSON.stringify(paths)); } catch (e) { }
+}
+window.treeSetCollapsed = function (item, collapsed) {
+  item.classList.toggle('collapsed', collapsed);
+  var btn = item.querySelector(':scope > .tree-row > .tree-toggle');
+  if (btn) btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+};
+function treeToggle(item, collapsed) {
+  if (collapsed === undefined) collapsed = !item.classList.contains('collapsed');
+  window.treeSetCollapsed(item, collapsed);
+  var path = item.getAttribute('data-path');
+  if (path) writeTreeState(path, !collapsed);
+}
+// Without animation (state restore, SPA swaps)
+function treeInstant(tree, fn) {
+  tree.classList.add('tree-instant');
+  fn();
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () { tree.classList.remove('tree-instant'); });
+  });
+}
+function restoreTreeState() {
+  var expanded = readTreeState();
+  document.querySelectorAll('.content-tree').forEach(function (tree) {
+    treeInstant(tree, function () {
+      tree.querySelectorAll('.tree-item.collapsed[data-path]').forEach(function (item) {
+        if (expanded.indexOf(item.getAttribute('data-path')) >= 0) window.treeSetCollapsed(item, false);
+      });
     });
   });
 }
+// Move .tree-current to path and mark (and open) the branch leading to it
+function markTreeCurrent(root, path) {
+  root.querySelectorAll('.tree-current, .tree-ancestor').forEach(function (n) {
+    n.classList.remove('tree-current', 'tree-ancestor');
+  });
+  root.querySelectorAll('.tree-link[aria-current]').forEach(function (a) { a.removeAttribute('aria-current'); });
+  if (!path) return;
+  var el = null;
+  root.querySelectorAll('.tree-item[data-path]').forEach(function (n) {
+    if (!el && n.getAttribute('data-path') === path) el = n;
+  });
+  if (!el) return;
+  el.classList.add('tree-current');
+  var link = el.querySelector(':scope > .tree-row > .tree-link');
+  if (link) link.setAttribute('aria-current', 'page');
+  for (var p = el.parentElement.closest('.tree-item'); p && root.contains(p); p = p.parentElement.closest('.tree-item')) {
+    p.classList.add('tree-ancestor');
+    if (p.classList.contains('collapsed')) window.treeSetCollapsed(p, false);
+  }
+}
+// Scroll the sticky sidebar (not the page) so the current item is in view
+function scrollTreeToCurrent() {
+  var box = document.querySelector('.content-page-tree');
+  if (!box || box.scrollHeight <= box.clientHeight + 1) return;
+  var cur = box.querySelector('.tree-current > .tree-row');
+  if (!cur) return;
+  var b = box.getBoundingClientRect(), r = cur.getBoundingClientRect();
+  if (r.top < b.top + 16 || r.bottom > b.bottom - 16) {
+    box.scrollTop += (r.top - b.top) - b.height / 3;
+  }
+}
+
+document.addEventListener('click', function (e) {
+  var row = e.target.closest('.content-tree .tree-dir');
+  if (!row || e.target.closest('a')) return;
+  treeToggle(row.parentElement);
+});
+
+function treeRowFocusable(row) {
+  return row.querySelector(':scope > .tree-link') || row.querySelector(':scope > .tree-toggle');
+}
+function treeVisibleRows(tree) {
+  return Array.prototype.filter.call(tree.querySelectorAll('.tree-row'), function (r) {
+    return treeRowFocusable(r) && !r.closest('.collapsed > .tree-children') && !r.closest('.tree-item.hidden');
+  });
+}
+// Arrow keys: Up/Down move between visible rows, Right opens/enters, Left closes/goes to parent
+document.addEventListener('keydown', function (e) {
+  if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.key) < 0) return;
+  var row = e.target.closest && e.target.closest('.content-tree .tree-row');
+  if (!row) return;
+  var tree = row.closest('.content-tree');
+  var item = row.parentElement;
+  var isBranch = row.classList.contains('tree-dir');
+  var collapsed = item.classList.contains('collapsed');
+  var target = null;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    var rows = treeVisibleRows(tree);
+    target = rows[rows.indexOf(row) + (e.key === 'ArrowDown' ? 1 : -1)];
+  } else if (e.key === 'ArrowRight') {
+    if (isBranch && collapsed) treeToggle(item, false);
+    else if (isBranch) target = item.querySelector('.tree-children .tree-row');
+  } else {
+    if (isBranch && !collapsed) treeToggle(item, true);
+    else {
+      var parent = item.parentElement.closest('.tree-item');
+      if (parent && tree.contains(parent)) target = parent.querySelector(':scope > .tree-row');
+    }
+  }
+  e.preventDefault();
+  if (target && treeRowFocusable(target)) treeRowFocusable(target).focus();
+});
 
 // ─── Giscus lazy loader ───
 // Loads the giscus iframe only when the comments container scrolls into view
@@ -250,7 +453,10 @@ window.addEventListener('resize', function () {
 // ─── Hamburger menu (mobile) ───
 window.toggleHamburger = function () {
   var menu = document.getElementById('topnav-mobile');
-  if (menu) menu.classList.toggle('open');
+  if (!menu) return;
+  var open = menu.classList.toggle('open');
+  var btn = document.getElementById('hamburger');
+  if (btn) btn.setAttribute('aria-expanded', String(open));
 };
 
 // ─── Init foldable headings + TOC tracking + sidebar offsets ───
@@ -258,6 +464,7 @@ function initArticleFeatures() {
   initFoldableHeadings();
   initTocTracking();
   initSidebarOffsets();
+  scrollTreeToCurrent();
 }
 // Measure article header height and set CSS variable for sidebar offset
 function initSidebarOffsets() {
@@ -302,11 +509,9 @@ window.addEventListener('resize', function () {
     // Hash-only links: smooth scroll, don't intercept
     if (href.startsWith('#')) {
       e.preventDefault();
-      var target = document.getElementById(href.slice(1));
+      var target = document.getElementById(decodeURIComponent(href.slice(1)));
       if (target) {
-        var offset = 3 * 16 + 10; // nav height + padding
-        var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top: top, behavior: 'smooth' });
+        scrollToAnchor(target);
         history.replaceState(null, '', href);
       }
       return;
@@ -317,16 +522,15 @@ window.addEventListener('resize', function () {
     // Separate app (portfolio) — full navigation, not a view transition
     if (href.startsWith('/portfolio')) return;
 
-    // Same-page hash links (e.g. /c/page#section): scroll to hash, don't reload
-    if (href.startsWith('/') && href.includes('#')) {
+    // Same-page hash links (e.g. /c/page#section): scroll to hash, don't reload.
+    // Only when the path is this page — another page may share the same id.
+    var hrefPath = href.split('#')[0].replace(/\/+$/, '');
+    if (href.startsWith('/') && href.includes('#') && hrefPath === location.pathname.replace(/\/+$/, '')) {
       var hash = href.slice(href.indexOf('#'));
-      var targetId = hash.slice(1);
-      var targetEl = document.getElementById(targetId);
+      var targetEl = document.getElementById(decodeURIComponent(hash.slice(1)));
       if (targetEl) {
         e.preventDefault();
-        var offset2 = 3 * 16 + 10;
-        var top2 = targetEl.getBoundingClientRect().top + window.pageYOffset - offset2;
-        window.scrollTo({ top: top2, behavior: 'smooth' });
+        scrollToAnchor(targetEl);
         // Update URL without full page reload
         history.pushState({ url: href }, '', href);
         return;
@@ -344,11 +548,9 @@ window.addEventListener('resize', function () {
     var url = e.state && e.state.url ? e.state.url : location.pathname;
     // Handle hash in URL — scroll to it
     if (location.hash) {
-      var target = document.getElementById(location.hash.slice(1));
+      var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
       if (target) {
-        var offset = 3 * 16 + 10;
-        var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top: top, behavior: 'smooth' });
+        scrollToAnchor(target);
         return;
       }
     }
@@ -358,13 +560,9 @@ window.addEventListener('resize', function () {
   // Handle initial page load with hash — scroll to target
   window.addEventListener('load', function () {
     if (location.hash) {
-      var target = document.getElementById(location.hash.slice(1));
+      var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
       if (target) {
-        setTimeout(function () {
-          var offset = 3 * 16 + 10;
-          var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-          window.scrollTo({ top: top, behavior: 'smooth' });
-        }, 100);
+        setTimeout(function () { scrollToAnchor(target); }, 100);
       }
     }
   });
@@ -383,9 +581,11 @@ window.addEventListener('resize', function () {
         if (a.name.indexOf('data-cf-modified') === 0) n.removeAttribute(a.name);
       });
     });
-    clone.querySelectorAll('.tree-current').forEach(function (n) { n.classList.remove('tree-current'); });
-    clone.querySelectorAll('.collapsed').forEach(function (n) { n.classList.remove('collapsed'); });
-    clone.querySelectorAll('[data-state-wired]').forEach(function (n) { n.removeAttribute('data-state-wired'); });
+    clone.querySelectorAll('.tree-current, .tree-ancestor, .collapsed, .tree-instant').forEach(function (n) {
+      n.classList.remove('tree-current', 'tree-ancestor', 'collapsed', 'tree-instant');
+    });
+    clone.querySelectorAll('[aria-expanded]').forEach(function (n) { n.removeAttribute('aria-expanded'); });
+    clone.querySelectorAll('[aria-current]').forEach(function (n) { n.removeAttribute('aria-current'); });
     return clone.innerHTML;
   }
 
@@ -451,14 +651,7 @@ window.addEventListener('resize', function () {
         });
         // Move the current-item highlight (before the dim lifts — no flash)
         const newCurrent = newTree.querySelector('.tree-current');
-        const newPath = newCurrent
-          ? (newCurrent.getAttribute('data-path') || (newCurrent.querySelector('a') || {}).getAttribute?.('href') || '')
-          : '';
-        oldTree.querySelectorAll('.tree-current').forEach(function (n) { n.classList.remove('tree-current'); });
-        if (newPath) {
-          const el = oldTree.querySelector('[data-path="' + newPath + '"]');
-          if (el) el.classList.add('tree-current');
-        }
+        markTreeCurrent(oldTree, newCurrent ? newCurrent.getAttribute('data-path') : '');
       } else {
         // Swap main content
         main.innerHTML = newMain.innerHTML;
@@ -501,13 +694,9 @@ window.addEventListener('resize', function () {
       // Handle hash in the loaded URL — scroll to target
       if (url.includes('#')) {
         var hash = url.slice(url.indexOf('#'));
-        var target = document.getElementById(hash.slice(1));
+        var target = document.getElementById(decodeURIComponent(hash.slice(1)));
         if (target) {
-          setTimeout(function () {
-            var offset = 3 * 16 + 10;
-            var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-            window.scrollTo({ top: top, behavior: 'smooth' });
-          }, 150);
+          setTimeout(function () { scrollToAnchor(target); }, 150);
         } else {
           window.scrollTo(0, 0);
         }
@@ -515,11 +704,9 @@ window.addEventListener('resize', function () {
         window.scrollTo(0, 0);
       }
 
-      // Notify scripts (search.js, etc.) that content was swapped
+      // Notify scripts (search.js, etc.) that content was swapped.
+      // Also restores tree expansion state (listener below).
       window.dispatchEvent(new Event('yt:load'));
-
-      // Restore tree expansion state
-      restoreTreeState();
 
       // Re-init article features (foldable headings, TOC tracking)
       initArticleFeatures();
@@ -529,40 +716,7 @@ window.addEventListener('resize', function () {
     }
   }
 
-  // ─── Tree expansion state persistence ───
-  var TREE_STATE_KEY = 'tree-expanded';
-  function getTreeExpanded() {
-    try { return JSON.parse(localStorage.getItem(TREE_STATE_KEY) || '[]'); } catch { return []; }
-  }
-  function saveTreeExpanded(paths) {
-    try { localStorage.setItem(TREE_STATE_KEY, JSON.stringify(paths)); } catch { }
-  }
-  function restoreTreeState() {
-    var expanded = getTreeExpanded();
-    var items = document.querySelectorAll('.tree-item[data-path]');
-    items.forEach(function (item) {
-      var path = item.getAttribute('data-path');
-      if (expanded.indexOf(path) >= 0) {
-        item.classList.remove('collapsed');
-      }
-    });
-    // Save state on every click in the tree
-    var tree = document.querySelector('.content-tree');
-    if (tree && !tree.dataset.stateWired) {
-      tree.dataset.stateWired = '1';
-      tree.addEventListener('click', function () {
-        setTimeout(function () {
-          var expanded = [];
-          tree.querySelectorAll('.tree-item[data-path]').forEach(function (item) {
-            if (!item.classList.contains('collapsed')) {
-              expanded.push(item.getAttribute('data-path'));
-            }
-          });
-          saveTreeExpanded(expanded);
-        }, 50);
-      });
-    }
-  }
+  // ─── Tree expansion state persistence (helpers above the IIFE) ───
   // ~~Restore on initial load~~ aaaactually no, just restore on yt:load (ie SPA style)
   // if (document.readyState === 'loading') {
   //   document.addEventListener('DOMContentLoaded', restoreTreeState);
