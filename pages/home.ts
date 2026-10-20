@@ -1,6 +1,6 @@
 import type { PageData } from "../framework/types";
 import { docTitle, displayDocDates } from "../framework/content";
-import { collectFeedDocs, sortFeedEntries } from "../framework/feed";
+import { collectFeedDocs } from "../framework/feed";
 import { cacheVer } from "../framework/ssg";
 import { readFileSync } from "node:fs";
 import yaml from "js-yaml";
@@ -11,7 +11,7 @@ const tpl = pug.compileFile("templates/home.pug");
 const externalLinks = [
   { name: "Portfolio", url: "/portfolio/", desc: "3D Three.js portfolio with project showcase", icon: "◉", opener: true },
   { name: "Tools", url: "https://utilbox.yun.ng/", desc: "Binary Search, Character Gen, Y Playground, Hanzi Recognizer, Depth Lathe", icon: "⚙" },
-  { name: "GitHub", url: "https://github.com/octo-kumo", desc: "Source for most of the projects above", icon: "⌘" },
+  { name: "GitHub", url: "https://github.com/octo-kumo", desc: "Source code for most of the projects", icon: "⌘" },
 ];
 
 const PAGE_SIZE = 5;
@@ -43,7 +43,6 @@ export interface ShowcaseProject {
   links: { label: string; url: string; kind: string }[];
   image?: string;
   kind: "image" | "video" | "text";
-  hue: number;
 }
 
 function loadProjects(): RawProject[] {
@@ -53,13 +52,6 @@ function loadProjects(): RawProject[] {
     console.warn(`   ⚠ projects.yaml unreadable — homepage showcase empty: ${e}`);
     return [];
   }
-}
-
-// Stable per-project hue (name hash) — tints text-only cards and glows
-function hueOf(s: string): number {
-  let h = 0;
-  for (const c of s) h = (h * 31 + c.codePointAt(0)!) >>> 0;
-  return h % 360;
 }
 
 // First paragraph, minus a leading bare URL line, capped for the card
@@ -88,7 +80,6 @@ function toShowcase(p: RawProject): ShowcaseProject {
     links,
     image,
     kind: p.image ? "image" : p.video ? "video" : "text",
-    hue: hueOf(p.name),
   };
 }
 
@@ -99,23 +90,6 @@ function showcaseProjects(all: RawProject[]): ShowcaseProject[] {
     // Newest first, same ordering as the portfolio gallery (stable sort)
     .sort((a, b) => (a.y === b.y ? 0 : a.y < b.y ? 1 : -1))
     .map(({ p }) => toShowcase(p));
-}
-
-// ─── Hero stats (computed from content at build time) ───
-function contentStats(docs: any[], projects: RawProject[]) {
-  const leaves = docs.filter((d: any) => d.hasContent === true && d.path);
-  const under = (p: string) => leaves.filter((d: any) => d.path.startsWith(p + "/"));
-  const ctf = under("/ctf");
-  const events = new Set(ctf.map((d: any) => d.path.split("/")[2]).filter(Boolean));
-  const years = projects
-    .map((p) => parseInt(String(p.year ?? ""), 10))
-    .filter((y) => !Number.isNaN(y));
-  return [
-    { n: ctf.length + under("/htb").length, label: "writeups" },
-    { n: events.size, label: "CTF events" },
-    { n: projects.filter((p) => !p.hidden).length, label: "projects" },
-    { n: years.length ? new Date().getFullYear() - Math.min(...years) : 0, label: "years building" },
-  ];
 }
 
 // Most-used tags → quick-filter chips under the search box
@@ -137,15 +111,11 @@ export async function render(data: PageData): Promise<string> {
     ...d,
     dateStr: displayDocDates(d),
   }));
-  const rawProjects = loadProjects();
-  const latest = sortFeedEntries(contentDocs)[0] as (typeof contentDocs)[number] | undefined;
 
   return tpl({
     recentDocs: contentDocs.slice(0, PAGE_SIZE),
     externalLinks,
-    projects: showcaseProjects(rawProjects),
-    stats: contentStats(docs, rawProjects),
-    latest,
+    projects: showcaseProjects(loadProjects()),
     quickTags: topTags(contentDocs, 4),
     docTitle,
     displayDocDates,

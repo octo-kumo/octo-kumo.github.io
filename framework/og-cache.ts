@@ -19,6 +19,7 @@ export interface ManifestEntry {
   contentHash: string;
   rendererHash: string;
   imageFile: string;
+  optimized?: boolean; // cached PNG already went through oxipng
 }
 
 export type Manifest = Record<string, ManifestEntry>;
@@ -132,7 +133,7 @@ function updateManifest(
   rendererHash: string,
   imageFile: string,
 ): void {
-  manifest[pagePath] = { contentHash, rendererHash, imageFile };
+  manifest[pagePath] = { contentHash, rendererHash, imageFile, optimized: false };
 }
 
 /**
@@ -189,22 +190,46 @@ export async function processOGImage(
   contentHash: string,
   rendererHash: string,
   generateFn: () => Buffer | Promise<Buffer>,
-): Promise<{ generated: boolean; imageFile: string }> {
+): Promise<{ generated: boolean; imageFile: string; needsOptimize: boolean }> {
   const imageFile = getImageFilename(pagePath);
   const needsGen = shouldGenerate(manifest, pagePath, contentHash, rendererHash);
 
   if (!needsGen) {
     // Cached — copy from persistent cache to dist/og/
     await copyFromCache(imageFile);
-    return { generated: false, imageFile };
+    return { generated: false, imageFile, needsOptimize: !manifest[pagePath].optimized };
   }
 
   const pngBuffer = await generateFn();
   await Bun.write(`${OG_OUTPUT_DIR}/${imageFile}`, pngBuffer);
-  await Bun.$`${getTool('oxipng')} --scale16 -o 4 --fast --strip all ${OG_OUTPUT_DIR}/${imageFile}`.catch(() => { /* ignore errors */ });
   await saveToCache(imageFile, pngBuffer);
   updateManifest(manifest, pagePath, contentHash, rendererHash, imageFile);
-  return { generated: true, imageFile };
+  return { generated: true, imageFile, needsOptimize: true };
+}
+
+/**
+ * Optimize freshly generated (or not-yet-optimized cached) images in one go:
+ * a single oxipng run per chunk compresses files in parallel across cores,
+ * instead of one blocking process per image. The optimized PNGs are written
+ * back to the cache, so each image is only ever optimized once.
+ */
+export async function optimizeOGImages(manifest: Manifest, pagePaths: string[]): Promise<void> {
+  const CHUNK = 128; // keep argv short
+  for (let i = 0; i < pagePaths.length; i += CHUNK) {
+    const chunk = pagePaths.slice(i, i + CHUNK).filter((p) => manifest[p]);
+    const files = chunk.map((p) => `${OG_OUTPUT_DIR}/${manifest[p].imageFile}`);
+    if (files.length === 0) continue;
+    try {
+      await Bun.$`${getTool('oxipng')} --scale16 -o 2 --fast --strip all ${files}`.quiet();
+    } catch {
+      continue; // leave unoptimized; retried next build
+    }
+    for (const p of chunk) {
+      const imageFile = manifest[p].imageFile;
+      await saveToCache(imageFile, Buffer.from(await Bun.file(`${OG_OUTPUT_DIR}/${imageFile}`).arrayBuffer()));
+      manifest[p].optimized = true;
+    }
+  }
 }
 
 /** Save manifest if it has changed. */

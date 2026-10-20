@@ -1,4 +1,4 @@
-// Homepage extras: 3D project carousel, hero stat count-up, random doc, quick filters.
+// Homepage extras: 3D project card stack and search quick filters.
 // The carousel is laid out entirely in CSS from one number (--active, see
 // style.css); this file only moves that number (buttons, keys, drag, autoplay).
 
@@ -183,7 +183,7 @@
       drag.v = 0.8 * ((e.clientX - drag.lastX) / dt) + 0.2 * drag.v;
       drag.lastX = e.clientX;
       drag.lastT = now;
-      var unit = (cards[0].offsetWidth || 280) * 0.6;
+      var unit = (cards[0].offsetWidth || 600) * 1.1; // front card tracks the finger
       drag.value = drag.start - dx / unit;
       updateFar(drag.value, drag.value);
       if (CSS_MATH) root.style.setProperty('--active', String(drag.value));
@@ -219,7 +219,7 @@
     }, true);
 
     // Image fade-in once decoded (also covers cached images)
-    root.querySelectorAll('.pcard-img, .pcard-backdrop').forEach(function (img) {
+    root.querySelectorAll('.pcard-img').forEach(function (img) {
       function done() { img.classList.add('is-loaded'); }
       function fail() { var m = img.closest('.pcard-media'); if (m) m.classList.add('is-broken'); }
       if (img.complete && img.naturalWidth) done();
@@ -231,44 +231,6 @@
     updateFar(0, 0);
     markActive();
     restartTimer();
-  }
-
-  // Hero stat count-up (numbers are server-rendered; this only animates them)
-  function initCounters() {
-    if (reduceMotion.matches) return;
-    document.querySelectorAll('.hero-stat-num[data-count]').forEach(function (el) {
-      if (el.__counted) return;
-      el.__counted = true;
-      var to = parseInt(el.getAttribute('data-count'), 10) || 0;
-      var t0 = performance.now(), dur = 1400;
-      (function tick(now) {
-        var k = Math.min(1, (now - t0) / dur);
-        el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 4))));
-        if (k < 1) requestAnimationFrame(tick);
-      })(t0);
-    });
-  }
-
-  function readDocs() {
-    try { return JSON.parse(document.getElementById('all-docs-data').textContent) || []; }
-    catch (_) { return []; }
-  }
-
-  function initRandom() {
-    var btn = document.getElementById('random-doc');
-    if (!btn || btn.__wired) return;
-    btn.__wired = true;
-    btn.addEventListener('click', function () {
-      var docs = readDocs();
-      if (!docs.length) return;
-      var d = docs[Math.floor(Math.random() * docs.length)];
-      // Route through the site's view-transition link handler
-      var a = document.createElement('a');
-      a.href = '/c' + d.path;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    });
   }
 
   function initQuickFilters() {
@@ -304,8 +266,6 @@
       initCarousel(root);
       if (observer) observer.observe(root);
     });
-    initCounters();
-    initRandom();
     initQuickFilters();
   }
 

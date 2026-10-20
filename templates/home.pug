@@ -1,131 +1,75 @@
 include ./mixins.pug
 
 #home-page
-  //- ─── Hero ───
-  header.hero
-    .hero-glow(aria-hidden="true")
-    .hero-inner
-      pre.hero-ascii.termonly(aria-hidden="true")
-        |  __   __  _   _   _   _
-        |  \ \ / / | | | | | \ | |
-        |   \ V /  | | | | |  \| |
-        |    | |   | |_| | | |\  |
-        |    |_|    \___/  |_| \_|
-      p.hero-kicker
-        span.termhide 云 · yun.ng
-        span.termonly yun@yun.ng:~$ whoami
-      h1.home-title.hero-title
-        | Hi, I'm #[span.hero-name Yun]#[span.hero-dot .]
-      p.hero-roles
-        span.hero-roles-pre.termhide I'm a#{" "}
-        span.hero-roles-pre.termonly role:#{" "}
-        span.hero-roles-window
-          span.hero-roles-list
-            span CTF player
-            span game &amp; sim dev
-            span systems tinkerer
-            span full-stack builder
-            span CTF player
-      p.hero-lead
-        | I break things for CTFs, build simulations, games &amp; tools, and write about all of it.
-        | This is the index of my writeups and blog posts — plus a few of the things I've made.
-      ul.hero-stats
-        each s in stats
-          li.hero-stat
-            span.hero-stat-num(data-count=s.n)= s.n
-            span.hero-stat-label= s.label
-      .hero-cta
-        a.hero-btn.hero-btn-primary(href="#content-list") Read writeups
-        a.hero-btn(href="#projects") See projects
-        button.hero-btn#random-doc(type="button", title="Open a random writeup or post") Surprise me
-      if latest
-        a.hero-latest(href="/c" + latest.path)
-          span.hero-latest-badge new
-          span.hero-latest-title= latest.title
-          if latest.dateStr
-            span.hero-latest-date= latest.dateStr
+  .home-content
+    h1.home-title.article-title Hi, I'm Yun
+    p.home-welcome welcome to my site~
+    p.home-intro
+      | I mostly write up CTF challenges I've played (and sometimes failed), with the occasional blog post.
+      | There are also some small projects I've made over the years, nothing too serious.
+    hr.home-divider
+    .home-search
+      input#doc-search(type="text", placeholder='Search... (supports "exact phrase", -exclude, type:blog, tag:xss, ctf:tkbctf5, cat:web)', aria-label="Search writeups and posts")
+    .quick-filters(aria-label="Quick filters")
+      button.quick-filter(type="button", data-q="") all
+      button.quick-filter(type="button", data-q="type:writeup") writeups
+      button.quick-filter(type="button", data-q="type:blog") blog
+      each t in quickTags
+        button.quick-filter(type="button", data-q="tag:" + t)= "#" + t
 
-  //- ─── Writeups & posts (search + paginated list) ───
-  section.home-section.home-writeups.reveal
-    .home-content
-      h2.home-section-title
-        span.termonly $#{" "}
-        | Writeups &amp; posts
-      .home-search
-        input#doc-search(type="text", placeholder='Search... (supports "exact phrase", -exclude, type:blog, tag:xss, ctf:tkbctf5, cat:web)', aria-label="Search writeups and posts")
-      .quick-filters(aria-label="Quick filters")
-        button.quick-filter(type="button", data-q="") all
-        button.quick-filter(type="button", data-q="type:writeup") writeups
-        button.quick-filter(type="button", data-q="type:blog") blog
-        each t in quickTags
-          button.quick-filter(type="button", data-q="tag:" + t)= "#" + t
+  .home-list#content-list
+    #pagination
+    #doc-list
 
-    .home-list#content-list
-      #pagination
-      #doc-list
-
-  //- ─── Projects: 3D CSS carousel ───
+  //- ─── Projects: 3D card stack (pure CSS layout, see style.css) ───
   if projects.length
-    section.home-section.showcase.reveal#projects
-      .showcase-head
-        h2.home-section-title
-          span.termonly $ ls ./projects
-          span.termhide Things I've built
-        p.showcase-sub
-          | Drag, swipe or use the arrow keys.#{" "}
-          a(href="/portfolio/", target="_blank") Full portfolio ↗
+    .home-content.showcase#projects
+      hr.home-divider
+      h2.home-section-title
+        | Projects
+        a.showcase-all(href="/portfolio/", target="_blank") all ↗
       .carousel(data-carousel, tabindex="0", role="region", aria-roledescription="carousel", aria-label="Projects", style="--n:" + projects.length)
         .carousel-stage
           each p, i in projects
-            .pcard(class="pcard-" + p.kind, style="--i:" + i + ";--hue:" + p.hue, data-index=i, role="group", aria-roledescription="slide", aria-label=(i + 1) + " of " + projects.length + ": " + p.name)
-              .pcard-glow(aria-hidden="true")
+            .pcard(class="pcard-" + p.kind, style="--i:" + i, data-index=i, role="group", aria-roledescription="slide", aria-label=(i + 1) + " of " + projects.length + ": " + p.name)
               if p.image
-                .pcard-media(data-mono=p.name.replace(/[^\p{L}\p{N}]/gu, "").slice(0, 2))
-                  //- First few load eagerly-lazy; the rest are hydrated by carousel.js as they approach
-                  if i < 3 || i >= projects.length - 2
-                    img.pcard-backdrop(src=p.image, alt="", loading="lazy", decoding="async", referrerpolicy="no-referrer", aria-hidden="true")
+                .pcard-media
+                  //- First few load lazily; the rest are hydrated by home.js as they come up
+                  if i < 3 || i >= projects.length - 1
                     img.pcard-img(src=p.image, alt=p.name, loading="lazy", decoding="async", referrerpolicy="no-referrer")
                   else
-                    img.pcard-backdrop(data-src=p.image, alt="", decoding="async", referrerpolicy="no-referrer", aria-hidden="true")
                     img.pcard-img(data-src=p.image, alt=p.name, decoding="async", referrerpolicy="no-referrer")
                   if p.kind === "video"
                     span.pcard-play(aria-hidden="true")
-              else
-                .pcard-art(aria-hidden="true")
-                  span.pcard-monogram= p.name.replace(/[^\p{L}\p{N}]/gu, "").slice(0, 2)
               .pcard-body
-                .pcard-meta
+                .pcard-head
+                  h3.pcard-title
+                    a.pcard-link(href=p.href, target="_blank", rel="noopener", tabindex="-1")= p.name
                   span.pcard-year= p.year
-                  span.pcard-num= String(i + 1).padStart(2, "0")
-                h3.pcard-title
-                  a.pcard-link(href=p.href, target="_blank", rel="noopener", tabindex="-1")= p.name
                 .pcard-desc
                   p.pcard-desc-text= p.desc
-                if p.tags.length
-                  .pcard-tags
-                    each t in p.tags
-                      span.pcard-tag= t
-                if p.links.length
-                  .pcard-links
-                    each l in p.links
-                      a.pcard-action(href=l.url, target="_blank", rel="noopener", tabindex="-1", class="pcard-action-" + l.kind)= l.label
+                .pcard-foot
+                  if p.tags.length
+                    .pcard-tags
+                      each t in p.tags
+                        span.pcard-tag= t
+                  if p.links.length
+                    .pcard-links
+                      each l in p.links
+                        a.pcard-action(href=l.url, target="_blank", rel="noopener", tabindex="-1")= l.label + " ↗"
               .pcard-shade(aria-hidden="true")
-          .carousel-floor(aria-hidden="true")
         .carousel-ui
           button.carousel-btn(type="button", data-dir="-1", aria-label="Previous project") ‹
-          .carousel-status
-            span.carousel-count(aria-live="polite")
-              span.carousel-current 01
-              |  / #{String(projects.length).padStart(2, "0")}
-            .carousel-progress(aria-hidden="true")
-              .carousel-progress-bar
+          span.carousel-count(aria-live="polite")
+            span.carousel-current 01
+            |  / #{String(projects.length).padStart(2, "0")}
           button.carousel-btn(type="button", data-dir="1", aria-label="Next project") ›
+        .carousel-progress(aria-hidden="true")
+          .carousel-progress-bar
 
-  //- ─── Elsewhere ───
-  section.home-section.home-projects.reveal
-    h2.home-section-title
-      span.termonly $#{" "}
-      | Elsewhere
+  .home-content.home-links
+    hr.home-divider
+    h2.home-section-title Links
     .projects-grid
       each p in externalLinks
         a.project-card(href=p.url, target="_blank", rel= p.opener ? undefined : "noopener")
