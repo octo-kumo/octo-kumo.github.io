@@ -2,11 +2,10 @@ mixin tree-node(item, depth, expandAll, currentPath, isCatalog)
   - var hasChildren = item.children && item.children.length > 0
   - var isCtfEvent = item.path.indexOf("/ctf/") === 0 && item.path.slice(5).indexOf("/") === -1
   - var isLeaf = !hasChildren
-  - var indent = depth * 16
-  - var isAncestorOfCurrent = currentPath && currentPath !== item.path && currentPath.indexOf(item.path + "/") === 0
+  - var isAncestorOfCurrent = !!(currentPath && currentPath !== item.path && currentPath.indexOf(item.path + "/") === 0)
   // In catalog: CTF events start collapsed, but their category children start expanded
   - var isCatalogCategory = isCatalog && isCtfEvent === false && item.path.indexOf("/ctf/") === 0 && item.path.slice(5).indexOf("/") > 0 && item.path.split("/").length === 4
-  - var startCollapsed = hasChildren && !expandAll && !isAncestorOfCurrent && !isCatalogCategory ? " collapsed" : ""
+  - var isCollapsed = hasChildren && !expandAll && !isAncestorOfCurrent && !isCatalogCategory
   - var tags = item._tags || item.tags || []
   - var dateStr = item.created ? displayDatetime(item.created) : ""
   - var title = docTitle(item)
@@ -16,15 +15,16 @@ mixin tree-node(item, depth, expandAll, currentPath, isCatalog)
   - if (item.points) metaParts.push(item.points + "pts")
   - if (item.solves != null) metaParts.push(item.solves + " solves")
   - var metaLine = metaParts.join(" · ")
-  - var isCurrentPage = currentPath && item.path === currentPath
-  .tree-item(class=(startCollapsed + (isCurrentPage ? " tree-current" : "")), style="padding-left:"+indent+"px;", data-path=item.path)
-    .tree-row(class=[isLeaf ? "tree-leaf" : "tree-dir", isCtfEvent ? "tree-ctf-event" : ""], onclick=hasChildren ? "if(!event.target.closest('a'))this.closest('.tree-item').classList.toggle('collapsed')" : "")
+  - var isCurrentPage = !!(currentPath && item.path === currentPath)
+  // Indentation comes from nesting (.tree-children-inner), not inline padding
+  .tree-item(class={ collapsed: isCollapsed, "tree-current": isCurrentPage, "tree-ancestor": isAncestorOfCurrent }, data-path=item.path)
+    .tree-row(class=[isLeaf ? "tree-leaf" : "tree-dir", isCtfEvent ? "tree-ctf-event" : ""])
       if hasChildren
-        span.tree-toggle
+        button.tree-toggle(type="button", aria-expanded=(isCollapsed ? "false" : "true"), aria-label="Toggle " + title, tabindex=(hasContent ? "-1" : false))
       else
-        span.tree-dot ·
+        span.tree-dot(aria-hidden="true")
       if hasContent
-        a.tree-link(href="/c"+item.path)
+        a.tree-link(href="/c"+item.path, aria-current=(isCurrentPage ? "page" : false))
           span.tree-title= title
           if tags.length
             span.tree-tags
@@ -37,17 +37,20 @@ mixin tree-node(item, depth, expandAll, currentPath, isCatalog)
             each t in tags.slice(0, 3)
               span.tree-tag= "#" + t
       if hasChildren && item._contentCount > 0
-        span.tree-count= item._contentCount + " writeups"
+        span.tree-count= item._contentCount + (item._contentCount === 1 ? " writeup" : " writeups")
       if item.description && !snippet
         span.tree-desc= item.description
       span.tree-date= dateStr
-    if isLeaf && metaLine
-      .tree-meta(style="padding-left:"+(indent+20)+"px;")
-        span.tree-meta-info= metaLine
-    if isLeaf && snippet
-      .tree-snippet-row(style="padding-left:"+(indent+20)+"px;")
-        span.tree-snippet= snippet
+    if isLeaf && (metaLine || snippet)
+      .tree-sub
+        if metaLine
+          .tree-meta
+            span.tree-meta-info= metaLine
+        if snippet
+          .tree-snippet-row
+            span.tree-snippet= snippet
     if hasChildren
       .tree-children
-        each child in item.children
-          +tree-node(child, depth + 1, expandAll, currentPath, isCatalog)
+        .tree-children-inner
+          each child in item.children
+            +tree-node(child, depth + 1, expandAll, currentPath, isCatalog)

@@ -66,7 +66,10 @@ export async function render(data: PageData): Promise<string> {
     if (parts[0] === "ctf" && parts.length >= 2) {
       eventPath = "/" + parts.slice(0, 2).join("/");
     } else if (parts[0] === "htb" && parts.length >= 2) {
-      eventPath = "/" + parts.slice(0, 2).join("/");
+      // HTB machines sit directly under /htb — a leaf machine shows the
+      // whole HTB list (otherwise eventPath === contentPath and no tree)
+      const isLeafMachine = parts.length === 2 && !(navChildren && navChildren.length);
+      eventPath = isLeafMachine ? "/htb" : "/" + parts.slice(0, 2).join("/");
     } else if (parts[0] === "blog") {
       // Blog: show all blog posts
       eventPath = "/blog";

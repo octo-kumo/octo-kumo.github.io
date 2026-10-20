@@ -1415,60 +1415,219 @@ html.terminal .flag-text::-webkit-scrollbar-thumb {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   TOC sidebar — sticky right column, active section tracking
+   TOC sidebar — sticky right column. Every section intersecting the
+   viewport is .active (indicator spans them); the one being read is .current
    ═══════════════════════════════════════════════════════════════ */
-.toc-sidebar {
-  font-size: 0.8rem;
-  z-index: 40;
-  display: none;
-  min-width: 0;
-}
-
 .content-page-toc {
   width: 14rem;
+  font-size: 0.8rem;
   max-height: calc(100vh - var(--nav-height) - 2rem);
   overflow-y: auto;
-}
-
-@media (min-width: 1280px) {
-  .toc-sidebar {
-    display: block;
-  }
+  overscroll-behavior: contain;
 }
 
 .toc-title {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: var(--primary);
-  font-size: 0.85rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--footer-text);
+}
+
+.toc-progress {
+  font-weight: 400;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.toc-list {
+  position: relative;
+  display: block;
+  border-left: 1px solid color-mix(in srgb, var(--bd) 45%, transparent);
+}
+
+.toc-indicator {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 2px;
+  height: 0;
+  border-radius: 2px;
+  background: var(--primary);
+  opacity: 0;
+  pointer-events: none;
+  transition: top 0.3s cubic-bezier(.2, .7, .2, 1), height 0.3s cubic-bezier(.2, .7, .2, 1), opacity 0.2s;
+}
+
+.toc-list.has-active .toc-indicator {
+  opacity: 1;
 }
 
 .toc-link {
-  color: var(--footer-text);
+  position: relative;
   display: block;
-  padding: 2px 0;
-  border-left: 2px solid transparent;
-  padding-left: 8px;
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  padding: 3px 0 3px 12px;
+  line-height: 1.4;
+  color: var(--footer-text);
+  text-decoration: none;
+  transition: color 0.2s, opacity 0.2s;
+}
+
+.toc-link[data-depth="3"] {
+  padding-left: 24px;
+  font-size: 0.95em;
+}
+
+.toc-link[data-depth="4"] {
+  padding-left: 36px;
+  font-size: 0.9em;
 }
 
 .toc-link:hover {
-  color: var(--primary);
-  border-left-color: var(--primary);
+  color: var(--fg);
 }
 
 .toc-link.active {
+  color: var(--fg);
+}
+
+.toc-link.current {
   color: var(--primary);
-  border-left-color: var(--primary);
-  background: rgba(64, 158, 255, 0.05);
-  font-weight: bold;
+}
+
+/* Heading hidden inside a folded section */
+.toc-link.folded {
+  opacity: 0.4;
+}
+
+/* Papery: dotted rule, roman-numeral chapters, italic ink for the current one */
+html.papery .content-page-toc {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  counter-reset: toc-h2;
+}
+
+html.papery .toc-title {
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--heading-accent);
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--bd);
+}
+
+html.papery .toc-progress {
+  display: none;
+}
+
+html.papery .toc-list {
+  border-left: 1px dotted var(--bd);
+}
+
+html.papery .toc-indicator {
+  background: var(--heading-accent);
+  border-radius: 0;
+  transition-duration: 0.45s;
+}
+
+html.papery .toc-link[data-depth="2"] {
+  counter-increment: toc-h2;
+}
+
+html.papery .toc-link[data-depth="2"]::before {
+  content: counter(toc-h2, upper-roman) ".";
+  display: inline-block;
+  min-width: 2.2em;
+  font-size: 0.8em;
+  color: var(--heading-accent);
+  opacity: 0.55;
+}
+
+html.papery .toc-link.current {
+  color: var(--heading-accent);
+  font-style: italic;
+}
+
+/* Terminal: highlighted block over the visible range, ">" cursor on current */
+html.terminal .toc-title::before {
+  content: "## ";
+  color: var(--fold-color);
+}
+
+html.terminal .toc-title {
+  justify-content: flex-start;
+  letter-spacing: 0.05em;
+}
+
+html.terminal .toc-progress {
+  margin-left: auto;
+}
+
+html.terminal .toc-progress:not(:empty)::before {
+  content: "[";
+}
+
+html.terminal .toc-progress:not(:empty)::after {
+  content: "]";
+}
+
+html.terminal .toc-list {
+  border-left: 0;
+}
+
+html.terminal .toc-indicator {
+  left: 0;
+  width: 100%;
+  border-radius: 0;
+  border-left: 2px solid var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  transition-timing-function: steps(3, end);
+  transition-duration: 0.15s;
+}
+
+html.terminal .toc-link {
+  padding-left: 2ch;
+  line-height: 1.4;
+}
+
+html.terminal .toc-link[data-depth="3"] {
+  padding-left: 4ch;
+  font-size: 14px;
+}
+
+html.terminal .toc-link[data-depth="4"] {
+  padding-left: 6ch;
+  font-size: 14px;
+}
+
+html.terminal .toc-link.current::before {
+  content: ">";
+  position: absolute;
+  left: 0.5ch;
+  color: var(--primary);
+  animation: tree-blink 1s steps(1) infinite;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    Content tree sidebar
+   Structure: .tree-item > .tree-row (+ .tree-sub) + .tree-children >
+   .tree-children-inner. Expand/collapse animates grid-template-rows.
    ═══════════════════════════════════════════════════════════════ */
 .content-tree {
-  margin-top: 0;
+  --tree-gutter: 16px;
+  --tree-pad: 0.3rem;
+  --tree-indent: 4px;
+  --tree-guide: color-mix(in srgb, var(--bd) 45%, transparent);
+  --tree-accent: var(--primary);
+  --tree-dur: 0.24s;
+  --tree-ease: cubic-bezier(.2, .7, .2, 1);
   font-family: var(--font-body);
   font-size: 0.8rem;
   width: 100%;
@@ -1476,96 +1635,122 @@ html.terminal .flag-text::-webkit-scrollbar-thumb {
 }
 
 .tree-item {
-  transition: all 0.15s;
+  position: relative;
 }
 
-.tree-item.collapsed>.tree-children {
+.tree-item.hidden {
   display: none;
 }
 
-.tree-item.collapsed>.tree-row>.tree-toggle {
-  transform: rotate(0deg);
-}
-
-.tree-item>.tree-row>.tree-toggle {
-  transform: rotate(90deg);
-}
-
 .tree-row {
+  position: relative;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.4rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  cursor: default;
+  padding: 0.22rem 0.5rem 0.22rem var(--tree-pad);
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tree-dir {
+  cursor: pointer;
 }
 
 .tree-row:hover {
   background: var(--hover-bg);
 }
 
-.tree-toggle {
-  cursor: pointer;
-  user-select: none;
-  color: var(--fold-color);
-  font-size: 0.6rem;
-  flex-shrink: 0;
-  transition: transform 0.15s;
-  width: 12px;
-  text-align: center;
-}
-
-.tree-toggle {
-  font-size: 0;
-}
-
-.tree-toggle::before {
-  content: "▶";
-  font-size: 0.6rem;
-}
-
-.tree-item:not(.collapsed)>.tree-row>.tree-toggle::before {
-  content: "▼";
-}
-
-html.terminal .tree-toggle::before {
-  content: "+";
-}
-
-html.terminal .tree-item:not(.collapsed)>.tree-row>.tree-toggle::before {
-  content: "-";
-}
-
-html.terminal .tree-toggle::before,
-html.papery .tree-toggle::before {
-  font-size: 14px;
-}
-
+/* Toggle (branches) and dot (leaves) share one gutter column */
+.tree-toggle,
 .tree-dot {
-  color: var(--fold-color);
   flex-shrink: 0;
-  width: 12px;
-  text-align: center;
+  width: var(--tree-gutter);
+  height: var(--tree-gutter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fold-color);
+}
+
+.tree-toggle {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  line-height: 1;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+/* Default: CSS chevron that rotates */
+.tree-toggle::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-1px) rotate(45deg);
+  transition: transform var(--tree-dur) var(--tree-ease);
+}
+
+.tree-item.collapsed>.tree-row .tree-toggle::before {
+  transform: translateX(-1px) rotate(-45deg);
+}
+
+.tree-row:hover .tree-toggle {
+  color: var(--tree-accent);
+}
+
+.tree-toggle:hover {
+  background: var(--hover-bg);
+}
+
+.tree-dot::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.8;
+  transition: transform 0.2s var(--tree-ease), background 0.2s, box-shadow 0.2s;
+}
+
+.tree-row:hover .tree-dot {
+  color: var(--tree-accent);
+}
+
+.tree-row:hover .tree-dot::before {
+  transform: scale(1.4);
+}
+
+.tree-toggle:focus-visible,
+.tree-link:focus-visible {
+  outline: 2px solid var(--tree-accent);
+  outline-offset: 1px;
+  border-radius: 3px;
 }
 
 .tree-link {
-  color: var(--primary);
+  color: var(--fg);
   text-decoration: none;
   min-width: 0;
   overflow: hidden;
   display: inline-flex;
   align-items: baseline;
-  gap: 0.3rem;
+  gap: 0.35rem;
   max-width: 100%;
+  transition: color 0.15s;
 }
 
 .tree-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
-.tree-ctf-event>.tree-link {
-  font-weight: bold;
-  font-size: 0.95rem;
+.tree-row:hover .tree-link {
+  color: var(--tree-accent);
 }
 
 .tree-title {
@@ -1577,7 +1762,11 @@ html.papery .tree-toggle::before {
 
 .tree-title.no-link {
   color: var(--footer-text);
-  font-weight: normal;
+}
+
+.tree-ctf-event .tree-title {
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .tree-desc {
@@ -1595,6 +1784,7 @@ html.papery .tree-toggle::before {
   font-size: 0.65rem;
   flex-shrink: 0;
   margin-left: auto;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Hide dates in tree on content pages (most CTFs are same few days) */
@@ -1605,22 +1795,8 @@ html.papery .tree-toggle::before {
 .tree-tags {
   display: inline-flex;
   gap: 0.3rem;
-  margin-left: 0.3rem;
+  margin-left: 0.2rem;
   flex-shrink: 0;
-}
-
-/* Writeup count on category/event nodes (e.g. "· 12 writeups") */
-.tree-count {
-  color: var(--footer-text);
-  font-size: 0.65rem;
-  flex-shrink: 0;
-  margin-left: 0.3rem;
-  white-space: nowrap;
-}
-
-.tree-count::before {
-  content: "· ";
-  color: var(--footer-text);
 }
 
 .tree-tag {
@@ -1628,56 +1804,465 @@ html.papery .tree-toggle::before {
   color: var(--footer-text);
 }
 
-.tree-children {
-  margin: 0;
-}
-
-.tree-item.hidden {
-  display: none;
-}
-
-/* Active tree item (current page) */
-.tree-current>.tree-row>.tree-link .tree-title {
-  font-weight: bold;
-}
-
-.tree-current>.tree-row {
+/* Writeup count on category/event nodes */
+.tree-count {
+  flex-shrink: 0;
+  font-size: 0.62rem;
+  line-height: 1.5;
+  padding: 0 0.45rem;
+  border-radius: 999px;
   background: var(--hover-bg);
+  color: var(--footer-text);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Meta (solves/points) on its own row */
+/* Current page + the branch leading to it */
+.tree-current>.tree-row {
+  background: color-mix(in srgb, var(--tree-accent) 12%, transparent);
+}
+
+.tree-current>.tree-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 5px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--tree-accent);
+}
+
+.tree-current>.tree-row .tree-link {
+  color: var(--tree-accent);
+}
+
+.tree-current>.tree-row .tree-title {
+  font-weight: 600;
+}
+
+.tree-current>.tree-row .tree-dot {
+  color: var(--tree-accent);
+}
+
+.tree-current>.tree-row .tree-dot::before {
+  opacity: 1;
+  transform: scale(1.5);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tree-accent) 25%, transparent);
+}
+
+.tree-ancestor>.tree-row .tree-toggle {
+  color: var(--tree-accent);
+}
+
+/* Meta + snippet rows, aligned with the title */
+.tree-sub {
+  padding: 0 0.5rem 0.25rem calc(var(--tree-pad) + var(--tree-gutter) + 0.4rem);
+  min-width: 0;
+}
+
 .tree-meta {
   font-size: 0.7rem;
   color: var(--footer-text);
-  padding: 0 0.5rem 0.1rem;
-  display: flex;
-  gap: 0.5rem;
-  align-items: baseline;
-}
-
-.tree-meta-info {
-  color: var(--footer-text);
-  flex-shrink: 0;
-}
-
-/* Snippet on its own row */
-.tree-snippet-row {
-  padding: 0 0.5rem 0.2rem;
-  overflow: hidden;
 }
 
 .tree-snippet {
+  display: block;
   font-size: 0.7rem;
   color: var(--footer-text);
+  opacity: 0.85;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  display: block;
 }
 
 /* Hide snippets only on the global CTF catalog page (root /c/ctf) */
 .dir-page-layout.catalog-page .tree-snippet-row {
   display: none;
+}
+
+/* Children: animated height via grid rows; guide line on the inner box */
+.tree-children {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--tree-dur) var(--tree-ease);
+}
+
+.tree-item.collapsed>.tree-children {
+  grid-template-rows: 0fr;
+}
+
+.tree-children-inner {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  margin-left: calc(var(--tree-pad) + var(--tree-gutter) / 2);
+  padding-left: var(--tree-indent);
+  transition: opacity var(--tree-dur) ease, transform var(--tree-dur) var(--tree-ease), visibility 0s;
+}
+
+.tree-item.collapsed>.tree-children>.tree-children-inner {
+  opacity: 0;
+  transform: translateY(-4px);
+  visibility: hidden;
+  transition: opacity var(--tree-dur) ease, transform var(--tree-dur) var(--tree-ease), visibility 0s var(--tree-dur);
+}
+
+.tree-children-inner::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 4px;
+  width: 1px;
+  background: var(--tree-guide);
+  transition: background 0.2s;
+}
+
+.tree-item:hover>.tree-children>.tree-children-inner::before {
+  background: color-mix(in srgb, var(--bd) 80%, transparent);
+}
+
+.tree-ancestor>.tree-children>.tree-children-inner::before {
+  background: color-mix(in srgb, var(--tree-accent) 55%, transparent);
+}
+
+/* Restoring saved state / SPA swaps: no animation */
+.content-tree.tree-instant *,
+.content-tree.tree-instant *::before {
+  transition: none !important;
+}
+
+/* ─── Papery: serif ink, dotted guides, drawn underline, fleuron on current ─── */
+html.papery .content-tree {
+  --tree-accent: var(--heading-accent);
+  --tree-guide: var(--bd);
+  --tree-dur: 0.36s;
+  --tree-indent: 6px;
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+}
+
+html.papery .tree-row {
+  border-radius: 0;
+  padding-top: 0.18rem;
+  padding-bottom: 0.18rem;
+}
+
+html.papery .tree-row:hover,
+html.papery .tree-toggle:hover {
+  background: transparent;
+}
+
+html.papery .tree-toggle::before {
+  content: "›";
+  width: auto;
+  height: auto;
+  border: 0;
+  font-size: 1.15rem;
+  line-height: 1;
+  transform: translateY(-1px) rotate(90deg);
+}
+
+html.papery .tree-item.collapsed>.tree-row .tree-toggle::before {
+  transform: translateY(-1px) rotate(0deg);
+}
+
+html.papery .tree-toggle {
+  color: var(--tree-accent);
+}
+
+html.papery .tree-dot::before {
+  content: "–";
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  font-size: 0.85em;
+}
+
+html.papery .tree-row:hover .tree-dot::before {
+  transform: translateX(2px);
+}
+
+html.papery .tree-current>.tree-row .tree-dot::before {
+  content: "❧";
+  font-size: 1em;
+  transform: none;
+  box-shadow: none;
+}
+
+html.papery .tree-link {
+  color: var(--fg);
+}
+
+html.papery .tree-title {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size 0.35s ease;
+}
+
+html.papery .tree-row:hover .tree-title,
+html.papery .tree-current>.tree-row .tree-title {
+  background-size: 100% 1px;
+}
+
+html.papery .tree-current>.tree-row {
+  background: transparent;
+}
+
+html.papery .tree-current>.tree-row::before {
+  display: none;
+}
+
+html.papery .tree-current>.tree-row .tree-title {
+  font-style: italic;
+  font-weight: 700;
+}
+
+html.papery .tree-ctf-event .tree-title {
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+  font-size: 1rem;
+}
+
+html.papery .tree-tag {
+  font-style: italic;
+}
+
+html.papery .tree-count {
+  padding: 0;
+  background: none;
+  font-style: italic;
+  font-size: 0.72rem;
+}
+
+html.papery .tree-count::before {
+  content: "(";
+}
+
+html.papery .tree-count::after {
+  content: ")";
+}
+
+html.papery .tree-snippet {
+  font-style: italic;
+  opacity: 0.75;
+}
+
+html.papery .tree-children-inner::before {
+  width: 0;
+  background: none;
+  border-left: 1px dotted var(--tree-guide);
+}
+
+html.papery .tree-item:hover>.tree-children>.tree-children-inner::before {
+  background: none;
+  border-left-color: var(--fold-hover);
+}
+
+html.papery .tree-ancestor>.tree-children>.tree-children-inner::before {
+  background: none;
+  border-left-color: var(--tree-accent);
+}
+
+html.papery .tree-item.collapsed>.tree-children>.tree-children-inner {
+  transform: translateY(-8px);
+}
+
+/* ─── Terminal: `tree`-style ├── └── connectors, [+]/[-], inverted cursor ─── */
+html.terminal .content-tree {
+  --tree-gutter: 3ch;
+  --tree-pad: 0px;
+  --tree-indent: 0px;
+  --tree-guide: var(--fold-color);
+  --tree-dur: 0.16s;
+  --tree-ease: steps(4, end);
+  --tree-mid: 0.7em;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+html.terminal .tree-row {
+  border-radius: 0;
+  gap: 1ch;
+  padding: 0 0.5ch 0 0;
+}
+
+html.terminal .tree-row:hover {
+  background: var(--primary);
+}
+
+html.terminal .tree-row:hover,
+html.terminal .tree-row:hover .tree-link,
+html.terminal .tree-row:hover .tree-toggle,
+html.terminal .tree-row:hover span {
+  color: var(--bg) !important;
+}
+
+html.terminal .tree-toggle,
+html.terminal .tree-dot {
+  height: auto;
+}
+
+html.terminal .tree-toggle {
+  border-radius: 0;
+  color: var(--fg);
+}
+
+html.terminal .tree-toggle:hover {
+  background: transparent;
+}
+
+html.terminal .tree-toggle::before {
+  content: "[-]";
+  width: auto;
+  height: auto;
+  border: 0;
+  transform: none;
+}
+
+html.terminal .tree-item.collapsed>.tree-row .tree-toggle::before {
+  content: "[+]";
+  transform: none;
+}
+
+/* Leaves: a short rule continuing the connector */
+html.terminal .tree-dot {
+  width: 1ch;
+}
+
+html.terminal .tree-dot::before {
+  width: 100%;
+  height: 0;
+  border-radius: 0;
+  background: none;
+  border-top: 1px solid var(--tree-guide);
+  opacity: 1;
+  transform: none;
+}
+
+html.terminal .tree-row:hover .tree-dot::before {
+  transform: none;
+  border-top-color: var(--bg);
+}
+
+html.terminal .tree-leaf~.tree-sub,
+html.terminal .tree-sub {
+  padding-left: 2ch;
+}
+
+html.terminal .tree-current>.tree-row {
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+html.terminal .tree-current>.tree-row::before {
+  display: none;
+}
+
+html.terminal .tree-current>.tree-row .tree-title {
+  font-weight: bold;
+}
+
+html.terminal .tree-current>.tree-row .tree-dot::before {
+  border-top-color: var(--primary);
+  box-shadow: none;
+  transform: none;
+}
+
+html.terminal .tree-current>.tree-row .tree-link::after {
+  content: "█";
+  flex-shrink: 0;
+  animation: tree-blink 1s steps(1) infinite;
+}
+
+html.terminal .tree-ctf-event .tree-title {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+html.terminal .tree-title,
+html.terminal .tree-tag,
+html.terminal .tree-meta,
+html.terminal .tree-snippet,
+html.terminal .tree-date,
+html.terminal .tree-desc {
+  font-size: 14px !important;
+}
+
+html.terminal .tree-count {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 14px;
+  line-height: inherit;
+}
+
+html.terminal .tree-count::before {
+  content: "· ";
+}
+
+/* Connectors: no single guide; each child draws ├── (└── when last) */
+html.terminal .tree-children-inner {
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+html.terminal .tree-children-inner::before {
+  display: none;
+}
+
+html.terminal .tree-children-inner>.tree-item {
+  padding-left: 2ch;
+}
+
+html.terminal .tree-children-inner>.tree-item::before,
+html.terminal .tree-children-inner>.tree-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  pointer-events: none;
+}
+
+html.terminal .tree-children-inner>.tree-item::before {
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--tree-guide);
+}
+
+html.terminal .tree-children-inner>.tree-item:last-child::before {
+  bottom: auto;
+  height: var(--tree-mid);
+}
+
+html.terminal .tree-children-inner>.tree-item::after {
+  top: var(--tree-mid);
+  width: 2ch;
+  border-top: 1px solid var(--tree-guide);
+}
+
+html.terminal .tree-children-inner>.tree-item:is(.tree-current, .tree-ancestor)::after {
+  border-color: var(--primary);
+}
+
+@keyframes tree-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .content-tree *,
+  .content-tree *::before,
+  .content-tree *::after,
+  .toc-indicator {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 
 /* ─── Statistics base classes (moved from inline styles in stats.pug) ─── */
@@ -2112,20 +2697,6 @@ html.terminal .stat-body div,
 html.terminal .legend-item {
   font-family: var(--font-mono) !important;
   font-size: 14px !important;
-}
-
-/* Terminal theme: tree looks like TUI directory listing */
-html.terminal .tree-row {
-  padding: 0.1rem 0.5rem;
-  line-height: 1.4;
-}
-
-html.terminal .tree-toggle {
-  font-size: 14px;
-}
-
-html.terminal .tree-dot {
-  font-size: 14px;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -3140,21 +3711,6 @@ html.terminal blockquote {
   border-left: 3px solid var(--primary);
 }
 
-/* Terminal: all text same size, monospaced alignment */
-html.terminal .content-tree {
-  line-height: 1.4;
-}
-
-html.terminal .tree-row {
-  padding: 0 0.5rem;
-  line-height: 1.4;
-}
-
-html.terminal .toc-link {
-  font-size: 14px;
-  line-height: 1.4;
-}
-
 /* Terminal: enforce same font size everywhere — use bold/color/borders for importance */
 html.terminal .article-title {
   font-size: 14px !important;
@@ -3191,26 +3747,6 @@ html.terminal article p,
 html.terminal article li,
 html.terminal article td,
 html.terminal article th {
-  font-size: 14px !important;
-}
-
-html.terminal .tree-title {
-  font-size: 14px !important;
-}
-
-html.terminal .tree-tag {
-  font-size: 14px !important;
-}
-
-html.terminal .tree-meta {
-  font-size: 14px !important;
-}
-
-html.terminal .tree-snippet {
-  font-size: 14px !important;
-}
-
-html.terminal .tree-date {
   font-size: 14px !important;
 }
 
@@ -3339,10 +3875,6 @@ html.terminal .doc-item:last-child {
   border-bottom: none !important;
 }
 
-html.terminal .tree-row {
-  border-radius: 0;
-}
-
 html.terminal .theme-btn,
 html.terminal .theme-btn-mini {
   border-radius: 0 !important;
@@ -3356,24 +3888,6 @@ html.terminal .theme-group {
 html.terminal .hamburger {
   border-radius: 0 !important;
   border-color: var(--fg) !important;
-}
-
-/* Terminal: tree-toggle character */
-html.terminal .tree-toggle::before {
-  content: "+";
-}
-
-html.terminal .tree-item:not(.collapsed)>.tree-row>.tree-toggle::before {
-  content: "-";
-}
-
-/* Papery: tree-toggle character */
-html.papery .tree-toggle::before {
-  content: "▸";
-}
-
-html.papery .tree-item:not(.collapsed)>.tree-row>.tree-toggle::before {
-  content: "▾";
 }
 
 /* ═══════════════════════════════════════════════════════════════

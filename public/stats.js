@@ -58,7 +58,7 @@
           while (parent && parent !== tree) {
             if (parent.classList && parent.classList.contains('tree-item')) {
               parent.classList.remove('hidden');
-              parent.classList.remove('collapsed');
+              expandTreeItem(parent);
             }
             parent = parent.parentElement;
           }
@@ -79,12 +79,18 @@
             el.classList.add('hidden');
           } else {
             el.classList.remove('hidden');
-            el.classList.remove('collapsed');
+            expandTreeItem(el);
           }
         }
       });
     }
   };
+
+  // app.js keeps the toggle's aria-expanded in sync; fall back to the class
+  function expandTreeItem(el) {
+    if (window.treeSetCollapsed) window.treeSetCollapsed(el, false);
+    else el.classList.remove('collapsed');
+  }
 
   function updateLegend(mode) {
     document.querySelectorAll('.legend-item').forEach(function (el) {
