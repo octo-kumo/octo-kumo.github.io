@@ -98,14 +98,14 @@ main .gsc-loading-image {
   background-image: url("https://github.githubassets.com/images/mona-loading-dark.gif");
 }
 
-/* Font: default — match site body font (Space Grotesk + CJK fallbacks) */
+/* Font: default — match site body font (Roboto + CJK fallbacks) */
 main, main .comment-body, main .timeline-comment, main .markdown-body,
 main textarea, main input, main button, main .gsc-comment-box,
 main .gsc-comment-box-tabs, main .gsc-comment-box-bottom,
 main .gsc-tl-line, main .gsc-comment-author, main .gsc-comment-date,
 main .gsc-reactions, main .gsc-reaction-buttons, main .pagination,
 main .gsc-homepage-bg, main .header-section {
-  font-family: "Space Grotesk", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
 }
 
 /* ─── gsc- class overrides ─── */
@@ -129,15 +129,14 @@ main .gsc-social-reaction-summary-item {
 /* giscus theme — __SITE_URL__ is replaced at build time with the real site URL */
    not the site origin. Cloudflare serves /fonts/*.woff2 with ACAO: * so cross-origin
    @font-face loading works. font-display: swap prevents FOIT in the iframe. */
-@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 400; font-display: swap; src: url(__SITE_URL__/fonts/space-grotesk.woff2) format('woff2'); }
-@font-face { font-family: 'Space Grotesk'; font-style: normal; font-weight: 700; font-display: swap; src: url(__SITE_URL__/fonts/space-grotesk.woff2) format('woff2'); }
+@font-face { font-family: 'Roboto'; font-style: normal; font-weight: 100 900; font-display: swap; src: url(__SITE_URL__/fonts/roboto.woff2) format('woff2'); }
 @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(__SITE_URL__/fonts/jetbrains-mono-400.woff2) format('woff2'); }
 @font-face { font-family: 'Source Serif Pro'; font-style: normal; font-weight: 400; font-display: swap; src: url(__SITE_URL__/fonts/source-serif-pro-400.woff2) format('woff2'); }
 @font-face { font-family: 'Source Serif Pro'; font-style: normal; font-weight: 700; font-display: swap; src: url(__SITE_URL__/fonts/source-serif-pro-700.woff2) format('woff2'); }
 @font-face { font-family: 'Source Serif Pro'; font-style: italic; font-weight: 400; font-display: swap; src: url(__SITE_URL__/fonts/source-serif-pro-400i.woff2) format('woff2'); }
 
 :host, html {
-  --font-family-sans: "Space Grotesk", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-family-sans: "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
   --font-family-monospace: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --font-family-default: var(--font-family-sans);
   font-family: var(--font-family-default);

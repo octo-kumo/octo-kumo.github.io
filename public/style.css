@@ -6,7 +6,7 @@
 
 /* ─── Shared variables (fonts + layout, overridden by style themes) ─── */
 :root {
-  --font-body: 'Space Grotesk', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Segoe UI Symbol', sans-serif;
+  --font-body: 'Roboto', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Segoe UI Symbol', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'PingFang SC', monospace;
   --font-serif: 'Source Serif Pro', 'Songti SC', 'Noto Serif CJK SC', Georgia, serif;
   --font-size-base: 16px;
@@ -2770,7 +2770,10 @@ html.papery .carousel-count {
 /* ─── Terminal: stacked TUI windows ─── */
 html.terminal .carousel {
   --peek: 14px;
-  --depth: 0px;
+}
+
+html.terminal .carousel-stage {
+  perspective: none;
 }
 
 html.terminal .quick-filter,
@@ -2815,8 +2818,8 @@ html.terminal .pcard-desc-text {
 }
 
 html.terminal .pcard {
-  /* windows behind are offset up-right instead of shrinking into depth */
-  translate: calc(var(--stack) * 10px) 0;
+  /* flat 2D only: windows behind are offset up-right, passed ones slide out */
+  transform: translate(calc(var(--back) * 110% + var(--stack) * 10px), calc(var(--stack) * -1 * var(--peek)));
   border-radius: 0;
   border-color: var(--fg);
   background: var(--bg);
