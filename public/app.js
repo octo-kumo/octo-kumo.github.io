@@ -453,7 +453,10 @@ window.addEventListener('resize', function () {
 // ─── Hamburger menu (mobile) ───
 window.toggleHamburger = function () {
   var menu = document.getElementById('topnav-mobile');
-  if (menu) menu.classList.toggle('open');
+  if (!menu) return;
+  var open = menu.classList.toggle('open');
+  var btn = document.getElementById('hamburger');
+  if (btn) btn.setAttribute('aria-expanded', String(open));
 };
 
 // ─── Init foldable headings + TOC tracking + sidebar offsets ───

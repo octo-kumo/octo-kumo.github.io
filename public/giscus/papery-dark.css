@@ -88,23 +88,23 @@ main {
   --color-scale-blue-8: #0c2d6b;
 /* Papery color overrides — warm dark tones */
   --color-canvas-default: transparent;
-  --color-canvas-overlay: rgb(30 25 18 / 90%);
+  --color-canvas-overlay: rgb(27 25 22 / 92%);
   --color-canvas-inset: transparent;
   --color-canvas-subtle: transparent;
-  --color-fg-default: #d4c8b8;
-  --color-fg-muted: #a89880;
-  --color-fg-subtle: #807060;
-  --color-border-default: #4a3d2e;
-  --color-border-muted: #3a3020;
-  --color-accent-fg: #c49a6c;
-  --color-accent-emphasis: #8b6914;
-  --color-accent-muted: rgb(196 154 108 / 40%);
-  --color-accent-subtle: rgb(139 105 20 / 10%);
-  --color-btn-bg: rgb(45 38 28 / 80%);
+  --color-fg-default: #e3d9c7;
+  --color-fg-muted: #a3967f;
+  --color-fg-subtle: #8f8372;
+  --color-border-default: #3b362f;
+  --color-border-muted: #2a2621;
+  --color-accent-fg: #e2b06e;
+  --color-accent-emphasis: #b9844a;
+  --color-accent-muted: rgb(226 176 110 / 40%);
+  --color-accent-subtle: rgb(226 176 110 / 10%);
+  --color-btn-bg: rgb(42 38 33 / 80%);
   --color-btn-border: rgb(200 180 150 / 15%);
-  --color-btn-hover-bg: rgb(45 38 28 / 50%);
-  --color-btn-hover-border: #8a7a60;
-  --color-btn-text: #d4c8b8;
+  --color-btn-hover-bg: rgb(53 48 41 / 60%);
+  --color-btn-hover-border: #5c5347;
+  --color-btn-text: #e3d9c7;
   --color-social-reaction-bg-hover: var(--color-scale-gray-7);
   --color-social-reaction-bg-reacted-hover: var(--color-scale-blue-8);
 }
@@ -120,16 +120,16 @@ main .gsc-loading-image {
 /* Font: papery (serif) */
 
 /* ─── gsc- class overrides: papery ─── */
-/* Comment button: brown accent */
+/* Comment button: ochre-gold accent */
 main .btn-primary {
-  --color-btn-primary-text: #fff;
-  --color-btn-primary-bg: #8b4513;
-  --color-btn-primary-border: rgba(139, 69, 19, 0.2);
-  --color-btn-primary-hover-bg: #9a5520;
-  --color-btn-primary-hover-border: rgba(139, 69, 19, 0.3);
-  --color-btn-primary-selected-bg: #8b4513;
-  --color-btn-primary-disabled-text: rgba(255, 255, 255, 0.5);
-  --color-btn-primary-disabled-bg: rgba(139, 69, 19, 0.6);
+  --color-btn-primary-text: #1b1916;
+  --color-btn-primary-bg: #e2b06e;
+  --color-btn-primary-border: rgba(226, 176, 110, 0.25);
+  --color-btn-primary-hover-bg: #ebc088;
+  --color-btn-primary-hover-border: rgba(226, 176, 110, 0.4);
+  --color-btn-primary-selected-bg: #e2b06e;
+  --color-btn-primary-disabled-text: rgba(27, 25, 22, 0.5);
+  --color-btn-primary-disabled-bg: rgba(226, 176, 110, 0.5);
 }
 /* Reaction pills: rounded */
 main .gsc-social-reaction-summary-item {

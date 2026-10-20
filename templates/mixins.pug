@@ -1,6 +1,8 @@
 mixin nav-link(href, text, opts)
   if href.startsWith("http") || (opts && opts.newTab)
-    a.nav-link(href=href, target="_blank", rel= opts && opts.opener ? undefined : "noopener")= text
+    a.nav-link.nav-link-ext(href=href, target="_blank", rel= opts && opts.opener ? undefined : "noopener")
+      = text
+      span.nav-ext-arrow(aria-hidden="true") ↗
   else
     a.nav-link(href=href)= text
 
