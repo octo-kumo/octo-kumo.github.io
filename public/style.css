@@ -305,32 +305,159 @@ html.terminal .article-title {
   font-weight: bold;
 }
 
+/* ─── Blockquotes (mostly challenge descriptions and asides) ─── */
+/* Default: tinted card, accent bar fading downwards, faint quote mark */
 blockquote {
-  font-family: var(--font-serif);
-  font-style: italic;
-  padding: 0.1em 0.5em;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 0.2em;
-  border-left: 0.2em solid var(--primary);
-  margin: 0.5em 0;
+  position: relative;
+  margin: 1.25em 0;
+  padding: 0.75em 2.5em 0.75em 1.1em;
+  border-radius: 0 8px 8px 0;
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
+  color: var(--fg);
 }
 
+blockquote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--primary), color-mix(in srgb, var(--primary) 25%, transparent));
+}
+
+blockquote::after {
+  content: "\201D";
+  position: absolute;
+  right: 0.3em;
+  top: -0.05em;
+  font-family: var(--font-serif);
+  font-size: 3.2em;
+  line-height: 1;
+  color: var(--primary);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+blockquote> :first-child {
+  margin-top: 0;
+}
+
+blockquote> :last-child {
+  margin-bottom: 0;
+}
+
+blockquote blockquote {
+  margin: 0.75em 0;
+  background: color-mix(in srgb, var(--primary) 5%, transparent);
+}
+
+blockquote blockquote::after {
+  display: none;
+}
+
+/* Headings inside quotes stay plain (no rules, numbering, ticks).
+   html[class] outranks the per-theme heading rules. */
+html[class] article blockquote :is(h1, h2, h3, h4) {
+  font-size: 1.1em;
+  margin: 0 0 0.4em;
+  padding-bottom: 0;
+  counter-increment: none;
+}
+
+html[class] article blockquote :is(h1, h2, h3, h4)::before,
+html[class] article blockquote :is(h1, h2, h3, h4)::after {
+  display: none;
+}
+
+/* Papery: epigraph — no box, hanging opening quote, italic serif */
+html.papery blockquote {
+  margin: 1.75em 0;
+  padding: 0.2em 1.5em 0.2em 2.4em;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.04em;
+  color: color-mix(in srgb, var(--fg) 85%, transparent);
+}
+
+html.papery blockquote::before {
+  content: "\201C";
+  top: -0.12em;
+  bottom: auto;
+  width: auto;
+  border-radius: 0;
+  background: none;
+  font-size: 3.4em;
+  line-height: 1;
+  font-style: normal;
+  color: var(--heading-accent);
+  opacity: 0.45;
+}
+
+html.papery blockquote::after {
+  content: "";
+  left: 2.4em;
+  right: auto;
+  top: auto;
+  bottom: -0.6em;
+  width: 2.5em;
+  height: 1px;
+  background: var(--heading-accent);
+  opacity: 0.4;
+}
+
+html.papery blockquote blockquote {
+  background: transparent;
+}
+
+/* Terminal: mail-style "> " on every line (the column is clipped to the
+   quote's height; paragraph gaps are exactly one line so it stays aligned) */
 html.terminal blockquote {
+  margin: 1em 0;
+  padding: 0 0 0 2ch;
+  border-radius: 0;
+  background: none;
   font-family: var(--font-mono);
   font-style: normal;
-  border: none;
-  border-left: 3px solid var(--primary);
-  background: color-mix(in srgb, var(--primary) 7%, transparent);
-  padding: 0.4em 0.9em;
-  margin: 0.75em 0;
-  border-radius: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--fg) 80%, transparent);
+  overflow: hidden;
 }
 
 html.terminal blockquote::before {
-  content: "> ";
+  content: ">\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >\A >";
+  top: 0;
+  bottom: 0;
+  width: 2ch;
+  border-radius: 0;
+  background: none;
+  white-space: pre;
+  overflow: hidden;
   color: var(--primary);
   font-weight: 700;
-  opacity: 1;
+  line-height: 1.4;
+}
+
+html.terminal blockquote::after {
+  display: none;
+}
+
+html.terminal blockquote :is(p, ul, ol, pre, div, h1, h2, h3, h4) {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1.4;
+}
+
+html.terminal blockquote> *+* {
+  margin-top: 1.4em !important;
+}
+
+html.terminal blockquote blockquote {
+  padding-left: 2ch;
 }
 
 code {
@@ -3967,10 +4094,6 @@ html.terminal .project-card {
   border-radius: 0;
 }
 
-html.terminal blockquote {
-  border-left: 3px solid var(--primary);
-}
-
 /* Terminal: enforce same font size everywhere — use bold/color/borders for importance */
 html.terminal .article-title {
   font-size: 14px !important;
@@ -4172,27 +4295,6 @@ html.papery .code-block {
 
 html.papery .flag-box {
   border-radius: 0;
-}
-
-html.papery blockquote {
-  font-family: var(--font-serif);
-  font-style: italic;
-  border-left: 3px solid var(--heading-accent);
-  border-right: none;
-  background: transparent;
-  padding: 0.3em 0 0.3em 1em;
-  margin: 1em 0;
-  position: relative;
-}
-
-html.papery blockquote::before {
-  content: "\201C";
-  font-size: 2em;
-  color: var(--heading-accent);
-  opacity: 0.3;
-  position: absolute;
-  left: 0.2em;
-  top: -0.2em;
 }
 
 html.papery .tag,
