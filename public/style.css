@@ -1031,113 +1031,373 @@ html.terminal article li::marker {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   /* Foldable headings — click to fold/unfold. No marker, dim when collapsed. */
+   Article headings (h1-h4 inside the body, not the page title)
+   app.js adds .heading-anchor (start, copies the section link) and
+   .heading-fold (end, fold state). Clicking the heading folds h1-h3.
+   ═══════════════════════════════════════════════════════════════ */
+article {
+  counter-reset: article-h2;
+}
+
+article h1,
+article h2,
+article h3,
+article h4 {
+  position: relative;
+  scroll-margin-top: calc(var(--nav-height) + 10px);
+}
+
 article h1,
 article h2,
 article h3 {
-  position: relative;
   cursor: pointer;
   user-select: none;
-  padding-left: 0.8em;
-  margin-left: -0.8em;
-  transition: opacity 0.15s;
+  padding-right: 1.6rem;
 }
 
-article h1::before,
-article h2::before,
-article h3::before {
-  content: '';
+article h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 2.5rem;
+}
+
+article h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 2.5rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.45rem;
+  counter-increment: article-h2;
+}
+
+article h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 1.75rem;
+  margin-bottom: 0.6rem;
+}
+
+article h4 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--footer-text);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Rule under h1/h2: accent lead-in fading into a hairline */
+article h1::after,
+article h2::after {
+  content: "";
   position: absolute;
   left: 0;
-  top: 0;
+  right: 0;
   bottom: 0;
-  width: 2px;
-  background: var(--fold-color);
-  transition: background 0.15s, width 0.15s;
+  height: 1px;
+  background: linear-gradient(90deg, var(--heading-accent) 0 2.5rem, color-mix(in srgb, var(--bd) 70%, transparent) 2.5rem, transparent);
+  transition: background-size 0.3s;
 }
 
-article h1:hover::before,
-article h2:hover::before,
-article h3:hover::before {
-  background: var(--fold-hover);
-  width: 3px;
+article h1 {
+  padding-bottom: 0.45rem;
 }
 
-/* Dim heading when collapsed */
-article h1.collapsed,
-article h2.collapsed,
-article h3.collapsed {
-  opacity: 0.5;
+/* h3: short accent tick before the text */
+article h3::before {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 2px;
+  margin-right: 0.45em;
+  vertical-align: 0.3em;
+  border-radius: 2px;
+  background: var(--heading-accent);
+  opacity: 0.8;
 }
 
-/* Terminal: strikethrough when collapsed */
-html.terminal article h1.collapsed,
-html.terminal article h2.collapsed,
-html.terminal article h3.collapsed {
-  text-decoration: line-through;
-  opacity: 0.4;
+/* Anchor: in the left gutter, fades in on hover */
+.heading-anchor {
+  position: absolute;
+  right: 100%;
+  top: 0;
+  padding-right: 0.35em;
+  font-weight: 400;
+  color: var(--fold-color);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
 }
 
-/* Dim heading when collapsed */
+.heading-anchor::before {
+  content: "#";
+}
+
+article :is(h1, h2, h3, h4):hover .heading-anchor,
+.heading-anchor:focus-visible {
+  opacity: 1;
+}
+
+.heading-anchor:hover {
+  color: var(--primary);
+}
+
+.heading-anchor.copied::after {
+  content: "copied";
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  margin-bottom: 2px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  background: var(--primary);
+  color: var(--bg);
+  pointer-events: none;
+}
+
+/* Fold marker: chevron at the right edge, shown on hover or when folded */
+.heading-fold {
+  position: absolute;
+  right: 0.2rem;
+  top: 0.5em;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid var(--fold-color);
+  border-bottom: 2px solid var(--fold-color);
+  transform: translateY(-50%) rotate(45deg);
+  opacity: 0;
+  transition: transform 0.25s cubic-bezier(.2, .7, .2, 1), opacity 0.15s, border-color 0.15s;
+}
+
+article :is(h1, h2, h3):hover .heading-fold {
+  opacity: 1;
+  border-color: var(--fold-hover);
+}
+
+article :is(h1, h2, h3).collapsed .heading-fold {
+  opacity: 1;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* Folded: dimmed, dashed rule */
+article :is(h1, h2, h3).collapsed {
+  opacity: 0.55;
+}
+
+article :is(h1, h2).collapsed::after {
+  background: repeating-linear-gradient(90deg, var(--fold-hover) 0 6px, transparent 6px 10px);
+}
+
 article h1.collapsed+*,
 article h2.collapsed+*,
 article h3.collapsed+* {
   display: none;
 }
 
-/* Collapsed heading content */
-article h1 {
-  font-size: 2rem;
-  font-weight: bold;
+@media (hover: none) {
+  .heading-fold {
+    opacity: 0.4;
+  }
 }
 
-article h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 2rem;
-  border-bottom: 1px solid var(--bd);
-  padding-bottom: 0.3rem;
-}
-
-article h3 {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-top: 1.5rem;
-}
-
-/* Terminal theme heading decoration */
-html.terminal article h1,
-html.terminal article h2,
-html.terminal article h3 {
-  border-bottom: none;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-html.terminal article h2::after {
-  content: '';
-  display: block;
-  height: 1px;
-  background: var(--bd);
-  margin-top: 0.3rem;
-}
-
-/* Papery theme heading decoration */
-html.papery article h1 {
+/* ─── Papery: numbered chapters, double rule, pilcrow anchors ─── */
+html.papery article :is(h1, h2, h3, h4) {
   font-family: var(--font-serif);
-  font-size: 2.2rem;
-  border-bottom: 2px solid var(--heading-accent);
 }
 
 html.papery article h2 {
-  font-family: var(--font-serif);
-  font-size: 1.6rem;
-  border-bottom: 1px solid var(--bd);
+  font-size: 1.65rem;
+  padding-bottom: 0.35rem;
+}
+
+html.papery article h2::before {
+  content: counter(article-h2, upper-roman) ".";
+  margin-right: 0.5em;
+  font-size: 0.7em;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--heading-accent);
+  opacity: 0.7;
+}
+
+html.papery article :is(h1, h2)::after {
+  height: 3px;
+  background: none;
+  border-bottom: 3px double var(--bd);
+}
+
+html.papery article :is(h1, h2).collapsed::after {
+  border-bottom-style: dotted;
+  border-bottom-width: 2px;
 }
 
 html.papery article h3 {
+  font-style: italic;
+  font-size: 1.25rem;
+}
+
+html.papery article h3::before {
+  display: none;
+}
+
+html.papery article h4 {
+  font-size: 0.95rem;
+  font-variant: small-caps;
+  text-transform: none;
+  letter-spacing: 0.06em;
+  color: var(--heading-accent);
+}
+
+html.papery .heading-anchor::before {
+  content: "¶";
+}
+
+html.papery .heading-anchor:hover {
+  color: var(--heading-accent);
+}
+
+html.papery .heading-anchor.copied::after {
   font-family: var(--font-serif);
   font-style: italic;
+  background: none;
+  color: var(--heading-accent);
+  padding: 0;
+}
+
+html.papery .heading-fold {
+  width: auto;
+  height: auto;
+  border: 0;
+  font-weight: 400;
+  color: var(--heading-accent);
+  transform: translateY(-50%) rotate(90deg);
+}
+
+html.papery .heading-fold::before {
+  content: "›";
+}
+
+html.papery article :is(h1, h2, h3).collapsed .heading-fold {
+  transform: translateY(-50%) rotate(0deg);
+}
+
+/* ─── Terminal: markdown-style # prefixes (the anchor), dashed rules ─── */
+html.terminal article :is(h1, h2, h3, h4) {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg);
+}
+
+html.terminal article h2,
+html.terminal article h1 {
+  padding-bottom: 0.3rem;
+}
+
+html.terminal article :is(h1, h2)::after {
+  background: none;
+  height: 0;
+  border-bottom: 1px dashed var(--bd);
+}
+
+html.terminal article :is(h1, h2).collapsed::after {
+  border-bottom-style: dotted;
+}
+
+html.terminal article h3::before {
+  display: none;
+}
+
+html.terminal article h4 {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+html.terminal .heading-anchor {
+  position: static;
+  padding-right: 1ch;
+  opacity: 1;
+  color: var(--primary);
+}
+
+html.terminal article h1 .heading-anchor::before {
+  content: "#";
+}
+
+html.terminal article h2 .heading-anchor::before {
+  content: "##";
+}
+
+html.terminal article h3 .heading-anchor::before {
+  content: "###";
+}
+
+html.terminal article h4 .heading-anchor::before {
+  content: "####";
+}
+
+html.terminal article h4 .heading-anchor {
+  color: var(--fold-hover);
+}
+
+html.terminal .heading-anchor:hover {
+  background: var(--primary);
+  color: var(--bg);
+}
+
+html.terminal .heading-anchor.copied::after {
+  content: "[copied]";
+  left: auto;
+  right: 2.2rem;
+  bottom: auto;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: none;
+  color: var(--primary);
+}
+
+html.terminal .heading-fold {
+  width: auto;
+  height: auto;
+  border: 0;
+  right: 0;
+  transform: translateY(-50%);
+  font-weight: 400;
+  color: var(--fold-color);
+}
+
+html.terminal .heading-fold::before {
+  content: "[-]";
+}
+
+html.terminal article :is(h1, h2, h3).collapsed .heading-fold {
+  transform: translateY(-50%);
+  color: var(--primary);
+}
+
+html.terminal article :is(h1, h2, h3).collapsed .heading-fold::before {
+  content: "[+]";
+}
+
+html.terminal article :is(h1, h2, h3).collapsed {
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heading-fold {
+    transition: none;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════

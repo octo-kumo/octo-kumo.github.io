@@ -100,11 +100,39 @@ function createGiscusScript() {
 }
 
 // ─── Foldable headings (code-editor style fold markers) ───
+// Adds an anchor (copies the section link) and a fold marker to each heading
+function decorateHeading(h) {
+  if (h.querySelector(':scope > .heading-anchor') || !h.id) return;
+  var a = document.createElement('a');
+  a.className = 'heading-anchor';
+  a.href = '#' + h.id;
+  a.setAttribute('aria-label', 'Link to this section');
+  h.insertBefore(a, h.firstChild);
+  if (/^H[1-3]$/.test(h.tagName)) {
+    var f = document.createElement('span');
+    f.className = 'heading-fold';
+    f.setAttribute('aria-hidden', 'true');
+    h.appendChild(f);
+  }
+}
+document.addEventListener('click', function (e) {
+  var a = e.target.closest && e.target.closest('.heading-anchor');
+  if (!a) return;
+  copyToClipboard(location.origin + location.pathname + a.getAttribute('href'), function () {
+    a.classList.add('copied');
+    clearTimeout(a._copiedTimer);
+    a._copiedTimer = setTimeout(function () { a.classList.remove('copied'); }, 1200);
+  });
+});
 function initFoldableHeadings() {
+  document.querySelectorAll('article h4[id]').forEach(decorateHeading);
   var headings = document.querySelectorAll('article h1, article h2, article h3');
   headings.forEach(function (h) {
     // Only add fold handler to h2 and h3 (h1 is the article title, not foldable)
     if (h.tagName === 'H1' && h.classList.contains('article-title')) return;
+    decorateHeading(h);
+    if (h.dataset.foldWired) return;
+    h.dataset.foldWired = '1';
 
     h.addEventListener('click', function (e) {
       // Don't fold if clicking a link inside the heading
