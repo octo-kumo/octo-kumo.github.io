@@ -5056,3 +5056,107 @@ html.papery .project-card {
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+/* ─── LLM marker: a quiet note next to the project date ─── */
+.llm-mark {
+  position: relative;
+  z-index: 3; /* above the card's full-bleed link overlay so it can be hovered */
+  display: inline-block;
+  margin-right: 0.5em;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  vertical-align: 0.1em;
+  opacity: 0.55;
+  cursor: help;
+  transition: opacity 0.2s;
+}
+
+.llm-mark::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  width: max-content;
+  max-width: 14rem;
+  padding: 4px 8px;
+  border: 1px solid var(--tag-border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.4;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.llm-mark:hover,
+.llm-mark:focus-visible {
+  opacity: 1;
+}
+
+.llm-mark:hover::after,
+.llm-mark:focus-visible::after {
+  opacity: 1;
+}
+
+/* default: a tiny spark with a dotted underline */
+.llm-mark::before {
+  content: "✦ ";
+  font-size: 0.8em;
+  color: var(--primary);
+}
+
+.llm-mark {
+  border-bottom: 1px dotted currentColor;
+}
+
+/* papery: a marginal note, set in italic serif like a footnote */
+html.papery .llm-mark {
+  border-bottom: none;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.8rem;
+  letter-spacing: 0;
+  color: var(--heading-accent);
+}
+
+html.papery .llm-mark::before {
+  content: "* ";
+  font-size: 1em;
+  color: inherit;
+}
+
+html.papery .llm-mark::after {
+  content: attr(data-tip);
+  border-radius: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+
+/* terminal: reads as a shell comment */
+html.terminal .llm-mark {
+  border-bottom: none;
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--footer-text);
+}
+
+html.terminal .llm-mark::before {
+  content: "# ";
+  font-size: 1em;
+  color: inherit;
+}
+
+html.terminal .llm-mark::after {
+  border-radius: 0;
+  border-color: var(--fg);
+  font-size: 14px;
+}

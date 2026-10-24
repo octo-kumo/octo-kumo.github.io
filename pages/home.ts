@@ -24,6 +24,8 @@ interface RawProject {
   name: string;
   desc?: string;
   year?: string | number;
+  month?: number;
+  llm?: boolean;
   langs?: string[];
   keys?: string[];
   github?: string;
@@ -37,6 +39,7 @@ interface RawProject {
 export interface ShowcaseProject {
   name: string;
   year: string;
+  llm: boolean;
   desc: string;
   tags: string[];
   href: string;
@@ -60,6 +63,13 @@ function shortDesc(desc = ""): string {
   return para.length > 220 ? para.slice(0, 219).trimEnd() + "…" : para;
 }
 
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// "2026" + month 3 → "Mar 2026"; "2023-now" + month 1 → "Jan 2023-now"
+function fmtDate(year: string, month?: number): string {
+  return month && month >= 1 && month <= 12 && year ? `${MONTHS[month - 1]} ${year}` : year;
+}
+
 function toShowcase(p: RawProject): ShowcaseProject {
   const link = typeof p.link === "string" ? p.link : undefined;
   const github = p.github ? `https://github.com/${p.github}` : undefined;
@@ -72,7 +82,8 @@ function toShowcase(p: RawProject): ShowcaseProject {
   const image = p.image || (p.video ? `https://i.ytimg.com/vi/${p.video}/hqdefault.jpg` : undefined);
   return {
     name: p.name,
-    year: String(p.year ?? ""),
+    year: fmtDate(String(p.year ?? ""), p.month),
+    llm: !!p.llm,
     desc: shortDesc(p.desc),
     tags: [...(p.langs || []), ...(p.keys || [])].map((t) => t.toLowerCase()).filter((t, i, a) => a.indexOf(t) === i).slice(0, 4),
     // Card click target: live link > source > video > portfolio
@@ -86,9 +97,9 @@ function toShowcase(p: RawProject): ShowcaseProject {
 function showcaseProjects(all: RawProject[]): ShowcaseProject[] {
   return all
     .filter((p) => !p.hidden && p.home !== false)
-    .map((p) => ({ p, y: String(p.year ?? "") }))
-    // Newest first, same ordering as the portfolio gallery (stable sort)
-    .sort((a, b) => (a.y === b.y ? 0 : a.y < b.y ? 1 : -1))
+    .map((p) => ({ p, y: String(p.year ?? ""), m: p.month ?? 0 }))
+    // Newest first (year, then month), same ordering as the portfolio gallery (stable sort)
+    .sort((a, b) => (a.y === b.y ? b.m - a.m : a.y < b.y ? 1 : -1))
     .map(({ p }) => toShowcase(p));
 }
 

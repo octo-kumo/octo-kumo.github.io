@@ -26,6 +26,8 @@ type Project = {
   github?: string;
   link?: string | { win: string; linux: string };
   year: string;
+  month?: number;
+  llm?: boolean;
   video?: string;
   image?: string;
 };
@@ -50,7 +52,11 @@ for (const p of data.projects) {
   p.langs = p.langs.map((l) => l.toLowerCase());
   if (p.keys) p.keys = p.keys.map((k) => k.toLowerCase());
 }
-data.projects.sort((a, b) => (a.year === b.year ? 0 : a.year < b.year ? 1 : -1));
+data.projects.sort((a, b) => (a.year === b.year ? (b.month ?? 0) - (a.month ?? 0) : a.year < b.year ? 1 : -1));
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+// "2026" + month 3 → "Mar 2026"; "2023-now" + month 1 → "Jan 2023-now"
+const fmtDate = (p: Project) => (p.month && p.month >= 1 && p.month <= 12 ? `${MONTHS[p.month - 1]} ${p.year}` : p.year);
 
 export const projects = data.projects;
 export const keywordsWeighted = projects
@@ -291,7 +297,7 @@ function cardHTML(p: Project): string {
   }
   if (p.video) icons += `<a class="card-icon" href="https://www.youtube.com/watch?v=${p.video}" target="_blank" rel="noopener">${ICONS.youtube}</a>`;
   return `<div class="project-card" style="--image: url('${p.image ?? ""}')">
-    <small class="card-year">${p.year}</small>
+    <small class="card-year">${fmtDate(p)}${p.llm ? ' <span class="llm-mark" tabindex="0" data-tip="LLM was used, exact usage % may differ" aria-label="LLM was used, exact usage % may differ">llm</span>' : ""}</small>
     <h2 class="card-title">${p.name}</h2>
     <div class="card-desc scroll-container"><small class="card-desc-text">${p.desc}</small></div>
     <div class="card-chips scroll-container">${chips(p.langs)}</div>

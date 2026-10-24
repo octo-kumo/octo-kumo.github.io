@@ -45,7 +45,10 @@ include ./mixins.pug
                 .pcard-head
                   h3.pcard-title
                     a.pcard-link(href=p.href, target="_blank", rel="noopener", tabindex="-1")= p.name
-                  span.pcard-year= p.year
+                  span.pcard-year
+                    if p.llm
+                      span.llm-mark(tabindex="0", role="note", data-tip="LLM was used, exact usage % may differ", aria-label="LLM was used, exact usage % may differ") llm
+                    = p.year
                 .pcard-desc
                   p.pcard-desc-text= p.desc
                 .pcard-foot

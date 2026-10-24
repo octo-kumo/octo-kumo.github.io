@@ -711,3 +711,50 @@ body {
 .space-webpage > * {
   pointer-events: auto;
 }
+
+/* LLM marker (quiet note next to the project date) */
+.llm-mark {
+  position: relative;
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  border-bottom: 1px dotted currentColor;
+  cursor: help;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.llm-mark::before {
+  content: "✦ ";
+  font-size: 0.8em;
+  color: #a5c8ff;
+}
+.llm-mark::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 6px;
+  width: max-content;
+  max-width: 12rem;
+  padding: 4px 8px;
+  background: #111827;
+  color: #fff;
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  line-height: 1.4;
+  border-radius: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 10;
+  transition: opacity 0.2s;
+}
+.llm-mark:hover,
+.llm-mark:focus-visible {
+  opacity: 1;
+}
+.llm-mark:hover::after,
+.llm-mark:focus-visible::after {
+  opacity: 1;
+}

@@ -1,5 +1,7 @@
 # Per-project flags:
 #   hidden: true  — 3D logo planet only; skipped by the portfolio gallery and the homepage
+#   llm: true     — an LLM helped write it (shows a small marker)
+#   month: 1-12   — optional, month the project started (shown next to the year)
 #   home: false   — listed in the portfolio, but kept off the homepage project carousel
 - name: BDC
   hidden: true # 3D logo planet only — not shown in the skills gallery
@@ -7,8 +9,40 @@
   langs: []
   keys: []
   desc: Working at the Business Development Bank of Canada (BDC).
-- name: Stars
+- name: pixiv manager rs
+  llm: true
   year: '2026'
+  month: 10
+  langs:
+    - rust
+  keys:
+    - iced
+    - desktop app
+    - scraping
+    - pixiv
+  desc: >-
+    A Rust rewrite of my old pixiv manager, for browsing, filtering and downloading pixiv artwork. It can also show your Twitter/X photo feed and likes, and your Bilibili feed, next to your pixiv bookmarks.
+
+    Written with an LLM doing most of the typing, while I decided what it should do and tested it. I find it better than the original in pretty much every way.
+  github: octo-kumo/pixiv-manager-rs
+  image: https://github.com/octo-kumo/pixiv-manager-rs/raw/master/imgs/image.png
+- name: Debugger
+  year: '2026'
+  month: 10
+  langs:
+    - typescript
+  keys:
+    - game
+    - programming
+    - education
+    - simulation
+  desc: A coding game, where you have to write code which gets input data like where bugs are, their speed, figure out where to aim, when to shoot, etc, to defend your asset.
+  image: https://image.yun.ng/upload/v1792882149/2026/10/b7e9e8d73cc316398a7a0fddce090ca2.png
+  link: https://debugger.yun.ng/
+- name: Stars
+  llm: true
+  year: '2026'
+  month: 3
   langs:
     - react
     - typescript
@@ -33,6 +67,7 @@
   link: https://yun.ng/stars/
 - name: air-defence-rs
   year: '2026'
+  month: 3
   langs:
     - rust
     - rhai
@@ -48,6 +83,7 @@
   link: {}
 - name: r/place-rs
   year: '2026'
+  month: 3
   langs:
     - rust
     - bevy
@@ -72,6 +108,7 @@
   link: {}
 - name: compiler
   year: '2026'
+  month: 4
   langs:
     - c
   keys:
@@ -84,6 +121,7 @@
   github: octo-kumo/compiler
 - name: ARM Simulator
   year: '2025'
+  month: 1
   langs:
     - typescript
     - asm
@@ -95,6 +133,7 @@
   github: octo-kumo/arm-sim
 - name: Drone Ground Station
   year: '2025'
+  month: 1
   langs:
     - java
     - glsl
@@ -109,6 +148,7 @@
   image: https://image.yun.ng/upload/v1743831406/kstqunyercuh9bm4zrwj.webp
 - name: Deploy Flow
   year: '2025'
+  month: 1
   langs:
     - python
   keys:
@@ -126,6 +166,7 @@
   github: octo-kumo/deployflow
 - name: 云酱 (discord bot)
   year: '2025'
+  month: 2
   langs:
     - typescript
     - javascript
@@ -171,6 +212,7 @@
   video: vN1YDjCYprw
 - name: space-rs
   year: '2025'
+  month: 4
   langs:
     - rust
   keys:
@@ -183,6 +225,7 @@
   link: https://yun.ng/space-rs
 - name: lines-game
   year: '2025'
+  month: 10
   langs:
     - typescript
     - html
@@ -211,10 +254,12 @@
     - javascript
   github: octo-kumo/hsr-sim-universe-utils
   year: '2024'
-  link: https://yun.ng/projects/simulated-universe
+  month: 1
+  link: https://utilbox.yun.ng/
 - name: htb-writeups
   home: false
   year: '2024'
+  month: 8
   langs:
     - md
   github: octo-kumo/htb-writeups
@@ -225,6 +270,7 @@
   link: https://yun.ng/c/htb
 - name: Timetable Widget
   year: '2024'
+  month: 8
   langs:
     - java
   keys:
@@ -235,6 +281,7 @@
   desc: Automatically fetches the timetable and displays today's schedule as a widget, only for mcgill.
 - name: mc-forensics
   year: '2024'
+  month: 8
   langs:
     - java
     - javascript
@@ -245,6 +292,7 @@
   github: octo-kumo/mc-forensics
 - name: globe-ctf
   year: '2024'
+  month: 10
   langs:
     - typescript
     - scss
@@ -273,7 +321,7 @@
     - vue.js
   desc: RPN logic expression parser + evaluator + truth table generation / custom truth table + kmap generation + kmap solver + DFS minimal cover pruning + shannon factorization + good UI
   image: https://image.yun.ng/upload/v1743830774/llytz7xpqxizeqxnvr91.webp
-  link: https://yun.ng/projects/digital-logic
+  link: https://utilbox.yun.ng/
 - name: 2D Triangulator
   year: '2024'
   langs:
@@ -283,7 +331,7 @@
     - vue.js
   desc: N vector universal 2D triangulator, useful to finding minecraft bases
   image: https://image.yun.ng/upload/v1743830833/nlvxtyr0zy2fwkfdpyex.webp
-  link: https://yun.ng/projects/triangulator
+  link: https://utilbox.yun.ng/
 - name: Finance Tools
   year: '2024'
   langs:
@@ -292,7 +340,7 @@
     - vue.js
     - finance
   desc: Time value, annuity, arithmetic gradient, perpetuity calculator. And some other stuff.
-  link: https://yun.ng/projects/finance
+  link: https://utilbox.yun.ng/
 - name: Yun's Website
   desc: This website and its subrepositories.
   langs:
@@ -310,6 +358,7 @@
     - git
   github: octo-kumo/octo-kumo.github.io
   year: 2023-now
+  month: 1
   link: https://yun.ng/
 - name: pixiv manager
   desc: A pixiv downloader & manager & viewer.
@@ -321,6 +370,7 @@
   github: octo-kumo/pixiv-manager
   image: https://github.com/octo-kumo/pixiv-manager/raw/master/github/images/img.jpg
   year: 2023-2024
+  month: 2
   link: https://github.com/octo-kumo/pixiv-manager/releases
 - name: air defence
   desc: Web-based 3D turret shooting game (WIP).
@@ -336,7 +386,8 @@
   github: octo-kumo/air-defence
   image: https://image.yun.ng/upload/v1743829040/ebuggnx4tsxge4ypp1l3.webp
   year: 2023-2024
-  link: https://yun.ng/projects/air-defence
+  month: 12
+  link: https://debugger.yun.ng/
 - name: discord-chat-chart
   year: '2023'
   langs:
@@ -367,6 +418,7 @@
   github: octo-kumo/buzz-dungeon-gdx
   image: https://github.com/octo-kumo/buzz-dungeon-gdx/raw/master/images/4.png
   year: '2022'
+  month: 1
 - name: HyperSketch
   home: false
   desc: I made the color picker function for my internship at STUCK Designs
@@ -386,6 +438,7 @@
   github: octo-kumo/evil-er
   image: https://github.com/octo-kumo/evil-er/raw/master/icons/img.png
   year: '2022'
+  month: 1
 - name: 'Evil ER: Web + Collab'
   desc: Collaborative, realtime, web based editing of ER diagrams!
   langs:
@@ -406,6 +459,7 @@
   github: octo-kumo/cs6131-project
   image: https://github.com/octo-kumo/evil-er/raw/master/icons/img.png
   year: '2022'
+  month: 2
 - name: Network Contest
   home: false
   desc: Kahoot clone using sockets.
@@ -416,6 +470,7 @@
     - socket
   github: octo-kumo/network-contest
   year: '2022'
+  month: 8
 - name: video essay transcriber
   desc: >-
     Hackathon 3rd Place: Tired of watching long video essays? Needing to listen to lectures at 3 times speed just to listen normally? Our video essay transcription will end those problems once and for
@@ -473,6 +528,7 @@
   keys:
     - vue.js
   year: '2021'
+  month: 9
 - name: Anime Character Extractor
   desc: Analyzes anime videos, extract all character faces, and cluster them. Manually labeled and cleaned training data.
   image: https://image.yun.ng/upload/v1743833563/c7yllsfevuiodciydhno.webp
@@ -487,6 +543,7 @@
     - numpy
     - pandas
   year: '2021'
+  month: 4
 - name: CTF Writeups
   desc: Writeups for CTFs I participated in.
   langs:
@@ -524,6 +581,7 @@
     - unity
   github: octo-kumo/ctf-writeups
   year: 2020-now
+  month: 12
   link: https://yun.ng/c/ctf
 - name: QuickMacro
   desc: Quickly record and play macros with time sensative actions! (only works on Mac)
@@ -531,6 +589,7 @@
     - java
   github: octo-kumo/QuickMacro
   year: 2020-2022
+  month: 11
 - name: E-Notes
   desc: >-
     Note management system with role-based permissions, supporting Markdown, HTML, and Jupyter Notebook formats. Used by my highschool, with 420 total users. Led, managed and developed by me. Per
@@ -578,6 +637,7 @@
     - firebase
     - android
   year: '2020'
+  month: 2
 - name: gomoku
   desc: Multiplayer socket based web game, the game gomoku.
   langs:
@@ -591,6 +651,7 @@
     - node.js
     - mongodb
   year: '2020'
+  month: 3
 - name: kumo-mod
   home: false
   desc: A cool little *client-side* mod for minecraft
@@ -599,6 +660,7 @@
   keys:
     - minecraft
   year: '2020'
+  month: 7
 - name: It-is-noisy
   desc: Hackathon 3rd place, visualize noise levels in neighbourhood.
   langs:
@@ -607,6 +669,7 @@
   keys:
     - electron
   year: '2020'
+  month: 8
   github: octo-kumo/it-is-noisy
   video: CPCLDOhJSQA
 - name: BookDownloader
@@ -616,6 +679,7 @@
   keys:
     - scraping
   year: '2020'
+  month: 8
   github: octo-kumo/BookDownloader
 - name: kumo (discord bot)
   desc: General purpose custom discord bot for my own use, and for my classmates.
@@ -627,6 +691,7 @@
     - github/ci
     - mongodb
   year: 2019-2022
+  month: 11
 - name: Azurlane API
   desc: Scraps the azurlane wiki into JSON, automated. Part of 2020 GitHub Archive Program.
   langs:
@@ -648,6 +713,7 @@
   image: https://github.com/octo-kumo/Tank/raw/master/images/img.webp
   github: octo-kumo/Tank
   year: '2019'
+  month: 1
   link: https://yun.ng/Tank/
 - name: Palm
   desc: (Unfinished) 2D Platformer game, with physics, shadows, swords and magic.
@@ -661,6 +727,7 @@
     - box2d
   video: 06f5jsTaa-8
   year: '2019'
+  month: 3
 - name: NanoGun
   desc: 2D shooter game with no dependencies.
   langs:
@@ -679,6 +746,7 @@
     - unity
     - game
   year: '2019'
+  month: 6
 - name: Bus finder
   home: false
   desc: 'Hackathon 3rd place: An application to find buses and receive notification when bus is about to arrive.'
@@ -688,6 +756,7 @@
   keys:
     - node.js
   year: '2019'
+  month: 8
 - name: Space
   desc: 4K HD 3D N-Body simulator, in JavaFX, with i18n and configurations.
   langs:
@@ -699,6 +768,7 @@
   video: Q_EIy8KmvHc
   github: octo-kumo/Space
   year: '2019'
+  month: 9
 - name: Cats
   desc: Battle cats clone.
   langs:

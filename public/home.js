@@ -165,7 +165,7 @@
     var drag = null;
     stage.addEventListener('pointerdown', function (e) {
       if (e.button !== 0) return;
-      drag = { x: e.clientX, y: e.clientY, start: liveValue(), moved: false, id: e.pointerId, lastX: e.clientX, lastT: performance.now(), v: 0, value: 0 };
+      drag = { x: e.clientX, y: e.clientY, start: liveValue(), base: target, moved: false, id: e.pointerId, lastX: e.clientX, lastT: performance.now(), v: 0, value: 0 };
     });
     stage.addEventListener('pointermove', function (e) {
       if (!drag || e.pointerId !== drag.id) return;
@@ -184,7 +184,8 @@
       drag.lastX = e.clientX;
       drag.lastT = now;
       var unit = (cards[0].offsetWidth || 600) * 1.1; // front card tracks the finger
-      drag.value = drag.start - dx / unit;
+      // never more than one card away from where the gesture began
+      drag.value = Math.max(drag.base - 1, Math.min(drag.base + 1, drag.start - dx / unit));
       updateFar(drag.value, drag.value);
       if (CSS_MATH) root.style.setProperty('--active', String(drag.value));
       else layoutFallback(drag.value);
@@ -195,9 +196,15 @@
         suppressClick = true;
         setTimeout(function () { suppressClick = false; }, 0);
         root.classList.remove('is-dragging');
-        // flick momentum (px/ms → cards); a cancelled gesture just snaps
-        var fling = e.type === 'pointerup' ? Math.max(-3, Math.min(3, -drag.v * 2.2)) : 0;
-        goTo(drag.value + fling, true);
+        // One card per gesture: a far enough pull or a quick flick moves
+        // exactly one step in that direction; otherwise snap back. A
+        // cancelled gesture always snaps back.
+        var pulled = drag.value - drag.base;
+        var flick = e.type === 'pointerup' ? -drag.v : 0; // px/ms, + = towards next
+        var dir = 0;
+        if (Math.abs(pulled) > 0.2) dir = pulled > 0 ? 1 : -1;
+        else if (Math.abs(flick) > 0.3) dir = flick > 0 ? 1 : -1;
+        goTo(drag.base + dir, true);
       }
       drag = null;
     }
