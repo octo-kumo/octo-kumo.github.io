@@ -1,0 +1,9 @@
+[fmt]
+printWidth = 120
+tabWidth = 4
+semi = true
+singleQuote = true
+ignorePatterns = ["content/"]
+sortImports = true
+sortTailwindcss = true
+sortPackageJson = true

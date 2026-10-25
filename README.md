@@ -1,12 +1,6 @@
-# yun.ng v2
+# yun.ng
 
-Self-written static site generator for [yun.ng](https://yun.ng). Bun + TypeScript, no framework.
-
-## Why
-
-The old Nuxt 4 build was 244 MB, took 14 minutes, and pulled in 50+ npm dependencies with 16 Nuxt modules. This rewrite is a plain SSG: ~7 MB of source, a handful of dependencies, sub-minute builds, same submodules/content/output URLs.
-
-## Architecture
+My website~
 
 ```
 build.ts              Entry point: content → routes → SSG → fonts → OG images →
@@ -26,8 +20,7 @@ pages/
   content.ts          Content pages (blog, CTF writeups, dir pages)
 templates/            Pug templates (shell, article, tree, stats, home)
 public/               style.css, JS, fonts, logo, favicon
-portfolio/            The 3D portfolio — a plain directory sharing v2's
-                      package.json/node_modules/fonts (built into dist/portfolio)
+portfolio/            The 3D portfolio
 worker/               Dual-origin page-views worker (views.yun.ng)
 ```
 
@@ -35,8 +28,7 @@ worker/               Dual-origin page-views worker (views.yun.ng)
 
 ```bash
 bun install
-bun run build        # dist/
-DEBUG=1 bun run build  # skip minification (faster, readable output)
+bun run build
 ```
 
 The build pipeline:
@@ -61,16 +53,3 @@ Writeups live in the content submodules (standard Markdown + YAML frontmatter).
 Frontmatter fields: `title`, `created`, `updated`, `tags`, `points`, `solves`,
 `rank`, `team`, `description`. Date-only titles on blog posts are formatted
 automatically (e.g. `2024-11-12` → "Tue, Nov 12, 2024").
-
-## Serving
-
-`docker compose up -d` runs lighttpd over `dist/` on :8080 (behind Cloudflare on
-yun.ng). `.github/workflows/deploy.yml` builds on push and deploys the static
-site.
-
-## Notes
-
-- Umami analytics is a build-time env option (`UMAMI_WEBSITE_ID`), loaded off the
-  critical path. Page views come from the `worker/` Cloudflare Worker (CORS
-  allowlist for yun.ng + yun.ng).
-- Feel free to use this for you own website
