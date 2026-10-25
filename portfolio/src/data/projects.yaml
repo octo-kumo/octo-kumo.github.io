@@ -24,10 +24,23 @@
   github: octo-kumo/ycc
   desc: >-
       A self-hosting compiler for Y, a small, statically checked systems language.
-
       Compiles to native x86/aarch64/wasm, supports windows, osdev etc.
-
       Continuation of the previous 'compiler' project.
+- name: judgement
+  llm: true
+  year: '2026'
+  month: 10
+  langs:
+      - y
+  keys:
+      - game
+      - rpg
+  desc: >-
+      A small PoC RPG written in Y, compiles to windows, linux, wasm.
+  github: octo-kumo/judgement
+  image: https://github.com/octo-kumo/judgement/blob/master/images/rune-input.png
+  link: https://yun.ng/judgement/
+
 - name: pixiv manager rs
   llm: true
   year: '2026'
@@ -41,8 +54,6 @@
       - pixiv
   desc: >-
       A Rust rewrite of my old pixiv manager, for browsing, filtering and downloading pixiv artwork. It can also show your Twitter/X photo feed and likes, and your Bilibili feed, next to your pixiv bookmarks.
-
-      Written with an LLM doing most of the typing, while I decided what it should do and tested it. I find it better than the original in pretty much every way.
   github: octo-kumo/pixiv-manager-rs
   image: https://github.com/octo-kumo/pixiv-manager-rs/raw/master/imgs/image.png
 - name: Debugger
@@ -59,6 +70,21 @@
   desc: A coding game, where you have to write code which gets input data like where bugs are, their speed, figure out where to aim, when to shoot, etc, to defend your asset.
   image: https://image.yun.ng/upload/v1792882149/2026/10/b7e9e8d73cc316398a7a0fddce090ca2.png
   link: https://debugger.yun.ng/
+- name: kde-todoist-widget
+  llm: true
+  year: '2026'
+  month: 10
+  langs:
+      - rust
+      - qml
+  keys:
+      - kde
+      - widget
+      - todoist
+  desc: >-
+      A KDE Plasma 6 widget for one or more Todoist projects, with a headless Rust CLI backend. Works both in the panel (compact: color-coded project pills for tasks due within a day or overdue, plus plain colored numbers for later tasks) and on the desktop
+  image: https://github.com/octo-kumo/kde-todoist-widget/blob/master/docs/list.png
+  github: octo-kumo/kde-todoist-widget
 - name: Stars
   llm: true
   year: '2026'
