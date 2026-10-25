@@ -1,56 +1,59 @@
-import { build as buildSSG, siteUrl } from "./framework/ssg";
-import type { RouteDefinition } from "./framework/types";
-import { queryAllDocs, docTitle } from "./framework/content";
-import { renderMarkdown } from "./framework/markdown";
-import { buildSearchIndex } from "./framework/search-index";
-import { generateOGImage, inferPageType, type OGDoc } from "./framework/og-image";
-import { collectFeedDocs, renderRSS, renderAtom } from "./framework/feed";
+import { existsSync } from 'node:fs';
+import { cp, mkdir } from 'node:fs/promises';
+
+import { dirSize, fmt as fmtSize } from './framework/build-report';
+import { docTitle, queryAllDocs } from './framework/content';
+import { collectFeedDocs, renderAtom, renderRSS } from './framework/feed';
+import { renderMarkdown } from './framework/markdown';
 import {
-  loadManifest,
-  getRendererHash,
-  getContentHash,
-  getImageFilename,
-  processOGImage,
-  optimizeOGImages,
-  saveManifestIfChanged,
-} from "./framework/og-cache";
-import { benchmarkOGGeneration } from "./framework/og-debug";
-import { dirSize, fmt as fmtSize } from "./framework/build-report";
-import { mkdir, cp } from "node:fs/promises";
-import { existsSync } from "node:fs";
+    getContentHash,
+    getImageFilename,
+    getRendererHash,
+    loadManifest,
+    optimizeOGImages,
+    processOGImage,
+    saveManifestIfChanged,
+} from './framework/og-cache';
+import { benchmarkOGGeneration } from './framework/og-debug';
+import { generateOGImage, inferPageType, type OGDoc } from './framework/og-image';
+import { buildSearchIndex } from './framework/search-index';
+import { build as buildSSG, siteUrl } from './framework/ssg';
+import type { RouteDefinition } from './framework/types';
 
 // Cache-busting version for static assets (CSS/JS)
 process.env.CACHE_VER = Date.now().toString(36);
 // Site base URL lives in framework/site-config.ts (SITE_URL env override) —
 // og:image/canonical URLs all derive from siteUrl() at render time
 // Umami analytics website ID (overridable via UMAMI_WEBSITE_ID env var)
-process.env.UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || "fd089b30-9952-41b0-a817-fce38fefae17";
+process.env.UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID || 'fd089b30-9952-41b0-a817-fce38fefae17';
 // Debug mode: enables OG layout checks/benchmarks, disables minification
-const DEBUG = process.env.DEBUG === "1" || process.env.DEBUG_OG === "1";
+const DEBUG = process.env.DEBUG === '1' || process.env.DEBUG_OG === '1';
 
+import { render as renderContent } from './pages/content';
 // ─── Page Templates ───
-import { render as renderHome } from "./pages/home";
-import { render as renderContent } from "./pages/content";
-import getTool from "./tools";
+import { render as renderHome } from './pages/home';
+import getTool from './tools';
 
 async function preRenderDocs(docs: any) {
-  console.log("Rendering markdown bodies...");
+    console.log('Rendering markdown bodies...');
 
-  // Eagerly initialize shiki + marked BEFORE parallel work
-  await renderMarkdown("# init\n```js\n1\n```");
-  console.log("   Shiki initialized");
-  // Use _bodyRaw stored during scanDir (no re-reading files)
-  const entries = Array.from(docs.docs.values()).filter((d: any) => d._bodyRaw);
+    // Eagerly initialize shiki + marked BEFORE parallel work
+    await renderMarkdown('# init\n```js\n1\n```');
+    console.log('   Shiki initialized');
+    // Use _bodyRaw stored during scanDir (no re-reading files)
+    const entries = Array.from(docs.docs.values()).filter((d: any) => d._bodyRaw);
 
-  // Render in parallel batches
-  const BATCH = 50;
-  for (let i = 0; i < entries.length; i += BATCH) {
-    const batch = entries.slice(i, i + BATCH);
-    await Promise.all(batch.map(async (doc: any) => {
-      doc.body = await renderMarkdown(doc._bodyRaw);
-    }));
-  }
-  console.log(`   ${entries.length} documents rendered`);
+    // Render in parallel batches
+    const BATCH = 50;
+    for (let i = 0; i < entries.length; i += BATCH) {
+        const batch = entries.slice(i, i + BATCH);
+        await Promise.all(
+            batch.map(async (doc: any) => {
+                doc.body = await renderMarkdown(doc._bodyRaw);
+            }),
+        );
+    }
+    console.log(`   ${entries.length} documents rendered`);
 }
 
 // ─── OG Image Generation ───
@@ -60,27 +63,24 @@ async function preRenderDocs(docs: any) {
  * URLs are deterministic from the content hash, so they can be embedded in HTML
  * before the SSG build wipes dist/. Actual PNG generation happens in generateOGImages().
  */
-function prepareOGImages(docs: {
-  flat: any[];
-  docs: Map<string, any>;
-}): Map<string, string> {
-  const SITE_BASE = siteUrl();
-  const ogImageMap = new Map<string, string>();
+function prepareOGImages(docs: { flat: any[]; docs: Map<string, any> }): Map<string, string> {
+    const SITE_BASE = siteUrl();
+    const ogImageMap = new Map<string, string>();
 
-  // Homepage
-  ogImageMap.set("/", `${SITE_BASE}/og/${getImageFilename("/")}`);
+    // Homepage
+    ogImageMap.set('/', `${SITE_BASE}/og/${getImageFilename('/')}`);
 
-  // Content index
-  ogImageMap.set("/c", `${SITE_BASE}/og/${getImageFilename("/c")}`);
+    // Content index
+    ogImageMap.set('/c', `${SITE_BASE}/og/${getImageFilename('/c')}`);
 
-  // All docs with content
-  for (const [path, doc] of docs.docs) {
-    if (!doc._bodyRaw || doc._bodyRaw.trim().length === 0) continue;
-    const routePath = `/c${path}`;
-    ogImageMap.set(routePath, `${SITE_BASE}/og/${getImageFilename(path)}`);
-  }
+    // All docs with content
+    for (const [path, doc] of docs.docs) {
+        if (!doc._bodyRaw || doc._bodyRaw.trim().length === 0) continue;
+        const routePath = `/c${path}`;
+        ogImageMap.set(routePath, `${SITE_BASE}/og/${getImageFilename(path)}`);
+    }
 
-  return ogImageMap;
+    return ogImageMap;
 }
 
 /**
@@ -89,376 +89,405 @@ function prepareOGImages(docs: {
  * Images are written to dist/og/. Manifest is stored in .og-cache/manifest.json.
  */
 async function generateOGImages(docs: {
-  flat: any[];
-  docs: Map<string, any>;
+    flat: any[];
+    docs: Map<string, any>;
 }): Promise<{ generated: number; skipped: number }> {
-  console.log("🖼️  Generating OG images...");
+    console.log('🖼️  Generating OG images...');
 
-  const rendererHash = getRendererHash();
-  const ogDir = "dist/og";
-  await mkdir(ogDir, { recursive: true });
+    const rendererHash = getRendererHash();
+    const ogDir = 'dist/og';
+    await mkdir(ogDir, { recursive: true });
 
-  // Collect all pages that need OG images
-  const ogPages: Array<{ contentPath: string; doc: OGDoc; pageType: ReturnType<typeof inferPageType> }> = [];
+    // Collect all pages that need OG images
+    const ogPages: Array<{ contentPath: string; doc: OGDoc; pageType: ReturnType<typeof inferPageType> }> = [];
 
-  // Homepage
-  ogPages.push({
-    contentPath: "/",
-    doc: { title: "云 — Yun", description: "CTF writeups, HackTheBox, and blog posts by Yun" },
-    pageType: "home",
-  });
-
-  // Content index
-  ogPages.push({
-    contentPath: "/c",
-    doc: { title: "Content Index", description: "Browse all CTF writeups, HackTheBox, and blog posts" },
-    pageType: "directory",
-  });
-
-  // All docs with content
-  for (const [path, doc] of docs.docs) {
-    if (!doc._bodyRaw || doc._bodyRaw.trim().length === 0) continue;
-    const pageType = inferPageType(path);
+    // Homepage
     ogPages.push({
-      contentPath: path,
-      doc: {
-        title: docTitle(doc),
-        description: doc.description,
-        tags: doc.tags,
-        created: doc.created,
-        solves: doc.solves,
-        points: doc.points,
-        rank: doc.rank,
-        team: doc.team,
-        path: doc.path,
-        _bodyRaw: doc._bodyRaw,
-      },
-      pageType,
+        contentPath: '/',
+        doc: { title: '云 — Yun', description: 'CTF writeups, HackTheBox, and blog posts by Yun' },
+        pageType: 'home',
     });
-  }
 
-  // Generate images with caching (load manifest once, pass through)
-  let generated = 0;
-  let skipped = 0;
-  const manifest = loadManifest();
-  const toOptimize: string[] = [];
+    // Content index
+    ogPages.push({
+        contentPath: '/c',
+        doc: { title: 'Content Index', description: 'Browse all CTF writeups, HackTheBox, and blog posts' },
+        pageType: 'directory',
+    });
 
-  for (const page of ogPages) {
-    const contentHash = getContentHash(page.doc);
-
-    try {
-      const result = await processOGImage(
-        manifest,
-        page.contentPath,
-        contentHash,
-        rendererHash,
-        () => generateOGImage(page.doc, page.pageType),
-      );
-      if (result.needsOptimize) toOptimize.push(page.contentPath);
-      if (result.generated) {
-        generated++;
-      } else {
-        skipped++;
-      }
-    } catch (e) {
-      console.warn(`   ⚠ OG image failed for ${page.contentPath}: ${e}`);
+    // All docs with content
+    for (const [path, doc] of docs.docs) {
+        if (!doc._bodyRaw || doc._bodyRaw.trim().length === 0) continue;
+        const pageType = inferPageType(path);
+        ogPages.push({
+            contentPath: path,
+            doc: {
+                title: docTitle(doc),
+                description: doc.description,
+                tags: doc.tags,
+                created: doc.created,
+                solves: doc.solves,
+                points: doc.points,
+                rank: doc.rank,
+                team: doc.team,
+                path: doc.path,
+                _bodyRaw: doc._bodyRaw,
+            },
+            pageType,
+        });
     }
-  }
 
-  // Batch PNG optimization (parallel oxipng), results go back into the cache
-  if (toOptimize.length > 0) {
-    const tOpt = performance.now();
-    await optimizeOGImages(manifest, toOptimize);
-    console.log(`   ✓ optimized ${toOptimize.length} images in ${((performance.now() - tOpt) / 1000).toFixed(1)}s`);
-  }
+    // Generate images with caching (load manifest once, pass through)
+    let generated = 0;
+    let skipped = 0;
+    const manifest = loadManifest();
+    const toOptimize: string[] = [];
 
-  // Prune + save manifest once at the end
-  await saveManifestIfChanged(manifest, ogPages.map((p) => p.contentPath));
+    for (const page of ogPages) {
+        const contentHash = getContentHash(page.doc);
 
-  console.log(`   ✓ ${generated} generated, ${skipped} cached (skipped)`);
+        try {
+            const result = await processOGImage(manifest, page.contentPath, contentHash, rendererHash, () =>
+                generateOGImage(page.doc, page.pageType),
+            );
+            if (result.needsOptimize) toOptimize.push(page.contentPath);
+            if (result.generated) {
+                generated++;
+            } else {
+                skipped++;
+            }
+        } catch (e) {
+            console.warn(`   ⚠ OG image failed for ${page.contentPath}: ${e}`);
+        }
+    }
 
-  // Benchmark in debug mode
-  if (DEBUG || process.env.BENCH_OG === "1") {
-    console.log("📊 Benchmarking OG image generation...");
-    const sampleDocs = ogPages.slice(0, Math.min(20, ogPages.length)).map((p) => p.doc);
-    const bench = await benchmarkOGGeneration(sampleDocs);
-    console.log(`   Total: ${bench.total} images in ${bench.totalTime.toFixed(0)}ms`);
-    console.log(`   Average: ${bench.average.toFixed(1)}ms, Min: ${bench.min.toFixed(1)}ms, Max: ${bench.max.toFixed(1)}ms`);
-  }
+    // Batch PNG optimization (parallel oxipng), results go back into the cache
+    if (toOptimize.length > 0) {
+        const tOpt = performance.now();
+        await optimizeOGImages(manifest, toOptimize);
+        console.log(`   ✓ optimized ${toOptimize.length} images in ${((performance.now() - tOpt) / 1000).toFixed(1)}s`);
+    }
 
-  return { generated, skipped };
+    // Prune + save manifest once at the end
+    await saveManifestIfChanged(
+        manifest,
+        ogPages.map((p) => p.contentPath),
+    );
+
+    console.log(`   ✓ ${generated} generated, ${skipped} cached (skipped)`);
+
+    // Benchmark in debug mode
+    if (DEBUG || process.env.BENCH_OG === '1') {
+        console.log('📊 Benchmarking OG image generation...');
+        const sampleDocs = ogPages.slice(0, Math.min(20, ogPages.length)).map((p) => p.doc);
+        const bench = await benchmarkOGGeneration(sampleDocs);
+        console.log(`   Total: ${bench.total} images in ${bench.totalTime.toFixed(0)}ms`);
+        console.log(
+            `   Average: ${bench.average.toFixed(1)}ms, Min: ${bench.min.toFixed(1)}ms, Max: ${bench.max.toFixed(1)}ms`,
+        );
+    }
+
+    return { generated, skipped };
 }
 
 async function main() {
-  const buildStartEpoch = Date.now();
-  const phases: { name: string; ms: number }[] = [];
-  let ogGenerated = 0;
-  let ogSkipped = 0;
+    const buildStartEpoch = Date.now();
+    const phases: { name: string; ms: number }[] = [];
+    let ogGenerated = 0;
+    let ogSkipped = 0;
 
-  const t0 = performance.now();
-  const docs = await queryAllDocs();
-  console.log(`Loaded ${docs.flat.length} content documents`);
-  await preRenderDocs(docs);
-  phases.push({ name: "Load & parse content", ms: performance.now() - t0 });
+    const t0 = performance.now();
+    const docs = await queryAllDocs();
+    console.log(`Loaded ${docs.flat.length} content documents`);
+    await preRenderDocs(docs);
+    phases.push({ name: 'Load & parse content', ms: performance.now() - t0 });
 
-  // Generate content routes
-  const contentRoutes: RouteDefinition[] = [];
-  const seen = new Set<string>();
+    // Generate content routes
+    const contentRoutes: RouteDefinition[] = [];
+    const seen = new Set<string>();
 
-  for (const doc of docs.flat) {
-    if (!doc.path || doc.path === "/") continue;
+    for (const doc of docs.flat) {
+        if (!doc.path || doc.path === '/') continue;
 
-    // Skip category-only pages (no body content)
-    const fullDoc = docs.docs.get(doc.path)
-      || (() => { for (const [k, v] of docs.docs) { if (k.endsWith(doc.path)) return v; } return undefined; })();
-    if (!fullDoc || !fullDoc._bodyRaw || fullDoc._bodyRaw.trim().length === 0) continue;
+        // Skip category-only pages (no body content)
+        const fullDoc =
+            docs.docs.get(doc.path) ||
+            (() => {
+                for (const [k, v] of docs.docs) {
+                    if (k.endsWith(doc.path)) return v;
+                }
+                return undefined;
+            })();
+        if (!fullDoc || !fullDoc._bodyRaw || fullDoc._bodyRaw.trim().length === 0) continue;
 
-    const route = `/c${doc.path}`;
-    if (!seen.has(route)) {
-      seen.add(route);
-      contentRoutes.push({
-        path: route,
-        render: async (data) => {
-          data.url = route;
-          data.doc = fullDoc || undefined;
-          data.docs = docs.flat;
-          data.nav = docs.nav;
-          return renderContent(data);
-        },
-      });
-    }
-
-    // Also generate directory listing pages for intermediate paths
-    const segments = doc.path.split("/").filter(Boolean);
-    for (let i = 1; i < segments.length; i++) {
-      const dirPath = "/" + segments.slice(0, i).join("/");
-      const dirRoute = `/c${dirPath}`;
-      if (!seen.has(dirRoute) && dirPath) {
-        // Check if this directory has its own content
-        const dirDoc = docs.docs.get(dirPath)
-          || (() => { for (const [k, v] of docs.docs) { if (k.endsWith(dirPath)) return v; } return undefined; })();
-        // Skip category-only pages (no content, just a directory listing)
-        // Category pages like /ctf/event/misc have no index.md
-        if (!dirDoc) {
-          // No doc at all — only generate if it's a section root (e.g., /ctf, /blog)
-          const segCount = dirPath.split("/").filter(Boolean).length;
-          if (segCount >= 2) continue; // /ctf/event — skip if no doc
-        } else if (!dirDoc._bodyRaw || dirDoc._bodyRaw.trim().length === 0) {
-          // Doc exists but has no body — skip if it's a category (3+ segments)
-          const segCount = dirPath.split("/").filter(Boolean).length;
-          if (segCount >= 3) continue; // /ctf/event/category — skip
+        const route = `/c${doc.path}`;
+        if (!seen.has(route)) {
+            seen.add(route);
+            contentRoutes.push({
+                path: route,
+                render: async (data) => {
+                    data.url = route;
+                    data.doc = fullDoc || undefined;
+                    data.docs = docs.flat;
+                    data.nav = docs.nav;
+                    return renderContent(data);
+                },
+            });
         }
-        seen.add(dirRoute);
-        contentRoutes.push({
-          path: dirRoute,
-          render: async (data) => {
-            data.url = dirRoute;
-            data.docs = docs.flat;
-            data.nav = docs.nav;
-            data.doc = dirDoc || undefined;
-            return renderContent(data);
-          },
-        });
-      }
+
+        // Also generate directory listing pages for intermediate paths
+        const segments = doc.path.split('/').filter(Boolean);
+        for (let i = 1; i < segments.length; i++) {
+            const dirPath = '/' + segments.slice(0, i).join('/');
+            const dirRoute = `/c${dirPath}`;
+            if (!seen.has(dirRoute) && dirPath) {
+                // Check if this directory has its own content
+                const dirDoc =
+                    docs.docs.get(dirPath) ||
+                    (() => {
+                        for (const [k, v] of docs.docs) {
+                            if (k.endsWith(dirPath)) return v;
+                        }
+                        return undefined;
+                    })();
+                // Skip category-only pages (no content, just a directory listing)
+                // Category pages like /ctf/event/misc have no index.md
+                if (!dirDoc) {
+                    // No doc at all — only generate if it's a section root (e.g., /ctf, /blog)
+                    const segCount = dirPath.split('/').filter(Boolean).length;
+                    if (segCount >= 2) continue; // /ctf/event — skip if no doc
+                } else if (!dirDoc._bodyRaw || dirDoc._bodyRaw.trim().length === 0) {
+                    // Doc exists but has no body — skip if it's a category (3+ segments)
+                    const segCount = dirPath.split('/').filter(Boolean).length;
+                    if (segCount >= 3) continue; // /ctf/event/category — skip
+                }
+                seen.add(dirRoute);
+                contentRoutes.push({
+                    path: dirRoute,
+                    render: async (data) => {
+                        data.url = dirRoute;
+                        data.docs = docs.flat;
+                        data.nav = docs.nav;
+                        data.doc = dirDoc || undefined;
+                        return renderContent(data);
+                    },
+                });
+            }
+        }
     }
-  }
 
-  const routes: RouteDefinition[] = [
-    // Homepage
-    {
-      path: "/",
-      render: async (data) => {
-        data.docs = docs.flat;
-        data.nav = docs.nav;
-        return renderHome(data);
-      },
-    },
-    // Content index
-    {
-      path: "/c",
-      render: async (data) => {
-        data.url = "/c";
-        data.docs = docs.flat;
-        data.nav = docs.nav;
-        return renderContent(data);
-      },
-    },
-    // All content routes
-    ...contentRoutes,
-    // Sitemap
-    {
-      path: "/sitemap",
-      render: () => {
-        const allUrls = ["/", "/c", ...Array.from(seen)];
-        const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-        return `<h1>Sitemap</h1><ul>${allUrls.map(u => `<li><a href="${esc(u)}">${esc(u)}</a></li>`).join("")}</ul>`;
-      },
-    },
-  ];
+    const routes: RouteDefinition[] = [
+        // Homepage
+        {
+            path: '/',
+            render: async (data) => {
+                data.docs = docs.flat;
+                data.nav = docs.nav;
+                return renderHome(data);
+            },
+        },
+        // Content index
+        {
+            path: '/c',
+            render: async (data) => {
+                data.url = '/c';
+                data.docs = docs.flat;
+                data.nav = docs.nav;
+                return renderContent(data);
+            },
+        },
+        // All content routes
+        ...contentRoutes,
+        // Sitemap
+        {
+            path: '/sitemap',
+            render: () => {
+                const allUrls = ['/', '/c', ...Array.from(seen)];
+                const esc = (s: string) =>
+                    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+                return `<h1>Sitemap</h1><ul>${allUrls.map((u) => `<li><a href="${esc(u)}">${esc(u)}</a></li>`).join('')}</ul>`;
+            },
+        },
+    ];
 
-  console.log(`Generating ${routes.length} routes...`);
+    console.log(`Generating ${routes.length} routes...`);
 
-  // ─── OG Image Preparation ───
-  // Compute OG image URLs (deterministic from content hash) and pass to routes.
-  // Actual PNG generation happens after SSG build (since SSG wipes dist/).
-  const ogImageMap = prepareOGImages(docs);
+    // ─── OG Image Preparation ───
+    // Compute OG image URLs (deterministic from content hash) and pass to routes.
+    // Actual PNG generation happens after SSG build (since SSG wipes dist/).
+    const ogImageMap = prepareOGImages(docs);
 
-  // Pass OG image URLs to routes
-  for (const route of routes) {
-    const ogUrl = ogImageMap.get(route.path);
-    if (ogUrl) {
-      const originalRender = route.render;
-      route.render = async (data) => {
-        data.ogImage = ogUrl;
-        return originalRender(data);
-      };
+    // Pass OG image URLs to routes
+    for (const route of routes) {
+        const ogUrl = ogImageMap.get(route.path);
+        if (ogUrl) {
+            const originalRender = route.render;
+            route.render = async (data) => {
+                data.ogImage = ogUrl;
+                return originalRender(data);
+            };
+        }
     }
-  }
 
-  const t1 = performance.now();
-  await buildSSG(routes, "dist");
-  phases.push({ name: "SSG build (HTML)", ms: performance.now() - t1 });
+    const t1 = performance.now();
+    await buildSSG(routes, 'dist');
+    phases.push({ name: 'SSG build (HTML)', ms: performance.now() - t1 });
 
-  // ─── Font subsetting (automatic charset detection) ───
-  // Scans the built pages + UI source for used characters, subsets the full
-  // latin woff2 sources into public/fonts/, regenerates fonts.css. Re-copies
-  // into dist (buildSSG already copied public → dist with the old fonts).
-  const tFonts = performance.now();
-  const { subsetFonts } = await import("./framework/fonts");
-  const fontResult = await subsetFonts();
-  await cp("public/fonts", "dist/fonts", { recursive: true });
-  await cp("public/fonts.css", "dist/fonts.css");
-  if (fontResult.changed.length > 0) {
-    console.log(`   ✂ fonts subset → ${fontResult.changed.join(", ")} (${fmtSize(fontResult.bytesBefore)} → ${fmtSize(fontResult.bytesAfter)})`);
-  } else {
-    console.log("   ✂ fonts unchanged (no new characters)");
-  }
-  phases.push({ name: "Font subsetting", ms: performance.now() - tFonts });
+    // ─── Font subsetting (automatic charset detection) ───
+    // Scans the built pages + UI source for used characters, subsets the full
+    // latin woff2 sources into public/fonts/, regenerates fonts.css. Re-copies
+    // into dist (buildSSG already copied public → dist with the old fonts).
+    const tFonts = performance.now();
+    const { subsetFonts } = await import('./framework/fonts');
+    const fontResult = await subsetFonts();
+    await cp('public/fonts', 'dist/fonts', { recursive: true });
+    await cp('public/fonts.css', 'dist/fonts.css');
+    if (fontResult.changed.length > 0) {
+        console.log(
+            `   ✂ fonts subset → ${fontResult.changed.join(', ')} (${fmtSize(fontResult.bytesBefore)} → ${fmtSize(fontResult.bytesAfter)})`,
+        );
+    } else {
+        console.log('   ✂ fonts unchanged (no new characters)');
+    }
+    phases.push({ name: 'Font subsetting', ms: performance.now() - tFonts });
 
-  // ─── OG Image Generation (after dist/ is created by SSG) ───
-  const t2 = performance.now();
-  const ogResult = await generateOGImages(docs);
-  ogGenerated = ogResult.generated;
-  ogSkipped = ogResult.skipped;
-  phases.push({ name: "OG image generation", ms: performance.now() - t2 });
+    // ─── OG Image Generation (after dist/ is created by SSG) ───
+    const t2 = performance.now();
+    const ogResult = await generateOGImages(docs);
+    ogGenerated = ogResult.generated;
+    ogSkipped = ogResult.skipped;
+    phases.push({ name: 'OG image generation', ms: performance.now() - t2 });
 
-  // Generate sitemap.xml (reuse the same URL set as the HTML sitemap),
-  // with lastmod/changefreq/priority from doc dates, styled via /sitemap.xsl
-  const SITE_BASE = siteUrl();
-  const flatByPath = new Map((docs.flat as any[]).map((d) => [d.path, d]));
-  const sitemapUrls = [["/", 1.0, "daily"], ["/c", 0.8, "weekly"], ...Array.from(seen).map((u: string) => {
-    const contentPath = u.startsWith("/c") ? u.slice(2) : u;
-    const d = flatByPath.get(contentPath) || flatByPath.get(u);
-    const isLeaf = !!d?.hasContent;
-    // Leaves (writeups/blog posts) change rarely; dirs are stable
-    const priority = isLeaf ? 0.6 : 0.4;
-    const changefreq = contentPath.startsWith("/blog") ? "weekly" : (isLeaf ? "yearly" : "monthly");
-    return [u, priority, changefreq];
-  })] as [string, number, string][];
-  const w3cDate = (d: any) => {
-    const t = d?.updated || d?.created;
-    if (!t) return "";
-    const date = new Date(t);
-    return Number.isNaN(date.getTime()) ? "" : date.toISOString().replace(/\.\d{3}Z$/, "Z");
-  };
-  const escXml = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    // Generate sitemap.xml (reuse the same URL set as the HTML sitemap),
+    // with lastmod/changefreq/priority from doc dates, styled via /sitemap.xsl
+    const SITE_BASE = siteUrl();
+    const flatByPath = new Map((docs.flat as any[]).map((d) => [d.path, d]));
+    const sitemapUrls = [
+        ['/', 1.0, 'daily'],
+        ['/c', 0.8, 'weekly'],
+        ...Array.from(seen).map((u: string) => {
+            const contentPath = u.startsWith('/c') ? u.slice(2) : u;
+            const d = flatByPath.get(contentPath) || flatByPath.get(u);
+            const isLeaf = !!d?.hasContent;
+            // Leaves (writeups/blog posts) change rarely; dirs are stable
+            const priority = isLeaf ? 0.6 : 0.4;
+            const changefreq = contentPath.startsWith('/blog') ? 'weekly' : isLeaf ? 'yearly' : 'monthly';
+            return [u, priority, changefreq];
+        }),
+    ] as [string, number, string][];
+    const w3cDate = (d: any) => {
+        const t = d?.updated || d?.created;
+        if (!t) return '';
+        const date = new Date(t);
+        return Number.isNaN(date.getTime()) ? '' : date.toISOString().replace(/\.\d{3}Z$/, 'Z');
+    };
+    const escXml = (s: string) =>
+        s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapUrls.map(([u, priority, changefreq]: [string, number, string]) => {
-    const contentPath = u.startsWith("/c") ? u.slice(2) : u;
-    const d = flatByPath.get(contentPath) || flatByPath.get(u);
-    const lastmod = w3cDate(d);
-    return `  <url><loc>${SITE_BASE}${escXml(u)}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ""}\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority.toFixed(1)}</priority></url>`;
-  }).join("\n")}
+${sitemapUrls
+    .map(([u, priority, changefreq]: [string, number, string]) => {
+        const contentPath = u.startsWith('/c') ? u.slice(2) : u;
+        const d = flatByPath.get(contentPath) || flatByPath.get(u);
+        const lastmod = w3cDate(d);
+        return `  <url><loc>${SITE_BASE}${escXml(u)}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority.toFixed(1)}</priority></url>`;
+    })
+    .join('\n')}
 </urlset>`;
-  await Bun.write("dist/sitemap.xml", sitemap);
-  console.log("   ✓ sitemap.xml (+ xsl)");
+    await Bun.write('dist/sitemap.xml', sitemap);
+    console.log('   ✓ sitemap.xml (+ xsl)');
 
-  // Generate RSS + Atom feeds (share entry collection with the homepage)
-  const feedEntries = collectFeedDocs(docs.flat as any[]);
-  await Bun.write("dist/rss.xml", renderRSS(feedEntries, SITE_BASE));
-  await Bun.write("dist/atom.xml", renderAtom(feedEntries, SITE_BASE));
-  console.log(`   ✓ rss.xml + atom.xml (${feedEntries.length} entries)`);
+    // Generate RSS + Atom feeds (share entry collection with the homepage)
+    const feedEntries = collectFeedDocs(docs.flat as any[]);
+    await Bun.write('dist/rss.xml', renderRSS(feedEntries, SITE_BASE));
+    await Bun.write('dist/atom.xml', renderAtom(feedEntries, SITE_BASE));
+    console.log(`   ✓ rss.xml + atom.xml (${feedEntries.length} entries)`);
 
-  // Generate robots.txt
-  await Bun.write("dist/robots.txt", "User-agent: *\nAllow: /\nSitemap: https://yun.ng/sitemap.xml\n");
-  console.log("   ✓ robots.txt");
+    // Generate robots.txt
+    await Bun.write('dist/robots.txt', 'User-agent: *\nAllow: /\nSitemap: https://yun.ng/sitemap.xml\n');
+    console.log('   ✓ robots.txt');
 
-  // Generate search index (stripped plain text for IndexedDB search)
-  const t3 = performance.now();
-  console.log("🔍 Building search index...");
-  const searchDocs = Array.from(docs.docs.values()).filter((d: any) => d._bodyRaw);
-  const searchIndex = buildSearchIndex(searchDocs);
-  await Bun.write("dist/search-index.json", JSON.stringify(searchIndex));
-  console.log(`   ✓ search-index.json (${(Bun.file("dist/search-index.json").size / 1024).toFixed(0)}KB, ${searchIndex.entries.length} entries, version ${searchIndex.version})`);
-  phases.push({ name: "Search index", ms: performance.now() - t3 });
+    // Generate search index (stripped plain text for IndexedDB search)
+    const t3 = performance.now();
+    console.log('🔍 Building search index...');
+    const searchDocs = Array.from(docs.docs.values()).filter((d: any) => d._bodyRaw);
+    const searchIndex = buildSearchIndex(searchDocs);
+    await Bun.write('dist/search-index.json', JSON.stringify(searchIndex));
+    console.log(
+        `   ✓ search-index.json (${(Bun.file('dist/search-index.json').size / 1024).toFixed(0)}KB, ${searchIndex.entries.length} entries, version ${searchIndex.version})`,
+    );
+    phases.push({ name: 'Search index', ms: performance.now() - t3 });
 
-  // ─── Portfolio (plain directory in v2, shares v2's node_modules + fonts) ───
-  // Built with `bun build.ts` from its own directory; deps (three, js-yaml,
-  // pug) resolve from v2's node_modules. Output is copied into dist/ so the
-  // minify pass below processes it like everything else.
-  const t4 = performance.now();
-  if (existsSync("portfolio/build.ts")) {
-    console.log("🚀 Building portfolio...");
-    await Bun.$`cd portfolio && bun build.ts`;
-    await cp("portfolio/dist", "dist/portfolio", { recursive: true });
-    const pfSize = (await dirSize("dist/portfolio")).size;
-    console.log(`   ✓ portfolio → dist/portfolio (${fmtSize(pfSize)})`);
-  } else {
-    console.log("   ⚠ portfolio missing — skipping");
-  }
-  phases.push({ name: "Portfolio", ms: performance.now() - t4 });
+    // ─── Portfolio (plain directory in v2, shares v2's node_modules + fonts) ───
+    // Built with `bun build.ts` from its own directory; deps (three, js-yaml,
+    // pug) resolve from v2's node_modules. Output is copied into dist/ so the
+    // minify pass below processes it like everything else.
+    const t4 = performance.now();
+    if (existsSync('portfolio/build.ts')) {
+        console.log('🚀 Building portfolio...');
+        await Bun.$`cd portfolio && bun build.ts`;
+        await cp('portfolio/dist', 'dist/portfolio', { recursive: true });
+        const pfSize = (await dirSize('dist/portfolio')).size;
+        console.log(`   ✓ portfolio → dist/portfolio (${fmtSize(pfSize)})`);
+    } else {
+        console.log('   ⚠ portfolio missing — skipping');
+    }
+    phases.push({ name: 'Portfolio', ms: performance.now() - t4 });
 
-  // ─── Post-build minification (Go minify CLI) — skipped in debug mode ───
-  let beforeSize = 0, afterSize = 0, minifyMs = 0;
-  if (DEBUG) {
-    console.log("🔧 Debug mode — skipping minification");
-    beforeSize = (await dirSize("dist")).size;
-    afterSize = beforeSize;
-  } else {
-    const minifyStart = performance.now();
-    console.log("🗜️  Minifying JS, CSS, HTML...");
-    beforeSize = (await dirSize("dist")).size;
-    await Bun.$`bun x @nycss/cli dist/style.css --dedupe true -o dist/style.css`;
-    // dedupe doesnt even remove that much, yet breaks alot of things, so skip it for now
-    // await Bun.$`bun x css-dedup -i '.dir-page' -i 'blockquote' -i 'html.light' -a -s -z --fix dist/style.css`;
-    await Bun.$`${getTool('minify')} -r -o dist/ dist/`;
-    afterSize = (await dirSize("dist")).size;
-    minifyMs = performance.now() - minifyStart;
-    const { imageSize } = await import("./framework/build-report");
-    const imgSize = await imageSize("dist");
-    const minifiableBefore = beforeSize - imgSize;
-    const minifiableAfter = afterSize - imgSize;
-    const savedBytes = minifiableBefore - minifiableAfter;
-    const savedPct = minifiableBefore > 0 ? ((savedBytes / minifiableBefore) * 100).toFixed(1) : "0";
-    console.log(`   ✓ Minified in ${minifyMs.toFixed(0)}ms — ${fmtSize(minifiableBefore)} → ${fmtSize(minifiableAfter)} (saved ${fmtSize(savedBytes)}, ${savedPct}% of minifiable; images ${fmtSize(imgSize)})`);
-  }
+    // ─── Post-build minification (Go minify CLI) — skipped in debug mode ───
+    let beforeSize = 0,
+        afterSize = 0,
+        minifyMs = 0;
+    if (DEBUG) {
+        console.log('🔧 Debug mode — skipping minification');
+        beforeSize = (await dirSize('dist')).size;
+        afterSize = beforeSize;
+    } else {
+        const minifyStart = performance.now();
+        console.log('🗜️  Minifying JS, CSS, HTML...');
+        beforeSize = (await dirSize('dist')).size;
+        await Bun.$`bun x @nycss/cli dist/style.css --dedupe true -o dist/style.css`;
+        // dedupe doesnt even remove that much, yet breaks alot of things, so skip it for now
+        // await Bun.$`bun x css-dedup -i '.dir-page' -i 'blockquote' -i 'html.light' -a -s -z --fix dist/style.css`;
+        await Bun.$`${getTool('minify')} -r -o dist/ dist/`;
+        afterSize = (await dirSize('dist')).size;
+        minifyMs = performance.now() - minifyStart;
+        const { imageSize } = await import('./framework/build-report');
+        const imgSize = await imageSize('dist');
+        const minifiableBefore = beforeSize - imgSize;
+        const minifiableAfter = afterSize - imgSize;
+        const savedBytes = minifiableBefore - minifiableAfter;
+        const savedPct = minifiableBefore > 0 ? ((savedBytes / minifiableBefore) * 100).toFixed(1) : '0';
+        console.log(
+            `   ✓ Minified in ${minifyMs.toFixed(0)}ms — ${fmtSize(minifiableBefore)} → ${fmtSize(minifiableAfter)} (saved ${fmtSize(savedBytes)}, ${savedPct}% of minifiable; images ${fmtSize(imgSize)})`,
+        );
+    }
 
-  // ─── Generate build report ───
-  const { generateBuildReport } = await import("./framework/build-report");
-  const report = await generateBuildReport({
-    startTime: buildStartEpoch,
-    endTime: Date.now(),
-    routeCount: routes.length,
-    docCount: docs.flat.length,
-    searchIndexSize: Bun.file("dist/search-index.json").size,
-    searchEntryCount: searchIndex.entries.length,
-    ogImageCount: ogGenerated,
-    ogCacheHits: ogSkipped,
-    ogCacheMisses: ogGenerated,
-    minifyBefore: beforeSize,
-    minifyAfter: afterSize,
-    phases,
-  });
-  await Bun.write("dist/build.txt", report);
-  console.log("   ✓ build.txt");
+    // ─── Generate build report ───
+    const { generateBuildReport } = await import('./framework/build-report');
+    const report = await generateBuildReport({
+        startTime: buildStartEpoch,
+        endTime: Date.now(),
+        routeCount: routes.length,
+        docCount: docs.flat.length,
+        searchIndexSize: Bun.file('dist/search-index.json').size,
+        searchEntryCount: searchIndex.entries.length,
+        ogImageCount: ogGenerated,
+        ogCacheHits: ogSkipped,
+        ogCacheMisses: ogGenerated,
+        minifyBefore: beforeSize,
+        minifyAfter: afterSize,
+        phases,
+    });
+    await Bun.write('dist/build.txt', report);
+    console.log('   ✓ build.txt');
 
-  // Make all files world-readable (for Docker lighttpd)
-  // NOTE: must run LAST — the Go minify tool rewrites files in-place with
-  // restrictive perms (umask), clobbering a+rX.
-  await Bun.$`chmod -R a+rX dist/`.quiet();
-  console.log("   ✓ permissions set");
+    // Make all files world-readable (for Docker lighttpd)
+    // NOTE: must run LAST — the Go minify tool rewrites files in-place with
+    // restrictive perms (umask), clobbering a+rX.
+    await Bun.$`chmod -R a+rX dist/`.quiet();
+    console.log('   ✓ permissions set');
 }
 
 main().catch(console.error);

@@ -28,12 +28,12 @@ cd portfolio && bun build.ts     # → dist/
 
 Build-time config (optional):
 
-| Env            | Default                              | Purpose                           |
-| -------------- | ------------------------------------ | --------------------------------- |
-| `BASE_PATH`    | `portfolio`                          | URL path prefix ("" = site root)  |
-| `SITE_URL`     | `https://yun.ng`                    | "Back to main site" target        |
-| `WRITEUPS_URL` | `https://yun.ng/search-index.json`  | Writeups search index             |
-| `VIEWS_URL`    | `https://views.yun.ng`               | Hero pageview counter API         |
+| Env            | Default                            | Purpose                          |
+| -------------- | ---------------------------------- | -------------------------------- |
+| `BASE_PATH`    | `portfolio`                        | URL path prefix ("" = site root) |
+| `SITE_URL`     | `https://yun.ng`                   | "Back to main site" target       |
+| `WRITEUPS_URL` | `https://yun.ng/search-index.json` | Writeups search index            |
+| `VIEWS_URL`    | `https://views.yun.ng`             | Hero pageview counter API        |
 
 ## Content
 

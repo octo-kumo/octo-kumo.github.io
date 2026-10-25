@@ -11,71 +11,71 @@
 // API: GET https://views.yun.ng/<path>  →  { "count": N }   (increments, subject to rate limits)
 // CORS: reflects Origin when it is https://yun.ng or https://v2.yun.ng (both sites can call it).
 
-const ALLOWED_ORIGINS = ["https://yun.ng", "https://v2.yun.ng"];
+const ALLOWED_ORIGINS = ['https://yun.ng', 'https://v2.yun.ng'];
 
 function corsHeaders(request) {
-  const origin = request.headers.get("Origin") || "";
-  if (ALLOWED_ORIGINS.includes(origin)) {
-    return {
-      "Access-Control-Allow-Origin": origin,
-      "Access-Control-Allow-Methods": "GET,OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Max-Age": "86400",
-      "Vary": "Origin",
-    };
-  }
-  return {};
+    const origin = request.headers.get('Origin') || '';
+    if (ALLOWED_ORIGINS.includes(origin)) {
+        return {
+            'Access-Control-Allow-Origin': origin,
+            'Access-Control-Allow-Methods': 'GET,OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '86400',
+            Vary: 'Origin',
+        };
+    }
+    return {};
 }
 
 export default {
-  async fetch(request, env) {
-    const cors = corsHeaders(request);
+    async fetch(request, env) {
+        const cors = corsHeaders(request);
 
-    if (request.method === "OPTIONS") {
-      return new Response(null, { status: 204, headers: cors });
-    }
+        if (request.method === 'OPTIONS') {
+            return new Response(null, { status: 204, headers: cors });
+        }
 
-    const url = new URL(request.url);
-    let path = url.pathname || "/";
-    if (path !== "/" && path.endsWith("/")) path = path.slice(0, -1);
+        const url = new URL(request.url);
+        let path = url.pathname || '/';
+        if (path !== '/' && path.endsWith('/')) path = path.slice(0, -1);
 
-    const ip = request.headers.get("cf-connecting-ip") || "unknown";
+        const ip = request.headers.get('cf-connecting-ip') || 'unknown';
 
-    const maintenanceBlocker = await env.MAINTENANCE_BLOCKER.limit({ key: ip });
-    if (!maintenanceBlocker.success) {
-      return new Response(JSON.stringify({ count: 1337 }), {
-        headers: { "content-type": "application/json", ...cors },
-      });
-    }
+        const maintenanceBlocker = await env.MAINTENANCE_BLOCKER.limit({ key: ip });
+        if (!maintenanceBlocker.success) {
+            return new Response(JSON.stringify({ count: 1337 }), {
+                headers: { 'content-type': 'application/json', ...cors },
+            });
+        }
 
-    let increment = true;
-    const global = await env.TOTAL_RATE_LIMITER.limit({ key: ip });
-    if (!global.success) increment = false;
-    const pageLimit = await env.PAGE_RATE_LIMITER.limit({ key: `${ip}:${path}` });
-    if (!pageLimit.success) increment = false;
+        let increment = true;
+        const global = await env.TOTAL_RATE_LIMITER.limit({ key: ip });
+        if (!global.success) increment = false;
+        const pageLimit = await env.PAGE_RATE_LIMITER.limit({ key: `${ip}:${path}` });
+        if (!pageLimit.success) increment = false;
 
-    if (!increment) {
-      const row = await env.DB.prepare("SELECT count FROM page_views WHERE path = ?")
-        .bind(path)
-        .first();
-      const current = row?.count ?? 0;
-      return new Response(JSON.stringify({ count: current }), {
-        headers: { "Content-Type": "application/json", ...cors },
-      });
-    }
+        if (!increment) {
+            const row = await env.DB.prepare('SELECT count FROM page_views WHERE path = ?').bind(path).first();
+            const current = row?.count ?? 0;
+            return new Response(JSON.stringify({ count: current }), {
+                headers: { 'Content-Type': 'application/json', ...cors },
+            });
+        }
 
-    const upsert = await env.DB.prepare(`
+        const upsert = await env.DB.prepare(
+            `
 INSERT INTO page_views (path, count)
 VALUES (?, 1)
 ON CONFLICT(path) DO UPDATE
 SET count = page_views.count + 1
-RETURNING count;`)
-      .bind(path)
-      .first();
-    const next = upsert?.count ?? 0;
+RETURNING count;`,
+        )
+            .bind(path)
+            .first();
+        const next = upsert?.count ?? 0;
 
-    return new Response(JSON.stringify({ count: next }), {
-      headers: { "Content-Type": "application/json", ...cors },
-    });
-  },
+        return new Response(JSON.stringify({ count: next }), {
+            headers: { 'Content-Type': 'application/json', ...cors },
+        });
+    },
 };

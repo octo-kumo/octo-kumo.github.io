@@ -1,8 +1,9 @@
-import { join } from "node:path";
-import { stat, unlink } from "node:fs/promises";
-import getTool from "./tools";
+import { stat, unlink } from 'node:fs/promises';
+import { join } from 'node:path';
 
-const ORIGINAL = join(import.meta.dirname, "public", "style.css");
+import getTool from './tools';
+
+const ORIGINAL = join(import.meta.dirname, 'public', 'style.css');
 // Test:
 //   1. no css-dedup / no @nycss
 //   2. css-dedup only
@@ -12,18 +13,11 @@ const ORIGINAL = join(import.meta.dirname, "public", "style.css");
 //
 // Minification is always performed last.
 
-const tempFile = () =>
-    join('/tmp', `css-test-${Math.random().toString(36).substring(2, 15)}.css`);
+const tempFile = () => join('/tmp', `css-test-${Math.random().toString(36).substring(2, 15)}.css`);
 
 type Step = 'css-dedup' | 'nycss';
 
-const combinations: Step[][] = [
-    [],
-    ['css-dedup'],
-    ['nycss'],
-    ['css-dedup', 'nycss'],
-    ['nycss', 'css-dedup'],
-];
+const combinations: Step[][] = [[], ['css-dedup'], ['nycss'], ['css-dedup', 'nycss'], ['nycss', 'css-dedup']];
 
 async function testComb(num: number, steps: Step[]) {
     const f = tempFile();
@@ -59,29 +53,27 @@ async function testComb(num: number, steps: Step[]) {
         };
     } finally {
         await Promise.all([
-            Bun.file(f).exists().then(exists => exists && unlink(f) as any),
-            Bun.file(g).exists().then(exists => exists && unlink(g) as any),
+            Bun.file(f)
+                .exists()
+                .then((exists) => exists && (unlink(f) as any)),
+            Bun.file(g)
+                .exists()
+                .then((exists) => exists && (unlink(g) as any)),
         ]);
     }
 }
 
-const results = await Promise.all(
-    combinations.map((steps, i) => testComb(i + 1, steps)),
-);
+const results = await Promise.all(combinations.map((steps, i) => testComb(i + 1, steps)));
 
 results.sort((a, b) => a.size - b.size);
 
 console.log('\nResults:');
 
 for (const result of results) {
-    console.log(
-        `${result.label.padEnd(27)} ${result.size.toLocaleString()} bytes`,
-    );
+    console.log(`${result.label.padEnd(27)} ${result.size.toLocaleString()} bytes`);
 }
 
-console.log(
-    `\nBest: ${results[0].label} (${results[0].size.toLocaleString()} bytes)`,
-);
+console.log(`\nBest: ${results[0].label} (${results[0].size.toLocaleString()} bytes)`);
 
 /**
  * Results:

@@ -3,8 +3,8 @@
 // portfolio "back to site" link + writeups index default) derives from here.
 // Override at build time with the SITE_URL env var — one place to change it.
 
-export const DEFAULT_SITE_URL = "https://yun.ng";
+export const DEFAULT_SITE_URL = 'https://yun.ng';
 
 export function siteUrl(): string {
-  return process.env.SITE_URL || DEFAULT_SITE_URL;
+    return process.env.SITE_URL || DEFAULT_SITE_URL;
 }
