@@ -420,7 +420,7 @@ ${sitemapUrls
     phases.push({ name: 'Search index', ms: performance.now() - t3 });
 
     // ─── Portfolio (plain directory in v2, shares v2's node_modules + fonts) ───
-    // Built with `bun build.ts` from its own directory; deps (three, js-yaml,
+    // Built with `bun build.ts` from its own directory; deps (three,
     // pug) resolve from v2's node_modules. Output is copied into dist/ so the
     // minify pass below processes it like everything else.
     const t4 = performance.now();

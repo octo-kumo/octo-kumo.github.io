@@ -1,6 +1,5 @@
 import { readFileSync } from 'node:fs';
 
-import yaml from 'js-yaml';
 import pug from 'pug';
 
 import { displayDocDates, docTitle } from '../framework/content';
@@ -63,7 +62,7 @@ export interface ShowcaseProject {
 
 function loadProjects(): RawProject[] {
     try {
-        return (yaml.load(readFileSync('portfolio/src/data/projects.yaml', 'utf8')) as RawProject[]) || [];
+        return (Bun.YAML.parse(readFileSync('portfolio/src/data/projects.yaml', 'utf8')) as RawProject[]) || [];
     } catch (e) {
         console.warn(`   ⚠ projects.yaml unreadable — homepage showcase empty: ${e}`);
         return [];

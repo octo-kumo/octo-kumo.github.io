@@ -10,7 +10,7 @@ Since the absorption into v2, `portfolio/` is a **plain directory** in the
 yun-ng-v2 repo (no longer a submodule, no own package.json / node_modules):
 
 - **Dependencies** — resolved upward from v2's `package.json` / `node_modules`
-  (`three`, `js-yaml`, `pug`)
+  (`three`, `pug`)
 - **Fonts & assets** — shared from v2's `public/`: `/fonts/fonts.css` (+ the
   Space Grotesk variable font), `/fonts/space_font.json` (3D typeface),
   `/favicon.ico`, `/apple-touch-icon.png`, `/img/pfp.square.small.jpg`

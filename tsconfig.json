@@ -9,7 +9,7 @@
         "allowImportingTsExtensions": true,
         "noEmitOnError": true,
         "forceConsistentCasingInFileNames": true,
-        "types": ["bun-types", "@types/fontkit"],
+        "types": ["bun-types", "@types/fontkit", "node"],
         "esModuleInterop": true,
         "allowJs": true
     },

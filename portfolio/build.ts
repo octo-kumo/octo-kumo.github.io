@@ -12,8 +12,6 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { copyFile, mkdir, readdir, rm, unlink, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-
-import yaml from 'js-yaml';
 import { renderFile } from 'pug';
 
 import { siteUrl } from '../framework/site-config';
@@ -31,8 +29,8 @@ const CACHE_VER = Date.now().toString(36);
 console.log(`config: basePath=${basePath || '/'} site=${SITE_URL} writeups=${WRITEUPS_URL} views=${VIEWS_URL}`);
 
 /* ── data (YAML) ────────────────────────────────────────────────────────── */
-const projects = yaml.load(readFileSync('src/data/projects.yaml', 'utf8')) as unknown[];
-const writeups = yaml.load(readFileSync('src/data/writeups.yaml', 'utf8')) as unknown[];
+const projects = Bun.YAML.parse(readFileSync('src/data/projects.yaml', 'utf8')) as unknown[];
+const writeups = Bun.YAML.parse(readFileSync('src/data/writeups.yaml', 'utf8')) as unknown[];
 console.log(`data: ${projects.length} projects, ${writeups.length} fallback writeups`);
 
 /* ── contact icons (ContactSection.vue, verbatim) ───────────────────────── */
