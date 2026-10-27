@@ -2,11 +2,12 @@ name: Build & Deploy
 on:
     push:
     repository_dispatch:
+    workflow_dispatch:
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 permissions:
-    contents: write
+    contents: read
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -46,9 +47,26 @@ jobs:
               run: bun install --frozen-lockfile
             - name: Build
               run: bun run build
-            - name: Deploy
-              uses: peaceiris/actions-gh-pages@v4
+            - name: Configure Pages
+              if: github.ref == 'refs/heads/master'
+              uses: actions/configure-pages@v5
+            - name: Upload Pages artifact
+              if: github.ref == 'refs/heads/master'
+              uses: actions/upload-pages-artifact@v4
               with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./dist
-                  force_orphan: true
+                  path: ./dist
+    deploy:
+        name: Deploy
+        needs: build
+        if: github.ref == 'refs/heads/master'
+        runs-on: ubuntu-latest
+        permissions:
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4

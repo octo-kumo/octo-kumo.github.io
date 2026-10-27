@@ -11,6 +11,10 @@
         sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'PingFang SC', monospace;
     --font-serif: 'Source Serif Pro', 'Songti SC', 'Noto Serif CJK SC', Georgia, serif;
+    /* Page titles (default style): Space Grotesk, as in the original v2 design */
+    --font-title:
+        'Space Grotesk', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Segoe UI Symbol',
+        sans-serif;
     --font-size-base: 16px;
     --font-size-mono: 0.85em;
     --article-max: 680px;
@@ -204,6 +208,7 @@ html.light.papery body {
 html.terminal {
     --font-body: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
     --font-serif: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+    --font-title: var(--font-body);
     --font-size-base: 14px;
 }
 
@@ -1542,14 +1547,22 @@ html.terminal .copy-link-btn:hover {
 }
 
 .article-title {
+    font-family: var(--font-title);
     font-size: 2rem;
     font-weight: bold;
+    line-height: 1.25;
     margin-bottom: 0.5rem;
     text-decoration: underline;
     text-decoration-color: var(--heading-accent);
-    text-underline-offset: 3px;
+    /* em-based so the underline stays proportionate at every title size
+       (the font's own bold underline is far heavier than the strokes) */
+    text-decoration-thickness: 0.05em;
+    text-underline-offset: 0.15em;
 }
 
+/* Header rhythm: title → [tags/meta row, only when present] → date row (with
+   the copy-link button on the right) → divider. Every row has the same gap, so
+   pages with and without tags line up the same way. */
 .article-meta {
     display: flex;
     flex-wrap: wrap;
@@ -1559,9 +1572,12 @@ html.terminal .copy-link-btn:hover {
 }
 
 .article-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 0.85rem;
     color: var(--footer-text);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 /* Date format: show only the one for current style theme */

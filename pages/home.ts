@@ -23,6 +23,12 @@ const externalLinks = [
         desc: 'Binary Search, Character Gen, Y Playground, Hanzi Recognizer, Depth Lathe',
         icon: '⚙',
     },
+    {
+        name: 'CTF Platform',
+        url: 'https://ctf.yun.ng/',
+        desc: 'Hosts the past CTF challenges I authored',
+        icon: '⚑',
+    },
     { name: 'GitHub', url: 'https://github.com/octo-kumo', desc: 'Source code for most of the projects', icon: '⌘' },
 ];
 
