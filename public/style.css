@@ -353,11 +353,11 @@ blockquote::after {
     pointer-events: none;
 }
 
-blockquote > :first-child {
+blockquote> :first-child {
     margin-top: 0;
 }
 
-blockquote > :last-child {
+blockquote> :last-child {
     margin-bottom: 0;
 }
 
@@ -465,7 +465,7 @@ html.terminal blockquote :is(p, ul, ol, pre, div, h1, h2, h3, h4) {
     line-height: 1.4;
 }
 
-html.terminal blockquote > * + * {
+html.terminal blockquote>*+* {
     margin-top: 1.4em !important;
 }
 
@@ -859,7 +859,7 @@ article img,
     font-size: 0.95rem;
 }
 
-.topnav-mobile .nav-link + .nav-link {
+.topnav-mobile .nav-link+.nav-link {
     border-top: 1px solid var(--nav-line);
 }
 
@@ -1554,10 +1554,7 @@ html.terminal .copy-link-btn:hover {
     margin-bottom: 0.5rem;
     text-decoration: underline;
     text-decoration-color: var(--heading-accent);
-    /* em-based so the underline stays proportionate at every title size
-       (the font's own bold underline is far heavier than the strokes) */
-    text-decoration-thickness: 0.05em;
-    text-underline-offset: 0.15em;
+    text-decoration-thickness: 0.1em;
 }
 
 /* Header rhythm: title → [tags/meta row, only when present] → date row (with
@@ -1794,12 +1791,10 @@ article h2::after {
     right: 0;
     bottom: 0;
     height: 1px;
-    background: linear-gradient(
-        90deg,
-        var(--heading-accent) 0 2.5rem,
-        color-mix(in srgb, var(--bd) 70%, transparent) 2.5rem,
-        transparent
-    );
+    background: linear-gradient(90deg,
+            var(--heading-accent) 0 2.5rem,
+            color-mix(in srgb, var(--bd) 70%, transparent) 2.5rem,
+            transparent);
     transition: background-size 0.3s;
 }
 
@@ -1904,9 +1899,9 @@ article :is(h1, h2).collapsed::after {
     background: repeating-linear-gradient(90deg, var(--fold-hover) 0 6px, transparent 6px 10px);
 }
 
-article h1.collapsed + *,
-article h2.collapsed + *,
-article h3.collapsed + * {
+article h1.collapsed+*,
+article h2.collapsed+*,
+article h3.collapsed+* {
     display: none;
 }
 
@@ -2778,7 +2773,7 @@ html.terminal .toc-link.current::before {
     transition: transform var(--tree-dur) var(--tree-ease);
 }
 
-.tree-item.collapsed > .tree-row .tree-toggle::before {
+.tree-item.collapsed>.tree-row .tree-toggle::before {
     transform: translateX(-1px) rotate(-45deg);
 }
 
@@ -2903,11 +2898,11 @@ html.terminal .toc-link.current::before {
 }
 
 /* Current page + the branch leading to it */
-.tree-current > .tree-row {
+.tree-current>.tree-row {
     background: color-mix(in srgb, var(--tree-accent) 12%, transparent);
 }
 
-.tree-current > .tree-row::before {
+.tree-current>.tree-row::before {
     content: '';
     position: absolute;
     left: 0;
@@ -2918,25 +2913,25 @@ html.terminal .toc-link.current::before {
     background: var(--tree-accent);
 }
 
-.tree-current > .tree-row .tree-link {
+.tree-current>.tree-row .tree-link {
     color: var(--tree-accent);
 }
 
-.tree-current > .tree-row .tree-title {
+.tree-current>.tree-row .tree-title {
     font-weight: 600;
 }
 
-.tree-current > .tree-row .tree-dot {
+.tree-current>.tree-row .tree-dot {
     color: var(--tree-accent);
 }
 
-.tree-current > .tree-row .tree-dot::before {
+.tree-current>.tree-row .tree-dot::before {
     opacity: 1;
     transform: scale(1.5);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--tree-accent) 25%, transparent);
 }
 
-.tree-ancestor > .tree-row .tree-toggle {
+.tree-ancestor>.tree-row .tree-toggle {
     color: var(--tree-accent);
 }
 
@@ -2973,7 +2968,7 @@ html.terminal .toc-link.current::before {
     transition: grid-template-rows var(--tree-dur) var(--tree-ease);
 }
 
-.tree-item.collapsed > .tree-children {
+.tree-item.collapsed>.tree-children {
     grid-template-rows: 0fr;
 }
 
@@ -2989,7 +2984,7 @@ html.terminal .toc-link.current::before {
         visibility 0s;
 }
 
-.tree-item.collapsed > .tree-children > .tree-children-inner {
+.tree-item.collapsed>.tree-children>.tree-children-inner {
     opacity: 0;
     transform: translateY(-4px);
     visibility: hidden;
@@ -3010,11 +3005,11 @@ html.terminal .toc-link.current::before {
     transition: background 0.2s;
 }
 
-.tree-item:hover > .tree-children > .tree-children-inner::before {
+.tree-item:hover>.tree-children>.tree-children-inner::before {
     background: color-mix(in srgb, var(--bd) 80%, transparent);
 }
 
-.tree-ancestor > .tree-children > .tree-children-inner::before {
+.tree-ancestor>.tree-children>.tree-children-inner::before {
     background: color-mix(in srgb, var(--tree-accent) 55%, transparent);
 }
 
@@ -3055,7 +3050,7 @@ html.papery .tree-toggle::before {
     transform: translateY(-1px) rotate(90deg);
 }
 
-html.papery .tree-item.collapsed > .tree-row .tree-toggle::before {
+html.papery .tree-item.collapsed>.tree-row .tree-toggle::before {
     transform: translateY(-1px) rotate(0deg);
 }
 
@@ -3076,7 +3071,7 @@ html.papery .tree-row:hover .tree-dot::before {
     transform: translateX(2px);
 }
 
-html.papery .tree-current > .tree-row .tree-dot::before {
+html.papery .tree-current>.tree-row .tree-dot::before {
     content: '❧';
     font-size: 1em;
     transform: none;
@@ -3096,19 +3091,19 @@ html.papery .tree-title {
 }
 
 html.papery .tree-row:hover .tree-title,
-html.papery .tree-current > .tree-row .tree-title {
+html.papery .tree-current>.tree-row .tree-title {
     background-size: 100% 1px;
 }
 
-html.papery .tree-current > .tree-row {
+html.papery .tree-current>.tree-row {
     background: transparent;
 }
 
-html.papery .tree-current > .tree-row::before {
+html.papery .tree-current>.tree-row::before {
     display: none;
 }
 
-html.papery .tree-current > .tree-row .tree-title {
+html.papery .tree-current>.tree-row .tree-title {
     font-style: italic;
     font-weight: 700;
 }
@@ -3149,17 +3144,17 @@ html.papery .tree-children-inner::before {
     border-left: 1px dotted var(--tree-guide);
 }
 
-html.papery .tree-item:hover > .tree-children > .tree-children-inner::before {
+html.papery .tree-item:hover>.tree-children>.tree-children-inner::before {
     background: none;
     border-left-color: var(--fold-hover);
 }
 
-html.papery .tree-ancestor > .tree-children > .tree-children-inner::before {
+html.papery .tree-ancestor>.tree-children>.tree-children-inner::before {
     background: none;
     border-left-color: var(--tree-accent);
 }
 
-html.papery .tree-item.collapsed > .tree-children > .tree-children-inner {
+html.papery .tree-item.collapsed>.tree-children>.tree-children-inner {
     transform: translateY(-8px);
 }
 
@@ -3216,7 +3211,7 @@ html.terminal .tree-toggle::before {
     transform: none;
 }
 
-html.terminal .tree-item.collapsed > .tree-row .tree-toggle::before {
+html.terminal .tree-item.collapsed>.tree-row .tree-toggle::before {
     content: '[+]';
     transform: none;
 }
@@ -3241,30 +3236,30 @@ html.terminal .tree-row:hover .tree-dot::before {
     border-top-color: var(--bg);
 }
 
-html.terminal .tree-leaf ~ .tree-sub,
+html.terminal .tree-leaf~.tree-sub,
 html.terminal .tree-sub {
     padding-left: 2ch;
 }
 
-html.terminal .tree-current > .tree-row {
+html.terminal .tree-current>.tree-row {
     background: color-mix(in srgb, var(--primary) 18%, transparent);
 }
 
-html.terminal .tree-current > .tree-row::before {
+html.terminal .tree-current>.tree-row::before {
     display: none;
 }
 
-html.terminal .tree-current > .tree-row .tree-title {
+html.terminal .tree-current>.tree-row .tree-title {
     font-weight: bold;
 }
 
-html.terminal .tree-current > .tree-row .tree-dot::before {
+html.terminal .tree-current>.tree-row .tree-dot::before {
     border-top-color: var(--primary);
     box-shadow: none;
     transform: none;
 }
 
-html.terminal .tree-current > .tree-row .tree-link::after {
+html.terminal .tree-current>.tree-row .tree-link::after {
     content: '█';
     flex-shrink: 0;
     animation: tree-blink 1s steps(1) infinite;
@@ -3306,36 +3301,36 @@ html.terminal .tree-children-inner::before {
     display: none;
 }
 
-html.terminal .tree-children-inner > .tree-item {
+html.terminal .tree-children-inner>.tree-item {
     padding-left: 2ch;
 }
 
-html.terminal .tree-children-inner > .tree-item::before,
-html.terminal .tree-children-inner > .tree-item::after {
+html.terminal .tree-children-inner>.tree-item::before,
+html.terminal .tree-children-inner>.tree-item::after {
     content: '';
     position: absolute;
     left: 0;
     pointer-events: none;
 }
 
-html.terminal .tree-children-inner > .tree-item::before {
+html.terminal .tree-children-inner>.tree-item::before {
     top: 0;
     bottom: 0;
     border-left: 1px solid var(--tree-guide);
 }
 
-html.terminal .tree-children-inner > .tree-item:last-child::before {
+html.terminal .tree-children-inner>.tree-item:last-child::before {
     bottom: auto;
     height: var(--tree-mid);
 }
 
-html.terminal .tree-children-inner > .tree-item::after {
+html.terminal .tree-children-inner>.tree-item::after {
     top: var(--tree-mid);
     width: 2ch;
     border-top: 1px solid var(--tree-guide);
 }
 
-html.terminal .tree-children-inner > .tree-item:is(.tree-current, .tree-ancestor)::after {
+html.terminal .tree-children-inner>.tree-item:is(.tree-current, .tree-ancestor)::after {
     border-color: var(--primary);
 }
 
@@ -3346,6 +3341,7 @@ html.terminal .tree-children-inner > .tree-item:is(.tree-current, .tree-ancestor
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .content-tree *,
     .content-tree *::before,
     .content-tree *::after,
@@ -3883,6 +3879,7 @@ html.terminal .home-search input:focus {
 }
 
 @keyframes terminal-blink {
+
     0%,
     50% {
         caret-color: var(--fg);
@@ -4080,8 +4077,10 @@ html.papery .home-search input {
 .pcard {
     /* signed distance from the front, wrapped to (-n/2, n/2] for an endless loop */
     --off: calc(mod(var(--i) - var(--active) + var(--n) / 2, var(--n)) - var(--n) / 2);
-    --fwd: max(var(--off), 0); /* > 0: waiting behind the front card */
-    --back: min(var(--off), 0); /* < 0: already passed, sliding away */
+    --fwd: max(var(--off), 0);
+    /* > 0: waiting behind the front card */
+    --back: min(var(--off), 0);
+    /* < 0: already passed, sliding away */
     --stack: min(var(--fwd), 3);
     position: absolute;
     left: 0;
@@ -4095,8 +4094,7 @@ html.papery .home-search input {
     background: var(--card-bg);
     color: var(--fg);
     transform-origin: 50% 0;
-    transform: translateX(calc(var(--back) * 110%)) translateY(calc(var(--stack) * -1 * var(--peek)))
-        translateZ(calc(var(--stack) * -1 * var(--depth))) rotate(calc(var(--back) * 5deg + var(--twist, 0deg)));
+    transform: translateX(calc(var(--back) * 110%)) translateY(calc(var(--stack) * -1 * var(--peek))) translateZ(calc(var(--stack) * -1 * var(--depth))) rotate(calc(var(--back) * 5deg + var(--twist, 0deg)));
     opacity: clamp(0, min(1 + var(--back) * 1.3, 3.5 - var(--fwd)), 1);
     z-index: calc(100 - round(var(--fwd) * 10) - round(var(--back)));
 }
@@ -4410,7 +4408,7 @@ html.papery .pcard-tag {
     color: var(--heading-accent);
 }
 
-html.papery .pcard-tag + .pcard-tag::before {
+html.papery .pcard-tag+.pcard-tag::before {
     content: '· ';
 }
 
@@ -5114,10 +5112,12 @@ html.papery .project-card {
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+
 /* ─── LLM marker: a quiet note next to the project date ─── */
 .llm-mark {
     position: relative;
-    z-index: 3; /* above the card's full-bleed link overlay so it can be hovered */
+    z-index: 3;
+    /* above the card's full-bleed link overlay so it can be hovered */
     display: inline-block;
     margin-right: 0.5em;
     font-size: 0.65rem;

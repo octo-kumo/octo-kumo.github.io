@@ -130,10 +130,12 @@ main .btn-primary {
     --color-btn-primary-disabled-text: rgba(255, 255, 255, 0.5);
     --color-btn-primary-disabled-bg: rgba(139, 69, 19, 0.6);
 }
+
 /* Reaction pills: rounded */
 main .gsc-social-reaction-summary-item {
     border-radius: 4px;
 }
+
 /* Serif font on comment content */
 main .gsc-comment-content,
 main .gsc-reply-content,
@@ -141,17 +143,16 @@ main .gsc-comment-header,
 main .gsc-comment-author {
     font-family: 'Source Serif Pro', Georgia, 'Times New Roman', serif;
 }
+
 /* Warm comment box */
 main .gsc-comment-box {
     border-radius: 8px;
 }
+
 main .gsc-comment-box-tabs {
     border-radius: 8px 8px 0 0;
 }
 
-/* giscus theme — __SITE_URL__ is replaced at build time with the real site URL */
-not the site origin. Cloudflare serves /fonts/*.woff2 with ACAO: * so cross-origin
-   @font-face loading works. font-display: swap prevents FOIT in the iframe. */
 @font-face {
     font-family: 'Space Grotesk';
     font-style: normal;
@@ -159,6 +160,7 @@ not the site origin. Cloudflare serves /fonts/*.woff2 with ACAO: * so cross-orig
     font-display: swap;
     src: url(__SITE_URL__/fonts/space-grotesk.woff2) format('woff2');
 }
+
 @font-face {
     font-family: 'Space Grotesk';
     font-style: normal;
@@ -166,6 +168,7 @@ not the site origin. Cloudflare serves /fonts/*.woff2 with ACAO: * so cross-orig
     font-display: swap;
     src: url(__SITE_URL__/fonts/space-grotesk.woff2) format('woff2');
 }
+
 @font-face {
     font-family: 'JetBrains Mono';
     font-style: normal;
@@ -173,6 +176,7 @@ not the site origin. Cloudflare serves /fonts/*.woff2 with ACAO: * so cross-orig
     font-display: swap;
     src: url(__SITE_URL__/fonts/jetbrains-mono-400.woff2) format('woff2');
 }
+
 @font-face {
     font-family: 'Source Serif Pro';
     font-style: normal;
@@ -180,6 +184,7 @@ not the site origin. Cloudflare serves /fonts/*.woff2 with ACAO: * so cross-orig
     font-display: swap;
     src: url(__SITE_URL__/fonts/source-serif-pro-400.woff2) format('woff2');
 }
+
 @font-face {
     font-family: 'Source Serif Pro';
     font-style: normal;
@@ -187,6 +192,7 @@ not the site origin. Cloudflare serves /fonts/*.woff2 with ACAO: * so cross-orig
     font-display: swap;
     src: url(__SITE_URL__/fonts/source-serif-pro-700.woff2) format('woff2');
 }
+
 @font-face {
     font-family: 'Source Serif Pro';
     font-style: italic;

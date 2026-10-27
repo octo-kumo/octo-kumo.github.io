@@ -38,7 +38,7 @@
   desc: >-
       A small PoC RPG written in Y, compiles to windows, linux, wasm.
   github: octo-kumo/judgement
-  image: https://github.com/octo-kumo/judgement/blob/master/images/rune-input.png
+  image: https://github.com/octo-kumo/judgement/raw/master/images/rune-input.png
   link: https://yun.ng/judgement/
 
 - name: pixiv manager rs
@@ -83,7 +83,7 @@
       - todoist
   desc: >-
       A KDE Plasma 6 widget for one or more Todoist projects, with a headless Rust CLI backend. Works both in the panel (compact: color-coded project pills for tasks due within a day or overdue, plus plain colored numbers for later tasks) and on the desktop
-  image: https://github.com/octo-kumo/kde-todoist-widget/blob/master/docs/list.png
+  image: https://github.com/octo-kumo/kde-todoist-widget/raw/master/docs/list.png
   github: octo-kumo/kde-todoist-widget
 - name: Stars
   llm: true
@@ -780,7 +780,7 @@
       - java
   keys:
       - game
-  image: https://github.com/octo-kumo/java-app-archive/blob/master/nanogun.png?raw=true
+  image: https://github.com/octo-kumo/java-app-archive/raw/master/nanogun.png?raw=true
   year: '2019'
   link: https://github.com/octo-kumo/java-app-archive/raw/refs/heads/master/NanoGun.jar
 - name: SGCC

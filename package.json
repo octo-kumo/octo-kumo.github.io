@@ -4,12 +4,7 @@
     "type": "module",
     "scripts": {
         "build": "bun run build.ts",
-        "build:debug": "DEBUG=1 bun run build.ts",
-        "dev": "bun run build.ts && docker compose up -d --build",
-        "serve": "docker compose up -d --build",
-        "stop": "docker compose down",
-        "logs": "docker compose logs -f",
-        "deploy": "bun run build.ts && cd dist && git init && git add -A && git commit -m 'deploy' && git push -f git@github.com:octo-kumo/octo-kumo.github.io.git master:gh-pages"
+        "build:debug": "DEBUG=1 bun run build.ts"
     },
     "dependencies": {
         "@napi-rs/canvas": "^1.0.13",
